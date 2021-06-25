@@ -21,8 +21,3 @@ int CALLBACK WinMain(
 	}
 	return -1;
 }
-
-bool alwaysTrue()
-{
-	return true;
-}
