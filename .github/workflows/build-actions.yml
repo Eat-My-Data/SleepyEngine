@@ -38,4 +38,4 @@ jobs:
     - name: Run VSTest
       id: run_vstest
       working-directory: $\
-      run: vstest.console.exe /Platform:x86 .\Tests.dll
+      run: vstest.console.exe /Platform:x86 Tests.dll
