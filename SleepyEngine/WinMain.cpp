@@ -1,4 +1,3 @@
-#include <Windows.h>
 #include "App.h"
 
 int CALLBACK WinMain(
@@ -11,7 +10,7 @@ int CALLBACK WinMain(
 	{
 		return App{}.Launch();
 	}
-	catch ( std::exception& e )			// catch standard exceptions
+	catch ( std::exception& e )
 	{
 		MessageBox( nullptr, (LPCTSTR)e.what(), L"Standard Exception", MB_OK | MB_ICONEXCLAMATION);
 	}
