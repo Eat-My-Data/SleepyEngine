@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include "App.h"
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,
@@ -6,7 +7,19 @@ int CALLBACK WinMain(
 	LPSTR	  lpCmdLine,
 	int		  nCmdShow )
 {
-	return 0;
+	try
+	{
+		return App{}.Launch();
+	}
+	catch ( std::exception& e )			// catch standard exceptions
+	{
+		MessageBox( nullptr, (LPCTSTR)e.what(), L"Standard Exception", MB_OK | MB_ICONEXCLAMATION);
+	}
+	catch ( ... )
+	{
+		MessageBox( nullptr, L"No details available", L"Unknown Exception", MB_OK | MB_ICONEXCLAMATION );
+	}
+	return -1;
 }
 
 bool alwaysTrue()
