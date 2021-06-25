@@ -37,5 +37,4 @@ jobs:
 
     - name: Run VSTest
       id: run_vstest
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: vstest.console.exe /Platform:x86 x86\Release\Tests.dll
+      run: vstest.console.exe /Platform:x86 .\x86\Release\Tests.dll
