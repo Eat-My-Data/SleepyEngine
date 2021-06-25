@@ -37,5 +37,5 @@ jobs:
 
     - name: Run VSTest
       id: run_vstest
-      working-directory: $\x64\Release\
+      working-directory: ${{ github.workspace }}
       run: vstest.console.exe /Platform:x64 .\Tests.dll
