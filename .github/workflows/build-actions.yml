@@ -1,4 +1,4 @@
-name: MSBuild
+name: MSBuild and VSTest
 
 on: [push]
 
@@ -37,5 +37,5 @@ jobs:
 
     - name: Run VSTest
       id: run_vstest
-      working-directory: $\x64\Debug\
+      working-directory: $\x64\Release\
       run: vstest.console.exe /Platform:x64 .\Tests.dll
