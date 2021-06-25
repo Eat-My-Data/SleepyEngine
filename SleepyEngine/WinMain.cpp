@@ -8,3 +8,8 @@ int CALLBACK WinMain(
 {
 	return 0;
 }
+
+bool alwaysTrue()
+{
+	return true;
+}
