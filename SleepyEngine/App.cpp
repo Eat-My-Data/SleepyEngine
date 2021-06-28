@@ -24,5 +24,6 @@ App::~App()
 
 void App::ExecuteFrame()
 {
-	// TODO: Setup rendering
+	m_Win32Window.InitializeGraphics( &m_D3D11Interface );
+	m_D3D11Interface.DrawTriangle();
 }
