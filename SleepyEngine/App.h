@@ -1,15 +1,15 @@
 #pragma once
-#include <Windows.h>
-#include <exception>
+#include "Win32Window.h"
 
 class App
 {
 public:
 	App();
-	int Launch();
+	u32 Launch();
 	~App();
 private:
 	void ExecuteFrame();
 private:
 	// TODO: Platform Independence Layer
+	Win32Window m_Win32Window;
 };
