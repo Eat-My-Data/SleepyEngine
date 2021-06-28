@@ -1,6 +1,6 @@
 #pragma once
 #include "Win32Window.h"
-#include "D3D11Interface.h"
+#include "GraphicsDeviceInterface.h"
 
 class App
 {
@@ -11,7 +11,10 @@ public:
 private:
 	void ExecuteFrame();
 private:
-	// TODO: Platform Independence Layer
+	// TODO: 
+	// - Platform Interface
+	// - Scene Manager
+	// - GraphicsDeviceInterface
 	Win32Window m_Win32Window;
-	D3D11Interface m_D3D11Interface;
+	GraphicsDeviceInterface m_GDI;
 };

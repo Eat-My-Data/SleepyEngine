@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="D3D11Interface.cpp" />
+    <ClCompile Include="GraphicsDeviceInterface.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Win32Window.cpp" />
