@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="D3D11Interface.cpp" />
     <ClCompile Include="GraphicsDeviceInterface.cpp" />
     <ClCompile Include="Keyboard.cpp" />
@@ -165,11 +166,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="D3D11Interface.h" />
     <ClInclude Include="GraphicsDeviceInterface.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="NumericDataTypes.h" />
+    <ClInclude Include="Projection.h" />
     <ClInclude Include="Win32Window.h" />
   </ItemGroup>
   <ItemGroup>
