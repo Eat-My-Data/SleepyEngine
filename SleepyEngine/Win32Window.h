@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include <optional>
 #include "NumericDataTypes.h"
+#include "Keyboard.h"
+#include "Mouse.h"
 
 class D3D11Interface;
 
@@ -34,6 +36,9 @@ private:
 	static LRESULT CALLBACK HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 	static LRESULT WINAPI HandleMsgThunk( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 	LRESULT HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
+public:
+	Keyboard m_Kbd;
+	Mouse m_Mouse;
 private:
 	HWND m_hWnd;
 	u32 m_iWidth;
