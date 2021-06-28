@@ -157,6 +157,8 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="D3D11Interface.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Win32Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -164,6 +166,8 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="D3D11Interface.h" />
     <ClInclude Include="GraphicsDeviceInterface.h" />
+    <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="NumericDataTypes.h" />
     <ClInclude Include="Win32Window.h" />
   </ItemGroup>
