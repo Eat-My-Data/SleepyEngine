@@ -9,19 +9,19 @@ private:
 	class WindowSingleton
 	{
 	public:
-		static const char* GetName() noexcept;
+		static const wchar_t* GetName() noexcept;
 		static HINSTANCE GetInstance() noexcept;
 	private:
 		WindowSingleton() noexcept;
 		~WindowSingleton();
 		WindowSingleton( const WindowSingleton& ) = delete;
 		WindowSingleton& operator=( const WindowSingleton& ) = delete;
-		static constexpr const char* m_sWindowName = "Win32Window";
+		static constexpr const wchar_t* m_sWindowName = L"Win32Window";
 		static WindowSingleton m_wSingleton;
 		HINSTANCE m_hInst;
 	};
 public:
-	Win32Window( u32 width, u32 height, const char* name );
+	Win32Window( u32 width, u32 height, const wchar_t* name );
 	~Win32Window();
 	Win32Window( const Win32Window& ) = delete;
 	Win32Window& operator=( const Win32Window& ) = delete;

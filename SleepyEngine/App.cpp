@@ -2,7 +2,7 @@
 
 App::App()
 	:
-	m_Win32Window( 1280, 720, "Sleepy Engine" )
+	m_Win32Window( 1280, 720, L"Sleepy Engine" )
 {}
 
 u32 App::Launch()

@@ -8,28 +8,26 @@ Win32Window::WindowSingleton::WindowSingleton() noexcept
 	m_hInst( GetModuleHandle( nullptr ) )
 {
 	// register window class
-	WNDCLASSEX wc = { 0 };
-	wc.cbSize = sizeof( wc );
+	WNDCLASS wc = { 0 };
+	//wc.cbSize = sizeof( wc );
 	wc.style = CS_OWNDC;
 	wc.lpfnWndProc = HandleMsgSetup;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = GetInstance();
-	//wc.hIcon = static_cast<HICON>( LoadImage( GetInstance(), MAKEINTRESOURCE( IDI_ICON1 ), IMAGE_ICON, 32, 32, 0 ) );
 	wc.hCursor = nullptr;
 	wc.hbrBackground = nullptr;
 	wc.lpszMenuName = nullptr;
-	wc.lpszClassName = (LPCTSTR)GetName();
-	//wc.hIconSm = static_cast<HICON>( LoadImage( GetInstance(), MAKEINTRESOURCE( IDI_ICON1 ), IMAGE_ICON, 16, 16, 0 ) );;
-	RegisterClassEx( &wc );
+	wc.lpszClassName = (LPCWSTR)GetName();
+	RegisterClass( &wc );
 }
 
 Win32Window::WindowSingleton::~WindowSingleton()
 {
-	UnregisterClass( (LPCTSTR)m_sWindowName, GetInstance() );
+	UnregisterClass( (LPCWSTR)m_sWindowName, GetInstance() );
 }
 
-const char* Win32Window::WindowSingleton::GetName() noexcept
+const wchar_t* Win32Window::WindowSingleton::GetName() noexcept
 {
 	return m_sWindowName;
 }
@@ -39,7 +37,7 @@ HINSTANCE Win32Window::WindowSingleton::GetInstance() noexcept
 	return m_wSingleton.m_hInst;
 }
 
-Win32Window::Win32Window( u32 width, u32 height, const char* name )
+Win32Window::Win32Window( u32 width, u32 height, const wchar_t* name )
 	:
 	m_iWidth( width ),
 	m_iHeight( height )
@@ -57,7 +55,7 @@ Win32Window::Win32Window( u32 width, u32 height, const char* name )
 
 	// create window and get hWnd
 	m_hWnd = CreateWindow(
-		(LPCTSTR)WindowSingleton::GetName(), (LPCTSTR)name,
+		WindowSingleton::GetName(), name,
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowSingleton::GetInstance(), this
