@@ -49,11 +49,11 @@ public:
 		{
 			return{ x,y };
 		}
-		int GetPosX() const noexcept
+		u32 GetPosX() const noexcept
 		{
 			return x;
 		}
-		int GetPosY() const noexcept
+		u32 GetPosY() const noexcept
 		{
 			return y;
 		}

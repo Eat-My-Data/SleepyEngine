@@ -5,7 +5,8 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 
-class D3D11Interface;
+class GraphicsDeviceInterface;
+enum class GraphicsAPI;
 
 class Win32Window
 {
@@ -31,7 +32,7 @@ public:
 	Win32Window& operator=( const Win32Window& ) = delete;
 public:
 	static std::optional<u32> ProcessMessages() noexcept;
-	void InitializeGraphics( D3D11Interface* graphicsInterface );
+	void InitializeGraphics( GraphicsDeviceInterface* graphicsInterface, GraphicsAPI api );
 private:
 	static LRESULT CALLBACK HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 	static LRESULT WINAPI HandleMsgThunk( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;

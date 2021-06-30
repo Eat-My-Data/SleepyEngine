@@ -1,5 +1,5 @@
 #include "Win32Window.h"
-#include "D3D11Interface.h"
+#include "GraphicsDeviceInterface.h"
 #include <exception>
 
 Win32Window::WindowSingleton Win32Window::WindowSingleton::m_wSingleton;
@@ -109,9 +109,9 @@ std::optional<u32> Win32Window::ProcessMessages() noexcept
 	return {};
 }
 
-void Win32Window::InitializeGraphics( D3D11Interface* graphicsInterface )
+void Win32Window::InitializeGraphics( GraphicsDeviceInterface* graphicsInterface, GraphicsAPI api )
 {
-	graphicsInterface->Initialize( m_hWnd, m_iWidth, m_iHeight  );
+	graphicsInterface->InitializeGraphics( m_hWnd, api, m_iWidth, m_iHeight  );
 }
 
 LRESULT Win32Window::HandleMsgSetup( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept

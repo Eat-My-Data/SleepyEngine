@@ -24,6 +24,10 @@ App::~App()
 
 void App::ExecuteFrame()
 {
-	m_Win32Window.InitializeGraphics( &m_D3D11Interface );
-	m_D3D11Interface.DrawTriangle();
+	if ( !m_GDI.IsInitialized() )
+		m_Win32Window.InitializeGraphics( &m_GDI, GraphicsAPI::DirectX );	
+
+	m_GDI.BindCameraToGraphics();
+	m_GDI.UpdateCamera();
+	m_GDI.Draw();
 }
