@@ -156,22 +156,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="D3D11Interface.cpp" />
+    <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="GraphicsDeviceInterface.cpp" />
+    <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Win32Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Bindable.h" />
+    <ClInclude Include="BindableCodex.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="D3D11Interface.h" />
+    <ClInclude Include="Drawable.h" />
     <ClInclude Include="GraphicsDeviceInterface.h" />
+    <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="NumericDataTypes.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SleepyMath.h" />
     <ClInclude Include="Win32Window.h" />
   </ItemGroup>

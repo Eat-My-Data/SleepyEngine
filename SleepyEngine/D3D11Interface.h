@@ -16,6 +16,9 @@ public:
 	void DrawCube( DirectX::XMMATRIX projectionMatrix );
 	void DrawTriangle();
 	void BindViewProjectionMatrix( DirectX::XMMATRIX viewMatrix );
+	IDXGISwapChain* GetSwap() noexcept;
+	ID3D11Device* GetDevice() noexcept;
+	ID3D11DeviceContext* GetContext() noexcept;
 private:
 	IDXGISwapChain* m_pSwap;
 	ID3D11Device* m_pDevice;

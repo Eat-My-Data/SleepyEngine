@@ -1,6 +1,7 @@
 #pragma once
 #include "Win32Window.h"
 #include "GraphicsDeviceInterface.h"
+#include "SceneManager.h"
 
 class App
 {
@@ -13,8 +14,7 @@ private:
 private:
 	// TODO: 
 	// - Platform Interface
-	// - Scene Manager
-	// - GraphicsDeviceInterface
 	Win32Window m_Win32Window;
 	GraphicsDeviceInterface m_GDI;
+	SceneManager m_SceneManager;
 };

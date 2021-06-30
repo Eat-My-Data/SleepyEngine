@@ -3,6 +3,11 @@
 #include "Camera.h"
 #include "SleepyMath.h"
 
+namespace Bind
+{
+	class Bindable;
+}
+
 enum class GraphicsAPI
 {
 	Uninitialized,
@@ -13,15 +18,16 @@ enum class GraphicsAPI
 
 class GraphicsDeviceInterface
 {
+	friend class Bind::Bindable;
 public:
 	GraphicsDeviceInterface();
 	~GraphicsDeviceInterface() = default;
 public:
 	void InitializeGraphics( HWND& hWnd, GraphicsAPI api, u32 width, u32 height );
 	bool IsInitialized() noexcept;
-	void BindCameraToGraphics();
-	void UpdateCamera();
-	void Draw();
+	ID3D11Device* GetDevice();
+	ID3D11DeviceContext* GetContext();
+	void DrawIndexed( UINT count ) noexcept;
 private:
 	D3D11Interface m_D3D11Interface;
 	GraphicsAPI m_GraphicsApi = GraphicsAPI::Uninitialized;

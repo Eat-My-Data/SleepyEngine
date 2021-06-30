@@ -5,12 +5,13 @@ GraphicsDeviceInterface::GraphicsDeviceInterface()
 
 void GraphicsDeviceInterface::InitializeGraphics( HWND& hWnd, GraphicsAPI api, u32 width, u32 height )
 {
-	m_D3D11Interface.Initialize( hWnd, width, height );
+	if ( api == GraphicsAPI::DirectX )
+		m_D3D11Interface.Initialize( hWnd, width, height );
 }
 
-void GraphicsDeviceInterface::Draw()
+void GraphicsDeviceInterface::DrawIndexed( UINT count ) noexcept
 {
-	m_D3D11Interface.DrawCube( m_Camera.GetViewMatrix() * m_Camera.GetProjectionMatrix() );
+	m_D3D11Interface.GetContext()->DrawIndexed( count, 0u, 0u );
 }
 
 bool GraphicsDeviceInterface::IsInitialized() noexcept
@@ -20,36 +21,12 @@ bool GraphicsDeviceInterface::IsInitialized() noexcept
 	return true;
 }
 
-void GraphicsDeviceInterface::BindCameraToGraphics()
+ID3D11Device* GraphicsDeviceInterface::GetDevice()
 {
-	// TODO: Once Scene Manager is implemented, I will likely need this function
+	return m_D3D11Interface.GetDevice();
 }
 
-u32 count = 0;
-bool flag = true;
-void GraphicsDeviceInterface::UpdateCamera()
+ID3D11DeviceContext* GraphicsDeviceInterface::GetContext()
 {
-	if ( flag )
-	{
-		m_Camera.Rotate( -1.0f, 1.0f );
-		m_Camera.Translate( { -0.02f, 0.0f, 0.0f } );
-		count++;
-	}
-	else
-	{
-		m_Camera.Rotate( 1.0f, -1.0f );
-		m_Camera.Translate( { 0.02f, 0.0f, 0.0f } );
-		count--;
-	}
-	
-	if ( count > 30 )
-	{
-		flag = false;
-	}
-	
-	if ( count < 1 )
-	{
-		flag = true;
-	}
+	return m_D3D11Interface.GetContext();
 }
-

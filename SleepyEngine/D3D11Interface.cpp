@@ -432,3 +432,18 @@ void D3D11Interface::BindViewProjectionMatrix( DirectX::XMMATRIX viewProjectionM
 
     m_pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 }
+
+IDXGISwapChain* D3D11Interface::GetSwap() noexcept
+{
+    return m_pSwap;
+}
+
+ID3D11Device* D3D11Interface::GetDevice() noexcept
+{
+    return m_pDevice;
+}
+
+ID3D11DeviceContext* D3D11Interface::GetContext() noexcept
+{
+    return m_pContext;
+}
