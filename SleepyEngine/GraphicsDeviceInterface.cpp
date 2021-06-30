@@ -10,7 +10,7 @@ void GraphicsDeviceInterface::InitializeGraphics( HWND& hWnd, GraphicsAPI api, u
 
 void GraphicsDeviceInterface::Draw()
 {
-	m_D3D11Interface.DrawTriangle();
+	m_D3D11Interface.DrawCube( m_Camera.GetViewMatrix() * m_Camera.GetProjectionMatrix() );
 }
 
 bool GraphicsDeviceInterface::IsInitialized() noexcept
@@ -22,6 +22,12 @@ bool GraphicsDeviceInterface::IsInitialized() noexcept
 
 void GraphicsDeviceInterface::BindCameraToGraphics()
 {
-	m_Camera.GetViewMatrix();
+	// TODO: Once Scene Manager is implemented, I will likely need this function
+}
+
+void GraphicsDeviceInterface::UpdateCamera()
+{
+	m_Camera.Rotate( -1.0f, 1.0f );
+	m_Camera.Translate( { -0.02f, 0.0f, 0.0f } );
 }
 

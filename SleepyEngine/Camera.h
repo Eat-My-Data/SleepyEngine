@@ -25,7 +25,9 @@ public:
 public:
 	DirectX::XMMATRIX GetViewMatrix();
 	DirectX::XMMATRIX GetProjectionMatrix();
-	void Reset();
+	void Reset() noexcept;
+	void Rotate( f32 dx, f32 dy ) noexcept;
+	void Translate( DirectX::XMFLOAT3 translation ) noexcept;
 private:
 	DirectX::XMMATRIX GeneratePerpectiveProjectionMatrix( f32 width, f32 height, f32 nearZ, f32 farZ );
 	DirectX::XMMATRIX GenerateOrthographicProjectionMatrix( f32 width, f32 height, f32 nearZ, f32 farZ );
@@ -40,4 +42,9 @@ private:
 	DirectX::XMFLOAT3 m_HomePos;
 	f32 m_fHomePitch;
 	f32 m_fHomeYaw;
+
+	static constexpr f32 m_fTravelSpeed = 12.0f;
+	static constexpr f32 m_fRotationSpeed = 0.004f;
+
+	// TODO: Create matrix class that is independent of DirectX
 };

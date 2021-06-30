@@ -25,7 +25,9 @@ App::~App()
 void App::ExecuteFrame()
 {
 	if ( !m_GDI.IsInitialized() )
-		m_Win32Window.InitializeGraphics( &m_GDI, GraphicsAPI::DirectX );
+		m_Win32Window.InitializeGraphics( &m_GDI, GraphicsAPI::DirectX );	
 
+	m_GDI.BindCameraToGraphics();
+	m_GDI.UpdateCamera();
 	m_GDI.Draw();
 }

@@ -71,6 +71,9 @@
     <ClInclude Include="Projection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SleepyMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">
