@@ -30,3 +30,12 @@ ID3D11DeviceContext* GraphicsDeviceInterface::GetContext()
 {
 	return m_D3D11Interface.GetContext();
 }
+
+ID3D11RenderTargetView* GraphicsDeviceInterface::GetTarget()
+{
+	return m_D3D11Interface.GetTarget();
+}
+
+// TODO: BEGIN FRAME
+//	float color[4] = { 0.0f,1.0,1.0,1.0f };
+//	gdi.GetContext()->ClearRenderTargetView( gdi.GetTarget(), color );

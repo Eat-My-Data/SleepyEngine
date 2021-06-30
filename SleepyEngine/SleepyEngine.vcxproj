@@ -158,13 +158,18 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="D3D11Interface.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="GraphicsDeviceInterface.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="Win32Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -172,16 +177,26 @@
     <ClInclude Include="App.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableCodex.h" />
+    <ClInclude Include="BindableCommon.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="D3D11Interface.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="GraphicsDeviceInterface.h" />
     <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="IndexedTriangleList.h" />
+    <ClInclude Include="InputLayout.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="NumericDataTypes.h" />
+    <ClInclude Include="PixelShader.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SleepyMath.h" />
+    <ClInclude Include="SleepyUtil.h" />
+    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Win32Window.h" />
   </ItemGroup>
   <ItemGroup>

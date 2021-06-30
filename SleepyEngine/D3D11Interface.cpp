@@ -447,3 +447,8 @@ ID3D11DeviceContext* D3D11Interface::GetContext() noexcept
 {
     return m_pContext;
 }
+
+ID3D11RenderTargetView* D3D11Interface::GetTarget() noexcept
+{
+    return m_pTarget;
+}

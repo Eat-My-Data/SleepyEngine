@@ -27,6 +27,7 @@ public:
 	bool IsInitialized() noexcept;
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetContext();
+	ID3D11RenderTargetView* GetTarget();
 	void DrawIndexed( UINT count ) noexcept;
 private:
 	D3D11Interface m_D3D11Interface;
