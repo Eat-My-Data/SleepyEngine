@@ -25,9 +25,31 @@ void GraphicsDeviceInterface::BindCameraToGraphics()
 	// TODO: Once Scene Manager is implemented, I will likely need this function
 }
 
+u32 count = 0;
+bool flag = true;
 void GraphicsDeviceInterface::UpdateCamera()
 {
-	m_Camera.Rotate( -1.0f, 1.0f );
-	m_Camera.Translate( { -0.02f, 0.0f, 0.0f } );
+	if ( flag )
+	{
+		m_Camera.Rotate( -1.0f, 1.0f );
+		m_Camera.Translate( { -0.02f, 0.0f, 0.0f } );
+		count++;
+	}
+	else
+	{
+		m_Camera.Rotate( 1.0f, -1.0f );
+		m_Camera.Translate( { 0.02f, 0.0f, 0.0f } );
+		count--;
+	}
+	
+	if ( count > 30 )
+	{
+		flag = false;
+	}
+	
+	if ( count < 1 )
+	{
+		flag = true;
+	}
 }
 

@@ -291,12 +291,12 @@ void D3D11Interface::DrawCube( DirectX::XMMATRIX projectionMatrix )
 
     // configure viewport
     D3D11_VIEWPORT vp;
-    vp.Width = 800;
-    vp.Height = 600;
-    vp.MinDepth = 0;
-    vp.MaxDepth = 1;
-    vp.TopLeftX = 0;
-    vp.TopLeftY = 0;
+    vp.Width = (float)1280;
+    vp.Height = (float)720;
+    vp.MinDepth = 0.0f;
+    vp.MaxDepth = 1.0f;
+    vp.TopLeftX = 0.0f;
+    vp.TopLeftY = 0.0f;
     m_pContext->RSSetViewports( 1u, &vp );
 
 
