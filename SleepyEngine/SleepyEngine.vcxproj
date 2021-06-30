@@ -172,7 +172,6 @@
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="NumericDataTypes.h" />
-    <ClInclude Include="Projection.h" />
     <ClInclude Include="SleepyMath.h" />
     <ClInclude Include="Win32Window.h" />
   </ItemGroup>
