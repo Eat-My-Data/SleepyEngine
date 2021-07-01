@@ -32,7 +32,7 @@ public:
 	Win32Window& operator=( const Win32Window& ) = delete;
 public:
 	static std::optional<u32> ProcessMessages() noexcept;
-	void InitializeGraphics( GraphicsDeviceInterface* graphicsInterface, GraphicsAPI api );
+	void InitializeGraphics( GraphicsDeviceInterface& graphicsInterface, GraphicsAPI api );
 private:
 	static LRESULT CALLBACK HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 	static LRESULT WINAPI HandleMsgThunk( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;

@@ -1,16 +1,15 @@
-cbuffer ModelMatrix : register(b0)
+#include "Transform.hlsl"
+
+struct VSOut
 {
-    matrix modelMatrix;
+    float4 pos : SV_POSITION;
+    float3 normal : NORMAL;
 };
 
-cbuffer ViewProjectionMatrix : register(b1)
+VSOut main(float4 pos : Position, float3 normal : Normal )
 {
-    row_major matrix viewProjectionMatrix;
-};
-
-float4 main( float3 pos : POSITION ) : SV_POSITION
-{
-    float4 newPos = mul(float4(pos, 1.0), modelMatrix);
-    //newPos = mul(newPos, viewProjectionMatrix);
-    return newPos;
+    VSOut vso;
+    vso.pos = mul(pos, modelViewProj);
+    vso.normal = mul(normal, (float3x3) model);
+    return vso;
 }

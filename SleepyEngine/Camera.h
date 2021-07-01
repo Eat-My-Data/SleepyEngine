@@ -1,6 +1,5 @@
 #pragma once
 #include <DirectXMath.h>
-#include "Projection.h"
 #include "NumericDataTypes.h"
 
 enum class MatrixType

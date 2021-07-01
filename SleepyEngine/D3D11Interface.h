@@ -13,13 +13,13 @@ public:
 	~D3D11Interface();
 public:
 	void Initialize( HWND& hWnd, u32 width, u32 height );
-	void DrawCube( DirectX::XMMATRIX projectionMatrix );
-	void DrawTriangle();
-	void BindViewProjectionMatrix( DirectX::XMMATRIX viewMatrix );
+	IDXGISwapChain* GetSwap() noexcept;
+	ID3D11Device* GetDevice() noexcept;
+	ID3D11DeviceContext* GetContext() noexcept;
+	ID3D11RenderTargetView** GetTarget() noexcept;
 private:
 	IDXGISwapChain* m_pSwap;
 	ID3D11Device* m_pDevice;
 	ID3D11DeviceContext* m_pContext;
-private:
 	ID3D11RenderTargetView* m_pTarget;
 };
