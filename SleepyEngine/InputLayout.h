@@ -16,7 +16,7 @@ namespace Bind
 		static std::string GenerateUID( const Dvtx::VertexLayout& layout, ID3DBlob* pVertexShaderBytecode = nullptr );
 		std::string GetUID() const noexcept override;
 	protected:
-		Dvtx::VertexLayout layout;
-		ID3D11InputLayout* pInputLayout;
+		Dvtx::VertexLayout m_VertexLayout;
+		ID3D11InputLayout* m_pInputLayout;
 	};
 }

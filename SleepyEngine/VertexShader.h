@@ -13,8 +13,8 @@ namespace Bind
 		static std::string GenerateUID( const std::string& path );
 		std::string GetUID() const noexcept override;
 	protected:
-		std::string path;
-		ID3DBlob* pBytecodeBlob;
-		ID3D11VertexShader* pVertexShader;
+		std::string m_sPath;
+		ID3DBlob* m_pBytecodeBlob;
+		ID3D11VertexShader* m_pVertexShader;
 	};
 }

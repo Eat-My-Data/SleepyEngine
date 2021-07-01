@@ -7,23 +7,23 @@ namespace Bind
 {
 	VertexShader::VertexShader( GraphicsDeviceInterface& gdi,const std::string& path )
 		:
-		path( path )
+		m_sPath( path )
 	{
-		D3DReadFileToBlob( ToWide( path ).c_str(), &pBytecodeBlob );
+		D3DReadFileToBlob( ToWide( path ).c_str(), &m_pBytecodeBlob );
 		GetDevice( gdi )->CreateVertexShader(
-			pBytecodeBlob->GetBufferPointer(),
-			pBytecodeBlob->GetBufferSize(),
+			m_pBytecodeBlob->GetBufferPointer(),
+			m_pBytecodeBlob->GetBufferSize(),
 			nullptr,
-			&pVertexShader
+			&m_pVertexShader
 		);
 	}
 	void VertexShader::Bind( GraphicsDeviceInterface& gdi ) noexcept
 	{
-		GetContext( gdi )->VSSetShader( pVertexShader, nullptr, 0u );
+		GetContext( gdi )->VSSetShader( m_pVertexShader, nullptr, 0u );
 	}
 	ID3DBlob* VertexShader::GetBytecode() const noexcept
 	{
-		return pBytecodeBlob;
+		return m_pBytecodeBlob;
 	}
 	std::shared_ptr<VertexShader> VertexShader::Resolve( GraphicsDeviceInterface& gdi, const std::string& path)
 	{
@@ -36,7 +36,7 @@ namespace Bind
 	}
 	std::string VertexShader::GetUID() const noexcept
 	{
-		return GenerateUID( path );
+		return GenerateUID( m_sPath );
 	}
 }
 

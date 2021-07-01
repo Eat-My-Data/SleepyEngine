@@ -43,6 +43,9 @@
     <Filter Include="Source Files\Bindable\Bindables">
       <UniqueIdentifier>{76be1ffb-0f10-4fd2-a596-3aaab9011167}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SceneManager">
+      <UniqueIdentifier>{119c3f0e-1421-4ea3-9c42-c3b64d926c1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -74,9 +77,6 @@
     </ClCompile>
     <ClCompile Include="Drawable.cpp">
       <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>Source Files\Drawable</Filter>
@@ -113,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="Rasterizer.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\SceneManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

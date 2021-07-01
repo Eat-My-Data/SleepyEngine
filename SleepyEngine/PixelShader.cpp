@@ -7,16 +7,16 @@ namespace Bind
 {
 	PixelShader::PixelShader( GraphicsDeviceInterface& gdi, const std::string& path )
 		:
-		path( path )
+		m_sPath( path )
 	{
 
 		ID3DBlob* pBlob;
 		D3DReadFileToBlob( ToWide( path ).c_str(), &pBlob );
-		GetDevice( gdi )->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
+		GetDevice( gdi )->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &m_pPixelShader );
 	}
 	void PixelShader::Bind( GraphicsDeviceInterface& gdi ) noexcept
 	{
-		GetContext( gdi )->PSSetShader( pPixelShader, nullptr, 0u );
+		GetContext( gdi )->PSSetShader( m_pPixelShader, nullptr, 0u );
 	}
 	std::shared_ptr<PixelShader> PixelShader::Resolve( GraphicsDeviceInterface& gdi, const std::string& path )
 	{
@@ -29,6 +29,6 @@ namespace Bind
 	}
 	std::string PixelShader::GetUID() const noexcept
 	{
-		return GenerateUID( path );
+		return GenerateUID( m_sPath );
 	}
 }

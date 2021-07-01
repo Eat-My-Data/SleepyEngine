@@ -10,18 +10,18 @@ namespace Bind
 	protected:
 		struct Transforms
 		{
-			DirectX::XMMATRIX model;
-			DirectX::XMMATRIX modelView;
-			DirectX::XMMATRIX modelViewProj;
+			DirectX::XMMATRIX m_ModelMatrix;
+			DirectX::XMMATRIX m_ModelViewMatrix;
+			DirectX::XMMATRIX m_ModelViewProjMatrix;
 		};
 	public:
-		TransformCbuf( GraphicsDeviceInterface& gfx, const Drawable& parent, UINT slot = 0u );
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override;
+		TransformCbuf( GraphicsDeviceInterface& gdi, const Drawable& parent, UINT slot = 0u );
+		void Bind( GraphicsDeviceInterface& gdi ) noexcept override;
 	protected:
-		void UpdateBindImpl( GraphicsDeviceInterface& gfx, const Transforms& tf ) noexcept;
-		Transforms GetTransforms( GraphicsDeviceInterface& gfx ) noexcept;
+		void UpdateBindImpl( GraphicsDeviceInterface& gdi, const Transforms& tf ) noexcept;
+		Transforms GetTransforms( GraphicsDeviceInterface& gdi ) noexcept;
 	private:
-		static std::unique_ptr<VertexConstantBuffer<Transforms>> pVcbuf;
-		const Drawable& parent;
+		static std::unique_ptr<VertexConstantBuffer<Transforms>> m_pVcbuf;
+		const Drawable& m_DrawableParent;
 	};
 }

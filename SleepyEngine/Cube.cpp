@@ -19,8 +19,8 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
     model.Transform( dx::XMMatrixScaling( size, size, size ) );
     model.SetNormalsIndependentFlat();
     const auto geometryTag = "$cube." + std::to_string( size );
-    AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.vertices ) );
-    AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.indices ) );
+    AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
+    AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 
     auto pvs = VertexShader::Resolve( gdi, "VertexShader.cso" );
     auto pvsbc = pvs->GetBytecode();
@@ -28,7 +28,7 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 
     AddBind( PixelShader::Resolve( gdi, "PixelShader.cso" ) );
 
-    AddBind( InputLayout::Resolve( gdi, model.vertices.GetLayout(), pvsbc ) );
+    AddBind( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
     
     AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 

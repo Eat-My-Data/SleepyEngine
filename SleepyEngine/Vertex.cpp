@@ -5,26 +5,26 @@ namespace Dvtx
 	// VertexLayout
 	const VertexLayout::Element& VertexLayout::ResolveByIndex( size_t i ) const noexcept
 	{
-		return elements[i];
+		return m_vecOfElements[i];
 	}
 	VertexLayout& VertexLayout::Append( ElementType type ) noexcept
 	{
-		elements.emplace_back( type, Size() );
+		m_vecOfElements.emplace_back( type, Size() );
 		return *this;
 	}
 	size_t VertexLayout::Size() const noexcept
 	{
-		return elements.empty() ? 0u : elements.back().GetOffsetAfter();
+		return m_vecOfElements.empty() ? 0u : m_vecOfElements.back().GetOffsetAfter();
 	}
 	size_t VertexLayout::GetElementCount() const noexcept
 	{
-		return elements.size();
+		return m_vecOfElements.size();
 	}
 	std::vector<D3D11_INPUT_ELEMENT_DESC> VertexLayout::GetD3DLayout() const noexcept
 	{
 		std::vector<D3D11_INPUT_ELEMENT_DESC> desc;
 		desc.reserve( GetElementCount() );
-		for ( const auto& e : elements )
+		for ( const auto& e : m_vecOfElements )
 		{
 			desc.push_back( e.GetDesc() );
 		}
@@ -33,7 +33,7 @@ namespace Dvtx
 	std::string VertexLayout::GetCode() const noexcept
 	{
 		std::string code;
-		for ( const auto& e : elements )
+		for ( const auto& e : m_vecOfElements )
 		{
 			code += e.GetCode();
 		}
@@ -44,20 +44,20 @@ namespace Dvtx
 	// VertexLayout::Element
 	VertexLayout::Element::Element( ElementType type, size_t offset )
 		:
-		type( type ),
-		offset( offset )
+		m_ElementType( type ),
+		m_iOffset( offset )
 	{}
 	size_t VertexLayout::Element::GetOffsetAfter() const noexcept
 	{
-		return offset + Size();
+		return m_iOffset + Size();
 	}
 	size_t VertexLayout::Element::GetOffset() const
 	{
-		return offset;
+		return m_iOffset;
 	}
 	size_t VertexLayout::Element::Size() const noexcept
 	{
-		return SizeOf( type );
+		return SizeOf( m_ElementType );
 	}
 	constexpr size_t VertexLayout::Element::SizeOf( ElementType type ) noexcept
 	{
@@ -87,11 +87,11 @@ namespace Dvtx
 	}
 	VertexLayout::ElementType VertexLayout::Element::GetType() const noexcept
 	{
-		return type;
+		return m_ElementType;
 	}
 	const char* Dvtx::VertexLayout::Element::GetCode() const noexcept
 	{
-		switch ( type )
+		switch ( m_ElementType )
 		{
 		case Position2D:
 			return Map<Position2D>::code;
@@ -117,7 +117,7 @@ namespace Dvtx
 	}
 	D3D11_INPUT_ELEMENT_DESC VertexLayout::Element::GetDesc() const noexcept
 	{
-		switch ( type )
+		switch ( m_ElementType )
 		{
 		case Position2D:
 			return GenerateDesc<Position2D>( GetOffset() );
@@ -146,10 +146,10 @@ namespace Dvtx
 	// Vertex
 	Vertex::Vertex( char* pData, const VertexLayout& layout ) noexcept
 		:
-	pData( pData ),
-		layout( layout )
+		m_pData( pData ),
+		m_VertexLayout( layout )
 	{
-		assert( pData != nullptr );
+		assert( m_pData != nullptr );
 	}
 	ConstVertex::ConstVertex( const Vertex& v ) noexcept
 		:
@@ -160,7 +160,7 @@ namespace Dvtx
 	// VertexBuffer
 	VertexBuffer::VertexBuffer( VertexLayout layout, size_t size ) noexcept
 		:
-	layout( std::move( layout ) )
+		m_VertexLayout( std::move( layout ) )
 	{
 		Resize( size );
 	}
@@ -169,39 +169,39 @@ namespace Dvtx
 		const auto size = Size();
 		if ( size < newSize )
 		{
-			buffer.resize( buffer.size() + layout.Size() * ( newSize - size ) );
+			m_vecOfChar.resize( m_vecOfChar.size() + m_VertexLayout.Size() * ( newSize - size ) );
 		}
 	}
 	const char* VertexBuffer::GetData() const noexcept
 	{
-		return buffer.data();
+		return m_vecOfChar.data();
 	}
 	const VertexLayout& VertexBuffer::GetLayout() const noexcept
 	{
-		return layout;
+		return m_VertexLayout;
 	}
 	size_t VertexBuffer::Size() const noexcept
 	{
-		return buffer.size() / layout.Size();
+		return m_vecOfChar.size() /m_VertexLayout.Size();
 	}
 	size_t VertexBuffer::SizeBytes() const noexcept
 	{
-		return buffer.size();
+		return m_vecOfChar.size();
 	}
 	Vertex VertexBuffer::Back() noexcept
 	{
-		assert( buffer.size() != 0u );
-		return Vertex{ buffer.data() + buffer.size() - layout.Size(),layout };
+		assert( m_vecOfChar.size() != 0u );
+		return Vertex{ m_vecOfChar.data() + m_vecOfChar.size() - m_VertexLayout.Size(), m_VertexLayout };
 	}
 	Vertex VertexBuffer::Front() noexcept
 	{
-		assert( buffer.size() != 0u );
-		return Vertex{ buffer.data(),layout };
+		assert( m_vecOfChar.size() != 0u );
+		return Vertex{ m_vecOfChar.data(), m_VertexLayout };
 	}
 	Vertex VertexBuffer::operator[]( size_t i ) noexcept
 	{
 		assert( i < Size() );
-		return Vertex{ buffer.data() + layout.Size() * i,layout };
+		return Vertex{ m_vecOfChar.data() + m_VertexLayout.Size() * i,m_VertexLayout };
 	}
 	ConstVertex VertexBuffer::Back() const noexcept
 	{

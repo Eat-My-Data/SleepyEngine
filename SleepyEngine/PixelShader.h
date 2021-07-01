@@ -12,7 +12,7 @@ namespace Bind
 		static std::string GenerateUID( const std::string& path );
 		std::string GetUID() const noexcept override;
 	protected:
-		std::string path;
-		ID3D11PixelShader* pPixelShader;
+		std::string m_sPath;
+		ID3D11PixelShader* m_pPixelShader;
 	};
 }

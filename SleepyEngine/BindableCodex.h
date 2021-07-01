@@ -22,11 +22,11 @@ namespace Bind
 		std::shared_ptr<T> Resolve_( GraphicsDeviceInterface& gdi, Params&&...p ) noexcept
 		{
 			const auto key = T::GenerateUID( std::forward<Params>( p )... );
-			const auto i = binds.find( key );
-			if ( i == binds.end() )
+			const auto i = m_mapOfBinds.find( key );
+			if ( i == m_mapOfBinds.end() )
 			{
 				auto bind = std::make_shared<T>( gdi, std::forward<Params>( p )... );
-				binds[key] = bind;
+				m_mapOfBinds[key] = bind;
 				return bind;
 			}
 			else
@@ -40,6 +40,6 @@ namespace Bind
 			return codex;
 		}
 	private:
-		std::unordered_map<std::string, std::shared_ptr<Bindable>> binds;
+		std::unordered_map<std::string, std::shared_ptr<Bindable>> m_mapOfBinds;
 	};
 }
