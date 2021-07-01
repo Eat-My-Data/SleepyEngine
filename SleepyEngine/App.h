@@ -1,7 +1,7 @@
 #pragma once
-#include "Win32Window.h"
-#include "GraphicsDeviceInterface.h"
-#include "SceneManager.h"
+#include "./Win32/Win32Window.h"
+#include "./GraphicsDeviceInterface/GraphicsDeviceInterface.h"
+#include "./SceneManager/SceneManager.h"
 #include "FrameTimer.h"
 
 class App

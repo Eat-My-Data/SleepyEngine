@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -156,59 +156,59 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Bindable.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="D3D11Interface.cpp" />
-    <ClCompile Include="Drawable.cpp" />
+    <ClCompile Include="Bindable\Bindable.cpp" />
+    <ClCompile Include="Bindable\Bindables\IndexBuffer.cpp" />
+    <ClCompile Include="Bindable\Bindables\InputLayout.cpp" />
+    <ClCompile Include="Bindable\Bindables\PixelShader.cpp" />
+    <ClCompile Include="Bindable\Bindables\Rasterizer.cpp" />
+    <ClCompile Include="Bindable\Bindables\Topology.cpp" />
+    <ClCompile Include="Bindable\Bindables\TransformCBuf.cpp" />
+    <ClCompile Include="Bindable\Bindables\VertexBuffer.cpp" />
+    <ClCompile Include="Bindable\Bindables\VertexShader.cpp" />
+    <ClCompile Include="Drawable\Cube.cpp" />
+    <ClCompile Include="Drawable\Drawable.cpp" />
     <ClCompile Include="FrameTimer.cpp" />
-    <ClCompile Include="GraphicsDeviceInterface.cpp" />
-    <ClCompile Include="IndexBuffer.cpp" />
-    <ClCompile Include="InputLayout.cpp" />
-    <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="Mouse.cpp" />
-    <ClCompile Include="PixelShader.cpp" />
-    <ClCompile Include="Rasterizer.cpp" />
-    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp" />
+    <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp" />
+    <ClCompile Include="SceneManager\Camera.cpp" />
+    <ClCompile Include="SceneManager\SceneManager.cpp" />
     <ClCompile Include="SleepyUtil.cpp" />
-    <ClCompile Include="Topology.cpp" />
-    <ClCompile Include="TransformCBuf.cpp" />
     <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="VertexBuffer.cpp" />
-    <ClCompile Include="VertexShader.cpp" />
-    <ClCompile Include="Win32Window.cpp" />
+    <ClCompile Include="Win32\Keyboard.cpp" />
+    <ClCompile Include="Win32\Mouse.cpp" />
+    <ClCompile Include="Win32\Win32Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="Bindable.h" />
-    <ClInclude Include="BindableCodex.h" />
-    <ClInclude Include="BindableCommon.h" />
-    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Bindable\Bindable.h" />
+    <ClInclude Include="Bindable\BindableCodex.h" />
+    <ClInclude Include="Bindable\BindableCommon.h" />
+    <ClInclude Include="Bindable\Bindables\ConstantBuffers.h" />
+    <ClInclude Include="Bindable\Bindables\IndexBuffer.h" />
+    <ClInclude Include="Bindable\Bindables\InputLayout.h" />
+    <ClInclude Include="Bindable\Bindables\PixelShader.h" />
+    <ClInclude Include="Bindable\Bindables\Rasterizer.h" />
+    <ClInclude Include="Bindable\Bindables\Topology.h" />
+    <ClInclude Include="Bindable\Bindables\TransformCBuf.h" />
+    <ClInclude Include="Bindable\Bindables\VertexBuffer.h" />
+    <ClInclude Include="Bindable\Bindables\VertexShader.h" />
     <ClInclude Include="Color.h" />
-    <ClInclude Include="ConstantBuffers.h" />
-    <ClInclude Include="Cube.h" />
-    <ClInclude Include="D3D11Interface.h" />
-    <ClInclude Include="Drawable.h" />
+    <ClInclude Include="Drawable\Cube.h" />
+    <ClInclude Include="Drawable\Drawable.h" />
     <ClInclude Include="FrameTimer.h" />
-    <ClInclude Include="GraphicsDeviceInterface.h" />
-    <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h" />
+    <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h" />
     <ClInclude Include="IndexedTriangleList.h" />
-    <ClInclude Include="InputLayout.h" />
-    <ClInclude Include="Keyboard.h" />
-    <ClInclude Include="Mouse.h" />
     <ClInclude Include="NumericDataTypes.h" />
-    <ClInclude Include="PixelShader.h" />
-    <ClInclude Include="Rasterizer.h" />
-    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SceneManager\Camera.h" />
+    <ClInclude Include="SceneManager\SceneManager.h" />
     <ClInclude Include="SleepyMath.h" />
     <ClInclude Include="SleepyUtil.h" />
-    <ClInclude Include="Topology.h" />
-    <ClInclude Include="TransformCBuf.h" />
     <ClInclude Include="Vertex.h" />
-    <ClInclude Include="VertexBuffer.h" />
-    <ClInclude Include="VertexShader.h" />
-    <ClInclude Include="Win32Window.h" />
+    <ClInclude Include="Win32\Keyboard.h" />
+    <ClInclude Include="Win32\Mouse.h" />
+    <ClInclude Include="Win32\Win32Window.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="PixelShader.hlsl">

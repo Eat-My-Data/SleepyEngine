@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <type_traits>
-#include "GraphicsDeviceInterface.h"
+#include "./GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 #include "Color.h"
 #include <string>
 
