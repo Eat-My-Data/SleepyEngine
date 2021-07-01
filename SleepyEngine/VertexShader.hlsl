@@ -9,7 +9,7 @@ struct VSOut
 VSOut main(float4 pos : Position, float3 normal : Normal )
 {
     VSOut vso;
-    vso.pos = pos;
+    vso.pos = mul(pos, modelViewProj);
     vso.normal = mul(normal, (float3x3) model);
     return vso;
 }

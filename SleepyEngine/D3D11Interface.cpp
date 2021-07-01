@@ -30,24 +30,22 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 {
     HRESULT hr;
 
-    // swap chain description
-    DXGI_SWAP_CHAIN_DESC sd;
-    ZeroMemory( &sd, sizeof( sd ) );
-    sd.BufferDesc.Width = 0;
-    sd.BufferDesc.Height = 0;
-    sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-    sd.BufferDesc.RefreshRate.Numerator = 0;
-    sd.BufferDesc.RefreshRate.Denominator = 0;
-    sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-    sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-    sd.SampleDesc.Count = 1;
-    sd.SampleDesc.Quality = 0;
-    sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    sd.BufferCount = 1;
-    sd.OutputWindow = hWnd;
-    sd.Windowed = TRUE;
-    sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-    sd.Flags = 0;
+    DXGI_SWAP_CHAIN_DESC sd = {};
+	sd.BufferDesc.Width = 0;
+	sd.BufferDesc.Height = 0;
+	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	sd.BufferDesc.RefreshRate.Numerator = 0;
+	sd.BufferDesc.RefreshRate.Denominator = 0;
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	sd.SampleDesc.Count = 1;
+	sd.SampleDesc.Quality = 0;
+	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	sd.BufferCount = 1;
+	sd.OutputWindow = hWnd;
+	sd.Windowed = TRUE;
+	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	sd.Flags = 0;
 
     UINT swapCreateFlags = 0u;
 #ifndef NDEBUG
@@ -88,37 +86,7 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
         throw std::exception();
     }
 
-    ID3D11DepthStencilState* pDSStateGeometry;
-    D3D11_DEPTH_STENCIL_DESC dsDesc = {};
-    dsDesc.DepthEnable = TRUE;
-    dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-    dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-    m_pDevice->CreateDepthStencilState( &dsDesc, &pDSStateGeometry );
-
-    ID3D11Texture2D* pDepthStencil;
-
-    D3D11_TEXTURE2D_DESC descDepth = {};
-    descDepth.Width = width;
-    descDepth.Height = height;
-    descDepth.MipLevels = 1u;
-    descDepth.ArraySize = 1u;
-    descDepth.Format = DXGI_FORMAT_R24G8_TYPELESS;
-    descDepth.SampleDesc.Count = 1u;
-    descDepth.SampleDesc.Quality = 0u;
-    descDepth.Usage = D3D11_USAGE_DEFAULT;
-    descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
-    m_pDevice->CreateTexture2D( &descDepth, nullptr, &pDepthStencil );
-
-    ID3D11DepthStencilView* pDSV;
-
-    D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
-    descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-    descDSV.Texture2D.MipSlice = 0u;
-    m_pDevice->CreateDepthStencilView( pDepthStencil, &descDSV, &pDSV );
-
-    m_pContext->OMSetRenderTargets( 1u, &m_pTarget, pDSV );
-
+    m_pContext->OMSetRenderTargets( 1u, &m_pTarget, nullptr );
     
     D3D11_VIEWPORT vp;
     vp.Width = (float)width;
