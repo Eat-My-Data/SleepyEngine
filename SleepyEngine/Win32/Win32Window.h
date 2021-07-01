@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 #include <optional>
-#include "../NumericDataTypes.h"
+#include "../Utilities/NumericDataTypes.h"
 #include "Keyboard.h"
 #include "Mouse.h"
 

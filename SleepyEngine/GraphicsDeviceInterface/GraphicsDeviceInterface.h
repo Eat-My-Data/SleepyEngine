@@ -1,6 +1,6 @@
 #pragma once
 #include "D3D11Interface.h"
-#include "../SleepyMath.h"
+#include "../Utilities/SleepyMath.h"
 
 namespace Bind
 {

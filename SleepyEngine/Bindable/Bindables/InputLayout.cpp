@@ -1,6 +1,6 @@
 #include "InputLayout.h"
 #include "../BindableCodex.h"
-#include "../../Vertex.h"
+#include "../../ResourceManager/Vertex.h"
 
 namespace Bind
 {

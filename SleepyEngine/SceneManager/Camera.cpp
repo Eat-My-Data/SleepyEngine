@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "../SleepyMath.h"
+#include "../Utilities/SleepyMath.h"
 #include <algorithm>
 
 Camera::Camera( const wchar_t* name, MatrixType matrixType, ViewSpace viewSpace, DirectX::XMFLOAT3 homePos, f32 homePitch, f32 homeYaw ) noexcept

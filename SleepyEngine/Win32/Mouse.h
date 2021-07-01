@@ -1,7 +1,7 @@
 #pragma once
 #include <queue>
 #include <optional>
-#include "../NumericDataTypes.h"
+#include "../Utilities/NumericDataTypes.h"
 
 class Mouse
 {

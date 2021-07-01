@@ -1,7 +1,7 @@
 #pragma once
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 #include "Camera.h"
-#include "../SleepyMath.h"
+#include "../Utilities/SleepyMath.h"
 #include "../Drawable/Cube.h"
 
 class SceneManager

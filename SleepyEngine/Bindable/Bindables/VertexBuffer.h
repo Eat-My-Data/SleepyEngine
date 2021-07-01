@@ -1,6 +1,6 @@
 #pragma once
 #include "../Bindable.h"
-#include "../../Vertex.h"
+#include "../../ResourceManager/Vertex.h"
 #include <memory>
 
 namespace Bind

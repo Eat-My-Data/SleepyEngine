@@ -22,11 +22,11 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
     AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
     AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 
-    auto pvs = VertexShader::Resolve( gdi, "VertexShader.cso" );
+    auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/VertexShader.cso" );
     auto pvsbc = pvs->GetBytecode();
     AddBind( std::move( pvs ) );
 
-    AddBind( PixelShader::Resolve( gdi, "PixelShader.cso" ) );
+    AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/PixelShader.cso" ) );
 
     AddBind( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
     

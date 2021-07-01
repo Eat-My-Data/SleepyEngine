@@ -1,6 +1,6 @@
 #pragma once
 #include <d3d11.h>
-#include "../NumericDataTypes.h"
+#include "../Utilities/NumericDataTypes.h"
 #include <DirectXMath.h>
 
 

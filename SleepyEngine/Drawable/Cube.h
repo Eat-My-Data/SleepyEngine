@@ -1,7 +1,7 @@
 #pragma once
 #include "Drawable.h"
-#include "../IndexedTriangleList.h"
-#include "../Vertex.h"
+#include "../ResourceManager/IndexedTriangleList.h"
+#include "../ResourceManager/Vertex.h"
 
 class Cube : public Drawable
 {

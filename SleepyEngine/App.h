@@ -2,7 +2,7 @@
 #include "./Win32/Win32Window.h"
 #include "./GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 #include "./SceneManager/SceneManager.h"
-#include "FrameTimer.h"
+#include "./Utilities/FrameTimer.h"
 
 class App
 {
