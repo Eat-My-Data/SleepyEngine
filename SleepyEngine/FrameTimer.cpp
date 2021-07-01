@@ -4,18 +4,18 @@ using namespace std::chrono;
 
 FrameTimer::FrameTimer()
 {
-	last = steady_clock::now();
+	m_Last = steady_clock::now();
 }
 
 f32 FrameTimer::Mark()
 {
-	const auto old = last;
-	last = steady_clock::now();
-	const duration<f32> frameTime = last - old;
+	const auto old = m_Last;
+	m_Last = steady_clock::now();
+	const duration<f32> frameTime = m_Last - old;
 	return frameTime.count();
 }
 
 f32 FrameTimer::Peek() const
 {
-	return duration<f32>( steady_clock::now() - last ).count();
+	return duration<f32>( steady_clock::now() - m_Last ).count();
 }

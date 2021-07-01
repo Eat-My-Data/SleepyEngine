@@ -106,14 +106,14 @@ namespace Dvtx
 				return { Map<type>::semantic,0,Map<type>::dxgiFormat,0,(UINT)offset,D3D11_INPUT_PER_VERTEX_DATA,0 };
 			}
 		private:
-			ElementType type;
-			size_t offset;
+			ElementType m_ElementType;
+			size_t m_iOffset;
 		};
 	public:
 		template<ElementType Type>
 		const Element& Resolve() const noexcept
 		{
-			for ( auto& e : elements )
+			for ( auto& e : m_vecOfElements )
 			{
 				if ( e.GetType() == Type )
 				{
@@ -121,7 +121,7 @@ namespace Dvtx
 				}
 			}
 			assert( "Could not resolve element type" && false );
-			return elements.front();
+			return m_vecOfElements.front();
 		}
 		const Element& ResolveByIndex( size_t i ) const noexcept;
 		VertexLayout& Append( ElementType type ) noexcept;
@@ -130,7 +130,7 @@ namespace Dvtx
 		std::vector<D3D11_INPUT_ELEMENT_DESC> GetD3DLayout() const noexcept;
 		std::string GetCode() const noexcept;
 	private:
-		std::vector<Element> elements;
+		std::vector<Element> m_vecOfElements;
 	};
 
 	class Vertex
@@ -140,14 +140,14 @@ namespace Dvtx
 		template<VertexLayout::ElementType Type>
 		auto& Attr() noexcept
 		{
-			auto pAttribute = pData + layout.Resolve<Type>().GetOffset();
+			auto pAttribute = m_pData + m_VertexLayout.Resolve<Type>().GetOffset();
 			return *reinterpret_cast<typename VertexLayout::Map<Type>::SysType*>( pAttribute );
 		}
 		template<typename T>
 		void SetAttributeByIndex( size_t i, T&& val ) noexcept
 		{
-			const auto& element = layout.ResolveByIndex( i );
-			auto pAttribute = pData + element.GetOffset();
+			const auto& element = m_VertexLayout.ResolveByIndex( i );
+			auto pAttribute = m_pData + element.GetOffset();
 			switch ( element.GetType() )
 			{
 			case VertexLayout::Position2D:
@@ -206,8 +206,8 @@ namespace Dvtx
 			}
 		}
 	private:
-		char* pData = nullptr;
-		const VertexLayout& layout;
+		char* m_pData = nullptr;
+		const VertexLayout& m_VertexLayout;
 	};
 
 	class ConstVertex
@@ -235,8 +235,8 @@ namespace Dvtx
 		template<typename ...Params>
 		void EmplaceBack( Params&&... params ) noexcept
 		{
-			assert( sizeof...( params ) == layout.GetElementCount() && "Param count doesn't match number of vertex elements" );
-			buffer.resize( buffer.size() + layout.Size() );
+			assert( sizeof...( params ) == m_VertexLayout.GetElementCount() && "Param count doesn't match number of vertex elements" );
+			m_vecOfChar.resize( m_vecOfChar.size() + m_VertexLayout.Size() );
 			Back().SetAttributeByIndex( 0u, std::forward<Params>( params )... );
 		}
 		Vertex Back() noexcept;
@@ -246,7 +246,7 @@ namespace Dvtx
 		ConstVertex Front() const noexcept;
 		ConstVertex operator[]( size_t i ) const noexcept;
 	private:
-		std::vector<char> buffer;
-		VertexLayout layout;
+		std::vector<char> m_vecOfChar;
+		VertexLayout m_VertexLayout;
 	};
 }

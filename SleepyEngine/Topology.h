@@ -12,6 +12,6 @@ namespace Bind
 		static std::string GenerateUID( D3D11_PRIMITIVE_TOPOLOGY type );
 		std::string GetUID() const noexcept override;
 	protected:
-		D3D11_PRIMITIVE_TOPOLOGY type;
+		D3D11_PRIMITIVE_TOPOLOGY m_TopologyType;
 	};
 }

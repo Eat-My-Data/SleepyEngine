@@ -2,40 +2,40 @@
 
 namespace Bind
 {
-	TransformCbuf::TransformCbuf( GraphicsDeviceInterface& gfx, const Drawable& parent, UINT slot )
+	TransformCbuf::TransformCbuf( GraphicsDeviceInterface& gdi, const Drawable& parent, UINT slot )
 		:
-		parent( parent )
+		m_DrawableParent( parent )
 	{
-		if ( !pVcbuf )
+		if ( !m_pVcbuf )
 		{
-			pVcbuf = std::make_unique<VertexConstantBuffer<Transforms>>( gfx, slot );
+			m_pVcbuf = std::make_unique<VertexConstantBuffer<Transforms>>( gdi, slot );
 		}
 	}
 
-	void TransformCbuf::Bind( GraphicsDeviceInterface& gfx ) noexcept
+	void TransformCbuf::Bind( GraphicsDeviceInterface& gdi ) noexcept
 	{
-		UpdateBindImpl( gfx, GetTransforms( gfx ) );
+		UpdateBindImpl( gdi, GetTransforms( gdi ) );
 	}
 
-	void TransformCbuf::UpdateBindImpl( GraphicsDeviceInterface& gfx, const Transforms& tf ) noexcept
+	void TransformCbuf::UpdateBindImpl( GraphicsDeviceInterface& gdi, const Transforms& tf ) noexcept
 	{
-		pVcbuf->Update( gfx, tf );
-		pVcbuf->Bind( gfx );
+		m_pVcbuf->Update( gdi, tf );
+		m_pVcbuf->Bind( gdi );
 	}
 
-	TransformCbuf::Transforms TransformCbuf::GetTransforms( GraphicsDeviceInterface& gfx ) noexcept
+	TransformCbuf::Transforms TransformCbuf::GetTransforms( GraphicsDeviceInterface& gdi ) noexcept
 	{
-		const auto modelView = parent.GetTransformXM() * gfx.GetViewMatrix();
+		const auto modelView = m_DrawableParent.GetTransformXM() * gdi.GetViewMatrix();
 
 		return {
-			DirectX::XMMatrixTranspose( parent.GetTransformXM() ),
+			DirectX::XMMatrixTranspose( m_DrawableParent.GetTransformXM() ),
 			DirectX::XMMatrixTranspose( modelView ),
 			DirectX::XMMatrixTranspose(
 				modelView *
-				gfx.GetProjMatrix()
+				gdi.GetProjMatrix()
 			)
 		};
 	}
 
-	std::unique_ptr<VertexConstantBuffer<TransformCbuf::Transforms>> TransformCbuf::pVcbuf;
+	std::unique_ptr<VertexConstantBuffer<TransformCbuf::Transforms>> TransformCbuf::m_pVcbuf;
 }

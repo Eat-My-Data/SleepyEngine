@@ -9,8 +9,8 @@ namespace Bind
 	{}
 	VertexBuffer::VertexBuffer( GraphicsDeviceInterface& gdi, const std::string& tag, const Dvtx::VertexBuffer& vbuf )
 		:
-		stride( (UINT)vbuf.GetLayout().Size() ),
-		tag( tag )
+		m_iStride( (UINT)vbuf.GetLayout().Size() ),
+		m_sTag( tag )
 	{
 		D3D11_BUFFER_DESC bd = {};
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -18,15 +18,15 @@ namespace Bind
 		bd.CPUAccessFlags = 0u;
 		bd.MiscFlags = 0u;
 		bd.ByteWidth = UINT( vbuf.SizeBytes() );
-		bd.StructureByteStride = stride;
+		bd.StructureByteStride = m_iStride;
 		D3D11_SUBRESOURCE_DATA sd = {};
 		sd.pSysMem = vbuf.GetData();
-		gdi.GetDevice()->CreateBuffer( &bd, &sd, &pVertexBuffer );
+		gdi.GetDevice()->CreateBuffer( &bd, &sd, &m_pVertexBuffer );
 	}
 	void VertexBuffer::Bind( GraphicsDeviceInterface& gdi ) noexcept
 	{
 		const UINT offset = 0u;
-		GetContext( gdi )->IASetVertexBuffers( 0u, 1u, &pVertexBuffer, &stride, &offset );
+		GetContext( gdi )->IASetVertexBuffers( 0u, 1u, &m_pVertexBuffer, &m_iStride, &offset );
 	}
 	std::shared_ptr<VertexBuffer> VertexBuffer::Resolve( GraphicsDeviceInterface& gdi, const std::string& tag,
 		const Dvtx::VertexBuffer& vbuf )
@@ -41,6 +41,6 @@ namespace Bind
 	}
 	std::string VertexBuffer::GetUID() const noexcept
 	{
-		return GenerateUID( tag );
+		return GenerateUID( m_sTag );
 	}
 }

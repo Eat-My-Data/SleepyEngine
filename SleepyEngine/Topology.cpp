@@ -5,11 +5,11 @@ namespace Bind
 {
 	Topology::Topology( GraphicsDeviceInterface& gdi, D3D11_PRIMITIVE_TOPOLOGY type )
 		:
-		type( type )
+		m_TopologyType( type )
 	{}
 	void Topology::Bind( GraphicsDeviceInterface& gdi ) noexcept
 	{
-		gdi.GetContext()->IASetPrimitiveTopology( type );
+		gdi.GetContext()->IASetPrimitiveTopology( m_TopologyType );
 	}
 	std::shared_ptr<Topology> Topology::Resolve( GraphicsDeviceInterface& gdi, D3D11_PRIMITIVE_TOPOLOGY type )
 	{
@@ -22,6 +22,6 @@ namespace Bind
 	}
 	std::string Topology::GetUID() const noexcept
 	{
-		return GenerateUID( type );
+		return GenerateUID( m_TopologyType );
 	}
 }

@@ -13,7 +13,7 @@ namespace Bind
 		static std::string GenerateUID( bool twoSided );
 		std::string GetUID() const noexcept override;
 	protected:
-		ID3D11RasterizerState* pRasterizer;
-		bool twoSided;
+		ID3D11RasterizerState* m_pRasterizer;
+		bool m_bTwoSided;
 	};
 }

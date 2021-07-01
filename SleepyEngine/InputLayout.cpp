@@ -8,21 +8,21 @@ namespace Bind
 		Dvtx::VertexLayout layout_in,
 		ID3DBlob* pVertexShaderBytecode )
 		:
-		layout( std::move( layout_in ) )
+		m_VertexLayout( std::move( layout_in ) )
 	{
-		const auto d3dLayout = layout.GetD3DLayout();
+		const auto d3dLayout = m_VertexLayout.GetD3DLayout();
 
 		GetDevice( gdi )->CreateInputLayout(
 			d3dLayout.data(), (UINT)d3dLayout.size(),
 			pVertexShaderBytecode->GetBufferPointer(),
 			pVertexShaderBytecode->GetBufferSize(),
-			&pInputLayout
+			&m_pInputLayout
 		);
 	}
 
 	void InputLayout::Bind( GraphicsDeviceInterface& gdi ) noexcept
 	{
-		GetContext( gdi )->IASetInputLayout( pInputLayout );
+		GetContext( gdi )->IASetInputLayout( m_pInputLayout );
 	}
 	std::shared_ptr<InputLayout> InputLayout::Resolve( GraphicsDeviceInterface& gdi,
 		const Dvtx::VertexLayout& layout, ID3DBlob* pVertexShaderBytecode )
@@ -36,6 +36,6 @@ namespace Bind
 	}
 	std::string InputLayout::GetUID() const noexcept
 	{
-		return GenerateUID( layout );
+		return GenerateUID( m_VertexLayout );
 	}
 }

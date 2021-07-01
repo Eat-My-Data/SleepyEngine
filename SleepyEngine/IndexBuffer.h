@@ -22,8 +22,8 @@ namespace Bind
 	private:
 		static std::string GenerateUID_( const std::string& tag );
 	protected:
-		std::string tag;
-		UINT count;
-		ID3D11Buffer* pIndexBuffer;
+		std::string m_sTag;
+		UINT m_iCount;
+		ID3D11Buffer* m_pIndexBuffer;
 	};
 }
