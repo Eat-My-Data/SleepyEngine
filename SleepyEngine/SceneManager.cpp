@@ -36,7 +36,7 @@ void SceneManager::Draw()
 
 void SceneManager::Update( f32 dt )
 {
-	m_Camera.Rotate( -dt, dt );
+	m_Camera.Rotate( -dt * 2.0f, dt );
 	//m_Camera.Translate( { 0.0f, 0.0f, dt } );
 
 	for ( u32 i = 0; i < m_vecOfCubes.size(); i++ )
