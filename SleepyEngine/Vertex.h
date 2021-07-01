@@ -3,6 +3,7 @@
 #include <type_traits>
 #include "GraphicsDeviceInterface.h"
 #include "Color.h"
+#include <string>
 
 namespace Dvtx
 {

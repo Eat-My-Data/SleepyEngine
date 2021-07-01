@@ -4,7 +4,7 @@
 
 namespace Bind
 {
-	InputLayout::InputLayout( GraphicsDeviceInterface& gfx,
+	InputLayout::InputLayout( GraphicsDeviceInterface& gdi,
 		Dvtx::VertexLayout layout_in,
 		ID3DBlob* pVertexShaderBytecode )
 		:
@@ -12,7 +12,7 @@ namespace Bind
 	{
 		const auto d3dLayout = layout.GetD3DLayout();
 
-		GetDevice( gfx )->CreateInputLayout(
+		GetDevice( gdi )->CreateInputLayout(
 			d3dLayout.data(), (UINT)d3dLayout.size(),
 			pVertexShaderBytecode->GetBufferPointer(),
 			pVertexShaderBytecode->GetBufferSize(),
@@ -20,14 +20,14 @@ namespace Bind
 		);
 	}
 
-	void InputLayout::Bind( GraphicsDeviceInterface& gfx ) noexcept
+	void InputLayout::Bind( GraphicsDeviceInterface& gdi ) noexcept
 	{
-		GetContext( gfx )->IASetInputLayout( pInputLayout );
+		GetContext( gdi )->IASetInputLayout( pInputLayout );
 	}
-	std::shared_ptr<InputLayout> InputLayout::Resolve( GraphicsDeviceInterface& gfx,
+	std::shared_ptr<InputLayout> InputLayout::Resolve( GraphicsDeviceInterface& gdi,
 		const Dvtx::VertexLayout& layout, ID3DBlob* pVertexShaderBytecode )
 	{
-		return Codex::Resolve<InputLayout>( gfx, layout, pVertexShaderBytecode );
+		return Codex::Resolve<InputLayout>( gdi, layout, pVertexShaderBytecode );
 	}
 	std::string InputLayout::GenerateUID( const Dvtx::VertexLayout& layout, ID3DBlob* pVertexShaderBytecode )
 	{

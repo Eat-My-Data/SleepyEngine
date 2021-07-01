@@ -109,9 +109,9 @@ std::optional<u32> Win32Window::ProcessMessages() noexcept
 	return {};
 }
 
-void Win32Window::InitializeGraphics( GraphicsDeviceInterface* graphicsInterface, GraphicsAPI api )
+void Win32Window::InitializeGraphics( GraphicsDeviceInterface& graphicsInterface, GraphicsAPI api )
 {
-	graphicsInterface->InitializeGraphics( m_hWnd, api, m_iWidth, m_iHeight  );
+	graphicsInterface.InitializeGraphics( m_hWnd, api, m_iWidth, m_iHeight  );
 }
 
 LRESULT Win32Window::HandleMsgSetup( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept

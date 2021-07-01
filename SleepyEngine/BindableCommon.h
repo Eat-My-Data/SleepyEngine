@@ -6,3 +6,6 @@
 #include "InputLayout.h"
 #include "PixelShader.h"
 #include "VertexShader.h"
+#include "Topology.h"
+#include "TransformCBuf.h"
+#include "Rasterizer.h"

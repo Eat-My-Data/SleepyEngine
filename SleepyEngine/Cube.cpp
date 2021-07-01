@@ -1,109 +1,81 @@
 #include "Cube.h"
 #include "BindableCommon.h"
-#include "IndexedTriangleList.h"
-#include "Vertex.h"
+#include "ConstantBuffers.h"
 #include <sstream>
+#include <memory>
 
-Cube::Cube( GraphicsDeviceInterface& gdi, f32 size )
+Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
+    :
+    m_Data( data )
 {
 	using namespace Bind;
 	namespace dx = DirectX;
 
     using Type = Dvtx::VertexLayout::ElementType;
-    auto model =  MakeIndependent( std::move( Dvtx::VertexLayout{}
+    IndexedTriangleList model =  MakeIndependent( std::move( Dvtx::VertexLayout{}
         .Append( Type::Position3D )
         .Append( Type::Normal )
-        .Append( Type::Texture2D )
     ) );
-
     model.Transform( dx::XMMatrixScaling( size, size, size ) );
     model.SetNormalsIndependentFlat();
     const auto geometryTag = "$cube." + std::to_string( size );
     AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.vertices ) );
     AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.indices ) );
-    // lookup table for cube face colors
-    struct ConstantBuffer2
-    {
-        struct
-        {
-            float r;
-            float g;
-            float b;
-            float a;
-        } face_colors[6];
-    };
-    const ConstantBuffer2 cb2 =
-    {
-        {
-            {1.0f,0.0f,1.0f},
-            {1.0f,0.0f,0.0f},
-            {0.0f,1.0f,0.0f},
-            {0.0f,0.0f,1.0f},
-            {1.0f,1.0f,0.0f},
-            {1.0f,1.0f,1.0f},
-        }
-    };
-    ID3D11Buffer* pConstantBuffer2;
-    D3D11_BUFFER_DESC cbd2;
-    cbd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-    cbd2.Usage = D3D11_USAGE_DEFAULT;
-    cbd2.CPUAccessFlags = 0u;
-    cbd2.MiscFlags = 0u;
-    cbd2.ByteWidth = sizeof( cb2 );
-    cbd2.StructureByteStride = 0u;
-    D3D11_SUBRESOURCE_DATA csd2 = {};
-    csd2.pSysMem = &cb2;
-    gdi.GetDevice()->CreateBuffer( &cbd2, &csd2, &pConstantBuffer2 );
-
-    // bind constant buffer to pixel shader
-    gdi.GetContext()->PSSetConstantBuffers( 0u, 1u, &pConstantBuffer2 );
-
-
-
 
     auto pvs = VertexShader::Resolve( gdi, "VertexShader.cso" );
     auto pvsbc = pvs->GetBytecode();
     AddBind( std::move( pvs ) );
+
     AddBind( PixelShader::Resolve( gdi, "PixelShader.cso" ) );
+
     AddBind( InputLayout::Resolve( gdi, model.vertices.GetLayout(), pvsbc ) );
+    
+    AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
-    // bind render target
-    gdi.GetContext()->OMSetRenderTargets( 1u, gdi.GetTarget(), nullptr );
+    AddBind( PixelConstantBuffer<PSMaterialConstant>::Resolve( gdi, pmc, 1u ) );
 
+    AddBind( std::make_shared<Bind::TransformCbuf>( gdi, *this ) );
 
-    // Set primitive topology to triangle list (groups of 3 vertices)
-    gdi.GetContext()->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
+    AddBind( Rasterizer::Resolve( gdi, true ) );
+}
 
-    // configure viewport
-    D3D11_VIEWPORT vp;
-    vp.Width = (float)1280;
-    vp.Height = (float)720;
-    vp.MinDepth = 0.0f;
-    vp.MaxDepth = 1.0f;
-    vp.TopLeftX = 0.0f;
-    vp.TopLeftY = 0.0f;
-    gdi.GetContext()->RSSetViewports( 1u, &vp );
+Cube::Cube( const Cube& cube )
+{
+    m_Data = cube.m_Data;
+}
+
+Cube& Cube::operator=( const Cube& cube )
+{
+    this->m_Data = cube.m_Data;
+    return *this;
 }
 
 void Cube::SetPos( DirectX::XMFLOAT3 pos ) noexcept
 {
-	this->pos = pos;
+	m_Data.pos.x += pos.x;
+    m_Data.pos.y += pos.y;
+    m_Data.pos.z += pos.z;
 }
 
-void Cube::SetRotation( float roll, float pitch, float yaw ) noexcept
+void Cube::SetRotation( f32 roll, f32 pitch, f32 yaw ) noexcept
 {
-	this->roll = roll;
-	this->pitch = pitch;
-	this->yaw = yaw;
+	m_Data.roll += roll;
+	m_Data.pitch += pitch;
+	m_Data.yaw += yaw;
 }
 
 DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixRotationRollPitchYaw( roll, pitch, yaw ) *
-		DirectX::XMMatrixTranslation( pos.x, pos.y, pos.z );
+	return DirectX::XMMatrixRotationRollPitchYaw( m_Data.roll, m_Data.pitch, m_Data.yaw ) *
+		DirectX::XMMatrixTranslation( m_Data.pos.x, m_Data.pos.y, m_Data.pos.z );
 }
 
-static IndexedTriangleList MakeIndependent( Dvtx::VertexLayout layout )
+const Cube::Data Cube::GetData() noexcept
+{
+    return m_Data;
+}
+
+IndexedTriangleList Cube::MakeIndependent( Dvtx::VertexLayout layout )
 {
     using namespace Dvtx;
     using Type = Dvtx::VertexLayout::ElementType;

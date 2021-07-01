@@ -1,9 +1,9 @@
-cbuffer CBuf
-{
-    float4 face_colors[6];
-};
-
-float4 main(uint tid : SV_PrimitiveID) : SV_Target
-{
-    return face_colors[tid / 2];
+float4 main(float3 viewFragPos : SV_Position, float3 viewNormal : Normal) : SV_TARGET
+{ 
+    float4 output;
+    
+    float3 lightDirection = { 0.0f, 1.0f, 0.0f };
+    output = float4(dot(lightDirection.xyz, viewNormal), 0.0f, 0.0f, 1.0f);
+    
+    return output;
 }

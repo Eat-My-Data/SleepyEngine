@@ -2,11 +2,11 @@
 
 namespace Bind
 {
-	IndexBuffer::IndexBuffer( GraphicsDeviceInterface& gfx, const std::vector<unsigned short>& indices )
+	IndexBuffer::IndexBuffer( GraphicsDeviceInterface& gdi, const std::vector<unsigned short>& indices )
 		:
-		IndexBuffer( gfx, "?", indices )
+		IndexBuffer( gdi, "?", indices )
 	{}
-	IndexBuffer::IndexBuffer( GraphicsDeviceInterface& gfx, std::string tag, const std::vector<unsigned short>& indices )
+	IndexBuffer::IndexBuffer( GraphicsDeviceInterface& gdi, std::string tag, const std::vector<unsigned short>& indices )
 		:
 		tag( tag ),
 		count( (UINT)indices.size() )
@@ -20,21 +20,21 @@ namespace Bind
 		ibd.StructureByteStride = sizeof( unsigned short );
 		D3D11_SUBRESOURCE_DATA isd = {};
 		isd.pSysMem = indices.data();
-		GetDevice( gfx )->CreateBuffer( &ibd, &isd, &pIndexBuffer );
+		GetDevice( gdi )->CreateBuffer( &ibd, &isd, &pIndexBuffer );
 	}
-	void IndexBuffer::Bind( GraphicsDeviceInterface& gfx ) noexcept
+	void IndexBuffer::Bind( GraphicsDeviceInterface& gdi ) noexcept
 	{
-		GetContext( gfx )->IASetIndexBuffer( pIndexBuffer, DXGI_FORMAT_R16_UINT, 0u );
+		GetContext( gdi )->IASetIndexBuffer( pIndexBuffer, DXGI_FORMAT_R16_UINT, 0u );
 	}
 	UINT IndexBuffer::GetCount() const noexcept
 	{
 		return count;
 	}
-	std::shared_ptr<IndexBuffer> IndexBuffer::Resolve( GraphicsDeviceInterface& gfx, const std::string& tag,
+	std::shared_ptr<IndexBuffer> IndexBuffer::Resolve( GraphicsDeviceInterface& gdi, const std::string& tag,
 		const std::vector<unsigned short>& indices )
 	{
 		assert( tag != "?" );
-		return Codex::Resolve<IndexBuffer>( gfx, tag, indices );
+		return Codex::Resolve<IndexBuffer>( gdi, tag, indices );
 	}
 	std::string IndexBuffer::GenerateUID_( const std::string& tag )
 	{

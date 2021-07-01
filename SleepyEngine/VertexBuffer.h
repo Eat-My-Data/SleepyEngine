@@ -1,16 +1,17 @@
 #pragma once
 #include "Bindable.h"
 #include "Vertex.h"
+#include <memory>
 
 namespace Bind
 {
 	class VertexBuffer : public Bindable
 	{
 	public:
-		VertexBuffer( GraphicsDeviceInterface& gfx, const std::string& tag, const Dvtx::VertexBuffer& vbuf );
-		VertexBuffer( GraphicsDeviceInterface& gfx, const Dvtx::VertexBuffer& vbuf );
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override;
-		static std::shared_ptr<VertexBuffer> Resolve( GraphicsDeviceInterface& gfx, const std::string& tag,
+		VertexBuffer( GraphicsDeviceInterface& gdi, const std::string& tag, const Dvtx::VertexBuffer& vbuf );
+		VertexBuffer( GraphicsDeviceInterface& gdi, const Dvtx::VertexBuffer& vbuf );
+		void Bind( GraphicsDeviceInterface& gdi ) noexcept override;
+		static std::shared_ptr<VertexBuffer> Resolve( GraphicsDeviceInterface& gdi, const std::string& tag,
 			const Dvtx::VertexBuffer& vbuf );
 		template<typename...Ignore>
 		static std::string GenerateUID( const std::string& tag, Ignore&&...ignore )

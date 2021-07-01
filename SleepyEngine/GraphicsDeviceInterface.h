@@ -25,12 +25,20 @@ public:
 public:
 	void InitializeGraphics( HWND& hWnd, GraphicsAPI api, u32 width, u32 height );
 	bool IsInitialized() noexcept;
-	ID3D11Device* GetDevice();
-	ID3D11DeviceContext* GetContext();
-	ID3D11RenderTargetView* GetTarget();
 	void DrawIndexed( UINT count ) noexcept;
+public:
+	void SetViewMatrix( DirectX::XMMATRIX viewMatrix ) noexcept;
+	void SetProjMatrix( DirectX::XMMATRIX projMatrix ) noexcept;
+	DirectX::XMMATRIX GetViewMatrix() noexcept;
+	DirectX::XMMATRIX GetProjMatrix() noexcept;
+public:
+	IDXGISwapChain* GetSwap() noexcept;
+	ID3D11Device* GetDevice() noexcept;
+	ID3D11DeviceContext* GetContext() noexcept;
+	ID3D11RenderTargetView** GetTarget() noexcept;
 private:
 	D3D11Interface m_D3D11Interface;
-	GraphicsAPI m_GraphicsApi = GraphicsAPI::Uninitialized;
-	Camera m_Camera = { L"Character Camera", MatrixType::Perspective, ViewSpace( 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ), DirectX::XMFLOAT3{ -13.5f, 0.0f, 3.5f }, 0.0f, PI / 2.0f };
+	GraphicsAPI m_GraphicsAPI = GraphicsAPI::Uninitialized;
+	DirectX::XMMATRIX m_ViewMatrix;
+	DirectX::XMMATRIX m_ProjMatrix;
 };

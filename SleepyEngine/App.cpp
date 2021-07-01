@@ -25,6 +25,12 @@ App::~App()
 void App::ExecuteFrame()
 {
 	if ( !m_GDI.IsInitialized() )
-		m_Win32Window.InitializeGraphics( &m_GDI, GraphicsAPI::DirectX );	
+		m_Win32Window.InitializeGraphics( m_GDI, GraphicsAPI::DirectX );	
+	if ( !m_SceneManager.IsInitialzed() )
+		m_SceneManager.Initialize( m_GDI, GraphicsAPI::DirectX );
 
+	const f32 dt = timer.Mark();
+
+	m_SceneManager.Update( dt );
+	m_SceneManager.Draw();
 }

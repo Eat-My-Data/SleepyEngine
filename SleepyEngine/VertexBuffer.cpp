@@ -5,7 +5,7 @@ namespace Bind
 {
 	VertexBuffer::VertexBuffer( GraphicsDeviceInterface& gdi, const Dvtx::VertexBuffer& vbuf )
 		:
-		VertexBuffer( gfx, "?", vbuf )
+		VertexBuffer( gdi, "?", vbuf )
 	{}
 	VertexBuffer::VertexBuffer( GraphicsDeviceInterface& gdi, const std::string& tag, const Dvtx::VertexBuffer& vbuf )
 		:
@@ -26,13 +26,13 @@ namespace Bind
 	void VertexBuffer::Bind( GraphicsDeviceInterface& gdi ) noexcept
 	{
 		const UINT offset = 0u;
-		GetContext( gfx )->IASetVertexBuffers( 0u, 1u, pVertexBuffer), &stride, &offset );
+		GetContext( gdi )->IASetVertexBuffers( 0u, 1u, &pVertexBuffer, &stride, &offset );
 	}
-	std::shared_ptr<VertexBuffer> VertexBuffer::Resolve( GraphicsDeviceInterface& gfx, const std::string& tag,
+	std::shared_ptr<VertexBuffer> VertexBuffer::Resolve( GraphicsDeviceInterface& gdi, const std::string& tag,
 		const Dvtx::VertexBuffer& vbuf )
 	{
 		assert( tag != "?" );
-		return Codex::Resolve<VertexBuffer>( gfx, tag, vbuf );
+		return Codex::Resolve<VertexBuffer>( gdi, tag, vbuf );
 	}
 	std::string VertexBuffer::GenerateUID_( const std::string& tag )
 	{

@@ -2,6 +2,7 @@
 #include "Win32Window.h"
 #include "GraphicsDeviceInterface.h"
 #include "SceneManager.h"
+#include "FrameTimer.h"
 
 class App
 {
@@ -17,4 +18,5 @@ private:
 	Win32Window m_Win32Window;
 	GraphicsDeviceInterface m_GDI;
 	SceneManager m_SceneManager;
+	FrameTimer timer;
 };
