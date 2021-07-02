@@ -5,6 +5,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 {		
 	m_pGDI = &gdi;
 	m_GraphicsAPI = api;
+	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\sponza\\sponza.obj", 1.0f / 20.0f ) );
 
 	for ( u32 i = 0; i < 10; i++ )
 	{
@@ -25,6 +26,8 @@ void SceneManager::Draw()
 
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
+
+	m_vecOfModels[0]->Draw( *m_pGDI );
 
 	for ( u32 i = 0; i < m_vecOfCubes.size(); i++ )
 	{
