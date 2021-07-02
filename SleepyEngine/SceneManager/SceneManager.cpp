@@ -27,12 +27,12 @@ void SceneManager::Draw()
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 
-	m_vecOfModels[0]->Draw( *m_pGDI );
-
 	for ( u32 i = 0; i < m_vecOfCubes.size(); i++ )
 	{
 		m_vecOfCubes[i]->Draw( *m_pGDI );
 	}
+
+	m_vecOfModels[0]->Draw( *m_pGDI );
 
 	m_pGDI->GetSwap()->Present( 1u, 0u );
 }
