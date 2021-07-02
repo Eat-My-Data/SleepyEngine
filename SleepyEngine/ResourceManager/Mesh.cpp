@@ -334,15 +334,15 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "PhongVSNormalMap.cso" );
-		auto pvsbc = pvs->GetBytecode();
-		bindablePtrs.push_back( std::move( pvs ) );
+		//auto pvs = VertexShader::Resolve( gfx, "PhongVSNormalMap.cso" );
+		//auto pvsbc = pvs->GetBytecode();
+		//bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx,
-			hasAlphaDiffuse ? "PhongPSSpecNormMask.cso" : "PhongPSSpecNormalMap.cso"
-		) );
+		//bindablePtrs.push_back( PixelShader::Resolve( gfx,
+		//	hasAlphaDiffuse ? "PhongPSSpecNormMask.cso" : "PhongPSSpecNormalMap.cso"
+		//) );
 
-		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		//bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
 		Dcb::RawLayout lay;
 		lay.Add<Dcb::Bool>( "normalMapEnabled" );

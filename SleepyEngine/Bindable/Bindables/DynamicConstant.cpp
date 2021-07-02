@@ -1,424 +1,394 @@
-#pragma once
-#include <cassert>
-#include <DirectXMath.h>
-#include <vector>
-#include <memory>
-#include <optional>
+#define DCB_IMPL_SOURCE
+#include "DynamicConstant.h"
 #include <string>
+#include <algorithm>
+#include <cctype>
+#include "../../ResourceManager/LayoutCodex.h"
 
-// master list of leaf types that generates enum elements and various switches etc.
-#define LEAF_ELEMENT_TYPES \
-	X( Float ) \
-	X( Float2 ) \
-	X( Float3 ) \
-	X( Float4 ) \
-	X( Matrix ) \
-	X( Bool )
 
 namespace Dcb
 {
-	namespace dx = DirectX;
-
-	enum Type
+	struct ExtraData
 	{
-#define X(el) el,
-		LEAF_ELEMENT_TYPES
-#undef X
-		Struct,
-		Array,
-		Empty,
-	};
-
-	// static map of attributes of each leaf type
-	template<Type type>
-	struct Map
-	{
-		static constexpr bool valid = false;
-	};
-	template<> struct Map<Float>
-	{
-		using SysType = float; // type used in the CPU side
-		static constexpr size_t hlslSize = sizeof( SysType ); // size of type on GPU side
-		static constexpr const char* code = "F1"; // code used for generating signature of layout
-		static constexpr bool valid = true; // metaprogramming flag to check validity of Map <param>
-	};
-	template<> struct Map<Float2>
-	{
-		using SysType = dx::XMFLOAT2;
-		static constexpr size_t hlslSize = sizeof( SysType );
-		static constexpr const char* code = "F2";
-		static constexpr bool valid = true;
-	};
-	template<> struct Map<Float3>
-	{
-		using SysType = dx::XMFLOAT3;
-		static constexpr size_t hlslSize = sizeof( SysType );
-		static constexpr const char* code = "F3";
-		static constexpr bool valid = true;
-	};
-	template<> struct Map<Float4>
-	{
-		using SysType = dx::XMFLOAT4;
-		static constexpr size_t hlslSize = sizeof( SysType );
-		static constexpr const char* code = "F4";
-		static constexpr bool valid = true;
-	};
-	template<> struct Map<Matrix>
-	{
-		using SysType = dx::XMFLOAT4X4;
-		static constexpr size_t hlslSize = sizeof( SysType );
-		static constexpr const char* code = "M4";
-		static constexpr bool valid = true;
-	};
-	template<> struct Map<Bool>
-	{
-		using SysType = bool;
-		static constexpr size_t hlslSize = 4u;
-		static constexpr const char* code = "BL";
-		static constexpr bool valid = true;
-	};
-
-	// ensures that every leaf type in master list has an entry in the static attribute map
-#define X(el) static_assert(Map<el>::valid,"Missing map implementation for " #el);
-	LEAF_ELEMENT_TYPES
-#undef X
-
-		// enables reverse lookup from SysType to leaf type
-		template<typename T>
-	struct ReverseMap
-	{
-		static constexpr bool valid = false;
-	};
-#define X(el) \
-	template<> struct ReverseMap<typename Map<el>::SysType> \
-	{ \
-		static constexpr Type type = el; \
-		static constexpr bool valid = true; \
-	};
-	LEAF_ELEMENT_TYPES
-#undef X
-
-
-		// LayoutElements instances form a tree that describes the layout of the data buffer
-		// supporting nested aggregates of structs and arrays
-		class LayoutElement
-	{
-	private:
-		// this forms the polymorpic base for extra data that Struct and Array have
-		struct ExtraDataBase
+		struct Struct : public LayoutElement::ExtraDataBase
 		{
-			virtual ~ExtraDataBase() = default;
+			std::vector<std::pair<std::string, LayoutElement>> layoutElements;
 		};
-		// friend relationships are used liberally throught the DynamicConstant system
-		// instead of seeing the various classes in this system as encapsulated decoupled
-		// units, they must be viewed as aspect of one large monolithic system
-		// the reason for the friend relationships is generally so that intermediate
-		// classes that the client should not create can have their constructors made
-		// private, so that Finalize() cannot be called on arbitrary LayoutElements, etc.
-		friend class RawLayout;
-		friend struct ExtraData;
-	public:
-		// get a string signature for this element (recursive); when called on the root
-		// element of a layout tree, generates a uniquely-identifying string for the layout
-		std::string GetSignature() const noexcept;
-		// Check if element is "real"
-		bool Exists() const noexcept;
-		// calculate array indexing offset
-		std::pair<size_t, const LayoutElement*> CalculateIndexingOffset( size_t offset, size_t index ) const noexcept;
-		// [] only works for Structs; access member (child node in tree) by name
-		LayoutElement& operator[]( const std::string& key ) noexcept;
-		const LayoutElement& operator[]( const std::string& key ) const noexcept;
-		// T() only works for Arrays; gets the array type layout object
-		// needed to further configure an array's type
-		LayoutElement& T() noexcept;
-		const LayoutElement& T() const noexcept;
-		// offset based- functions only work after finalization!
-		size_t GetOffsetBegin() const noexcept;
-		size_t GetOffsetEnd() const noexcept;
-		// get size in bytes derived from offsets
-		size_t GetSizeInBytes() const noexcept;
-		// only works for Structs; add LayoutElement to struct
-		LayoutElement& Add( Type addedType, std::string name ) noexcept;
-		template<Type typeAdded>
-		LayoutElement& Add( std::string key ) noexcept
+		struct Array : public LayoutElement::ExtraDataBase
 		{
-			return Add( typeAdded, std::move( key ) );
-		}
-		// only works for Arrays; set the type and the # of elements
-		LayoutElement& Set( Type addedType, size_t size ) noexcept;
-		template<Type typeAdded>
-		LayoutElement& Set( size_t size ) noexcept
+			std::optional<LayoutElement> layoutElement;
+			size_t size;
+		};
+	};
+
+	std::string LayoutElement::GetSignature() const noexcept
+	{
+		switch ( type )
 		{
-			return Set( typeAdded, size );
-		}
-		// returns offset of leaf types for read/write purposes w/ typecheck in Debug
-		template<typename T>
-		size_t Resolve() const noexcept
-		{
-			switch ( type )
-			{
-#define X(el) case el: assert(typeid(Map<el>::SysType) == typeid(T)); return *offset;
-				LEAF_ELEMENT_TYPES
+#define X(el) case el: return Map<el>::code;
+			LEAF_ELEMENT_TYPES
 #undef X
-			default:
-				assert( "Tried to resolve non-leaf element" && false );
-				return 0u;
-			}
+		case Struct:
+			return GetSignatureForStruct();
+		case Array:
+			return GetSignatureForArray();
+		default:
+			assert( "Bad type in signature generation" && false );
+			return "???";
 		}
-	private:
-		// construct an empty layout element
-		LayoutElement() noexcept = default;
-		LayoutElement( Type typeIn ) noexcept;
-		// sets all offsets for element and subelements, prepending padding when necessary
-		// returns offset directly after this element
-		size_t Finalize( size_t offsetIn ) noexcept;
-		// implementations for GetSignature for aggregate types
-		std::string GetSignatureForStruct() const noexcept;
-		std::string GetSignatureForArray() const noexcept;
-		// implementations for Finalize for aggregate types
-		size_t FinalizeForStruct( size_t offsetIn );
-		size_t FinalizeForArray( size_t offsetIn );
-		// returns singleton instance of empty layout element
-		static LayoutElement& GetEmptyElement() noexcept
+	}
+	bool LayoutElement::Exists() const noexcept
+	{
+		return type != Empty;
+	}
+	std::pair<size_t, const LayoutElement*> LayoutElement::CalculateIndexingOffset( size_t offset, size_t index ) const noexcept
+	{
+		assert( "Indexing into non-array" && type == Array );
+		const auto& data = static_cast<ExtraData::Array&>( *pExtraData );
+		assert( index < data.size );
+		return { offset + data.layoutElement->GetSizeInBytes() * index,&*data.layoutElement };
+	}
+	LayoutElement& LayoutElement::operator[]( const std::string& key ) noexcept
+	{
+		assert( "Keying into non-struct" && type == Struct );
+		for ( auto& mem : static_cast<ExtraData::Struct&>( *pExtraData ).layoutElements )
 		{
-			static LayoutElement empty{};
-			return empty;
-		}
-		// returns the value of offset bumped up to the next 16-byte boundary (if not already on one)
-		static size_t AdvanceToBoundary( size_t offset ) noexcept;
-		// return true if a memory block crosses a boundary
-		static bool CrossesBoundary( size_t offset, size_t size ) noexcept;
-		// advance an offset to next boundary if block crosses a boundary
-		static size_t AdvanceIfCrossesBoundary( size_t offset, size_t size ) noexcept;
-		// check string for validity as a struct key
-		static bool ValidateSymbolName( const std::string& name ) noexcept;
-	private:
-		// each element stores its own offset. this makes lookup to find its position in the byte buffer
-		// fast. Special handling is required for situations where arrays are involved
-		std::optional<size_t> offset;
-		Type type = Empty;
-		std::unique_ptr<ExtraDataBase> pExtraData;
-	};
-
-
-	// the layout class serves as a shell to hold the root of the LayoutElement tree
-	// client does not create LayoutElements directly, create a raw layout and then
-	// use it to access the elements and add on from there. When building is done,
-	// raw layout is moved to Codex (usually via Buffer::Make), and the internal layout
-	// element tree is "delivered" (finalized and moved out). Codex returns a baked
-	// layout, which the buffer can then use to initialize itself. Baked layout can
-	// also be used to directly init multiple Buffers. Baked layouts are conceptually
-	// immutable. Base Layout class cannot be constructed.
-	class Layout
-	{
-		friend class LayoutCodex;
-		friend class Buffer;
-	public:
-		size_t GetSizeInBytes() const noexcept;
-		std::string GetSignature() const noexcept;
-	protected:
-		Layout( std::shared_ptr<LayoutElement> pRoot ) noexcept;
-		std::shared_ptr<LayoutElement> pRoot;
-	};
-
-	// Raw layout represents a layout that has not yet been finalized and registered
-	// structure can be edited by adding layout nodes
-	class RawLayout : public Layout
-	{
-		friend class LayoutCodex;
-	public:
-		RawLayout() noexcept;
-		// key into the root Struct
-		LayoutElement& operator[]( const std::string& key ) noexcept;
-		// add an element to the root Struct
-		template<Type type>
-		LayoutElement& Add( const std::string& key ) noexcept
-		{
-			return pRoot->Add<type>( key );
-		}
-	private:
-		// reset this object with an empty struct at its root
-		void ClearRoot() noexcept;
-		// finalize the layout and then relinquish (by yielding the root layout element)
-		std::shared_ptr<LayoutElement> DeliverRoot() noexcept;
-	};
-
-	// CookedLayout represend a completed and registered Layout shell object
-	// layout tree is fixed
-	class CookedLayout : public Layout
-	{
-		friend class LayoutCodex;
-		friend class Buffer;
-	public:
-		// key into the root Struct (const to disable mutation of the layout)
-		const LayoutElement& operator[]( const std::string& key ) const noexcept;
-		// get a share on layout tree root
-		std::shared_ptr<LayoutElement> ShareRoot() const noexcept;
-	private:
-		// this ctor used by Codex to return cooked layouts
-		CookedLayout( std::shared_ptr<LayoutElement> pRoot ) noexcept;
-		// use to pilfer the layout tree
-		std::shared_ptr<LayoutElement> RelinquishRoot() const noexcept;
-	};
-
-
-
-
-	// proxy type that is emitted when keying/indexing into a Buffer
-	// implement conversions/assignment that allows manipulation of the
-	// raw bytes of the Buffer. This version is const, only supports reading
-	// Refs can be further keyed/indexed to traverse the layout structure
-	class ConstElementRef
-	{
-		friend class Buffer;
-		friend class ElementRef;
-	public:
-		// this is a proxy type emitted when you use addressof& on the Ref
-		// it allows conversion to pointer type, useful for using Buffer
-		// elements with ImGui widget functions etc.
-		class Ptr
-		{
-			friend ConstElementRef;
-		public:
-			// conversion for getting read-only pointer to supported SysType
-			template<typename T>
-			operator const T* ( ) const noexcept
+			if ( mem.first == key )
 			{
-				static_assert( ReverseMap<std::remove_const_t<T>>::valid, "Unsupported SysType used in pointer conversion" );
-				return &static_cast<const T&>( *ref );
+				return mem.second;
 			}
-		private:
-			Ptr( const ConstElementRef* ref ) noexcept;
-			const ConstElementRef* ref;
-		};
-	public:
-		// check if the indexed element actually exists
-		// this is possible because if you key into a Struct with a nonexistent key
-		// it will still return an Empty LayoutElement that will enable this test
-		// but will not enable any other kind of access
-		bool Exists() const noexcept;
-		// key into the current element as a struct
-		ConstElementRef operator[]( const std::string& key ) const noexcept;
-		// index into the current element as an array
-		ConstElementRef operator[]( size_t index ) const noexcept;
-		// emit a pointer proxy object
-		Ptr operator&() const noexcept;
-		// conversion for reading as a supported SysType
-		template<typename T>
-		operator const T& ( ) const noexcept
-		{
-			static_assert( ReverseMap<std::remove_const_t<T>>::valid, "Unsupported SysType used in conversion" );
-			return *reinterpret_cast<const T*>( pBytes + offset + pLayout->Resolve<T>() );
 		}
-	private:
-		// refs should only be constructable by other refs or by the buffer
-		ConstElementRef( const LayoutElement* pLayout, const char* pBytes, size_t offset ) noexcept;
-		// this offset is the offset that is built up by indexing into arrays
-		// accumulated for every array index in the path of access into the structure
-		size_t offset;
-		const LayoutElement* pLayout;
-		const char* pBytes;
-	};
-
-
-	// version of ConstElementRef that also allows writing to the bytes of Buffer
-	// see above in ConstElementRef for detailed description
-	class ElementRef
+		return GetEmptyElement();
+	}
+	const LayoutElement& LayoutElement::operator[]( const std::string& key ) const noexcept
 	{
-		friend class Buffer;
-	public:
-		class Ptr
-		{
-			friend ElementRef;
-		public:
-			// conversion to read/write pointer to supported SysType
-			template<typename T>
-			operator T* ( ) const noexcept
-			{
-				static_assert( ReverseMap<std::remove_const_t<T>>::valid, "Unsupported SysType used in pointer conversion" );
-				return &static_cast<T&>( *ref );
-			}
-		private:
-			Ptr( ElementRef* ref ) noexcept;
-			ElementRef* ref;
-		};
-	public:
-		operator ConstElementRef() const noexcept;
-		bool Exists() const noexcept;
-		ElementRef operator[]( const std::string& key ) const noexcept;
-		ElementRef operator[]( size_t index ) const noexcept;
-		// optionally set value if not an empty Ref
-		template<typename S>
-		bool SetIfExists( const S& val ) noexcept
-		{
-			if ( Exists() )
-			{
-				*this = val;
-				return true;
-			}
-			return false;
-		}
-		Ptr operator&() const noexcept;
-		// conversion for reading/writing as a supported SysType
-		template<typename T>
-		operator T& ( ) const noexcept
-		{
-			static_assert( ReverseMap<std::remove_const_t<T>>::valid, "Unsupported SysType used in conversion" );
-			return *reinterpret_cast<T*>( pBytes + offset + pLayout->Resolve<T>() );
-		}
-		// assignment for writing to as a supported SysType
-		template<typename T>
-		T& operator=( const T& rhs ) const noexcept
-		{
-			static_assert( ReverseMap<std::remove_const_t<T>>::valid, "Unsupported SysType used in assignment" );
-			return static_cast<T&>( *this ) = rhs;
-		}
-	private:
-		// refs should only be constructable by other refs or by the buffer
-		ElementRef( const LayoutElement* pLayout, char* pBytes, size_t offset ) noexcept;
-		size_t offset;
-		const LayoutElement* pLayout;
-		char* pBytes;
-	};
-
-
-
-
-	// The buffer object is a combination of a raw byte buffer with a LayoutElement
-	// tree structure which acts as an view/interpretation/overlay for those bytes
-	// operator [] indexes into the root Struct, returning a Ref shell that can be
-	// used to further index if struct/array, returning further Ref shells, or used
-	// to access the data stored in the buffer if a Leaf element type
-	class Buffer
+		return const_cast<LayoutElement&>( *this )[key];
+	}
+	LayoutElement& LayoutElement::T() noexcept
 	{
-	public:
-		// various resources can be used to construct a Buffer
-		Buffer( RawLayout&& lay ) noexcept;
-		Buffer( const CookedLayout& lay ) noexcept;
-		Buffer( CookedLayout&& lay ) noexcept;
-		Buffer( const Buffer& ) noexcept;
-		// have to be careful with this one...
-		// the buffer that has once been pilfered must not be used :x
-		Buffer( Buffer&& ) noexcept;
-		// how you begin indexing into buffer (root is always Struct)
-		ElementRef operator[]( const std::string& key ) noexcept;
-		// if Buffer is const, you only get to index into the buffer with a read-only proxy
-		ConstElementRef operator[]( const std::string& key ) const noexcept;
-		// get the raw bytes
-		const char* GetData() const noexcept;
-		// size of the raw byte buffer
-		size_t GetSizeInBytes() const noexcept;
-		const LayoutElement& GetRootLayoutElement() const noexcept;
-		// copy bytes from another buffer (layouts must match)
-		void CopyFrom( const Buffer& ) noexcept;
-		// return another sptr to the layout root
-		std::shared_ptr<LayoutElement> ShareLayoutRoot() const noexcept;
-	private:
-		std::shared_ptr<LayoutElement> pLayoutRoot;
-		std::vector<char> bytes;
-	};
+		assert( "Accessing T of non-array" && type == Array );
+		return *static_cast<ExtraData::Array&>( *pExtraData ).layoutElement;
+	}
+	const LayoutElement& LayoutElement::T() const noexcept
+	{
+		return const_cast<LayoutElement&>( *this ).T();
+	}
+	size_t LayoutElement::GetOffsetBegin() const noexcept
+	{
+		return *offset;
+	}
+	size_t LayoutElement::GetOffsetEnd() const noexcept
+	{
+		switch ( type )
+		{
+#define X(el) case el: return *offset + Map<el>::hlslSize;
+			LEAF_ELEMENT_TYPES
+#undef X
+		case Struct:
+			{
+				const auto& data = static_cast<ExtraData::Struct&>( *pExtraData );
+				return AdvanceToBoundary( data.layoutElements.back().second.GetOffsetEnd() );
+			}
+		case Array:
+		{
+			const auto& data = static_cast<ExtraData::Array&>( *pExtraData );
+			return *offset + AdvanceToBoundary( data.layoutElement->GetSizeInBytes() ) * data.size;
+		}
+		default:
+			assert( "Tried to get offset of empty or invalid element" && false );
+			return 0u;
+		}
+	}
+	size_t LayoutElement::GetSizeInBytes() const noexcept
+	{
+		return GetOffsetEnd() - GetOffsetBegin();
+	}
+	LayoutElement& LayoutElement::Add( Type addedType, std::string name ) noexcept
+	{
+		assert( "Add to non-struct in layout" && type == Struct );
+		assert( "invalid symbol name in Struct" && ValidateSymbolName( name ) );
+		auto& structData = static_cast<ExtraData::Struct&>( *pExtraData );
+		for ( auto& mem : structData.layoutElements )
+		{
+			if ( mem.first == name )
+			{
+				assert( "Adding duplicate name to struct" && false );
+			}
+		}
+		structData.layoutElements.emplace_back( std::move( name ), LayoutElement{ addedType } );
+		return *this;
+	}
+	LayoutElement& LayoutElement::Set( Type addedType, size_t size ) noexcept
+	{
+		assert( "Set on non-array in layout" && type == Array );
+		assert( size != 0u );
+		auto& arrayData = static_cast<ExtraData::Array&>( *pExtraData );
+		arrayData.layoutElement = { addedType };
+		arrayData.size = size;
+		return *this;
+	}
+	LayoutElement::LayoutElement( Type typeIn ) noexcept
+		:
+	type{ typeIn }
+	{
+		assert( typeIn != Empty );
+		if ( typeIn == Struct )
+		{
+			pExtraData = std::unique_ptr<ExtraData::Struct>{ new ExtraData::Struct() };
+		}
+		else if ( typeIn == Array )
+		{
+			pExtraData = std::unique_ptr<ExtraData::Array>{ new ExtraData::Array() };
+		}
+	}
+	size_t LayoutElement::Finalize( size_t offsetIn ) noexcept
+	{
+		switch ( type )
+		{
+#define X(el) case el: offset = AdvanceIfCrossesBoundary( offsetIn,Map<el>::hlslSize ); return *offset + Map<el>::hlslSize;
+			LEAF_ELEMENT_TYPES
+#undef X
+		case Struct:
+			return FinalizeForStruct( offsetIn );
+		case Array:
+			return FinalizeForArray( offsetIn );
+		default:
+			assert( "Bad type in size computation" && false );
+			return 0u;
+		}
+	}
+	std::string LayoutElement::GetSignatureForStruct() const noexcept
+	{
+		using namespace std::string_literals;
+		auto sig = "St{"s;
+		for ( const auto& el : static_cast<ExtraData::Struct&>( *pExtraData ).layoutElements )
+		{
+			sig += el.first + ":"s + el.second.GetSignature() + ";"s;
+		}
+		sig += "}"s;
+		return sig;
+	}
+	std::string LayoutElement::GetSignatureForArray() const noexcept
+	{
+		using namespace std::string_literals;
+		const auto& data = static_cast<ExtraData::Array&>( *pExtraData );
+		return "Ar:"s + std::to_string( data.size ) + "{"s + data.layoutElement->GetSignature() + "}"s;
+	}
+	size_t LayoutElement::FinalizeForStruct( size_t offsetIn )
+	{
+		auto& data = static_cast<ExtraData::Struct&>( *pExtraData );
+		assert( data.layoutElements.size() != 0u );
+		offset = AdvanceToBoundary( offsetIn );
+		auto offsetNext = *offset;
+		for ( auto& el : data.layoutElements )
+		{
+			offsetNext = el.second.Finalize( offsetNext );
+		}
+		return offsetNext;
+	}
+	size_t LayoutElement::FinalizeForArray( size_t offsetIn )
+	{
+		auto& data = static_cast<ExtraData::Array&>( *pExtraData );
+		assert( data.size != 0u );
+		offset = AdvanceToBoundary( offsetIn );
+		data.layoutElement->Finalize( *offset );
+		return GetOffsetEnd();
+	}
+	bool LayoutElement::CrossesBoundary( size_t offset, size_t size ) noexcept
+	{
+		const auto end = offset + size;
+		const auto pageStart = offset / 16u;
+		const auto pageEnd = end / 16u;
+		return ( pageStart != pageEnd && end % 16 != 0u ) || size > 16u;
+	}
+	size_t LayoutElement::AdvanceIfCrossesBoundary( size_t offset, size_t size ) noexcept
+	{
+		return CrossesBoundary( offset, size ) ? AdvanceToBoundary( offset ) : offset;
+	}
+	size_t LayoutElement::AdvanceToBoundary( size_t offset ) noexcept
+	{
+		return offset + ( 16u - offset % 16u ) % 16u;
+	}
+	bool LayoutElement::ValidateSymbolName( const std::string& name ) noexcept
+	{
+		// symbols can contain alphanumeric and underscore, must not start with digit
+		return !name.empty() && !std::isdigit( name.front() ) &&
+			std::all_of( name.begin(), name.end(), []( char c ) {
+			return std::isalnum( c ) || c == '_';
+				}
+		);
+	}
+
+
+
+
+	Layout::Layout( std::shared_ptr<LayoutElement> pRoot ) noexcept
+		:
+		pRoot{ std::move( pRoot ) }
+	{}
+	size_t Layout::GetSizeInBytes() const noexcept
+	{
+		return pRoot->GetSizeInBytes();
+	}
+	std::string Layout::GetSignature() const noexcept
+	{
+		return pRoot->GetSignature();
+	}
+
+
+	RawLayout::RawLayout() noexcept
+		:
+		Layout{ std::shared_ptr<LayoutElement>{ new LayoutElement( Struct ) } }
+	{}
+	LayoutElement& RawLayout::operator[]( const std::string& key ) noexcept
+	{
+		return ( *pRoot )[key];
+	}
+	std::shared_ptr<LayoutElement> RawLayout::DeliverRoot() noexcept
+	{
+		auto temp = std::move( pRoot );
+		temp->Finalize( 0 );
+		*this = RawLayout();
+		return std::move( temp );
+	}
+	void RawLayout::ClearRoot() noexcept
+	{
+		*this = RawLayout();
+	}
+
+
+	CookedLayout::CookedLayout( std::shared_ptr<LayoutElement> pRoot ) noexcept
+		:
+		Layout( std::move( pRoot ) )
+	{}
+	std::shared_ptr<LayoutElement> CookedLayout::RelinquishRoot() const noexcept
+	{
+		return std::move( pRoot );
+	}
+	std::shared_ptr<LayoutElement> CookedLayout::ShareRoot() const noexcept
+	{
+		return pRoot;
+	}
+	const LayoutElement& CookedLayout::operator[]( const std::string& key ) const noexcept
+	{
+		return ( *pRoot )[key];
+	}
+
+
+
+
+
+	bool ConstElementRef::Exists() const noexcept
+	{
+		return pLayout->Exists();
+	}
+	ConstElementRef ConstElementRef::operator[]( const std::string& key ) const noexcept
+	{
+		return { &( *pLayout )[key],pBytes,offset };
+	}
+	ConstElementRef ConstElementRef::operator[]( size_t index ) const noexcept
+	{
+		const auto indexingData = pLayout->CalculateIndexingOffset( offset, index );
+		return { indexingData.second,pBytes,indexingData.first };
+	}
+	ConstElementRef::Ptr ConstElementRef::operator&() const noexcept
+	{
+		return Ptr{ this };
+	}
+	ConstElementRef::ConstElementRef( const LayoutElement* pLayout, const char* pBytes, size_t offset ) noexcept
+		:
+		offset( offset ),
+		pLayout( pLayout ),
+		pBytes( pBytes )
+	{}
+	ConstElementRef::Ptr::Ptr( const ConstElementRef* ref ) noexcept : ref( ref )
+	{}
+
+
+	ElementRef::operator ConstElementRef() const noexcept
+	{
+		return { pLayout,pBytes,offset };
+	}
+	bool ElementRef::Exists() const noexcept
+	{
+		return pLayout->Exists();
+	}
+	ElementRef ElementRef::operator[]( const std::string& key ) const noexcept
+	{
+		return { &( *pLayout )[key],pBytes,offset };
+	}
+	ElementRef ElementRef::operator[]( size_t index ) const noexcept
+	{
+		const auto indexingData = pLayout->CalculateIndexingOffset( offset, index );
+		return { indexingData.second,pBytes,indexingData.first };
+	}
+	ElementRef::Ptr ElementRef::operator&() const noexcept
+	{
+		return Ptr{ const_cast<ElementRef*>( this ) };
+	}
+	ElementRef::ElementRef( const LayoutElement* pLayout, char* pBytes, size_t offset ) noexcept
+		:
+		offset( offset ),
+		pLayout( pLayout ),
+		pBytes( pBytes )
+	{}
+	ElementRef::Ptr::Ptr( ElementRef* ref ) noexcept : ref( ref )
+	{}
+
+
+
+
+	Buffer::Buffer( RawLayout&& lay ) noexcept
+		:
+	Buffer( LayoutCodex::Resolve( std::move( lay ) ) )
+	{}
+	Buffer::Buffer( const CookedLayout& lay ) noexcept
+		:
+		pLayoutRoot( lay.ShareRoot() ),
+		bytes( pLayoutRoot->GetOffsetEnd() )
+	{}
+	Buffer::Buffer( CookedLayout&& lay ) noexcept
+		:
+		pLayoutRoot( lay.RelinquishRoot() ),
+		bytes( pLayoutRoot->GetOffsetEnd() )
+	{}
+	Buffer::Buffer( const Buffer& buf ) noexcept
+		:
+		pLayoutRoot( buf.pLayoutRoot ),
+		bytes( buf.bytes )
+	{}
+	Buffer::Buffer( Buffer&& buf ) noexcept
+		:
+		pLayoutRoot( std::move( buf.pLayoutRoot ) ),
+		bytes( std::move( buf.bytes ) )
+	{}
+	ElementRef Buffer::operator[]( const std::string& key ) noexcept
+	{
+		return { &( *pLayoutRoot )[key],bytes.data(),0u };
+	}
+	ConstElementRef Buffer::operator[]( const std::string& key ) const noexcept
+	{
+		return const_cast<Buffer&>( *this )[key];
+	}
+	const char* Buffer::GetData() const noexcept
+	{
+		return bytes.data();
+	}
+	size_t Buffer::GetSizeInBytes() const noexcept
+	{
+		return bytes.size();
+	}
+	const LayoutElement& Buffer::GetRootLayoutElement() const noexcept
+	{
+		return *pLayoutRoot;
+	}
+	void Buffer::CopyFrom( const Buffer& other ) noexcept
+	{
+		assert( &GetRootLayoutElement() == &other.GetRootLayoutElement() );
+		std::copy( other.bytes.begin(), other.bytes.end(), bytes.begin() );
+	}
+	std::shared_ptr<LayoutElement> Buffer::ShareLayoutRoot() const noexcept
+	{
+		return pLayoutRoot;
+	}
 }
-
-#ifndef DCB_IMPL_SOURCE
-#undef LEAF_ELEMENT_TYPES
-#endif

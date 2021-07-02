@@ -196,7 +196,7 @@ namespace Dcb
 		// each element stores its own offset. this makes lookup to find its position in the byte buffer
 		// fast. Special handling is required for situations where arrays are involved
 		std::optional<size_t> offset;
-		Type type = Empty;
+		Dcb::Type type = Empty;
 		std::unique_ptr<ExtraDataBase> pExtraData;
 	};
 

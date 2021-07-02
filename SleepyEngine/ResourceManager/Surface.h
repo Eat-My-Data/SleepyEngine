@@ -2,7 +2,7 @@
 #include "../Win32/Win32Window.h"
 #include <string>
 #include <optional>
-#include "../dxtex/include/dxtex/DirectXTex.h"
+#include <dxtex/DirectXTex.h>
 
 
 class Surface
