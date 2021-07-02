@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "../Utilities/SleepyMath.h"
 #include "../Drawable/Cube.h"
+#include "../ResourceManager/Mesh.h"
 
 class SceneManager
 {

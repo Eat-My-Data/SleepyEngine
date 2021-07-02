@@ -58,18 +58,18 @@
     <Filter Include="Header Files\Utilities">
       <UniqueIdentifier>{d249ce03-c4ae-4ad7-9630-405e8d650b28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GraphicsDeviceInterface">
+      <UniqueIdentifier>{47d7d1cd-f10c-4417-b3c1-c63114b27d78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GraphicsDeviceInterface">
+      <UniqueIdentifier>{1b984509-002d-4dda-9e20-23de4c7393c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="App.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Bindable\Bindable.cpp">
@@ -129,15 +129,33 @@
     <ClCompile Include="Utilities\FrameTimer.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp">
+      <Filter>Source Files\GraphicsDeviceInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp">
+      <Filter>Source Files\GraphicsDeviceInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Mesh.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Surface.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\DynamicConstant.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\LayoutCodex.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\Texture.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\Sampler.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bindable\Bindable.h">
@@ -217,6 +235,36 @@
     </ClInclude>
     <ClInclude Include="Utilities\FrameTimer.h">
       <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h">
+      <Filter>Header Files\GraphicsDeviceInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h">
+      <Filter>Header Files\GraphicsDeviceInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Mesh.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Surface.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\SleepyXM.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffersEx.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\DynamicConstant.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\LayoutCodex.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\Texture.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\Sampler.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
