@@ -66,9 +66,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WinMain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -153,8 +150,11 @@
     <ClCompile Include="Bindable\Bindables\Sampler.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
     </ClCompile>
-    <ClCompile Include="Win32MessageMap.cpp">
+    <ClCompile Include="WinMain.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32\Win32MessageMap.cpp">
+      <Filter>Source Files\Win32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,8 +272,8 @@
     <ClInclude Include="Win32\WinDefines.h">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
-    <ClInclude Include="Win32MessageMap.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Win32\Win32MessageMap.h">
+      <Filter>Header Files\Win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
