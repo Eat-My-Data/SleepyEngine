@@ -281,17 +281,17 @@
     <ClInclude Include="Bindable\Bindables\Sampler.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
-    <ClInclude Include="Win32\WinDefines.h">
-      <Filter>Header Files\Win32</Filter>
-    </ClInclude>
-    <ClInclude Include="Win32\Win32MessageMap.h">
-      <Filter>Header Files\Win32</Filter>
-    </ClInclude>
     <ClInclude Include="Bindable\Bindables\Blender.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
     <ClInclude Include="Shaders\Common\PointLight.hlsl">
       <Filter>Shaders\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Win32\WinDefines.h">
+      <Filter>Header Files\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="Win32\Win32MessageMap.h">
+      <Filter>Header Files\Win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
