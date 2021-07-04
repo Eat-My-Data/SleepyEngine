@@ -1,4 +1,4 @@
-#include "Transform.hlsl"
+#include "./Common/Transform.hlsl"
 
 struct VSOut
 {
@@ -6,7 +6,7 @@ struct VSOut
     float3 normal : NORMAL;
 };
 
-VSOut main(float4 pos : Position, float3 normal : Normal )
+VSOut main(float4 pos : Position, float3 normal : Normal)
 {
     VSOut vso;
     vso.pos = mul(pos, modelViewProj);

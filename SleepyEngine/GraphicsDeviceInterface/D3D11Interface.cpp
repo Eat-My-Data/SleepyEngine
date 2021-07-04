@@ -31,8 +31,8 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
     HRESULT hr;
 
     DXGI_SWAP_CHAIN_DESC sd = {};
-	sd.BufferDesc.Width = 0;
-	sd.BufferDesc.Height = 0;
+	sd.BufferDesc.Width = width;
+	sd.BufferDesc.Height = height;
 	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	sd.BufferDesc.RefreshRate.Numerator = 0;
 	sd.BufferDesc.RefreshRate.Denominator = 0;
@@ -70,23 +70,40 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
     }
 
     ID3D11Resource* pBackBuffer = nullptr;
-    if ( FAILED( hr = m_pSwap->GetBuffer(
-        0,
-        __uuidof( ID3D11Resource ),
-        (void**)&pBackBuffer ) ) )
+    if ( FAILED( hr = m_pSwap->GetBuffer( 0, __uuidof( ID3D11Resource ), (void**)&pBackBuffer ) ) )
     {
         throw std::exception();
     }
 
-    if ( FAILED( hr = m_pDevice->CreateRenderTargetView(
-        pBackBuffer,
-        nullptr,
-        &m_pTarget ) ) )
+    if ( FAILED( hr = m_pDevice->CreateRenderTargetView( pBackBuffer, nullptr, &m_pTarget ) ) )
     {
         throw std::exception();
     }
 
-    m_pContext->OMSetRenderTargets( 1u, &m_pTarget, nullptr );
+    // create depth stensil texture
+    ID3D11Texture2D* pDepthStencil;
+    D3D11_TEXTURE2D_DESC descDepth = {};
+    descDepth.Width = width;
+    descDepth.Height = height;
+    descDepth.MipLevels = 1u;
+    descDepth.ArraySize = 1u;
+    descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    descDepth.SampleDesc.Count = 1u;
+    descDepth.SampleDesc.Quality = 0u;
+    descDepth.Usage = D3D11_USAGE_DEFAULT;
+    descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    m_pDevice->CreateTexture2D( &descDepth, nullptr, &pDepthStencil );
+
+    // create view of depth stenstil texture
+    D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
+    descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+    descDSV.Texture2D.MipSlice = 0u;
+    m_pDevice->CreateDepthStencilView(
+        pDepthStencil, &descDSV, &m_pDSV
+    );
+
+    m_pContext->OMSetRenderTargets( 1u, &m_pTarget, m_pDSV );
     
     D3D11_VIEWPORT vp;
     vp.Width = (float)width;
@@ -116,4 +133,9 @@ ID3D11DeviceContext* D3D11Interface::GetContext() noexcept
 ID3D11RenderTargetView** D3D11Interface::GetTarget() noexcept
 {
     return &m_pTarget;
+}
+
+ID3D11DepthStencilView** D3D11Interface::GetDSV() noexcept
+{
+    return &m_pDSV;
 }

@@ -58,18 +58,24 @@
     <Filter Include="Header Files\Utilities">
       <UniqueIdentifier>{d249ce03-c4ae-4ad7-9630-405e8d650b28}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GraphicsDeviceInterface">
+      <UniqueIdentifier>{47d7d1cd-f10c-4417-b3c1-c63114b27d78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GraphicsDeviceInterface">
+      <UniqueIdentifier>{1b984509-002d-4dda-9e20-23de4c7393c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Common">
+      <UniqueIdentifier>{26c16b0e-c054-4ee3-b3d2-998df90a86e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Deferred">
+      <UniqueIdentifier>{babc56cd-bbcd-4da6-83f5-99bc02353bcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Forward">
+      <UniqueIdentifier>{7ff7ccf7-ce9a-4997-800d-91cc3a7ba04f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WinMain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="App.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Bindable\Bindable.cpp">
@@ -129,15 +135,42 @@
     <ClCompile Include="Utilities\FrameTimer.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp">
+      <Filter>Source Files\GraphicsDeviceInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp">
+      <Filter>Source Files\GraphicsDeviceInterface</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Mesh.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Surface.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\DynamicConstant.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\LayoutCodex.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\Texture.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\Sampler.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Win32\Win32MessageMap.cpp">
+      <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\Blender.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bindable\Bindable.h">
@@ -218,6 +251,48 @@
     <ClInclude Include="Utilities\FrameTimer.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h">
+      <Filter>Header Files\GraphicsDeviceInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h">
+      <Filter>Header Files\GraphicsDeviceInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Mesh.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Surface.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\SleepyXM.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffersEx.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\DynamicConstant.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\LayoutCodex.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\Texture.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\Sampler.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\Blender.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\Common\PointLight.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Win32\WinDefines.h">
+      <Filter>Header Files\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="Win32\Win32MessageMap.h">
+      <Filter>Header Files\Win32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\VertexShader.hlsl">
@@ -226,11 +301,62 @@
     <FxCompile Include="Shaders\PixelShader.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Transform.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="Shaders\Common\Transform.hlsl">
+      <Filter>Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\ShaderUtils.hlsl">
-      <Filter>Shaders</Filter>
+    <FxCompile Include="Shaders\Common\LightVectorData.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\PhongVS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\PhongVSNormalMap.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\PhongVSNotex.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\ShaderOps.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\D_PhongPSSpecNormMask.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\D_PhongPS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\D_PhongPSNormalMap.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\D_PhongPSNotex.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\D_PhongPSSpec.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\D_PhongPSSpecNormalMap.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormMask.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMap.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMapObject.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSNotex.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSSpec.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormalMap.hlsl">
+      <Filter>Shaders\Forward</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

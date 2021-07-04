@@ -61,6 +61,7 @@ ID3D11RenderTargetView** GraphicsDeviceInterface::GetTarget() noexcept
 	return m_D3D11Interface.GetTarget();
 }
 
-// TODO: BEGIN FRAME
-//	float color[4] = { 0.0f,1.0,1.0,1.0f };
-//	gdi.GetContext()->ClearRenderTargetView( gdi.GetTarget(), color );
+ID3D11DepthStencilView** GraphicsDeviceInterface::GetDSV() noexcept
+{
+	return m_D3D11Interface.GetDSV();
+}

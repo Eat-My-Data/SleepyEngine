@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "../Utilities/SleepyMath.h"
 #include "../Drawable/Cube.h"
+#include "../ResourceManager/Mesh.h"
 
 class SceneManager
 {
@@ -22,4 +23,5 @@ private:
 private:
 	// Drawables:
 	std::vector<Cube*> m_vecOfCubes;
+	std::vector<Model*> m_vecOfModels;
 };

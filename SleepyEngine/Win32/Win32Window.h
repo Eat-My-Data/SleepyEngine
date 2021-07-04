@@ -1,9 +1,11 @@
 #pragma once
-#include <Windows.h>
+
+#include "WinDefines.h"
 #include <optional>
 #include "../Utilities/NumericDataTypes.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+
 
 class GraphicsDeviceInterface;
 enum class GraphicsAPI;
