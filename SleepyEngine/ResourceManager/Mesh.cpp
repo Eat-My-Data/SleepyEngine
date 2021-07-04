@@ -181,7 +181,7 @@ private:
 	std::unordered_map<int, NodeData> transforms;
 };
 
-Model::Model( GraphicsDeviceInterface& gfx, const std::string& pathString, const float scale )
+Model::Model( GraphicsDeviceInterface& gfx, const std::string& pathString, bool isForward, const float scale )
 	:
 	pWindow( std::make_unique<ModelWindow>() )
 {
@@ -201,7 +201,7 @@ Model::Model( GraphicsDeviceInterface& gfx, const std::string& pathString, const
 
 	for ( size_t i = 0; i < pScene->mNumMeshes; i++ )
 	{
-		meshPtrs.push_back( ParseMesh( gfx, *pScene->mMeshes[i], pScene->mMaterials, pathString, scale ) );
+		meshPtrs.push_back( ParseMesh( gfx, *pScene->mMeshes[i], pScene->mMaterials, pathString, isForward, scale ) );
 	}
 
 	int nextId = 0;
@@ -230,7 +230,7 @@ void Model::SetRootTransform( DirectX::FXMMATRIX tf ) noexcept
 Model::~Model() noexcept
 {}
 
-std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, float scale )
+std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, bool isForward, float scale )
 {
 	using namespace std::string_literals;
 	using Dvtx::VertexLayout;
@@ -339,9 +339,14 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx,
-			hasAlphaDiffuse ? "../SleepyEngine/Shaders/Bin/PhongPSSpecNormMask.cso" : "../SleepyEngine/Shaders/Bin/F_PhongPSSpecNormalMap.cso"
-		) );
+		if ( isForward )
+			bindablePtrs.push_back( PixelShader::Resolve( gfx,
+				hasAlphaDiffuse ? "../SleepyEngine/Shaders/Bin/F_PhongPSSpecNormMask.cso" : "../SleepyEngine/Shaders/Bin/F_PhongPSSpecNormalMap.cso"
+			) );
+		else
+			bindablePtrs.push_back( PixelShader::Resolve( gfx,
+				hasAlphaDiffuse ? "../SleepyEngine/Shaders/Bin/D_PhongPSSpecNormMask.cso" : "../SleepyEngine/Shaders/Bin/D_PhongPSSpecNormalMap.cso"
+			) );
 
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
@@ -404,7 +409,10 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSNormalMap.cso" ) );
+		if ( isForward )
+			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSNormalMap.cso" ) );
+		else
+			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPSNormalMap.cso" ) );
 
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
@@ -457,7 +465,11 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSSpec.cso" ) );
+		if ( isForward )
+			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSSpec.cso" ) );
+		else
+			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPSSpec.cso" ) );
+
 
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
@@ -510,7 +522,10 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPS.cso" ) );
+		if ( isForward )
+			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPS.cso" ) );
+		else
+			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPS.cso" ) );
 
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
@@ -560,7 +575,10 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSNotex.cso" ) );
+		if ( isForward )
+			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSNotex.cso" ) );
+		else
+			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPSNotex.cso" ) );
 
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 

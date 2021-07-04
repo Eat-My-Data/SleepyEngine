@@ -2,8 +2,8 @@
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 #include "Camera.h"
 #include "../Utilities/SleepyMath.h"
-#include "../Drawable/Cube.h"
 #include "../ResourceManager/Mesh.h"
+#include "../Drawable/DirectionalLight.h"
 
 enum class RenderTechnique
 {
@@ -15,8 +15,8 @@ enum class RenderTechnique
 class SceneManager
 {
 public:
-	SceneManager() = default;;
-	~SceneManager() = default;
+	SceneManager() = default;
+	~SceneManager();
 public:
 	void Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api );
 	bool IsInitialzed() noexcept;
@@ -33,6 +33,6 @@ private:
 	Camera m_Camera = { L"Character Camera", MatrixType::Perspective, ViewSpace( 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ), DirectX::XMFLOAT3{ -13.5f, 10.0f, 3.5f }, 0.0f, PI / 2.0f };
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 private:
-	std::vector<Cube*> m_vecOfCubes;
+	DirectionalLight* m_pDirectionalLight;
 	std::vector<Model*> m_vecOfModels;
 };

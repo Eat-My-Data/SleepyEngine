@@ -168,6 +168,9 @@
     <ClCompile Include="Bindable\Bindables\Blender.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
     </ClCompile>
+    <ClCompile Include="Drawable\DirectionalLight.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -293,6 +296,9 @@
     <ClInclude Include="Win32\Win32MessageMap.h">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
+    <ClInclude Include="Drawable\DirectionalLight.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\VertexShader.hlsl">
@@ -357,6 +363,12 @@
     </FxCompile>
     <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormalMap.hlsl">
       <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\LightVS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\LightPS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
