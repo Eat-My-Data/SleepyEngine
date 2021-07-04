@@ -3,7 +3,9 @@
 App::App()
 	:
 	m_Win32Window( 1280, 720, L"Sleepy Engine" )
-{}
+{
+	m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
+}
 
 u32 App::Launch()
 {
@@ -29,6 +31,7 @@ void App::ExecuteFrame()
 	if ( !m_SceneManager.IsInitialzed() )
 		m_SceneManager.Initialize( m_GDI, GraphicsAPI::DirectX );
 
+		
 	const f32 dt = timer.Mark();
 
 	m_SceneManager.Update( dt );

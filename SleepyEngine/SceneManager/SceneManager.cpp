@@ -19,7 +19,32 @@ bool SceneManager::IsInitialzed() noexcept
 	return m_GraphicsAPI != GraphicsAPI::Uninitialized;
 }
 
+void SceneManager::SetRenderTechnique( RenderTechnique renderTechnique ) noexcept
+{
+	m_RenderTechnique = renderTechnique;
+}
+
 void SceneManager::Draw()
+{
+	if ( m_RenderTechnique == RenderTechnique::Forward )
+		ForwardRender();
+	else if ( m_RenderTechnique == RenderTechnique::Deferred )
+		DeferredRender();
+}
+
+void SceneManager::Update( f32 dt )
+{
+	m_Camera.Rotate( -dt, dt );
+	m_Camera.Translate( { 0.0f, 0.0f, -dt * 0.15f } );
+
+	for ( u32 i = 0; i < m_vecOfCubes.size(); i++ )
+	{
+		m_vecOfCubes[i]->SetPos( { dt, 0.0f, 0.0f }  );
+		m_vecOfCubes[i]->SetRotation( 0.0f, 0.0f, dt );
+	}
+}
+
+void SceneManager::ForwardRender()
 {
 	const float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetTarget(), color );
@@ -66,15 +91,6 @@ void SceneManager::Draw()
 
 	m_pGDI->GetSwap()->Present( 1u, 0u );
 }
-
-void SceneManager::Update( f32 dt )
+void SceneManager::DeferredRender()
 {
-	m_Camera.Rotate( -dt, dt );
-	m_Camera.Translate( { 0.0f, 0.0f, -dt * 0.15f } );
-
-	for ( u32 i = 0; i < m_vecOfCubes.size(); i++ )
-	{
-		m_vecOfCubes[i]->SetPos( { dt, 0.0f, 0.0f }  );
-		m_vecOfCubes[i]->SetRotation( 0.0f, 0.0f, dt );
-	}
 }
