@@ -6,6 +6,7 @@
 #include "../Utilities/SleepyXM.h"
 #include "../Bindable/Bindables/DynamicConstant.h"
 #include "../Bindable/Bindables/ConstantBuffersEx.h"
+#include "../Bindable/Bindables/Blender.h"
 #include "../Bindable/BindableCommon.h"
 #include "../ResourceManager/LayoutCodex.h"
 
@@ -334,11 +335,13 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/VertexShader.cso" );
+		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PhongVSNormalMap.cso" );
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/VertexShader.cso" ) );
+		bindablePtrs.push_back( PixelShader::Resolve( gfx,
+			hasAlphaDiffuse ? "../SleepyEngine/Shaders/Bin/PhongPSSpecNormMask.cso" : "../SleepyEngine/Shaders/Bin/F_PhongPSSpecNormalMap.cso"
+		) );
 
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
@@ -397,11 +400,11 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/VertexShader.cso" );
+		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PhongVSNormalMap.cso" );
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PixelShader.cso" ) );
+		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSNormalMap.cso" ) );
 
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
@@ -450,11 +453,11 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/VertexShader.cso" );
+		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PhongVS.cso" );
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PixelShader.cso" ) );
+		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSSpec.cso" ) );
 
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
@@ -503,11 +506,11 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/VertexShader.cso" );
+		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PhongVS.cso" );
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PixelShader.cso" ) );
+		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPS.cso" ) );
 
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
@@ -553,11 +556,11 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/VertexShader.cso" );
+		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PhongVSNotex.cso" );
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PixelShader.cso" ) );
+		bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSNotex.cso" ) );
 
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
@@ -582,9 +585,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 	// of signalling 2-sidedness to be more general in the future
 	bindablePtrs.push_back( Rasterizer::Resolve( gfx, hasAlphaDiffuse ) );
 
-
-
-	//bindablePtrs.push_back( Blender::Resolve( gfx,false ) );
+	//bindablePtrs.push_back( Blender::Resolve( gfx, false ) );
 
 	return std::make_unique<Mesh>( gfx, std::move( bindablePtrs ) );
 }

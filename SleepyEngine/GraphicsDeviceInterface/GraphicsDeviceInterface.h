@@ -35,6 +35,7 @@ public:
 	ID3D11Device* GetDevice() noexcept;
 	ID3D11DeviceContext* GetContext() noexcept;
 	ID3D11RenderTargetView** GetTarget() noexcept;
+	ID3D11DepthStencilView** GetDSV() noexcept;
 private:
 	D3D11Interface m_D3D11Interface;
 	GraphicsAPI m_GraphicsAPI = GraphicsAPI::Uninitialized;

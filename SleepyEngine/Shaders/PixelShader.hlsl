@@ -1,4 +1,4 @@
-float4 main(float4 pos : SV_POSITION, float3 normal : NORMAL) : SV_TARGET
+float4 main(float4 pos : Position, float3 normal : NORMAL) : SV_TARGET
 { 
     float4 output;
     

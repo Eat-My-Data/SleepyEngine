@@ -17,9 +17,11 @@ public:
 	ID3D11Device* GetDevice() noexcept;
 	ID3D11DeviceContext* GetContext() noexcept;
 	ID3D11RenderTargetView** GetTarget() noexcept;
+	ID3D11DepthStencilView** GetDSV() noexcept;
 private:
 	IDXGISwapChain* m_pSwap;
 	ID3D11Device* m_pDevice;
 	ID3D11DeviceContext* m_pContext;
 	ID3D11RenderTargetView* m_pTarget;
+	ID3D11DepthStencilView* m_pDSV;
 };
