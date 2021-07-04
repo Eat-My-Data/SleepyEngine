@@ -2,6 +2,7 @@
 #include "Cube.h"
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/Sampler.h"
+#include "../Bindable/Bindables/Blender.h"
 
 DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gfx )
 {
@@ -27,21 +28,12 @@ DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gfx )
 	AddBind( Rasterizer::Resolve( gfx, true ) );
 }
 
-void DirectionalLight::SetDirection( DirectX::XMFLOAT3 direction ) noexcept
-{
-	// don't need to change directional light's direction
-}
-
-void DirectionalLight::SpawnControlWindow( GraphicsDeviceInterface& gfx ) noexcept
-{
-}
-
 DirectX::XMMATRIX DirectionalLight::GetTransformXM() const noexcept
 {
 	return DirectX::XMMatrixTranslation( 1.0f, 1.0f, 1.0f );
 }
 
-void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix )
+void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos )
 {
 	// get camera matrix from view matrix
 	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( viewMatrix );
@@ -54,7 +46,7 @@ void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XM
 	lbuf.projInvMatrix = projInvMatrix;
 	pcs->Update( gdi, lbuf );
 
-	cambuf.camPos = DirectX::XMFLOAT3( cameraMatrix.r[3].m128_f32[0], cameraMatrix.r[3].m128_f32[1], cameraMatrix.r[3].m128_f32[2] );
+	cambuf.camPos = camPos;
 	pcs2->Update( gdi, cambuf );
 }
 

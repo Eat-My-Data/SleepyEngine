@@ -73,6 +73,9 @@
     <Filter Include="Shaders\Forward">
       <UniqueIdentifier>{7ff7ccf7-ce9a-4997-800d-91cc3a7ba04f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ResourceManager\Geometry">
+      <UniqueIdentifier>{189dbe2f-49a1-4267-8d80-8987fe12d306}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -169,6 +172,9 @@
       <Filter>Source Files\Bindable\Bindables</Filter>
     </ClCompile>
     <ClCompile Include="Drawable\DirectionalLight.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable\PointLight.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
@@ -299,6 +305,12 @@
     <ClInclude Include="Drawable\DirectionalLight.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="Drawable\PointLight.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Geometry\Sphere.h">
+      <Filter>Header Files\ResourceManager\Geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\VertexShader.hlsl">
@@ -368,6 +380,12 @@
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Deferred\LightPS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\PointLightVS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\PointLightPS.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
   </ItemGroup>

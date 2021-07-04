@@ -181,7 +181,7 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 	dsDesc.DepthEnable = TRUE;
 	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	hr = m_pDevice->CreateDepthStencilState( &dsDesc, &m_pDSSGBuffer );
+	hr = m_pDevice->CreateDepthStencilState( &dsDesc, &m_pGBufferDSS );
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();
@@ -191,7 +191,7 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 	dsDescLight.DepthEnable = FALSE;
 	dsDescLight.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	dsDesc.DepthFunc = D3D11_COMPARISON_NEVER;
-	hr = m_pDevice->CreateDepthStencilState( &dsDescLight, &m_pDSSLighting );
+	hr = m_pDevice->CreateDepthStencilState( &dsDescLight, &m_pLightingDSS );
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();
@@ -281,12 +281,17 @@ ID3D11BlendState* D3D11Interface::GetBlendState() noexcept
 	return m_pBlendState;
 }
 
-ID3D11DepthStencilView* D3D11Interface::GetDSV_ReadOnly() noexcept
+ID3D11DepthStencilView** D3D11Interface::GetDSV_ReadOnly() noexcept
 {
-	return m_pDSV_ReadOnly;
+	return &m_pDSV_ReadOnly;
 }
 
 ID3D11DepthStencilState* D3D11Interface::GetLightDSS() noexcept
 {
-	return m_pDSSLighting;
+	return m_pLightingDSS;
+}
+
+ID3D11DepthStencilState* D3D11Interface::GetGBufferDSS() noexcept
+{
+	return m_pGBufferDSS;
 }

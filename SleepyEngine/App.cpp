@@ -31,7 +31,6 @@ void App::ExecuteFrame()
 	if ( !m_SceneManager.IsInitialzed() )
 		m_SceneManager.Initialize( m_GDI, GraphicsAPI::DirectX );
 
-		
 	const f32 dt = timer.Mark();
 
 	m_SceneManager.Update( dt );

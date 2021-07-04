@@ -17,7 +17,12 @@ Camera::Camera( const wchar_t* name, MatrixType matrixType, ViewSpace viewSpace,
 Camera::~Camera()
 {}
 
-DirectX::XMMATRIX Camera::GetViewMatrix()
+DirectX::XMFLOAT3 Camera::GetPosition() noexcept
+{
+	return m_Pos;
+}
+
+DirectX::XMMATRIX Camera::GetViewMatrix() noexcept
 {
 	using namespace DirectX;
 
@@ -34,7 +39,7 @@ DirectX::XMMATRIX Camera::GetViewMatrix()
 	return XMMatrixLookAtLH( camPosition, camTarget, XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
 }
 
-DirectX::XMMATRIX Camera::GetProjectionMatrix()
+DirectX::XMMATRIX Camera::GetProjectionMatrix() noexcept
 {
 	if ( m_MatrixType == MatrixType::Perspective )
 		return GeneratePerpectiveProjectionMatrix( m_ViewSpace.width, m_ViewSpace.height, m_ViewSpace.nearZ, m_ViewSpace.farZ );

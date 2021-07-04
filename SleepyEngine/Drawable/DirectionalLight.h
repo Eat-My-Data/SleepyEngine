@@ -6,10 +6,8 @@ class DirectionalLight : public Drawable
 {
 public:
 	DirectionalLight( GraphicsDeviceInterface& gfx );
-	void SetDirection( DirectX::XMFLOAT3 direction ) noexcept;
-	void SpawnControlWindow( GraphicsDeviceInterface& gfx ) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	void UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix );
+	void UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos );
 	void Draw( GraphicsDeviceInterface& gdi ) const noexcept;
 private:
 	struct LightBufferType

@@ -3,7 +3,7 @@
 
 SceneManager::~SceneManager()
 {
-//	delete m_pDirectionalLight;
+	delete m_pDirectionalLight;
 }
 
 void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
@@ -13,6 +13,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
 	m_pDirectionalLight = new DirectionalLight( gdi );
+	m_pPointLight = new PointLight( gdi, 10.0f );
 }
 
 bool SceneManager::IsInitialzed() noexcept
@@ -36,7 +37,7 @@ void SceneManager::Draw()
 void SceneManager::Update( f32 dt )
 {
 	m_Camera.Rotate( -dt, dt );
-	m_Camera.Translate( { 0.0f, 0.0f, -dt * 0.15f } );
+	m_Camera.Translate( { 0.0f, 0.0f, dt * 0.15f } );
 }
 
 void SceneManager::ForwardRender()
@@ -91,15 +92,17 @@ void SceneManager::DeferredRender()
 	m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetTarget(), color );
 	m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetGBuffers(), color );
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
+	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
+
+	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
 
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 
-	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), m_pGDI->GetDSV_ReadOnly() );
 	m_vecOfModels[1]->Draw( *m_pGDI );
 
 	// directional light
-	m_pGDI->GetContext()->OMSetRenderTargets( 1, m_pGDI->GetTarget(), m_pGDI->GetDSV_ReadOnly() );
+	m_pGDI->GetContext()->OMSetRenderTargets( 1, m_pGDI->GetTarget(), *m_pGDI->GetDSV_ReadOnly() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetLightDSS(), 1u );
 
 	const float blendFactor[4] = { 1.f, 1.f, 1.f, 1.f };
@@ -108,9 +111,15 @@ void SceneManager::DeferredRender()
 	m_pGDI->GetContext()->PSSetShaderResources( 0, 3, m_pGDI->GetShaderResources() );
 	m_pGDI->GetContext()->PSSetShaderResources( 3, 1, m_pGDI->GetDepthResource() );
 	
-	m_pDirectionalLight->UpdateCBuffers( *m_pGDI, m_Camera.GetViewMatrix(), m_Camera.GetProjectionMatrix() );
+	m_pDirectionalLight->UpdateCBuffers( *m_pGDI, m_Camera.GetViewMatrix(), m_Camera.GetProjectionMatrix(),m_Camera.GetPosition() );
 	m_pDirectionalLight->Draw( *m_pGDI );
 
+	// point light
+	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
+	m_pPointLight->UpdateCBuffers( *m_pGDI, m_Camera.GetViewMatrix(), m_Camera.GetProjectionMatrix(), m_Camera.GetPosition() );
+	m_pPointLight->Draw( *m_pGDI, m_Camera.GetPosition() );
+
+	// present
 	m_pGDI->GetSwap()->Present( 1u, 0u );
 
 	// clear shader resources

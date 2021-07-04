@@ -86,7 +86,7 @@ ID3D11BlendState* GraphicsDeviceInterface::GetBlendState()
 	return m_D3D11Interface.GetBlendState();
 }
 
-ID3D11DepthStencilView* GraphicsDeviceInterface::GetDSV_ReadOnly() noexcept
+ID3D11DepthStencilView** GraphicsDeviceInterface::GetDSV_ReadOnly() noexcept
 {
 	return m_D3D11Interface.GetDSV_ReadOnly();
 }
@@ -94,4 +94,9 @@ ID3D11DepthStencilView* GraphicsDeviceInterface::GetDSV_ReadOnly() noexcept
 ID3D11DepthStencilState* GraphicsDeviceInterface::GetLightDSS() noexcept
 {
 	return m_D3D11Interface.GetLightDSS();
+}
+
+ID3D11DepthStencilState* GraphicsDeviceInterface::GetBufferDSS() noexcept
+{
+	return m_D3D11Interface.GetGBufferDSS();
 }
