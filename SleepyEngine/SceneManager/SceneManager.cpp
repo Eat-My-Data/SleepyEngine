@@ -3,7 +3,7 @@
 
 SceneManager::~SceneManager()
 {
-	delete m_pDirectionalLight;
+	//delete m_pDirectionalLight;
 }
 
 void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
@@ -106,12 +106,21 @@ void SceneManager::DeferredRender()
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 
-	// initial forward render
+	// gbuffers
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
 	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
 	m_vecOfModels[1]->Draw( *m_pGDI );
 
+	// shadow map
+	m_pGDI->SetViewMatrix( m_DirectionalLightOrthoCamera.GetViewMatrix() );
+	m_pGDI->SetProjMatrix( m_DirectionalLightOrthoCamera.GetProjectionMatrix() );
+	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
+	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV() );
+	m_vecOfModels[0]->Draw( *m_pGDI );
+
 	// directional light
+	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
+	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	m_pGDI->GetContext()->OMSetRenderTargets( 1, m_pGDI->GetTarget(), *m_pGDI->GetDSV_ReadOnly() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetLightDSS(), 1u );
 
@@ -120,6 +129,7 @@ void SceneManager::DeferredRender()
 
 	m_pGDI->GetContext()->PSSetShaderResources( 0, 3, m_pGDI->GetShaderResources() );
 	m_pGDI->GetContext()->PSSetShaderResources( 3, 1, m_pGDI->GetDepthResource() );
+	m_pGDI->GetContext()->PSSetShaderResources( 4, 1, m_pGDI->GetShadowResource() );
 	
 	m_pDirectionalLight->UpdateCBuffers( *m_pGDI, m_Camera.GetViewMatrix(), m_Camera.GetProjectionMatrix(),m_Camera.GetPosition() );
 	m_pDirectionalLight->Draw( *m_pGDI );
@@ -130,6 +140,6 @@ void SceneManager::DeferredRender()
 	m_pPointLight->Draw( *m_pGDI, m_Camera.GetPosition() );
 
 	// clear shader resources
-	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr };
-	m_pGDI->GetContext()->PSSetShaderResources( 0, 4, null );
+	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr, nullptr };
+	m_pGDI->GetContext()->PSSetShaderResources( 0, 5, null );
 }
