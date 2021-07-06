@@ -4,7 +4,7 @@ App::App()
 	:
 	m_Win32Window( 1280, 720, L"Sleepy Engine" )
 {
-	m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
+	m_SceneManager.SetRenderTechnique( RenderTechnique::Deferred );
 }
 
 u32 App::Launch()
@@ -60,6 +60,7 @@ void App::ExecuteFrame()
 
 	if ( !m_Win32Window.CursorEnabled() )
 	{
+		f32 rotato = 500.f;
 		if ( m_Win32Window.m_Kbd.KeyIsPressed( 'W' ) )
 			m_SceneManager.TranslateCamera( { 0.0f,0.0f,dt }  );
 		if ( m_Win32Window.m_Kbd.KeyIsPressed( 'A' ) )
@@ -72,13 +73,21 @@ void App::ExecuteFrame()
 			m_SceneManager.TranslateCamera( { 0.0f,dt,0.0f } );
 		if ( m_Win32Window.m_Kbd.KeyIsPressed( 'F' ) )
 			m_SceneManager.TranslateCamera( { 0.0f,-dt,0.0f } );
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_UP ) )
+			m_SceneManager.RotateCamera( 0.0f, -dt * rotato );
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_DOWN ) )
+			m_SceneManager.RotateCamera( 0.0f, dt * rotato );
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_RIGHT ) )
+			m_SceneManager.RotateCamera( dt * rotato, 0.0f );
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_LEFT ) )
+			m_SceneManager.RotateCamera( -dt * rotato, 0.0f );
 	}
 
-	while ( const auto delta = m_Win32Window.m_Mouse.ReadRawDelta() )
+	/*while ( const auto delta = m_Win32Window.m_Mouse.ReadRawDelta() )
 	{
 		if ( !m_Win32Window.CursorEnabled() )
 			m_SceneManager.RotateCamera( (f32)delta->x, (f32)delta->y );
-	} 
+	} */
 
 	m_SceneManager.Present();
 }
