@@ -65,3 +65,48 @@ ID3D11DepthStencilView** GraphicsDeviceInterface::GetDSV() noexcept
 {
 	return m_D3D11Interface.GetDSV();
 }
+
+ID3D11RenderTargetView** GraphicsDeviceInterface::GetGBuffers() noexcept
+{
+	return m_D3D11Interface.GetGBuffers();
+}
+
+ID3D11ShaderResourceView** GraphicsDeviceInterface::GetShaderResources() noexcept
+{
+	return m_D3D11Interface.GetShaderResources();
+}
+
+ID3D11ShaderResourceView** GraphicsDeviceInterface::GetDepthResource() noexcept
+{
+	return  m_D3D11Interface.GetDepthResource();
+}
+
+ID3D11ShaderResourceView** GraphicsDeviceInterface::GetShadowResource() noexcept
+{
+	return m_D3D11Interface.GetShadowResource();
+}
+
+ID3D11BlendState* GraphicsDeviceInterface::GetBlendState()
+{
+	return m_D3D11Interface.GetBlendState();
+}
+
+ID3D11DepthStencilView** GraphicsDeviceInterface::GetDSV_ReadOnly() noexcept
+{
+	return m_D3D11Interface.GetDSV_ReadOnly();
+}
+
+ID3D11DepthStencilState* GraphicsDeviceInterface::GetLightDSS() noexcept
+{
+	return m_D3D11Interface.GetLightDSS();
+}
+
+ID3D11DepthStencilState* GraphicsDeviceInterface::GetBufferDSS() noexcept
+{
+	return m_D3D11Interface.GetGBufferDSS();
+}
+
+ID3D11DepthStencilView** GraphicsDeviceInterface::GetShadowDSV() noexcept
+{
+	return m_D3D11Interface.GetShadowDSV();
+}

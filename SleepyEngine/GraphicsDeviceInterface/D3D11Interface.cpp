@@ -70,31 +70,104 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
     }
 
     ID3D11Resource* pBackBuffer = nullptr;
-    if ( FAILED( hr = m_pSwap->GetBuffer( 0, __uuidof( ID3D11Resource ), (void**)&pBackBuffer ) ) )
-    {
-        throw std::exception();
-    }
+	m_pSwap->GetBuffer( 0, __uuidof( ID3D11Resource ), (void**)&pBackBuffer );
+	m_pDevice->CreateRenderTargetView( pBackBuffer, nullptr, &m_pTarget );
 
-    if ( FAILED( hr = m_pDevice->CreateRenderTargetView( pBackBuffer, nullptr, &m_pTarget ) ) )
-    {
-        throw std::exception();
-    }
+	D3D11_TEXTURE2D_DESC textureDesc = {};
+	textureDesc.Width = width;
+	textureDesc.Height = height;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.MiscFlags = 0;
 
-    // create depth stensil texture
+	for ( int i = 0; i < bufferCount; i++ )
+	{
+		HRESULT result = m_pDevice->CreateTexture2D( &textureDesc, NULL, &m_pTextures[i] );
+		if ( FAILED( result ) )
+		{
+			throw std::exception();
+		}
+	}
+
+	D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = {};
+	renderTargetViewDesc.Format = textureDesc.Format;
+	renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	renderTargetViewDesc.Texture2D.MipSlice = 0;
+
+	for ( int i = 0; i < bufferCount; i++ )
+	{
+		HRESULT result = m_pDevice->CreateRenderTargetView( m_pTextures[i], &renderTargetViewDesc, &m_pGBuffers[i] );
+		if ( FAILED( result ) )
+		{
+			throw std::exception();
+		}
+	}
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc = {};
+	shaderResourceViewDesc.Format = textureDesc.Format;
+	shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+	shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+	for ( int i = 0; i < bufferCount; i++ )
+	{
+		HRESULT result = m_pDevice->CreateShaderResourceView( m_pTextures[i], &shaderResourceViewDesc, &m_pShaderResources[i] );
+		if ( FAILED( result ) )
+		{
+			throw std::exception();
+		}
+	}
+
+	D3D11_BLEND_DESC blendDescDR;
+	ZeroMemory( &blendDescDR, sizeof( blendDescDR ) );
+	blendDescDR.AlphaToCoverageEnable = false;
+	blendDescDR.IndependentBlendEnable = false;
+	blendDescDR.RenderTarget[0].BlendEnable = true;
+	blendDescDR.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+	blendDescDR.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+	blendDescDR.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendDescDR.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendDescDR.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+	blendDescDR.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendDescDR.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	hr = m_pDevice->CreateBlendState( &blendDescDR, &m_pBlendState );
+
+	D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+	dsDesc.DepthEnable = TRUE;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+	hr = m_pDevice->CreateDepthStencilState( &dsDesc, &m_pGBufferDSS );
+	if ( FAILED( hr ) )
+	{
+		throw std::exception();
+	}
+
+	D3D11_DEPTH_STENCIL_DESC dsDescLight = {};
+	dsDescLight.DepthEnable = FALSE;
+	dsDescLight.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	dsDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+	hr = m_pDevice->CreateDepthStencilState( &dsDescLight, &m_pLightingDSS );
+
     ID3D11Texture2D* pDepthStencil;
     D3D11_TEXTURE2D_DESC descDepth = {};
     descDepth.Width = width;
     descDepth.Height = height;
     descDepth.MipLevels = 1u;
     descDepth.ArraySize = 1u;
-    descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    descDepth.Format = DXGI_FORMAT_R24G8_TYPELESS;
     descDepth.SampleDesc.Count = 1u;
     descDepth.SampleDesc.Quality = 0u;
     descDepth.Usage = D3D11_USAGE_DEFAULT;
-    descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
     m_pDevice->CreateTexture2D( &descDepth, nullptr, &pDepthStencil );
 
-    // create view of depth stenstil texture
+	m_pDevice->CreateTexture2D( &descDepth, nullptr, &m_pShadowTexture );
+
     D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
     descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
     descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
@@ -103,8 +176,33 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
         pDepthStencil, &descDSV, &m_pDSV
     );
 
-    m_pContext->OMSetRenderTargets( 1u, &m_pTarget, m_pDSV );
-    
+	m_pDevice->CreateDepthStencilView(
+		m_pShadowTexture, &descDSV, &m_pShadowDSV
+	);
+
+	descDSV.Flags = D3D11_DSV_READ_ONLY_DEPTH;
+	m_pDevice->CreateDepthStencilView(
+		pDepthStencil, &descDSV, &m_pDSV_ReadOnly
+	);
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC depthShaderResourceDesc = {};
+	depthShaderResourceDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+	depthShaderResourceDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	depthShaderResourceDesc.Texture2D.MostDetailedMip = 0;
+	depthShaderResourceDesc.Texture2D.MipLevels = 1;
+	hr = m_pDevice->CreateShaderResourceView( pDepthStencil, &depthShaderResourceDesc, &m_pDepthResource );
+	if ( FAILED( hr ) )
+	{
+		throw std::exception();
+	}
+
+	hr = m_pDevice->CreateShaderResourceView( m_pShadowTexture, &depthShaderResourceDesc, &m_pShadowSRV );
+	if ( FAILED( hr ) )
+	{
+		throw std::exception();
+	}
+
+	// viewport
     D3D11_VIEWPORT vp;
     vp.Width = (float)width;
     vp.Height = (float)height;
@@ -138,4 +236,49 @@ ID3D11RenderTargetView** D3D11Interface::GetTarget() noexcept
 ID3D11DepthStencilView** D3D11Interface::GetDSV() noexcept
 {
     return &m_pDSV;
+}
+
+ID3D11RenderTargetView** D3D11Interface::GetGBuffers() noexcept
+{
+	return m_pGBuffers;
+}
+
+ID3D11ShaderResourceView** D3D11Interface::GetShaderResources() noexcept
+{
+	return m_pShaderResources;
+}
+
+ID3D11ShaderResourceView** D3D11Interface::GetDepthResource() noexcept
+{
+	return &m_pDepthResource;
+}
+
+ID3D11ShaderResourceView** D3D11Interface::GetShadowResource() noexcept
+{
+	return &m_pShadowSRV;
+}
+
+ID3D11BlendState* D3D11Interface::GetBlendState() noexcept
+{
+	return m_pBlendState;
+}
+
+ID3D11DepthStencilView** D3D11Interface::GetDSV_ReadOnly() noexcept
+{
+	return &m_pDSV_ReadOnly;
+}
+
+ID3D11DepthStencilState* D3D11Interface::GetLightDSS() noexcept
+{
+	return m_pLightingDSS;
+}
+
+ID3D11DepthStencilState* D3D11Interface::GetGBufferDSS() noexcept
+{
+	return m_pGBufferDSS;
+}
+
+ID3D11DepthStencilView** D3D11Interface::GetShadowDSV() noexcept
+{
+	return &m_pShadowDSV;
 }

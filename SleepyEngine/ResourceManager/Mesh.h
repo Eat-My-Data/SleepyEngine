@@ -49,13 +49,13 @@ private:
 class Model
 {
 public:
-	Model( GraphicsDeviceInterface& gfx, const std::string& pathString, float scale = 1.0f );
+	Model( GraphicsDeviceInterface& gfx, const std::string& pathString, bool isForward, float scale = 1.0f );
 	void Draw( GraphicsDeviceInterface& gfx ) const noexcept;
 	void ShowWindow( GraphicsDeviceInterface& gfx, const char* windowName = nullptr ) noexcept;
 	void SetRootTransform( DirectX::FXMMATRIX tf ) noexcept;
 	~Model() noexcept;
 private:
-	static std::unique_ptr<Mesh> ParseMesh( GraphicsDeviceInterface& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, float scale );
+	static std::unique_ptr<Mesh> ParseMesh( GraphicsDeviceInterface& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, bool isForward, float scale );
 	std::unique_ptr<Node> ParseNode( int& nextId, const aiNode& node ) noexcept;
 private:
 	std::unique_ptr<Node> pRoot;

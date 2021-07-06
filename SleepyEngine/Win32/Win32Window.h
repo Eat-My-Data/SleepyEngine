@@ -35,10 +35,18 @@ public:
 public:
 	static std::optional<u32> ProcessMessages() noexcept;
 	void InitializeGraphics( GraphicsDeviceInterface& graphicsInterface, GraphicsAPI api );
+	void EnableCursor() noexcept;
+	void DisableCursor() noexcept;
+	bool CursorEnabled() noexcept;
 private:
 	static LRESULT CALLBACK HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 	static LRESULT WINAPI HandleMsgThunk( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
 	LRESULT HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept;
+private:
+	void ConfineCursor() noexcept;
+	void FreeCursor() noexcept;
+	void HideCursor() noexcept;
+	void ShowCursor() noexcept;
 public:
 	Keyboard m_Kbd;
 	Mouse m_Mouse;
@@ -46,4 +54,7 @@ private:
 	HWND m_hWnd;
 	u32 m_iWidth;
 	u32 m_iHeight;
+	bool m_bCursorEnabled = true;
+	std::vector<BYTE> m_RawMouseBuffer;
+
 };
