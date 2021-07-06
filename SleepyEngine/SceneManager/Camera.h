@@ -26,7 +26,7 @@ public:
 	DirectX::XMMATRIX GetViewMatrix() noexcept;
 	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
 	void Reset() noexcept;
-	void Rotate( f32 dx, f32 dy ) noexcept;
+	void Rotate( const f32 dx, const f32 dy ) noexcept;
 	void Translate( DirectX::XMFLOAT3 translation ) noexcept;
 private:
 	DirectX::XMMATRIX GeneratePerpectiveProjectionMatrix( f32 width, f32 height, f32 nearZ, f32 farZ );

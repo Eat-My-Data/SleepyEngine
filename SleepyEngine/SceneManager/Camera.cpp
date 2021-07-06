@@ -54,7 +54,7 @@ void Camera::Reset() noexcept
 	m_fYaw = m_fHomeYaw;
 }
 
-void Camera::Rotate( f32 dx, f32 dy ) noexcept
+void Camera::Rotate( const f32 dx, const f32 dy ) noexcept
 {
 	m_fYaw = wrap_angle( m_fYaw + dx * m_fRotationSpeed );
 	m_fPitch = std::clamp( m_fPitch + dy * m_fRotationSpeed, 0.995f * -PI / 2.0f, 0.995f * PI / 2.0f );

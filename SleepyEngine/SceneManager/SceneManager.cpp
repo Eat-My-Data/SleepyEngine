@@ -34,10 +34,19 @@ void SceneManager::Draw()
 		DeferredRender();
 }
 
-void SceneManager::Update( f32 dt )
+void SceneManager::Present()
 {
-	m_Camera.Rotate( -dt, dt );
-	m_Camera.Translate( { 0.0f, 0.0f, dt * 0.15f } );
+	m_pGDI->GetSwap()->Present( 1u, 0u );
+}
+
+void SceneManager::RotateCamera( const f32 dx, const f32 dy )
+{
+	m_Camera.Rotate( dx, dy );
+}
+
+void SceneManager::TranslateCamera( DirectX::XMFLOAT3 camDelta )
+{
+	m_Camera.Translate( camDelta );
 }
 
 void SceneManager::ForwardRender()
@@ -81,24 +90,25 @@ void SceneManager::ForwardRender()
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 
 	m_vecOfModels[0]->Draw( *m_pGDI );
-
-	m_pGDI->GetSwap()->Present( 1u, 0u );
 }
 
 void SceneManager::DeferredRender()
 {
-	// initial forward render
+	// setup
 	const float color[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetTarget(), color );
-	m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetGBuffers(), color );
+	for ( int i = 0; i < 3; i++ )
+	{
+		m_pGDI->GetContext()->ClearRenderTargetView( m_pGDI->GetGBuffers()[i], color );
+	}
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
-	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
-
-	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
 
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 
+	// initial forward render
+	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
+	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
 	m_vecOfModels[1]->Draw( *m_pGDI );
 
 	// directional light
@@ -118,9 +128,6 @@ void SceneManager::DeferredRender()
 	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
 	m_pPointLight->UpdateCBuffers( *m_pGDI, m_Camera.GetViewMatrix(), m_Camera.GetProjectionMatrix(), m_Camera.GetPosition() );
 	m_pPointLight->Draw( *m_pGDI, m_Camera.GetPosition() );
-
-	// present
-	m_pGDI->GetSwap()->Present( 1u, 0u );
 
 	// clear shader resources
 	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr };

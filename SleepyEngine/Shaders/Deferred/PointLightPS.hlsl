@@ -74,7 +74,7 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
 
     // diffuse
-    float3 diffuseColor = Diffuse(colors.rgb, diffuseIntensity, att, lv.dirToL / radius, normalize(normals.xyz));
+    float3 diffuseColor = Diffuse(colors.rgb, diffuseIntensity, att, -lv.dirToL / radius, normalize(normals.xyz));
     
     // specular
     float3 specularResult = Speculate(specular.xyz, specularIntensity, normalize(normals.xyz), lv.dirToL / radius, camToFrag, att, specularPower);

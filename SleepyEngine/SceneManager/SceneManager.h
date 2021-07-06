@@ -24,7 +24,9 @@ public:
 	void SetRenderTechnique( RenderTechnique renderTechnique ) noexcept;
 public:
 	void Draw();
-	void Update( f32 dt );
+	void Present();
+	void RotateCamera( const f32 dx, const f32 dy );
+	void TranslateCamera( DirectX::XMFLOAT3 camDelta );
 private:
 	void ForwardRender();
 	void DeferredRender();
