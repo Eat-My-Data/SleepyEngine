@@ -7,12 +7,12 @@ class DirectionalLight : public Drawable
 public:
 	DirectionalLight( GraphicsDeviceInterface& gfx );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	void UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos );
+	void UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX lightViewMatrix, DirectX::XMMATRIX lightProjectionMatrix, DirectX::XMFLOAT3 camPos );
 	void Draw( GraphicsDeviceInterface& gdi ) const noexcept;
 private:
 	struct LightBufferType
 	{
-		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, -1.0f };
+		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
 		float padding;
 		float specularIntensity = 1.0f;
 		float att = 0.5f;
@@ -26,6 +26,7 @@ private:
 	{
 		DirectX::XMFLOAT3 camPos;
 		float padding3;
+		DirectX::XMMATRIX lightMatrix;
 	} cambuf;
 	std::shared_ptr<Bind::PixelConstantBuffer<CamPosBuffer>> pcs2;
 };

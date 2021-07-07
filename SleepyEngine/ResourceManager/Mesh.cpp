@@ -23,10 +23,13 @@ Mesh::Mesh( GraphicsDeviceInterface& gfx, std::vector<std::shared_ptr<Bind::Bind
 
 	AddBind( std::make_shared<Bind::TransformCbuf>( gfx, *this ) );
 }
-void Mesh::Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept
+void Mesh::Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept
 {
 	DirectX::XMStoreFloat4x4( &transform, accumulatedTransform );
-	Drawable::Draw( gfx );
+	if ( !isDepthPass )
+		Drawable::Draw( gfx );
+	else
+		Drawable::DrawDepth( gfx );
 }
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 {
@@ -45,7 +48,7 @@ Node::Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, const 
 	dx::XMStoreFloat4x4( &appliedTransform, dx::XMMatrixIdentity() );
 }
 
-void Node::Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept
+void Node::Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept
 {
 	const auto built =
 		dx::XMLoadFloat4x4( &appliedTransform ) *
@@ -53,11 +56,11 @@ void Node::Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTra
 		accumulatedTransform;
 	for ( const auto pm : meshPtrs )
 	{
-		pm->Draw( gfx, built );
+		pm->Draw( gfx, built, isDepthPass );
 	}
 	for ( const auto& pc : childPtrs )
 	{
-		pc->Draw( gfx, built );
+		pc->Draw( gfx, built, isDepthPass );
 	}
 }
 
@@ -208,13 +211,13 @@ Model::Model( GraphicsDeviceInterface& gfx, const std::string& pathString, bool 
 	pRoot = ParseNode( nextId, *pScene->mRootNode );
 }
 
-void Model::Draw( GraphicsDeviceInterface& gfx ) const noexcept
+void Model::Draw( GraphicsDeviceInterface& gfx, bool isDepthPass ) const noexcept
 {
 	// I'm still not happy about updating parameters (i.e. mutating a bindable GPU state
 	// which is part of a mesh which is part of a node which is part of the model that is
 	// const in this call) Can probably do this elsewhere
 	pWindow->ApplyParameters();
-	pRoot->Draw( gfx, dx::XMMatrixIdentity() );
+	pRoot->Draw( gfx, dx::XMMatrixIdentity(), isDepthPass );
 }
 
 void Model::ShowWindow( GraphicsDeviceInterface& gfx, const char* windowName ) noexcept

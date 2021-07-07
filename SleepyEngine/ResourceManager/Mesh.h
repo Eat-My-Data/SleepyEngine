@@ -17,7 +17,7 @@ class Mesh : public Drawable
 {
 public:
 	Mesh( GraphicsDeviceInterface& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs );
-	void Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept;
+	void Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 private:
 	mutable DirectX::XMFLOAT4X4 transform;
@@ -28,7 +28,7 @@ class Node
 	friend class Model;
 public:
 	Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform ) noexcept;
-	void Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept;
+	void Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept;
 	void SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept;
 	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 	int GetId() const noexcept;
@@ -50,7 +50,7 @@ class Model
 {
 public:
 	Model( GraphicsDeviceInterface& gfx, const std::string& pathString, bool isForward, float scale = 1.0f );
-	void Draw( GraphicsDeviceInterface& gfx ) const noexcept;
+	void Draw( GraphicsDeviceInterface& gfx, bool isDepthPass ) const noexcept;
 	void ShowWindow( GraphicsDeviceInterface& gfx, const char* windowName = nullptr ) noexcept;
 	void SetRootTransform( DirectX::FXMMATRIX tf ) noexcept;
 	~Model() noexcept;

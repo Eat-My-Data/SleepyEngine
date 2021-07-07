@@ -33,19 +33,21 @@ DirectX::XMMATRIX DirectionalLight::GetTransformXM() const noexcept
 	return DirectX::XMMatrixTranslation( 1.0f, 1.0f, 1.0f );
 }
 
-void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos )
+void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX lightViewMatrix, DirectX::XMMATRIX lightProjectionMatrix, DirectX::XMFLOAT3 camPos )
 {
 	// get camera matrix from view matrix
-	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( viewMatrix );
-	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, viewMatrix );
+	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
+	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, gdi.GetViewMatrix() );
 	lbuf.cameraMatrix = cameraMatrix;
 
 	// get inverse of the projection matrix
-	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( projectionMatrix );
-	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, projectionMatrix );
+	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( gdi.GetProjMatrix() );
+	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, gdi.GetProjMatrix() );
 	lbuf.projInvMatrix = projInvMatrix;
 	pcs->Update( gdi, lbuf );
 
+
+	cambuf.lightMatrix =  DirectX::XMMatrixMultiply( lightViewMatrix, lightProjectionMatrix );
 	cambuf.camPos = camPos;
 	pcs2->Update( gdi, cambuf );
 }

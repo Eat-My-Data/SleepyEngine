@@ -24,8 +24,6 @@ cbuffer CamPosBuffer : register(b1)
 {
     float3 camPos;
     float padding3;
-    float3 lightPos;
-    float padding4;
     row_major float4x4 lightMatrix;
 };
 
@@ -58,7 +56,7 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     float fragDepth = fragPositionInLightView.z / fragPositionInLightView.w;
     float sampleDepth = depthTextureFromLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f) + 0.5f).r;
     
-    //return float4(sampleDepth, 0.0f, 0.0f, 1.0f);
+    //return float4(fragDepth, 0.0f, 0.0f, 1.0f);
     if (sampleDepth < fragDepth)
     {
         // placeholder shadow
