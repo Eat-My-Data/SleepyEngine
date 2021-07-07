@@ -2,6 +2,7 @@
 #include <d3d11.h>
 #include "../Utilities/NumericDataTypes.h"
 #include <DirectXMath.h>
+#include <wrl.h>
 
 
 class D3D11Interface
@@ -35,6 +36,7 @@ private:
 	ID3D11RenderTargetView* m_pTarget;
 	ID3D11DepthStencilView* m_pDSV;
 private:
+	ID3D11Resource* pBackBuffer;
 	static const int bufferCount = 3;
 	ID3D11RenderTargetView* m_pGBuffers[bufferCount];
 	ID3D11Texture2D* m_pTextures[bufferCount];
@@ -46,7 +48,8 @@ private:
 	ID3D11DepthStencilState* m_pLightingDSS;
 	ID3D11DepthStencilView* m_pDSV_ReadOnly;
 private:
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> pDepthStencil;
 	ID3D11DepthStencilView* m_pShadowDSV;
-	ID3D11Texture2D* m_pShadowTexture;
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pShadowTexture;
 	ID3D11ShaderResourceView* m_pShadowSRV;
 };

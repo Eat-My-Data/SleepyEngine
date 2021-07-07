@@ -102,11 +102,11 @@ void SceneManager::DeferredRender()
 		m_pGDI->GetContext()->ClearRenderTargetView( m_pGDI->GetGBuffers()[i], color );
 	}
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
-
-	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
-	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
+	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 
 	// gbuffers
+	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
+	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
 	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
 	m_vecOfModels[1]->Draw( *m_pGDI, false );
@@ -116,25 +116,25 @@ void SceneManager::DeferredRender()
 	m_pGDI->SetProjMatrix( m_DirectionalLightOrthoCamera.GetProjectionMatrix() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
 	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV() );
-	m_vecOfModels[0]->Draw( *m_pGDI, true );
+	m_vecOfModels[1]->Draw( *m_pGDI, true );
 
 
-	// above is working 
-	// 
-	// 
 	// directional light
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
+
 	m_pGDI->GetContext()->OMSetRenderTargets( 1, m_pGDI->GetTarget(), *m_pGDI->GetDSV_ReadOnly() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetLightDSS(), 1u );
 
-	const float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
+	//const float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	//m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
 
 	m_pGDI->GetContext()->PSSetShaderResources( 0, 3, m_pGDI->GetShaderResources() );
 	m_pGDI->GetContext()->PSSetShaderResources( 3, 1, m_pGDI->GetDepthResource() );
+
+	// this isn't being set correctly
 	m_pGDI->GetContext()->PSSetShaderResources( 4, 1, m_pGDI->GetShadowResource() );
-	
+
 	m_pDirectionalLight->UpdateCBuffers( *m_pGDI, m_DirectionalLightOrthoCamera.GetViewMatrix(), m_DirectionalLightOrthoCamera.GetProjectionMatrix(), m_Camera.GetPosition() );
 	m_pDirectionalLight->Draw( *m_pGDI );
 

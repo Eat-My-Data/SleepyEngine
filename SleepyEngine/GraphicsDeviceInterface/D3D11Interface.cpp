@@ -69,10 +69,6 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
         throw std::exception();
     }
 
-    ID3D11Resource* pBackBuffer = nullptr;
-	m_pSwap->GetBuffer( 0, __uuidof( ID3D11Resource ), (void**)&pBackBuffer );
-	m_pDevice->CreateRenderTargetView( pBackBuffer, nullptr, &m_pTarget );
-
 	D3D11_TEXTURE2D_DESC textureDesc = {};
 	textureDesc.Width = width;
 	textureDesc.Height = height;
@@ -98,6 +94,9 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 	renderTargetViewDesc.Format = textureDesc.Format;
 	renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	renderTargetViewDesc.Texture2D.MipSlice = 0;
+
+	m_pSwap->GetBuffer( 0, __uuidof( ID3D11Resource ), (void**)&pBackBuffer );
+	m_pDevice->CreateRenderTargetView( pBackBuffer, nullptr, &m_pTarget );
 
 	for ( int i = 0; i < bufferCount; i++ )
 	{
@@ -153,7 +152,6 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 	dsDesc.DepthFunc = D3D11_COMPARISON_NEVER;
 	hr = m_pDevice->CreateDepthStencilState( &dsDescLight, &m_pLightingDSS );
 
-    ID3D11Texture2D* pDepthStencil;
     D3D11_TEXTURE2D_DESC descDepth = {};
     descDepth.Width = width;
     descDepth.Height = height;
@@ -172,31 +170,33 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
     descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
     descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
     descDSV.Texture2D.MipSlice = 0u;
-    m_pDevice->CreateDepthStencilView(
-        pDepthStencil, &descDSV, &m_pDSV
-    );
+    hr = m_pDevice->CreateDepthStencilView( pDepthStencil.Get(), &descDSV, &m_pDSV );
+	if ( FAILED( hr ) )
+	{
+		throw std::exception();
+	}
 
-	m_pDevice->CreateDepthStencilView(
-		m_pShadowTexture, &descDSV, &m_pShadowDSV
-	);
+	hr = m_pDevice->CreateDepthStencilView( m_pShadowTexture.Get(), &descDSV, &m_pShadowDSV );
+	if ( FAILED( hr ) )
+	{
+		throw std::exception();
+	}
 
 	descDSV.Flags = D3D11_DSV_READ_ONLY_DEPTH;
-	m_pDevice->CreateDepthStencilView(
-		pDepthStencil, &descDSV, &m_pDSV_ReadOnly
-	);
+	m_pDevice->CreateDepthStencilView( pDepthStencil.Get(), &descDSV, &m_pDSV_ReadOnly );
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC depthShaderResourceDesc = {};
 	depthShaderResourceDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
 	depthShaderResourceDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	depthShaderResourceDesc.Texture2D.MostDetailedMip = 0;
 	depthShaderResourceDesc.Texture2D.MipLevels = 1;
-	hr = m_pDevice->CreateShaderResourceView( pDepthStencil, &depthShaderResourceDesc, &m_pDepthResource );
+	hr = m_pDevice->CreateShaderResourceView( pDepthStencil.Get(), &depthShaderResourceDesc, &m_pDepthResource );
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();
 	}
 
-	hr = m_pDevice->CreateShaderResourceView( m_pShadowTexture, &depthShaderResourceDesc, &m_pShadowSRV );
+	hr = m_pDevice->CreateShaderResourceView( m_pShadowTexture.Get(), &depthShaderResourceDesc, &m_pShadowSRV );
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();
