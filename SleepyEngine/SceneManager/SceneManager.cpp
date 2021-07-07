@@ -122,19 +122,13 @@ void SceneManager::DeferredRender()
 	// directional light
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
-
+	const float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
 	m_pGDI->GetContext()->OMSetRenderTargets( 1, m_pGDI->GetTarget(), *m_pGDI->GetDSV_ReadOnly() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetLightDSS(), 1u );
-
-	//const float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	//m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
-
 	m_pGDI->GetContext()->PSSetShaderResources( 0, 3, m_pGDI->GetShaderResources() );
 	m_pGDI->GetContext()->PSSetShaderResources( 3, 1, m_pGDI->GetDepthResource() );
-
-	// this isn't being set correctly
 	m_pGDI->GetContext()->PSSetShaderResources( 4, 1, m_pGDI->GetShadowResource() );
-
 	m_pDirectionalLight->UpdateCBuffers( *m_pGDI, m_DirectionalLightOrthoCamera.GetViewMatrix(), m_DirectionalLightOrthoCamera.GetProjectionMatrix(), m_Camera.GetPosition() );
 	m_pDirectionalLight->Draw( *m_pGDI );
 

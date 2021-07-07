@@ -170,33 +170,33 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
     descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
     descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
     descDSV.Texture2D.MipSlice = 0u;
-    hr = m_pDevice->CreateDepthStencilView( pDepthStencil.Get(), &descDSV, &m_pDSV );
+    hr = m_pDevice->CreateDepthStencilView( pDepthStencil, &descDSV, &m_pDSV );
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();
 	}
 
-	hr = m_pDevice->CreateDepthStencilView( m_pShadowTexture.Get(), &descDSV, &m_pShadowDSV );
+	hr = m_pDevice->CreateDepthStencilView( m_pShadowTexture, &descDSV, &m_pShadowDSV );
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();
 	}
 
 	descDSV.Flags = D3D11_DSV_READ_ONLY_DEPTH;
-	m_pDevice->CreateDepthStencilView( pDepthStencil.Get(), &descDSV, &m_pDSV_ReadOnly );
+	m_pDevice->CreateDepthStencilView( pDepthStencil, &descDSV, &m_pDSV_ReadOnly );
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC depthShaderResourceDesc = {};
 	depthShaderResourceDesc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
 	depthShaderResourceDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	depthShaderResourceDesc.Texture2D.MostDetailedMip = 0;
 	depthShaderResourceDesc.Texture2D.MipLevels = 1;
-	hr = m_pDevice->CreateShaderResourceView( pDepthStencil.Get(), &depthShaderResourceDesc, &m_pDepthResource );
+	hr = m_pDevice->CreateShaderResourceView( pDepthStencil, &depthShaderResourceDesc, &m_pDepthResource );
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();
 	}
 
-	hr = m_pDevice->CreateShaderResourceView( m_pShadowTexture.Get(), &depthShaderResourceDesc, &m_pShadowSRV );
+	hr = m_pDevice->CreateShaderResourceView( m_pShadowTexture, &depthShaderResourceDesc, &m_pShadowSRV );
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();

@@ -46,7 +46,6 @@ void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XM
 	lbuf.projInvMatrix = projInvMatrix;
 	pcs->Update( gdi, lbuf );
 
-
 	cambuf.lightMatrix =  DirectX::XMMatrixMultiply( lightViewMatrix, lightProjectionMatrix );
 	cambuf.camPos = camPos;
 	pcs2->Update( gdi, cambuf );
