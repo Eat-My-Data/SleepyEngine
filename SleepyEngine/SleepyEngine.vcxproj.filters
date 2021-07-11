@@ -197,9 +197,6 @@
     <ClInclude Include="Drawable\Cube.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager\SceneManager.h">
-      <Filter>Header Files\SceneManager</Filter>
-    </ClInclude>
     <ClInclude Include="SceneManager\Camera.h">
       <Filter>Header Files\SceneManager</Filter>
     </ClInclude>
@@ -310,6 +307,12 @@
     </ClInclude>
     <ClInclude Include="ResourceManager\Geometry\Sphere.h">
       <Filter>Header Files\ResourceManager\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTechnique.h">
+      <Filter>Header Files\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager\RenderTechnique.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -230,6 +230,7 @@
     <ClInclude Include="Drawable\PointLight.h" />
     <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h" />
     <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h" />
+    <ClInclude Include="RenderTechnique.h" />
     <ClInclude Include="ResourceManager\Color.h" />
     <ClInclude Include="ResourceManager\Geometry\Sphere.h" />
     <ClInclude Include="ResourceManager\IndexedTriangleList.h" />
@@ -238,7 +239,7 @@
     <ClInclude Include="ResourceManager\Surface.h" />
     <ClInclude Include="ResourceManager\Vertex.h" />
     <ClInclude Include="SceneManager\Camera.h" />
-    <ClInclude Include="SceneManager\SceneManager.h" />
+    <ClInclude Include="SceneManager\RenderTechnique.h" />
     <ClInclude Include="Utilities\FrameTimer.h" />
     <ClInclude Include="Utilities\NumericDataTypes.h" />
     <ClInclude Include="Utilities\SleepyMath.h" />

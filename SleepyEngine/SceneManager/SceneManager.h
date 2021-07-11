@@ -5,13 +5,8 @@
 #include "../ResourceManager/Mesh.h"
 #include "../Drawable/DirectionalLight.h"
 #include "../Drawable/PointLight.h"
+#include "./RenderTechnique.h"
 
-enum class RenderTechnique
-{
-	Uninitialized,
-	Forward,
-	Deferred
-};
 
 class SceneManager
 {
@@ -37,7 +32,8 @@ private:
 	Camera m_DirectionalLightOrthoCamera = { L"Directional Light Camera", MatrixType::Orthographic, ViewSpace( 400.0f, 400.0f, 1.0f, 1200.0f ), DirectX::XMFLOAT3{ 0.0f,200.8f,100.0f },  PI / 2.0f, -PI };
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 private:
-	DirectionalLight* m_pDirectionalLight;
+	DirectionalLight* m_pForwardDirectionalLight;
+	DirectionalLight* m_pDeferredDirectionalLight;
 	PointLight* m_pPointLight;
 	std::vector<Model*> m_vecOfModels;
 };

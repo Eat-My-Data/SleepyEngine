@@ -1,11 +1,12 @@
 #pragma once
 #include "Drawable.h"
 #include "../Bindable/Bindables/ConstantBuffers.h"
+#include "../SceneManager/RenderTechnique.h"
 
 class DirectionalLight : public Drawable
 {
 public:
-	DirectionalLight( GraphicsDeviceInterface& gfx );
+	DirectionalLight( GraphicsDeviceInterface& gfx, RenderTechnique renderTechnique );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX lightViewMatrix, DirectX::XMMATRIX lightProjectionMatrix, DirectX::XMFLOAT3 camPos );
 	void Draw( GraphicsDeviceInterface& gdi ) const noexcept;

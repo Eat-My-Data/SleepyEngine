@@ -4,29 +4,28 @@
 #include "../Bindable/Bindables/Sampler.h"
 #include "../Bindable/Bindables/Blender.h"
 
-DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gfx )
+DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gfx, RenderTechnique renderTechnique )
 {
 	using namespace Bind;
 	namespace dx = DirectX;
 
-	auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/LightVS.cso" );
-
-	auto pvsbc = pvs->GetBytecode();
-	AddBind( std::move( pvs ) );
-
-	AddBind( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/LightPS.cso" ) );\
-	AddBind( Sampler::Resolve( gfx ) );
-
 	pcs = PixelConstantBuffer<LightBufferType>::Resolve( gfx, lbuf, 0u );
 	AddBind( pcs );
-
 	pcs2 = PixelConstantBuffer<CamPosBuffer>::Resolve( gfx, cambuf, 1u );
 	AddBind( pcs2 );
 
-	AddBind( Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-	//AddBind( Blender::Resolve( gfx, true ) );
-	AddBind( Rasterizer::Resolve( gfx, true ) );
+	if ( renderTechnique == RenderTechnique::Deferred )
+	{
+		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/LightVS.cso" );
+		auto pvsbc = pvs->GetBytecode();
+		AddBind( std::move( pvs ) );
+		AddBind( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/LightPS.cso" ) );
+		AddBind( Sampler::Resolve( gfx ) );
+		AddBind( Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+		AddBind( Rasterizer::Resolve( gfx, true ) );
+	}
 }
+
 
 DirectX::XMMATRIX DirectionalLight::GetTransformXM() const noexcept
 {
