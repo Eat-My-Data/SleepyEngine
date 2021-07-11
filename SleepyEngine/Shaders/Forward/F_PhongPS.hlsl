@@ -13,9 +13,8 @@ Texture2D tex;
 Texture2D depthFromLight : register(t4);
 SamplerState splr;
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord, float4 lightViewPos : SV_Position) : SV_Target
 {
-    
     
 	// renormalize interpolated normal
     viewNormal = normalize(viewNormal);

@@ -1,4 +1,10 @@
-#include "Transform.hlsl"
+#include "../Common/Transform.hlsl"
+
+cbuffer LightViewProjection
+{
+    row_major matrix lightView;
+    row_major matrix lightProj;
+}; 
 
 struct VSOut
 {
@@ -7,6 +13,7 @@ struct VSOut
     float3 tan : Tangent;
     float3 bitan : Bitangent;
     float2 tc : Texcoord;
+    float4 lightViewPos : Position2;
     float4 pos : SV_Position;
 };
 
@@ -18,6 +25,9 @@ VSOut main(float3 pos : Position, float3 n : Normal, float3 tan : Tangent, float
     vso.tan = mul(tan, (float3x3) modelView);
     vso.bitan = mul(bitan, (float3x3) modelView);    
     vso.pos = mul(float4(pos, 1.0f), modelViewProj);
+    vso.lightViewPos = mul(float4(pos, 1.0f), model);
+    vso.lightViewPos = mul(vso.lightViewPos, lightView);
+    vso.lightViewPos = mul(vso.lightViewPos, lightProj);
     vso.tc = tc;
     return vso;
 }

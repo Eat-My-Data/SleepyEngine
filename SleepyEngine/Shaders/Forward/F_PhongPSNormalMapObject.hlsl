@@ -13,11 +13,11 @@ cbuffer ObjectCBuf
 
 Texture2D tex;
 Texture2D nmap : register(t2);
-Texture2D depthFromLight : register(t4);
+Texture2D depthTextureFromLight : register(t4);
 SamplerState splr;
 
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord, float4 lightViewPos : Position2) : SV_Target
 {
 	// sample normal from map if normal mapping enabled
     if (normalMapEnabled)
@@ -39,6 +39,16 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         specularIntensity.rrr, 1.0f, viewNormal, lv.vToL,
         viewFragPos, att, specularPower
     );
+    
+    float fragDepth = lightViewPos.z / lightViewPos.w;
+    float sampleDepth = depthTextureFromLight.Sample(splr, ((lightViewPos.xy / lightViewPos.w) / 2.0f) + 0.5f).r;
+    
+    if (sampleDepth < fragDepth)
+    {
+        // placeholder shadow
+        return float4(diffuse, 1.0f) * float4(.2, .2, .2, 1.0);
+    }
+    
    	// final color
 	return float4( saturate( (diffuse + ambient) * tex.Sample( splr, tc ).rgb + specular ), 1.0f );
 } 

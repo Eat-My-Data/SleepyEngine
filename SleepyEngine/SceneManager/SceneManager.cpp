@@ -105,29 +105,35 @@ void SceneManager::ForwardRender()
 	// bind view project matrix to vertex buffer for forward
 	struct DirectionalLightMatrix
 	{
-		DirectX::XMMATRIX lightViewProjectionMatrix;
+		DirectX::XMMATRIX lightViewMatrix;
+		DirectX::XMMATRIX lightProjMatrix;
+
 	} dlcbuf;
 
-	dlcbuf.lightViewProjectionMatrix = DirectX::XMMatrixMultiply( m_DirectionalLightOrthoCamera.GetViewMatrix(), m_DirectionalLightOrthoCamera.GetProjectionMatrix() );
+	dlcbuf.lightViewMatrix = m_DirectionalLightOrthoCamera.GetViewMatrix();
+	dlcbuf.lightProjMatrix = m_DirectionalLightOrthoCamera.GetProjectionMatrix();
 
 	D3D11_BUFFER_DESC dlcbd;
 	dlcbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	dlcbd.Usage = D3D11_USAGE_DYNAMIC;
 	dlcbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 	dlcbd.MiscFlags = 0u;
-	dlcbd.ByteWidth = sizeof( DirectX::XMMATRIX );
+	dlcbd.ByteWidth = sizeof( DirectionalLightMatrix );
 	dlcbd.StructureByteStride = 0u;
 	ID3D11Buffer* pConstantBuffer2;
 
 	D3D11_SUBRESOURCE_DATA InitData2;
-	InitData.pSysMem = &dlcbuf;
-	InitData.SysMemPitch = 0;
-	InitData.SysMemSlicePitch = 0;
+	InitData2.pSysMem = &dlcbuf;
+	InitData2.SysMemPitch = 0;
+	InitData2.SysMemSlicePitch = 0;
 
 	m_pGDI->GetDevice()->CreateBuffer( &dlcbd, &InitData2, &pConstantBuffer2 );
 	m_pGDI->GetContext()->VSSetConstantBuffers( 1u, 1u, &pConstantBuffer2 );
 
 	m_vecOfModels[0]->Draw( *m_pGDI, false );
+
+	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr, nullptr };
+	m_pGDI->GetContext()->PSSetShaderResources( 0, 5, null );
 }
 
 void SceneManager::DeferredRender()

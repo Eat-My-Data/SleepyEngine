@@ -328,15 +328,6 @@
     <FxCompile Include="Shaders\Common\LightVectorData.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\PhongVS.hlsl">
-      <Filter>Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Common\PhongVSNormalMap.hlsl">
-      <Filter>Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Common\PhongVSNotex.hlsl">
-      <Filter>Shaders\Common</Filter>
-    </FxCompile>
     <FxCompile Include="Shaders\Common\ShaderOps.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
@@ -390,6 +381,24 @@
     </FxCompile>
     <FxCompile Include="Shaders\Deferred\PointLightPS.hlsl">
       <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\D_PhongVSNotex.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\D_PhongVS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\D_PhongVSNormalMap.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongVS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongVSNormalMap.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongVSNotex.hlsl">
+      <Filter>Shaders\Forward</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

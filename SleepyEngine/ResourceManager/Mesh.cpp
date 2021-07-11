@@ -343,15 +343,26 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		bindablePtrs.push_back( std::move( pvs ) );
 
 		if ( isForward )
+		{
+			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongVSNormalMap.cso" );
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back( std::move( pvs ) );
 			bindablePtrs.push_back( PixelShader::Resolve( gfx,
 				hasAlphaDiffuse ? "../SleepyEngine/Shaders/Bin/F_PhongPSSpecNormMask.cso" : "../SleepyEngine/Shaders/Bin/F_PhongPSSpecNormalMap.cso"
 			) );
+			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		}
 		else
+		{
+			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongVSNormalMap.cso" );
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back( std::move( pvs ) );
 			bindablePtrs.push_back( PixelShader::Resolve( gfx,
 				hasAlphaDiffuse ? "../SleepyEngine/Shaders/Bin/D_PhongPSSpecNormMask.cso" : "../SleepyEngine/Shaders/Bin/D_PhongPSSpecNormalMap.cso"
 			) );
+			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
-		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		}
 
 		Dcb::RawLayout lay;
 		lay.Add<Dcb::Bool>( "normalMapEnabled" );
@@ -408,16 +419,22 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PhongVSNormalMap.cso" );
-		auto pvsbc = pvs->GetBytecode();
-		bindablePtrs.push_back( std::move( pvs ) );
-
 		if ( isForward )
+		{
+			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongVSNormalMap.cso" );
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back( std::move( pvs ) );
 			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSNormalMap.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		}
 		else
+		{
+			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongVSNormalMap.cso" );
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back( std::move( pvs ) );
 			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPSNormalMap.cso" ) );
-
-		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		}
 
 		Dcb::RawLayout layout;
 		layout.Add<Dcb::Float>( "specularIntensity" );
@@ -464,17 +481,22 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PhongVS.cso" );
-		auto pvsbc = pvs->GetBytecode();
-		bindablePtrs.push_back( std::move( pvs ) );
-
 		if ( isForward )
+		{
+			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongVS.cso" );
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back( std::move( pvs ) );
 			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSSpec.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		}
 		else
+		{
+			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongVS.cso" );
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back( std::move( pvs ) );
 			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPSSpec.cso" ) );
-
-
-		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		}
 
 		Dcb::RawLayout lay;
 		lay.Add<Dcb::Float>( "specularPower" );
@@ -521,16 +543,22 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PhongVS.cso" );
-		auto pvsbc = pvs->GetBytecode();
-		bindablePtrs.push_back( std::move( pvs ) );
-
 		if ( isForward )
+		{
+			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongVS.cso" );
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back( std::move( pvs ) );
 			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPS.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		}
 		else
+		{
+			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongVS.cso" );
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back( std::move( pvs ) );
 			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPS.cso" ) );
-
-		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		}
 
 		Dcb::RawLayout lay;
 		lay.Add<Dcb::Float>( "specularIntensity" );
@@ -574,16 +602,22 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PhongVSNotex.cso" );
-		auto pvsbc = pvs->GetBytecode();
-		bindablePtrs.push_back( std::move( pvs ) );
-
 		if ( isForward )
+		{
+			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongVSNotex.cso" );
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back( std::move( pvs ) );
 			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSNotex.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		}
 		else
+		{
+			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongVSNotex.cso" );
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back( std::move( pvs ) );
 			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPSNotex.cso" ) );
-
-		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+		}
 
 		Dcb::RawLayout lay;
 		lay.Add<Dcb::Float4>( "materialColor" );
@@ -594,6 +628,8 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		buf["specularPower"] = shininess;
 		buf["specularColor"] = specularColor;
 		buf["materialColor"] = diffuseColor;
+
+		bindablePtrs.push_back( Bind::Sampler::Resolve( gfx ) );
 
 		bindablePtrs.push_back( std::make_unique<Bind::CachingPixelConstantBufferEX>( gfx, buf, 1u ) );
 	}
