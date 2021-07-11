@@ -107,7 +107,6 @@ void SceneManager::ForwardRender()
 	{
 		DirectX::XMMATRIX lightViewMatrix;
 		DirectX::XMMATRIX lightProjMatrix;
-
 	} dlcbuf;
 
 	dlcbuf.lightViewMatrix = m_DirectionalLightOrthoCamera.GetViewMatrix();

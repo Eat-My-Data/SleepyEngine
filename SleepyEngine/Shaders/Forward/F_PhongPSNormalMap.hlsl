@@ -43,7 +43,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     if (sampleDepth < fragDepth)
     {
         // placeholder shadow
-        return float4(diffuse, 1.0f) * float4(.2, .2, .2, 1.0);
+        return float4(saturate((diffuse + ambient) * tex.Sample(splr, tc).rgb + specular), 1.0f) * float4(.2, .2, .2, 1.0);
     }
     
 	// final color

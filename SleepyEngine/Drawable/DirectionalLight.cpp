@@ -24,6 +24,11 @@ DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gfx, RenderTechniqu
 		AddBind( Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 		AddBind( Rasterizer::Resolve( gfx, true ) );
 	}
+	else if ( renderTechnique == RenderTechnique::Forward )
+	{
+		pcs3 = PixelConstantBuffer<DirectionalLightDirection>::Resolve( gfx, dlcbuf, 1u );
+		AddBind( pcs3 );
+	}
 }
 
 
