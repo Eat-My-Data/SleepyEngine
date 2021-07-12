@@ -8,7 +8,7 @@ namespace Bind
 	public:
 		Sampler( GraphicsDeviceInterface& gdi );
 		void Bind( GraphicsDeviceInterface& gdi ) noexcept override;
-		static std::shared_ptr<Sampler> Resolve( GraphicsDeviceInterface& gfx );
+		static std::shared_ptr<Sampler> Resolve( GraphicsDeviceInterface& gdi );
 		static std::string GenerateUID();
 		std::string GetUID() const noexcept override;
 	protected:

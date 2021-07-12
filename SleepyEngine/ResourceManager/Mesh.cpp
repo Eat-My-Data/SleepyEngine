@@ -12,24 +12,24 @@
 
 namespace dx = DirectX;
 
-Mesh::Mesh( GraphicsDeviceInterface& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs )
+Mesh::Mesh( GraphicsDeviceInterface& gdi, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs )
 {
-	AddBind( Bind::Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+	AddBind( Bind::Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
 	for ( auto& pb : bindPtrs )
 	{
 		AddBind( std::move( pb ) );
 	}
 
-	AddBind( std::make_shared<Bind::TransformCbuf>( gfx, *this ) );
+	AddBind( std::make_shared<Bind::TransformCbuf>( gdi, *this ) );
 }
-void Mesh::Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept
+void Mesh::Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept
 {
 	DirectX::XMStoreFloat4x4( &transform, accumulatedTransform );
 	if ( !isDepthPass )
-		Drawable::Draw( gfx );
+		Drawable::Draw( gdi );
 	else
-		Drawable::DrawDepth( gfx );
+		Drawable::DrawDepth( gdi );
 }
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 {
@@ -48,7 +48,7 @@ Node::Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, const 
 	dx::XMStoreFloat4x4( &appliedTransform, dx::XMMatrixIdentity() );
 }
 
-void Node::Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept
+void Node::Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept
 {
 	const auto built =
 		dx::XMLoadFloat4x4( &appliedTransform ) *
@@ -56,11 +56,11 @@ void Node::Draw( GraphicsDeviceInterface& gfx, DirectX::FXMMATRIX accumulatedTra
 		accumulatedTransform;
 	for ( const auto pm : meshPtrs )
 	{
-		pm->Draw( gfx, built, isDepthPass );
+		pm->Draw( gdi, built, isDepthPass );
 	}
 	for ( const auto& pc : childPtrs )
 	{
-		pc->Draw( gfx, built, isDepthPass );
+		pc->Draw( gdi, built, isDepthPass );
 	}
 }
 
@@ -111,7 +111,7 @@ int Node::GetId() const noexcept
 class ModelWindow // pImpl idiom, only defined in this .cpp
 {
 public:
-	void Show( GraphicsDeviceInterface& gfx, const char* windowName, const Node& root ) noexcept
+	void Show( GraphicsDeviceInterface& gdi, const char* windowName, const Node& root ) noexcept
 	{
 	}
 	void ApplyParameters() noexcept
@@ -184,7 +184,7 @@ private:
 	std::unordered_map<int, NodeData> transforms;
 };
 
-Model::Model( GraphicsDeviceInterface& gfx, const std::string& pathString, bool isForward, const float scale )
+Model::Model( GraphicsDeviceInterface& gdi, const std::string& pathString, bool isForward, const float scale )
 	:
 	pWindow( std::make_unique<ModelWindow>() )
 {
@@ -204,25 +204,25 @@ Model::Model( GraphicsDeviceInterface& gfx, const std::string& pathString, bool 
 
 	for ( size_t i = 0; i < pScene->mNumMeshes; i++ )
 	{
-		meshPtrs.push_back( ParseMesh( gfx, *pScene->mMeshes[i], pScene->mMaterials, pathString, isForward, scale ) );
+		meshPtrs.push_back( ParseMesh( gdi, *pScene->mMeshes[i], pScene->mMaterials, pathString, isForward, scale ) );
 	}
 
 	int nextId = 0;
 	pRoot = ParseNode( nextId, *pScene->mRootNode );
 }
 
-void Model::Draw( GraphicsDeviceInterface& gfx, bool isDepthPass ) const noexcept
+void Model::Draw( GraphicsDeviceInterface& gdi, bool isDepthPass ) const noexcept
 {
 	// I'm still not happy about updating parameters (i.e. mutating a bindable GPU state
 	// which is part of a mesh which is part of a node which is part of the model that is
 	// const in this call) Can probably do this elsewhere
 	pWindow->ApplyParameters();
-	pRoot->Draw( gfx, dx::XMMatrixIdentity(), isDepthPass );
+	pRoot->Draw( gdi, dx::XMMatrixIdentity(), isDepthPass );
 }
 
-void Model::ShowWindow( GraphicsDeviceInterface& gfx, const char* windowName ) noexcept
+void Model::ShowWindow( GraphicsDeviceInterface& gdi, const char* windowName ) noexcept
 {
-	pWindow->Show( gfx, windowName, *pRoot );
+	pWindow->Show( gdi, windowName, *pRoot );
 }
 
 void Model::SetRootTransform( DirectX::FXMMATRIX tf ) noexcept
@@ -233,7 +233,7 @@ void Model::SetRootTransform( DirectX::FXMMATRIX tf ) noexcept
 Model::~Model() noexcept
 {}
 
-std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, bool isForward, float scale )
+std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gdi, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, bool isForward, float scale )
 {
 	using namespace std::string_literals;
 	using Dvtx::VertexLayout;
@@ -259,7 +259,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		if ( material.GetTexture( aiTextureType_DIFFUSE, 0, &texFileName ) == aiReturn_SUCCESS )
 		{
-			auto tex = Texture::Resolve( gfx, rootPath + texFileName.C_Str() );
+			auto tex = Texture::Resolve( gdi, rootPath + texFileName.C_Str() );
 			hasAlphaDiffuse = tex->HasAlpha();
 			bindablePtrs.push_back( std::move( tex ) );
 			hasDiffuseMap = true;
@@ -271,7 +271,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		if ( material.GetTexture( aiTextureType_SPECULAR, 0, &texFileName ) == aiReturn_SUCCESS )
 		{
-			auto tex = Texture::Resolve( gfx, rootPath + texFileName.C_Str(), 1 );
+			auto tex = Texture::Resolve( gdi, rootPath + texFileName.C_Str(), 1 );
 			hasAlphaGloss = tex->HasAlpha();
 			bindablePtrs.push_back( std::move( tex ) );
 			hasSpecularMap = true;
@@ -287,7 +287,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		if ( material.GetTexture( aiTextureType_NORMALS, 0, &texFileName ) == aiReturn_SUCCESS )
 		{
-			auto tex = Texture::Resolve( gfx, rootPath + texFileName.C_Str(), 2 );
+			auto tex = Texture::Resolve( gdi, rootPath + texFileName.C_Str(), 2 );
 			hasAlphaGloss = tex->HasAlpha();
 			bindablePtrs.push_back( std::move( tex ) );
 			hasNormalMap = true;
@@ -295,7 +295,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 		if ( hasDiffuseMap || hasSpecularMap || hasNormalMap )
 		{
-			bindablePtrs.push_back( Bind::Sampler::Resolve( gfx ) );
+			bindablePtrs.push_back( Bind::Sampler::Resolve( gdi ) );
 		}
 	}
 
@@ -334,33 +334,33 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 			indices.push_back( face.mIndices[2] );
 		}
 
-		bindablePtrs.push_back( VertexBuffer::Resolve( gfx, meshTag, vbuf ) );
+		bindablePtrs.push_back( VertexBuffer::Resolve( gdi, meshTag, vbuf ) );
 
-		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
+		bindablePtrs.push_back( IndexBuffer::Resolve( gdi, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/PhongVSNormalMap.cso" );
+		auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/PhongVSNormalMap.cso" );
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
 		if ( isForward )
 		{
-			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongVSNormalMap.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/F_PhongVSNormalMap.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			bindablePtrs.push_back( std::move( pvs ) );
-			bindablePtrs.push_back( PixelShader::Resolve( gfx,
+			bindablePtrs.push_back( PixelShader::Resolve( gdi,
 				hasAlphaDiffuse ? "../SleepyEngine/Shaders/Bin/F_PhongPSSpecNormMask.cso" : "../SleepyEngine/Shaders/Bin/F_PhongPSSpecNormalMap.cso"
 			) );
-			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 		}
 		else
 		{
-			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongVSNormalMap.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/D_PhongVSNormalMap.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			bindablePtrs.push_back( std::move( pvs ) );
-			bindablePtrs.push_back( PixelShader::Resolve( gfx,
+			bindablePtrs.push_back( PixelShader::Resolve( gdi,
 				hasAlphaDiffuse ? "../SleepyEngine/Shaders/Bin/D_PhongPSSpecNormMask.cso" : "../SleepyEngine/Shaders/Bin/D_PhongPSSpecNormalMap.cso"
 			) );
-			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 
 		}
 
@@ -380,7 +380,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		buf["specularColor"] = dx::XMFLOAT3{ 0.75f,0.75f,0.75f };
 		buf["specularMapWeight"] = 0.671f;
 
-		bindablePtrs.push_back( std::make_shared<CachingPixelConstantBufferEX>( gfx, buf, 1u ) );
+		bindablePtrs.push_back( std::make_shared<CachingPixelConstantBufferEX>( gdi, buf, 1u ) );
 	}
 	else if ( hasDiffuseMap && hasNormalMap )
 	{
@@ -415,25 +415,25 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 			indices.push_back( face.mIndices[2] );
 		}
 
-		bindablePtrs.push_back( VertexBuffer::Resolve( gfx, meshTag, vbuf ) );
+		bindablePtrs.push_back( VertexBuffer::Resolve( gdi, meshTag, vbuf ) );
 
-		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
+		bindablePtrs.push_back( IndexBuffer::Resolve( gdi, meshTag, indices ) );
 
 		if ( isForward )
 		{
-			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongVSNormalMap.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/F_PhongVSNormalMap.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			bindablePtrs.push_back( std::move( pvs ) );
-			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSNormalMap.cso" ) );
-			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/F_PhongPSNormalMap.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 		}
 		else
 		{
-			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongVSNormalMap.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/D_PhongVSNormalMap.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			bindablePtrs.push_back( std::move( pvs ) );
-			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPSNormalMap.cso" ) );
-			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/D_PhongPSNormalMap.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 		}
 
 		Dcb::RawLayout layout;
@@ -446,7 +446,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		cbuf["specularPower"] = shininess;
 		cbuf["normalMapEnabled"] = true;
 
-		bindablePtrs.push_back( std::make_shared<CachingPixelConstantBufferEX>( gfx, cbuf, 1u ) );
+		bindablePtrs.push_back( std::make_shared<CachingPixelConstantBufferEX>( gdi, cbuf, 1u ) );
 	}
 	else if ( hasDiffuseMap && !hasNormalMap && hasSpecularMap )
 	{
@@ -477,25 +477,25 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 			indices.push_back( face.mIndices[2] );
 		}
 
-		bindablePtrs.push_back( VertexBuffer::Resolve( gfx, meshTag, vbuf ) );
+		bindablePtrs.push_back( VertexBuffer::Resolve( gdi, meshTag, vbuf ) );
 
-		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
+		bindablePtrs.push_back( IndexBuffer::Resolve( gdi, meshTag, indices ) );
 
 		if ( isForward )
 		{
-			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongVS.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/F_PhongVS.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			bindablePtrs.push_back( std::move( pvs ) );
-			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSSpec.cso" ) );
-			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/F_PhongPSSpec.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 		}
 		else
 		{
-			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongVS.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/D_PhongVS.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			bindablePtrs.push_back( std::move( pvs ) );
-			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPSSpec.cso" ) );
-			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/D_PhongPSSpec.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 		}
 
 		Dcb::RawLayout lay;
@@ -508,7 +508,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		buf["hasGloss"] = hasAlphaGloss;
 		buf["specularMapWeight"] = 1.0f;
 
-		bindablePtrs.push_back( std::make_unique<Bind::CachingPixelConstantBufferEX>( gfx, buf, 1u ) );
+		bindablePtrs.push_back( std::make_unique<Bind::CachingPixelConstantBufferEX>( gdi, buf, 1u ) );
 	}
 	else if ( hasDiffuseMap )
 	{
@@ -539,25 +539,25 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 			indices.push_back( face.mIndices[2] );
 		}
 
-		bindablePtrs.push_back( VertexBuffer::Resolve( gfx, meshTag, vbuf ) );
+		bindablePtrs.push_back( VertexBuffer::Resolve( gdi, meshTag, vbuf ) );
 
-		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
+		bindablePtrs.push_back( IndexBuffer::Resolve( gdi, meshTag, indices ) );
 
 		if ( isForward )
 		{
-			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongVS.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/F_PhongVS.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			bindablePtrs.push_back( std::move( pvs ) );
-			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPS.cso" ) );
-			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/F_PhongPS.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 		}
 		else
 		{
-			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongVS.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/D_PhongVS.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			bindablePtrs.push_back( std::move( pvs ) );
-			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPS.cso" ) );
-			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/D_PhongPS.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 		}
 
 		Dcb::RawLayout lay;
@@ -569,7 +569,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		buf["specularPower"] = shininess;
 		buf["specularMapWeight"] = 1.0f;
 
-		bindablePtrs.push_back( std::make_unique<Bind::CachingPixelConstantBufferEX>( gfx, buf, 1u ) );
+		bindablePtrs.push_back( std::make_unique<Bind::CachingPixelConstantBufferEX>( gdi, buf, 1u ) );
 	}
 	else if ( !hasDiffuseMap && !hasNormalMap && !hasSpecularMap )
 	{
@@ -598,25 +598,25 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 			indices.push_back( face.mIndices[2] );
 		}
 
-		bindablePtrs.push_back( VertexBuffer::Resolve( gfx, meshTag, vbuf ) );
+		bindablePtrs.push_back( VertexBuffer::Resolve( gdi, meshTag, vbuf ) );
 
-		bindablePtrs.push_back( IndexBuffer::Resolve( gfx, meshTag, indices ) );
+		bindablePtrs.push_back( IndexBuffer::Resolve( gdi, meshTag, indices ) );
 
 		if ( isForward )
 		{
-			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongVSNotex.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/F_PhongVSNotex.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			bindablePtrs.push_back( std::move( pvs ) );
-			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/F_PhongPSNotex.cso" ) );
-			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/F_PhongPSNotex.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 		}
 		else
 		{
-			auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongVSNotex.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/D_PhongVSNotex.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			bindablePtrs.push_back( std::move( pvs ) );
-			bindablePtrs.push_back( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/D_PhongPSNotex.cso" ) );
-			bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
+			bindablePtrs.push_back( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/D_PhongPSNotex.cso" ) );
+			bindablePtrs.push_back( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 		}
 
 		Dcb::RawLayout lay;
@@ -629,9 +629,9 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 		buf["specularColor"] = specularColor;
 		buf["materialColor"] = diffuseColor;
 
-		bindablePtrs.push_back( Bind::Sampler::Resolve( gfx ) );
+		bindablePtrs.push_back( Bind::Sampler::Resolve( gdi ) );
 
-		bindablePtrs.push_back( std::make_unique<Bind::CachingPixelConstantBufferEX>( gfx, buf, 1u ) );
+		bindablePtrs.push_back( std::make_unique<Bind::CachingPixelConstantBufferEX>( gdi, buf, 1u ) );
 	}
 	else
 	{
@@ -640,11 +640,11 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gfx, const aiMe
 
 	// anything with alpha diffuse is 2-sided IN SPONZA, need a better way
 	// of signalling 2-sidedness to be more general in the future
-	bindablePtrs.push_back( Rasterizer::Resolve( gfx, hasAlphaDiffuse ) );
+	bindablePtrs.push_back( Rasterizer::Resolve( gdi, hasAlphaDiffuse ) );
 
-	//bindablePtrs.push_back( Blender::Resolve( gfx, false ) );
+	//bindablePtrs.push_back( Blender::Resolve( gdi, false ) );
 
-	return std::make_unique<Mesh>( gfx, std::move( bindablePtrs ) );
+	return std::make_unique<Mesh>( gdi, std::move( bindablePtrs ) );
 }
 
 std::unique_ptr<Node> Model::ParseNode( int& nextId, const aiNode& node ) noexcept

@@ -4,7 +4,7 @@
 
 namespace Bind
 {
-	Texture::Texture( GraphicsDeviceInterface& gfx, const std::string& path, UINT slot )
+	Texture::Texture( GraphicsDeviceInterface& gdi, const std::string& path, UINT slot )
 		:
 		slot( slot )
 	{
@@ -27,12 +27,12 @@ namespace Bind
 		textureDesc.CPUAccessFlags = 0;
 		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 		ID3D11Texture2D* pTexture;
-		GetDevice( gfx )->CreateTexture2D(
+		GetDevice( gdi )->CreateTexture2D(
 			&textureDesc, nullptr, &pTexture
 		);
 
 		// write image data into top mip level
-		GetContext( gfx )->UpdateSubresource(
+		GetContext( gdi )->UpdateSubresource(
 			pTexture, 0u, nullptr, s.GetBufferPtrConst(), s.GetWidth() * sizeof( Surface::Color ), 0u
 		);
 
@@ -42,20 +42,20 @@ namespace Bind
 		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MostDetailedMip = 0;
 		srvDesc.Texture2D.MipLevels = -1;
-		 GetDevice( gfx )->CreateShaderResourceView(
+		 GetDevice( gdi )->CreateShaderResourceView(
 			pTexture, &srvDesc, &pTextureView
 		);
 
 		// generate the mip chain using the gpu rendering pipeline
-		GetContext( gfx )->GenerateMips( pTextureView );
+		GetContext( gdi )->GenerateMips( pTextureView );
 	}
-	void Texture::Bind( GraphicsDeviceInterface& gfx ) noexcept
+	void Texture::Bind( GraphicsDeviceInterface& gdi ) noexcept
 	{
-		GetContext( gfx )->PSSetShaderResources( slot, 1u, &pTextureView );
+		GetContext( gdi )->PSSetShaderResources( slot, 1u, &pTextureView );
 	}
-	std::shared_ptr<Texture> Texture::Resolve( GraphicsDeviceInterface& gfx, const std::string& path, UINT slot )
+	std::shared_ptr<Texture> Texture::Resolve( GraphicsDeviceInterface& gdi, const std::string& path, UINT slot )
 	{
-		return Codex::Resolve<Texture>( gfx, path, slot );
+		return Codex::Resolve<Texture>( gdi, path, slot );
 	}
 	std::string Texture::GenerateUID( const std::string& path, UINT slot )
 	{

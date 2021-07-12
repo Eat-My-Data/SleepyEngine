@@ -5,8 +5,8 @@
 class PointLight : public Drawable
 {
 public:
-	PointLight( GraphicsDeviceInterface& gfx,float radius );
-	void Draw( GraphicsDeviceInterface& gfx, DirectX::XMFLOAT3 camPos );
+	PointLight( GraphicsDeviceInterface& gdi,float radius );
+	void Draw( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos );
 	void UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos );
 	void SetDirection( DirectX::XMFLOAT3 direction ) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
