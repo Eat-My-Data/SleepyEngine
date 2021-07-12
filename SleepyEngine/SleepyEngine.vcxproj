@@ -230,7 +230,6 @@
     <ClInclude Include="Drawable\PointLight.h" />
     <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h" />
     <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h" />
-    <ClInclude Include="RenderTechnique.h" />
     <ClInclude Include="ResourceManager\Color.h" />
     <ClInclude Include="ResourceManager\Geometry\Sphere.h" />
     <ClInclude Include="ResourceManager\IndexedTriangleList.h" />

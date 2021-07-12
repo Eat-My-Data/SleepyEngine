@@ -11,19 +11,17 @@ SamplerState SampleTypePoint : register(s0);
 cbuffer LightBuffer : register(b0)
 {
     float3 lightDirection;
-    float padding;
     float specularIntensity;
     float att;
     float specularPower;
-    float padding2;
+    float2 padding;
     row_major float4x4 cameraMatrix;
     row_major float4x4 projInvMatrix;
 };
 
 cbuffer CamPosBuffer : register(b1)
 {
-    float3 camPos;
-    float padding3;
+    float4 camPos;
     row_major float4x4 lightViewMatrix;
     row_major float4x4 lightProjMatrix;
 };

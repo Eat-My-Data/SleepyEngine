@@ -70,7 +70,7 @@ Win32Window::Win32Window( u32 width, u32 height, const wchar_t* name )
 	// newly created windows start off as hidden
 	ShowWindow( m_hWnd, SW_SHOWDEFAULT );
 
-	// register mouse raw input device
+	/*// register mouse raw input device
 	RAWINPUTDEVICE rid;
 	rid.usUsagePage = 0x01;
 	rid.usUsage = 0x02;
@@ -79,7 +79,7 @@ Win32Window::Win32Window( u32 width, u32 height, const wchar_t* name )
 	if ( RegisterRawInputDevices( &rid, 1, sizeof( rid ) ) == FALSE )
 	{
 		throw std::exception();
-	}
+	} */
 }
 
 Win32Window::~Win32Window()

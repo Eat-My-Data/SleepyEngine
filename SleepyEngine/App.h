@@ -13,10 +13,11 @@ public:
 private:
 	void ExecuteFrame();
 private:
-	// TODO: 
-	// - Platform Interface
 	Win32Window m_Win32Window;
 	GraphicsDeviceInterface m_GDI;
 	SceneManager m_SceneManager;
 	FrameTimer timer;
+	// TODO: 
+	// - Platform Interface
+	// - Raw Mouse Input
 };

@@ -63,10 +63,10 @@ private:
 	template<typename T>
 	static void TrimBuffer( std::queue<T>& buffer ) noexcept;
 private:
-	static constexpr unsigned int nKeys = 256u;
-	static constexpr unsigned int bufferSize = 16u;
-	bool autorepeatEnabled = false;
-	std::bitset<nKeys> keystates;
-	std::queue<Event> keybuffer;
-	std::queue<char> charbuffer;
+	static constexpr unsigned int m_iNumKeys = 256u;
+	static constexpr unsigned int m_iBufferSize = 16u;
+	bool m_bAutorepeatEnabled = false;
+	std::bitset<m_iNumKeys> m_KeyStates;
+	std::queue<Event> m_qKeyBuffer;
+	std::queue<char> m_qCharBuffer;
 };

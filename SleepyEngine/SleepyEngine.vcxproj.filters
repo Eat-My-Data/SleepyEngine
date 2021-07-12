@@ -308,11 +308,8 @@
     <ClInclude Include="ResourceManager\Geometry\Sphere.h">
       <Filter>Header Files\ResourceManager\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="RenderTechnique.h">
-      <Filter>Header Files\SceneManager</Filter>
-    </ClInclude>
     <ClInclude Include="SceneManager\RenderTechnique.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\SceneManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

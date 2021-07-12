@@ -36,10 +36,10 @@ public:
 		Event( Type type, const Mouse& parent ) noexcept
 			:
 			type( type ),
-			leftIsPressed( parent.leftIsPressed ),
-			rightIsPressed( parent.rightIsPressed ),
-			x( parent.x ),
-			y( parent.y )
+			leftIsPressed( parent.m_bLeftIsPressed ),
+			rightIsPressed( parent.m_bRightIsPressed ),
+			x( parent.m_iX ),
+			y( parent.m_iY )
 		{}
 		Type GetType() const noexcept
 		{
@@ -80,7 +80,7 @@ public:
 	std::optional<Mouse::Event> Read() noexcept;
 	bool IsEmpty() const noexcept
 	{
-		return buffer.empty();
+		return m_qBuffer.empty();
 	}
 	void Flush() noexcept;
 	void EnableRaw() noexcept;
@@ -101,14 +101,14 @@ private:
 	void TrimRawInputBuffer() noexcept;
 	void OnWheelDelta( u32 x, u32 y, u32 delta ) noexcept;
 private:
-	static constexpr unsigned int bufferSize = 16u;
-	u32 x;
-	u32 y;
-	bool leftIsPressed = false;
-	bool rightIsPressed = false;
-	bool isInWindow = false;
-	u32 wheelDeltaCarry = 0;
-	bool rawEnabled = false;
-	std::queue<Event> buffer;
-	std::queue<RawDelta> rawDeltaBuffer;
+	static constexpr unsigned int m_iBufferSize = 16u;
+	u32 m_iX;
+	u32 m_iY;
+	bool m_bLeftIsPressed = false;
+	bool m_bRightIsPressed = false;
+	bool m_bIsInWindow = false;
+	u32 m_iWheelDeltaCarry = 0;
+	bool m_bRawEnabled = false;
+	std::queue<Event> m_qBuffer;
+	std::queue<RawDelta> m_qRawDeltaBuffer;
 };
