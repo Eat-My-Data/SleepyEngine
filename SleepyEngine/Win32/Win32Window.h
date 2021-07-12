@@ -56,5 +56,6 @@ private:
 	u32 m_iHeight;
 	bool m_bCursorEnabled = true;
 	std::vector<BYTE> m_RawMouseBuffer;
-
+	// TODO:
+	// - Raw Mouse Input
 };

@@ -28,7 +28,7 @@ namespace Bind
 			cbd.Usage = D3D11_USAGE_DYNAMIC;
 			cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 			cbd.MiscFlags = 0u;
-			cbd.ByteWidth = sizeof( consts );
+			cbd.ByteWidth = sizeof( C );
 			cbd.StructureByteStride = 0u;
 
 			D3D11_SUBRESOURCE_DATA csd = {};

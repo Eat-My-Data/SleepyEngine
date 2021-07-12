@@ -4,50 +4,56 @@
 #include "../Bindable/Bindables/Sampler.h"
 #include "../Bindable/Bindables/Blender.h"
 
-DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gfx )
+DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi, RenderTechnique renderTechnique )
 {
 	using namespace Bind;
 	namespace dx = DirectX;
 
-	auto pvs = VertexShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/LightVS.cso" );
+	m_pDefferedLightPCbuf = PixelConstantBuffer<DeferredLightBuffer>::Resolve( gdi, lbuf, 0u );
+	AddBind( m_pDefferedLightPCbuf );
+	m_pCameraPCBuf = PixelConstantBuffer<CamBuffer>::Resolve( gdi, cambuf, 1u );
+	AddBind( m_pCameraPCBuf );
 
-	auto pvsbc = pvs->GetBytecode();
-	AddBind( std::move( pvs ) );
-
-	AddBind( PixelShader::Resolve( gfx, "../SleepyEngine/Shaders/Bin/LightPS.cso" ) );\
-	AddBind( Sampler::Resolve( gfx ) );
-
-	pcs = PixelConstantBuffer<LightBufferType>::Resolve( gfx, lbuf, 0u );
-	AddBind( pcs );
-
-	pcs2 = PixelConstantBuffer<CamPosBuffer>::Resolve( gfx, cambuf, 1u );
-	AddBind( pcs2 );
-
-	AddBind( Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-	//AddBind( Blender::Resolve( gfx, true ) );
-	AddBind( Rasterizer::Resolve( gfx, true ) );
+	if ( renderTechnique == RenderTechnique::Deferred )
+	{
+		auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/LightVS.cso" );
+		auto pvsbc = pvs->GetBytecode();
+		AddBind( std::move( pvs ) );
+		AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/LightPS.cso" ) );
+		AddBind( Sampler::Resolve( gdi ) );
+		AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+		AddBind( Rasterizer::Resolve( gdi, true ) );
+	}
+	else if ( renderTechnique == RenderTechnique::Forward )
+	{
+		m_pForwardLightPCbuf = PixelConstantBuffer<ForwardLightBuffer>::Resolve( gdi, dlcbuf, 1u );
+		AddBind( m_pForwardLightPCbuf );
+	}
 }
+
 
 DirectX::XMMATRIX DirectionalLight::GetTransformXM() const noexcept
 {
 	return DirectX::XMMatrixTranslation( 1.0f, 1.0f, 1.0f );
 }
 
-void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos )
+void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX lightViewMatrix, DirectX::XMMATRIX lightProjectionMatrix, DirectX::XMFLOAT3 camPos )
 {
 	// get camera matrix from view matrix
-	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( viewMatrix );
-	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, viewMatrix );
+	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
+	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, gdi.GetViewMatrix() );
 	lbuf.cameraMatrix = cameraMatrix;
 
 	// get inverse of the projection matrix
-	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( projectionMatrix );
-	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, projectionMatrix );
+	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( gdi.GetProjMatrix() );
+	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, gdi.GetProjMatrix() );
 	lbuf.projInvMatrix = projInvMatrix;
-	pcs->Update( gdi, lbuf );
+	m_pDefferedLightPCbuf->Update( gdi, lbuf );
 
+	cambuf.lightViewMatrix =  lightViewMatrix;
+	cambuf.lightProjMatrix = lightProjectionMatrix;
 	cambuf.camPos = camPos;
-	pcs2->Update( gdi, cambuf );
+	m_pCameraPCBuf->Update( gdi, cambuf );
 }
 
 void DirectionalLight::Draw( GraphicsDeviceInterface& gdi ) const noexcept
