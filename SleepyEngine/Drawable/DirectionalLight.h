@@ -27,13 +27,14 @@ private:
 	{
 		DirectX::XMFLOAT3 camPos;
 		float padding3;
-		DirectX::XMMATRIX lightMatrix;
+		DirectX::XMMATRIX lightViewMatrix;
+		DirectX::XMMATRIX lightProjMatrix;
 	} cambuf;
 	std::shared_ptr<Bind::PixelConstantBuffer<CamPosBuffer>> pcs2;
 	struct DirectionalLightDirection
 	{
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
-		float padding;
+		float padding4;
 	} dlcbuf;
 	std::shared_ptr<Bind::PixelConstantBuffer<DirectionalLightDirection>> pcs3;
 };

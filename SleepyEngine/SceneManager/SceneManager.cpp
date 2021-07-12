@@ -13,7 +13,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
 	m_pForwardDirectionalLight = new DirectionalLight( gdi, RenderTechnique::Forward );
-	m_pForwardDirectionalLight = new DirectionalLight( gdi, RenderTechnique::Deferred );
+	m_pDeferredDirectionalLight = new DirectionalLight( gdi, RenderTechnique::Deferred );
 	m_pPointLight = new PointLight( gdi, 10.0f );
 }
 
