@@ -50,6 +50,27 @@ void SceneManager::TranslateCamera( DirectX::XMFLOAT3 camDelta )
 	m_Camera.Translate( camDelta );
 }
 
+void SceneManager::TranslatePointLight( DirectX::XMFLOAT3 pos )
+{
+	plcbuf.pos.x += pos.x;
+	plcbuf.pos.y += pos.y;
+	plcbuf.pos.z += pos.z;
+}
+
+void SceneManager::RotatePointLight( const f32 dx, const f32 dy )
+{
+}
+
+void SceneManager::TranslateDirectionalLight( DirectX::XMFLOAT3 translation )
+{
+	m_DirectionalLightOrthoCamera.Translate( translation );
+}
+
+void SceneManager::RotateDirectionalLight( const f32 dx, const f32 dy )
+{
+	m_DirectionalLightOrthoCamera.Rotate( dx, dy );
+}
+
 void SceneManager::ForwardRender()
 {
 	// setup
@@ -57,18 +78,6 @@ void SceneManager::ForwardRender()
 	m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetTarget(), color );
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
-
-	// temporary bind light cbuf
-	struct PointLightCBuf
-	{
-		alignas( 16 ) DirectX::XMFLOAT3 pos = { 10.0f, 9.0f, 2.5f };
-		alignas( 16 ) DirectX::XMFLOAT3 ambient = { 0.05f, 0.05f, 0.05f };
-		alignas( 16 ) DirectX::XMFLOAT3 diffuseColor = { 1.0f, 1.0f, 1.0f };
-		float diffuseIntensity = 1.0f;
-		float attConst = 1.0f;
-		float attLin = 0.045f;
-		float attQuad = 0.0075f;
-	} plcbuf;
 
 	// point light data
 	D3D11_BUFFER_DESC plcbd;
@@ -94,15 +103,8 @@ void SceneManager::ForwardRender()
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
 	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV() );
 	m_vecOfModels[1]->Draw( *m_pGDI, true );
-
-	// forward render
-	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), *m_pGDI->GetDSV() );
-	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
-	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
-	m_pGDI->GetContext()->PSSetShaderResources( 4, 1, m_pGDI->GetShadowResource() );
-	//m_pForwardDirectionalLight->UpdateCBuffers( *m_pGDI, m_DirectionalLightOrthoCamera.GetViewMatrix(), m_DirectionalLightOrthoCamera.GetProjectionMatrix(), m_Camera.GetPosition() );
 	
-	// bind view project matrix to vertex buffer for forward
+	// directional light data
 	struct DirectionalLightMatrix
 	{
 		DirectX::XMMATRIX lightViewMatrix;
@@ -125,10 +127,15 @@ void SceneManager::ForwardRender()
 	InitData2.pSysMem = &dlcbuf;
 	InitData2.SysMemPitch = 0;
 	InitData2.SysMemSlicePitch = 0;
-
+	
 	m_pGDI->GetDevice()->CreateBuffer( &dlcbd, &InitData2, &pConstantBuffer2 );
 	m_pGDI->GetContext()->VSSetConstantBuffers( 1u, 1u, &pConstantBuffer2 );
 
+	// forward render
+	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), *m_pGDI->GetDSV() );
+	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
+	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
+	m_pGDI->GetContext()->PSSetShaderResources( 4, 1, m_pGDI->GetShadowResource() );
 	m_vecOfModels[0]->Draw( *m_pGDI, false );
 
 	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr, nullptr };

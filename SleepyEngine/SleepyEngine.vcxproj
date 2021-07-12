@@ -239,6 +239,7 @@
     <ClInclude Include="ResourceManager\Vertex.h" />
     <ClInclude Include="SceneManager\Camera.h" />
     <ClInclude Include="SceneManager\RenderTechnique.h" />
+    <ClInclude Include="SceneManager\SceneManager.h" />
     <ClInclude Include="Utilities\FrameTimer.h" />
     <ClInclude Include="Utilities\NumericDataTypes.h" />
     <ClInclude Include="Utilities\SleepyMath.h" />
