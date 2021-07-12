@@ -130,6 +130,13 @@ void App::ExecuteFrame()
 				m_SceneManager.RotateDirectionalLight( -dt * rotato, 0.0f );
 		}
 	}
+	else if ( m_Win32Window.CursorEnabled() )
+	{
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && m_Win32Window.m_Kbd.KeyIsPressed( 'D' ) )
+			m_SceneManager.SetRenderTechnique( RenderTechnique::Deferred );
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && m_Win32Window.m_Kbd.KeyIsPressed( 'F' ) )
+			m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
+	}
 
 	/*while ( const auto delta = m_Win32Window.m_Mouse.ReadRawDelta() )
 	{
