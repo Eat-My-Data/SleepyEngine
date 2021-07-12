@@ -1,18 +1,35 @@
 #pragma once
 #include "./Drawable.h"
 #include "../Bindable/Bindables/ConstantBuffers.h"
+#include "../SceneManager/RenderTechnique.h"
 
 class PointLight : public Drawable
 {
 public:
-	PointLight( GraphicsDeviceInterface& gdi,float radius );
+	PointLight( GraphicsDeviceInterface& gdi, float radius, RenderTechnique renderTechnique );
 	void Draw( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos );
 	void UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos );
-	void SetDirection( DirectX::XMFLOAT3 direction ) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	void SetPos( DirectX::XMFLOAT3 vec );
+	void Translate( DirectX::XMFLOAT3 vec );
 	bool CameraIsInside( DirectX::XMFLOAT3 camPos );
+	void UpdateForwardCBuffer( GraphicsDeviceInterface& gdi );
 private:
+	RenderTechnique m_RenderTechnique;
+private:
+	struct ForwardCBufData
+	{
+		alignas( 16 ) DirectX::XMFLOAT3 pos = { 10.0f, 9.0f, 2.5f };
+		alignas( 16 ) DirectX::XMFLOAT3 ambient = { 0.05f, 0.05f, 0.05f };
+		alignas( 16 ) DirectX::XMFLOAT3 diffuseColor = { 1.0f, 1.0f, 1.0f };
+		float diffuseIntensity = 1.0f;
+		float attConst = 1.0f;
+		float attLin = 0.045f;
+		float attQuad = 0.0075f;
+	};
+	ForwardCBufData m_ForwardCBufData;
+	mutable Bind::PixelConstantBuffer<ForwardCBufData> m_pFCbuf;
+private:
+	// deferred resources
 	struct PSColorConstant
 	{
 		DirectX::XMFLOAT3 color = { 1.0f,1.0f,1.0f };

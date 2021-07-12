@@ -212,6 +212,7 @@
     <ClInclude Include="Bindable\BindableCommon.h" />
     <ClInclude Include="Bindable\Bindables\Blender.h" />
     <ClInclude Include="Bindable\Bindables\ConstantBuffers.h" />
+    <ClInclude Include="Bindable\Bindables\ConstantBuffersEx.h" />
     <ClInclude Include="Bindable\Bindables\DynamicConstant.h" />
     <ClInclude Include="Bindable\Bindables\IndexBuffer.h" />
     <ClInclude Include="Bindable\Bindables\InputLayout.h" />
@@ -223,7 +224,6 @@
     <ClInclude Include="Bindable\Bindables\TransformCBuf.h" />
     <ClInclude Include="Bindable\Bindables\VertexBuffer.h" />
     <ClInclude Include="Bindable\Bindables\VertexShader.h" />
-    <ClInclude Include="ConstantBuffersEx.h" />
     <ClInclude Include="Drawable\Cube.h" />
     <ClInclude Include="Drawable\DirectionalLight.h" />
     <ClInclude Include="Drawable\Drawable.h" />

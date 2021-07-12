@@ -14,7 +14,8 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
 	m_pForwardDirectionalLight = new DirectionalLight( gdi, RenderTechnique::Forward );
 	m_pDeferredDirectionalLight = new DirectionalLight( gdi, RenderTechnique::Deferred );
-	m_pPointLight = new PointLight( gdi, 10.0f );
+	m_pForwardPointLight = new PointLight( gdi, 10.0f,RenderTechnique::Forward );
+	//m_pDeferredPointLight = new PointLight( gdi, 10.0f, RenderTechnique::Deferred );
 }
 
 bool SceneManager::IsInitialzed() noexcept
@@ -50,11 +51,10 @@ void SceneManager::TranslateCamera( DirectX::XMFLOAT3 camDelta )
 	m_Camera.Translate( camDelta );
 }
 
-void SceneManager::TranslatePointLight( DirectX::XMFLOAT3 pos )
+void SceneManager::TranslatePointLight( DirectX::XMFLOAT3 translation )
 {
-	plcbuf.pos.x += pos.x;
-	plcbuf.pos.y += pos.y;
-	plcbuf.pos.z += pos.z;
+	if ( m_RenderTechnique == RenderTechnique::Forward )
+		m_pForwardPointLight->Translate( translation );
 }
 
 void SceneManager::RotatePointLight( const f32 dx, const f32 dy )
@@ -79,31 +79,16 @@ void SceneManager::ForwardRender()
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 
-	// point light data
-	D3D11_BUFFER_DESC plcbd;
-	plcbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	plcbd.Usage = D3D11_USAGE_DYNAMIC;
-	plcbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	plcbd.MiscFlags = 0u;
-	plcbd.ByteWidth = sizeof( PointLightCBuf );
-	plcbd.StructureByteStride = 0u;
-	ID3D11Buffer* pConstantBuffer;
-
-	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = &plcbuf;
-	InitData.SysMemPitch = 0;
-	InitData.SysMemSlicePitch = 0;
-
-	m_pGDI->GetDevice()->CreateBuffer( &plcbd, &InitData, &pConstantBuffer );
-	m_pGDI->GetContext()->PSSetConstantBuffers( 0u, 1u, &pConstantBuffer );
-
 	// depth from light
 	m_pGDI->SetViewMatrix( m_DirectionalLightOrthoCamera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_DirectionalLightOrthoCamera.GetProjectionMatrix() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
 	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV() );
 	m_vecOfModels[1]->Draw( *m_pGDI, true );
-	
+
+	// point light
+	m_pForwardPointLight->UpdateForwardCBuffer( *m_pGDI );
+
 	// directional light data
 	struct DirectionalLightMatrix
 	{

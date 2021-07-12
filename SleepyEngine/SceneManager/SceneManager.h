@@ -23,7 +23,7 @@ public:
 	void RotateCamera( const f32 dx, const f32 dy );
 	void TranslateCamera( DirectX::XMFLOAT3 camDelta );
 public:
-	void TranslatePointLight( DirectX::XMFLOAT3 pos );
+	void TranslatePointLight( DirectX::XMFLOAT3 translation );
 	void RotatePointLight( const f32 dx, const f32 dy );
 	void TranslateDirectionalLight( DirectX::XMFLOAT3 translation );
 	void RotateDirectionalLight( const f32 dx, const f32 dy );
@@ -39,17 +39,7 @@ private:
 private:
 	DirectionalLight* m_pForwardDirectionalLight;
 	DirectionalLight* m_pDeferredDirectionalLight;
-	PointLight* m_pPointLight;
+	PointLight* m_pForwardPointLight;
+	PointLight* m_pDeferredPointLight;
 	std::vector<Model*> m_vecOfModels;
-private:
-	struct PointLightCBuf
-	{
-		alignas( 16 ) DirectX::XMFLOAT3 pos = { 10.0f, 9.0f, 2.5f };
-		alignas( 16 ) DirectX::XMFLOAT3 ambient = { 0.05f, 0.05f, 0.05f };
-		alignas( 16 ) DirectX::XMFLOAT3 diffuseColor = { 1.0f, 1.0f, 1.0f };
-		float diffuseIntensity = 1.0f;
-		float attConst = 1.0f;
-		float attLin = 0.045f;
-		float attQuad = 0.0075f;
-	} plcbuf;
 };

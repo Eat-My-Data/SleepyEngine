@@ -272,9 +272,6 @@
     <ClInclude Include="Utilities\SleepyXM.h">
       <Filter>Header Files\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantBuffersEx.h">
-      <Filter>Header Files\Bindable\Bindables</Filter>
-    </ClInclude>
     <ClInclude Include="Bindable\Bindables\DynamicConstant.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
@@ -313,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="SceneManager\SceneManager.h">
       <Filter>Header Files\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\ConstantBuffersEx.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

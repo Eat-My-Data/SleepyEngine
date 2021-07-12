@@ -61,7 +61,7 @@ void App::ExecuteFrame()
 	if ( !m_Win32Window.CursorEnabled() )
 	{
 		f32 rotato = 500.f;
-		if ( !m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) )
+		if ( !m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && !m_Win32Window.m_Kbd.KeyIsPressed( VK_CONTROL ) )
 		{
 			// camera translation
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'W' ) )
@@ -87,7 +87,23 @@ void App::ExecuteFrame()
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_LEFT ) )
 				m_SceneManager.RotateCamera( -dt * rotato, 0.0f );
 		}
-		else if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) )
+		else if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && !m_Win32Window.m_Kbd.KeyIsPressed( VK_CONTROL ) )
+		{
+			// directional light translation
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'W' ) )
+				m_SceneManager.TranslatePointLight( { dt * 20.0f, 0.0f, 0.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'S' ) )
+				m_SceneManager.TranslatePointLight( { -dt * 20.0f, 0.0f, 0.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'A' ) )
+				m_SceneManager.TranslatePointLight( { 0.0f, 0.0f, dt * 20.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'D' ) )
+				m_SceneManager.TranslatePointLight( { 0.0f, 0.0f, -dt * 20.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'R' ) )
+				m_SceneManager.TranslatePointLight( { 0.0f, dt * 20.0f, 0.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'F' ) )
+				m_SceneManager.TranslatePointLight( { 0.0f, -dt * 20.0f, 0.0f } );
+		}
+		else if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_CONTROL ) && !m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) )
 		{
 			// directional light translation
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'W' ) )
