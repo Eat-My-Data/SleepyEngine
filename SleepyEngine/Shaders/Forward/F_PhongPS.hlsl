@@ -45,8 +45,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         viewFragPos, directionalAtt, specularPower
     );
     
-    float3 combinedDiffuse = (diffuse + directionalDiffuse) / 2.0f;
-    float3 combinedSpecular = (specular + directionalSpecular) / 2.0f;
+    float3 combinedDiffuse = diffuse + directionalDiffuse;
+    float3 combinedSpecular = specular + directionalSpecular;
     
     float fragDepth = lightViewPos.z / lightViewPos.w;
     float sampleDepth = depthTextureFromLight.Sample(splr, ((lightViewPos.xy / lightViewPos.w) / 2.0f) + 0.5f).r;
