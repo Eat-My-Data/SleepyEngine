@@ -28,6 +28,8 @@ DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi, RenderTechniqu
 	{
 		m_pForwardLightPCbuf = PixelConstantBuffer<ForwardLightBuffer>::Resolve( gdi, dlcbuf, 1u );
 		AddBind( m_pForwardLightPCbuf );
+		m_pForwardLightMatrices = VertexConstantBuffer<ForwaredMatrices>::Resolve( gdi, matrixcbuf, 1u );
+		AddBind( m_pForwardLightMatrices );
 	}
 }
 
@@ -37,7 +39,7 @@ DirectX::XMMATRIX DirectionalLight::GetTransformXM() const noexcept
 	return DirectX::XMMatrixTranslation( 1.0f, 1.0f, 1.0f );
 }
 
-void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX lightViewMatrix, DirectX::XMMATRIX lightProjectionMatrix, DirectX::XMFLOAT3 camPos )
+void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
 {
 	// get camera matrix from view matrix
 	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
@@ -50,8 +52,8 @@ void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XM
 	lbuf.projInvMatrix = projInvMatrix;
 	m_pDefferedLightPCbuf->Update( gdi, lbuf );
 
-	cambuf.lightViewMatrix =  lightViewMatrix;
-	cambuf.lightProjMatrix = lightProjectionMatrix;
+	cambuf.lightViewMatrix = m_OrthoCamera.GetViewMatrix();
+	cambuf.lightProjMatrix = m_OrthoCamera.GetProjectionMatrix();
 	cambuf.camPos = camPos;
 	m_pCameraPCBuf->Update( gdi, cambuf );
 }
@@ -70,4 +72,33 @@ void DirectionalLight::Draw( GraphicsDeviceInterface& gdi ) const noexcept
 	}
 
 	gdi.GetContext()->Draw( 3, 0 );
+}
+
+void DirectionalLight::Translate( DirectX::XMFLOAT3 translation )
+{
+	m_OrthoCamera.Translate( translation );
+}
+
+void DirectionalLight::Rotate( const f32 dx, const f32 dy )
+{
+	m_OrthoCamera.Rotate( dx, dy );
+}
+
+DirectX::XMMATRIX DirectionalLight::GetViewMatrix() noexcept
+{
+	return m_OrthoCamera.GetViewMatrix();
+}
+
+DirectX::XMMATRIX DirectionalLight::GetProjectionMatrix() noexcept
+{
+	return m_OrthoCamera.GetProjectionMatrix();
+}
+
+void DirectionalLight::UpdateForwardCBuffer( GraphicsDeviceInterface& gdi )
+{
+	matrixcbuf.lightViewMatrix = m_OrthoCamera.GetViewMatrix();
+	matrixcbuf.lightProjMatrix = m_OrthoCamera.GetProjectionMatrix();
+
+	m_pForwardLightMatrices->Update( gdi, matrixcbuf );
+	m_pForwardLightMatrices->Bind( gdi );
 }

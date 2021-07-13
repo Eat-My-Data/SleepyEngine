@@ -11,12 +11,8 @@ u32 App::Launch()
 {
 	while ( true )
 	{
-		// process all messages pending, but to not block for new messages
 		if ( const auto ecode = Win32Window::ProcessMessages() )
-		{
-			// if return optional has value, means we're quitting so return exit code
 			return *ecode;
-		}
 		ExecuteFrame();
 	}
 }
@@ -37,10 +33,9 @@ void App::ExecuteFrame()
 
 	while ( const auto e = m_Win32Window.m_Kbd.ReadKey() )
 	{
+		// free camera / cursor functionality
 		if ( !e->IsPress() )
-		{
 			continue;
-		}
 		switch ( e->GetCode() )
 		{
 		case VK_ESCAPE:
@@ -89,7 +84,7 @@ void App::ExecuteFrame()
 		}
 		else if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && !m_Win32Window.m_Kbd.KeyIsPressed( VK_CONTROL ) )
 		{
-			// directional light translation
+			// point light translation
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'W' ) )
 				m_SceneManager.TranslatePointLight( { dt * 20.0f, 0.0f, 0.0f } );
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'S' ) )
@@ -132,12 +127,14 @@ void App::ExecuteFrame()
 	}
 	else if ( m_Win32Window.CursorEnabled() )
 	{
+		// render techniques
 		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && m_Win32Window.m_Kbd.KeyIsPressed( 'D' ) )
 			m_SceneManager.SetRenderTechnique( RenderTechnique::Deferred );
 		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && m_Win32Window.m_Kbd.KeyIsPressed( 'F' ) )
 			m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
 	}
 
+	// raw mouse input
 	/*while ( const auto delta = m_Win32Window.m_Mouse.ReadRawDelta() )
 	{
 		if ( !m_Win32Window.CursorEnabled() )

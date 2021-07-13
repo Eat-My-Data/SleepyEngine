@@ -19,7 +19,7 @@ private:
 	struct ForwardCBufData
 	{
 		alignas( 16 ) DirectX::XMFLOAT3 pos = { 10.0f, 9.0f, 2.5f };
-		alignas( 16 ) DirectX::XMFLOAT3 ambient = { 0.05f, 0.05f, 0.05f };
+		alignas( 16 ) DirectX::XMFLOAT3 ambient = { 0.2f, 0.2f, 0.2f };
 		alignas( 16 ) DirectX::XMFLOAT3 diffuseColor = { 1.0f, 1.0f, 1.0f };
 		float diffuseIntensity = 1.0f;
 		float attConst = 1.0f;

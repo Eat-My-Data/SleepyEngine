@@ -18,6 +18,7 @@ private:
 	SceneManager m_SceneManager;
 	FrameTimer timer;
 	// TODO: 
-	// - Platform Interface
 	// - Raw Mouse Input
+	// - GUI
+	// - Platform Interface
 };
