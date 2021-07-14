@@ -9,7 +9,7 @@ cbuffer ObjectCBuf
     float specularPower;
 };
 
-cbuffer ObjectCBuf
+cbuffer DirectionalLight
 {
     float3 lightDirection;
     float padding2[1];

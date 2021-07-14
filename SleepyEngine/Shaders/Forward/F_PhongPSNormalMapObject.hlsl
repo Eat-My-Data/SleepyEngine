@@ -11,7 +11,7 @@ cbuffer ObjectCBuf
 	float padding[1];
 };
 
-cbuffer ObjectCBuf
+cbuffer DirectionalLight
 {
     float3 lightDirection;
     float padding2[1];

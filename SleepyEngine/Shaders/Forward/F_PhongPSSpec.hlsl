@@ -9,7 +9,7 @@ cbuffer ObjectCBuf
     float specularMapWeight;
 };
 
-cbuffer ObjectCBuf
+cbuffer DirectionalLight
 {
     float3 lightDirection;
     float padding2[1];

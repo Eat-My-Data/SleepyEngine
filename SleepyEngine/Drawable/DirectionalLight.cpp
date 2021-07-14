@@ -26,7 +26,7 @@ DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi, RenderTechniqu
 	}
 	else if ( renderTechnique == RenderTechnique::Forward )
 	{
-		m_pForwardLightPCbuf = PixelConstantBuffer<ForwardLightBuffer>::Resolve( gdi, dlcbuf, 1u );
+		m_pForwardLightPCbuf = PixelConstantBuffer<ForwardLightBuffer>::Resolve( gdi, dlcbuf, 2u );
 		AddBind( m_pForwardLightPCbuf );
 		m_pForwardLightMatrices = VertexConstantBuffer<ForwaredMatrices>::Resolve( gdi, matrixcbuf, 1u );
 		AddBind( m_pForwardLightMatrices );
@@ -98,7 +98,9 @@ void DirectionalLight::UpdateForwardCBuffer( GraphicsDeviceInterface& gdi )
 {
 	matrixcbuf.lightViewMatrix = m_OrthoCamera.GetViewMatrix();
 	matrixcbuf.lightProjMatrix = m_OrthoCamera.GetProjectionMatrix();
-
 	m_pForwardLightMatrices->Update( gdi, matrixcbuf );
 	m_pForwardLightMatrices->Bind( gdi );
+
+	m_pForwardLightPCbuf->Update( gdi, dlcbuf );
+	m_pForwardLightPCbuf->Bind( gdi );
 }

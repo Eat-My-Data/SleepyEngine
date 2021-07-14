@@ -10,27 +10,16 @@ cbuffer ObjectCBuf
     float padding[1];
 };
 
-cbuffer ObjectCBuf
+cbuffer DirectionalLight
 {
     float3 lightDirection;
     float padding2[1];
-};
+}
 
 Texture2D tex;
 Texture2D nmap : register(t2);
 Texture2D depthTextureFromLight : register(t4);
 SamplerState splr;
-
-
-
-
-
-
-
-
-// DEBUG SHADOWS
-
-
 
 
 float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord, float4 lightViewPos : Position2) : SV_Target
@@ -62,7 +51,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     const float3 directionalDiffuse = Diffuse(diffuseColor, diffuseIntensity, directionalAtt, -lightDirection, viewNormal);
 	// specular
     const float3 directionalSpecular = Speculate(
-        specularIntensity.rrr, 1.0f, viewNormal, -lightDirection,
+        specularPower.rrr, 1.0f, viewNormal, -lightDirection,
         viewFragPos, directionalAtt, specularPower
     );
     
