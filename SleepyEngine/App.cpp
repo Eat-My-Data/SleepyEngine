@@ -34,6 +34,7 @@ void App::ExecuteFrame()
 	const f32 dt = timer.Mark();
 
 	m_SceneManager.Draw();
+	m_GUIManager.Draw( m_GDI );
 
 	while ( const auto e = m_Win32Window.m_Kbd.ReadKey() )
 	{
