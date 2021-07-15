@@ -1,6 +1,17 @@
 #include "SceneManager.h"
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 
+SceneManager::~SceneManager()
+{
+	for ( u32 i = 0; i < m_vecOfModels.size(); i++ )
+	{
+		delete m_vecOfModels[i];
+	}
+	delete m_pForwardDirectionalLight;
+	delete m_pDeferredDirectionalLight;
+	delete m_pForwardPointLight;
+}
+
 void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 {		
 	m_pGDI = &gdi;

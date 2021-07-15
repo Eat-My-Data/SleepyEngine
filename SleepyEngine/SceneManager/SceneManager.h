@@ -11,6 +11,9 @@
 class SceneManager
 {
 public:
+	SceneManager() = default;
+	~SceneManager();
+public:
 	void Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api );
 	bool IsInitialzed() noexcept;
 	void SetRenderTechnique( RenderTechnique renderTechnique ) noexcept;

@@ -52,7 +52,7 @@ void DirectionalLight::UpdateCBuffers( GraphicsDeviceInterface& gdi, DirectX::XM
 	lbuf.projInvMatrix = projInvMatrix;
 	m_pDefferedLightPCbuf->Update( gdi, lbuf );
 
-	cambuf.lightViewMatrix = m_OrthoCamera.GetViewMatrix();
+	cambuf.lightViewMatrix = m_OrthoCamera.GetViewMatrix() * m_OrthoCamera.GetProjectionMatrix();
 	cambuf.lightProjMatrix = m_OrthoCamera.GetProjectionMatrix();
 	cambuf.camPos = camPos;
 	m_pCameraPCBuf->Update( gdi, cambuf );

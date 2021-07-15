@@ -76,7 +76,6 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         lv.vToL, viewFragPos, att, specularPower
     );
     
-    
     // fragment to light vector data
     const LightVectorData directionalLV = CalculateLightVectorData(viewLightPos, viewFragPos);
 	// attenuation
