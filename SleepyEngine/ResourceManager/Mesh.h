@@ -16,10 +16,12 @@
 class Mesh : public Drawable
 {
 public:
-	Mesh( GraphicsDeviceInterface& gdi, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs );
+	Mesh( GraphicsDeviceInterface& gdi, bool isAlpha, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs );
+	bool HasAlpha();
 	void Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 private:
+	bool isAlpha = false;
 	mutable DirectX::XMFLOAT4X4 transform;
 };
 
@@ -27,7 +29,7 @@ class Node
 {
 	friend class Model;
 public:
-	Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform ) noexcept;
+	Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, std::vector<Mesh*> meshPtrsAlpha, const DirectX::XMMATRIX& transform ) noexcept;
 	void Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept;
 	void SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept;
 	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
@@ -42,6 +44,7 @@ private:
 	int id;
 	std::vector<std::unique_ptr<Node>> childPtrs;
 	std::vector<Mesh*> meshPtrs;
+	std::vector<Mesh*> meshPtrsAlpha;
 	DirectX::XMFLOAT4X4 transform;
 	DirectX::XMFLOAT4X4 appliedTransform;
 };

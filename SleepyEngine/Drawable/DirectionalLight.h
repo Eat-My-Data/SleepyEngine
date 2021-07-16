@@ -35,8 +35,7 @@ private:
 	{
 		DirectX::XMFLOAT3 camPos;
 		float padding;
-		DirectX::XMMATRIX lightViewMatrix;
-		DirectX::XMMATRIX lightProjMatrix;
+		DirectX::XMMATRIX lightViewProjectionMatrix;
 	} cambuf;
 	std::shared_ptr<Bind::PixelConstantBuffer<CamBuffer>> m_pCameraPCBuf;
 private:
