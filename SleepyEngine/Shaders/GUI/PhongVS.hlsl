@@ -1,6 +1,6 @@
 cbuffer TransformCBuf
-{
-    matrix GUIProjection;
+{ 
+    row_major matrix GUIProjection;
 }; 
 
 struct VSOut

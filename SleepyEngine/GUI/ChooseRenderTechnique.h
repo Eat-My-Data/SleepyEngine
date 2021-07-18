@@ -15,6 +15,6 @@ private:
 private:
 	struct ColorConst
 	{
-		DirectX::XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		DirectX::XMFLOAT4 color = { 0.0f, 1.0f, 1.0f, 1.0f };
 	} color;
 };

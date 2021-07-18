@@ -23,6 +23,7 @@ void ChooseRenderTechnique::Draw( GraphicsDeviceInterface& gdi )
 	Bind::PixelConstantBuffer<ChooseRenderTechnique::ColorConst>::PixelConstantBuffer( gdi, color, 1u ).Bind( gdi );
 	InputLayout::InputLayout( gdi, model.m_VBVertices.GetLayout(), pvsbc ).Bind( gdi );
 	Topology::Topology( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ).Bind( gdi );
+	Rasterizer::Rasterizer( gdi, true ).Bind( gdi );
 
 	gdi.GetContext()->Draw( 6u, 0u );
 }
