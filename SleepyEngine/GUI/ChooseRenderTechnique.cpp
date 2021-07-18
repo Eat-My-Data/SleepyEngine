@@ -4,7 +4,7 @@
 #include "./Forms/Rectangle.h"
 #include "../Bindable/BindableCommon.h"
 
-ChooseRenderTechnique::ChooseRenderTechnique( u32 x, u32 y, u32 width, u32 height )
+ChooseRenderTechnique::ChooseRenderTechnique( f32 x, f32 y, f32 width, f32 height )
 	: GUIElement( x,  y, width, height )
 {}
 
@@ -13,7 +13,7 @@ void ChooseRenderTechnique::Draw( GraphicsDeviceInterface& gdi )
 	using namespace Bind;
 	namespace dx = DirectX;
 
-	auto model = Rectangle::Make();
+	auto model = Rectangle::Make( (f32)m_iX, (f32)m_iY, (f32)m_iWidth, (f32)m_iHeight );
 
 	VertexBuffer::VertexBuffer( gdi, model.m_VBVertices ).Bind( gdi );
 	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/PhongVS.cso" );

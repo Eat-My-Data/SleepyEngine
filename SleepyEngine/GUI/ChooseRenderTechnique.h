@@ -6,7 +6,7 @@
 class ChooseRenderTechnique : public GUIElement
 {
 public:
-	ChooseRenderTechnique( u32 x, u32 y, u32 width, u32 height );
+	ChooseRenderTechnique( f32 x, f32 y, f32 width, f32 height );
 public:
 	void Draw( class GraphicsDeviceInterface& gdi ) override;
 	void Interact( class SceneManager& sceneManager ) override;

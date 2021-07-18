@@ -10,7 +10,7 @@ class GUIManager
 public:
 	void Draw( class GraphicsDeviceInterface& gdi );
 private:
-	ChooseRenderTechnique m_ChooseRenderTechnique{ 1, 1, 200, 200 };
+	ChooseRenderTechnique m_ChooseRenderTechnique{ -0.5f, -0.5f, 0.1f, 0.1f };
 private:
 	struct GUITransform
 	{

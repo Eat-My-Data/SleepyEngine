@@ -5,7 +5,7 @@
 class Rectangle
 {
 public:
-	static IndexedTriangleList Make( std::optional<Dvtx::VertexLayout> layout = {} )
+	static IndexedTriangleList Make( f32 x, f32 y, f32 width, f32 height, std::optional<Dvtx::VertexLayout> layout = {} )
 	{
 		using namespace Dvtx;
 		using Type = Dvtx::VertexLayout::ElementType;
@@ -19,12 +19,12 @@ public:
 		constexpr float side = 1.0f / 2.0f;
 
 		VertexBuffer vertices( std::move( *layout ), 6u );
-		vertices[0].Attr<Type::Position2D>() = { -side,-side };
-		vertices[1].Attr<Type::Position2D>() = { side,-side };
-		vertices[2].Attr<Type::Position2D>() = { -side,side };
-		vertices[3].Attr<Type::Position2D>() = { side,side };
-		vertices[4].Attr<Type::Position2D>() = { side,-side };
-		vertices[5].Attr<Type::Position2D>() = { -side,side };
+		vertices[0].Attr<Type::Position2D>() = { x,y };
+		vertices[1].Attr<Type::Position2D>() = { x + width,y };
+		vertices[2].Attr<Type::Position2D>() = { x,y + height };
+		vertices[3].Attr<Type::Position2D>() = { x + width,y + height };
+		vertices[4].Attr<Type::Position2D>() = { x + width,y };
+		vertices[5].Attr<Type::Position2D>() = { x,y + height };
 
 		return{
 			std::move( vertices ),{
