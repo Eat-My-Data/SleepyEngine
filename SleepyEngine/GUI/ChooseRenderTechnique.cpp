@@ -25,8 +25,8 @@ bool ChooseRenderTechnique::DoElement( UI_ID& active, UI_ID& hot, Mouse& mouse )
 	{
 		if ( mouse.LeftIsPressed() )
 		{
-			Activate();
 			active.Name = (char*)"ChooseRenderTechnique";
+			result = true;
 		}
 	}
 

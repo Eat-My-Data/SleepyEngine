@@ -131,16 +131,16 @@ void App::ExecuteFrame()
 		}
 	}
 
-	m_GUIManager.Update();
-
-	m_SceneManager.Draw();
-	m_GUIManager.Draw();
-
 	/*while ( const auto delta = m_Win32Window.m_Mouse.ReadRawDelta() )
 	{
 		if ( !m_Win32Window.CursorEnabled() )
 			m_SceneManager.RotateCamera( (f32)delta->x, (f32)delta->y );
 	}*/
+
+	m_GUIManager.Update();
+
+	m_SceneManager.Draw();
+	m_GUIManager.Draw();
 
 	m_SceneManager.Present();
 }
