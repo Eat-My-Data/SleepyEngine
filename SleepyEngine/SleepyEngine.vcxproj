@@ -237,6 +237,7 @@
     <ClInclude Include="GUI\GUIElement.h" />
     <ClInclude Include="GUI\GUIManager.h" />
     <ClInclude Include="GUI\ChooseRenderTechnique.h" />
+    <ClInclude Include="GUI\UI_ID.h" />
     <ClInclude Include="ResourceManager\Color.h" />
     <ClInclude Include="ResourceManager\Geometry\Sphere.h" />
     <ClInclude Include="ResourceManager\IndexedTriangleList.h" />

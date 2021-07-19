@@ -347,6 +347,9 @@
     <ClInclude Include="GUI\Forms\Rectangle.h">
       <Filter>Header Files\GUI\Forms</Filter>
     </ClInclude>
+    <ClInclude Include="GUI\UI_ID.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\VertexShader.hlsl">
