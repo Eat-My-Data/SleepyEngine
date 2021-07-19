@@ -24,7 +24,7 @@ private:
 	{
 		DirectX::XMMATRIX guiTransform;
 	} m_GUITransformCbuf;
-	Camera m_GUITransformCamera = { L"GUI Transfrom", MatrixType::Orthographic, ViewSpace( 640.0f, 360.0f, -1.0f, 1.0f ), DirectX::XMFLOAT3{ 0.0f, 0.0f, -1.0f } };
+	Camera m_GUITransformCamera = { L"GUI Transfrom", MatrixType::Orthographic, ViewSpace( 1280.0f, 720.0f, -1.0f, 1.0f ), DirectX::XMFLOAT3{ 0.0f, 0.0f, -1.0f } };
 private:
 	GraphicsDeviceInterface* m_pGDI = nullptr;
 	SceneManager* m_pSceneManager = nullptr;
@@ -34,4 +34,6 @@ private:
 	UI_ID* m_pActive = nullptr;
 private:
 	bool m_bIsInitialized = false;
+	u32 m_iScreenWidth = 1280;
+	u32 m_iScreenHeight = 720;
 };

@@ -10,7 +10,8 @@ void GUIManager::Initialize( GraphicsDeviceInterface& gdi, SceneManager& sceneMa
 	m_pMouse = &mouse;
 	m_pActive = new UI_ID{ (char*)"No Active Elements", 100 };
 	m_pHot = new UI_ID{ (char*)"No Hot Elements", 100 };
-	m_vecOfGUIElements.push_back( new ChooseRenderTechnique( -0.5f, -0.5f, 0.1f, 0.1f ) );
+	// need to make it so 0.0 is on the left?
+	m_vecOfGUIElements.push_back( new ChooseRenderTechnique( 0.0f, 0.0f, 100.0f, 50.0f ) );
 	m_bIsInitialized = true;
 }
 
@@ -31,7 +32,7 @@ void GUIManager::Update()
 void GUIManager::Draw()
 {
 	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), nullptr );
-	m_GUITransformCbuf.guiTransform = m_GUITransformCamera.GetViewMatrix();
+	m_GUITransformCbuf.guiTransform = m_GUITransformCamera.GetProjectionMatrix();
 	Bind::VertexConstantBuffer<GUITransform>::VertexConstantBuffer( *m_pGDI, m_GUITransformCbuf).Bind(* m_pGDI );
 	for ( u32 i = 0; i < m_vecOfGUIElements.size(); i++ )
 	{

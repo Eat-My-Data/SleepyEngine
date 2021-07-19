@@ -47,7 +47,7 @@ void ChooseRenderTechnique::Draw( GraphicsDeviceInterface& gdi )
 	using namespace Bind;
 	namespace dx = DirectX;
 
-	auto model = Rectangle::Make( (f32)m_iX, (f32)m_iY, (f32)m_iWidth, (f32)m_iHeight );
+	auto model = Rectangle::Make( (f32)m_iX - 640.0f, (f32)m_iY + 360.0f - (f32)m_iHeight, (f32)m_iWidth, (f32)m_iHeight );
 
 	VertexBuffer::VertexBuffer( gdi, model.m_VBVertices ).Bind( gdi );
 	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/PhongVS.cso" );
@@ -78,6 +78,6 @@ void ChooseRenderTechnique::Interact( SceneManager& sceneManager )
 
 bool ChooseRenderTechnique::Inside( std::pair<u32, u32> mousePos )
 {
-	return ( ( m_iX < mousePos.first && mousePos.first < m_iX + m_iWidth )
-		&& ( m_iY < mousePos.second && mousePos.second < m_iY + m_iHeight ) );
+	return  ( m_iX < mousePos.first && mousePos.first < m_iX + m_iWidth )
+		 && ( m_iY < mousePos.second && mousePos.second < m_iY + m_iHeight );
 }

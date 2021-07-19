@@ -16,8 +16,6 @@ public:
 			layout->Append( Type::Position2D );
 		}
 
-		constexpr float side = 1.0f / 2.0f;
-
 		VertexBuffer vertices( std::move( *layout ), 6u );
 		vertices[0].Attr<Type::Position2D>() = { x,y };
 		vertices[1].Attr<Type::Position2D>() = { x + width,y };
