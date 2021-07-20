@@ -241,6 +241,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 				SetCapture( m_hWnd );
 				m_Mouse.OnMouseEnter();
 			}
+			break;
 		}
 		// not in client -> log move / maintain capture if button down
 		else
@@ -255,7 +256,9 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 				ReleaseCapture();
 				m_Mouse.OnMouseLeave();
 			}
+			break;
 		}
+		break;
 	}
 	case WM_LBUTTONDOWN:
 	{
