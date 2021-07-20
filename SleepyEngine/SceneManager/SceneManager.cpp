@@ -157,7 +157,6 @@ void SceneManager::DeferredRender()
 	m_pDeferredDirectionalLight->Draw( *m_pGDI );
 
 	// point light
-	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
 	m_pDeferredPointLight->UpdateCBuffers( *m_pGDI, m_Camera.GetViewMatrix(), m_Camera.GetProjectionMatrix(), m_Camera.GetPosition() );
 	m_pDeferredPointLight->Draw( *m_pGDI, m_Camera.GetPosition() );
 
