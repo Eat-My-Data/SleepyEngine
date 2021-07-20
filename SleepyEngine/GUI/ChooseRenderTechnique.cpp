@@ -18,7 +18,7 @@ bool ChooseRenderTechnique::DoElement( UI_ID& active, UI_ID& hot, Mouse& mouse )
 		{
 			if ( hot.Name == "ChooseRenderTechnique" )
 				result = true;
-			active.Name = (char*)"Not Active";
+			active.Name = (char*)"No Active Elements";
 		}
 	}
 	else if ( hot.Name == "ChooseRenderTechnique" )
@@ -29,7 +29,7 @@ bool ChooseRenderTechnique::DoElement( UI_ID& active, UI_ID& hot, Mouse& mouse )
 		}
 	}
 
-	if ( Inside( mouse.GetPos() ) )
+	if ( active.Name == "No Active Elements" && Inside(mouse.GetPos()) )
 		hot.Name = (char*)"ChooseRenderTechnique";
 
 	return result;
