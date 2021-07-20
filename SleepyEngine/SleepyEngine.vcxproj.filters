@@ -76,6 +76,18 @@
     <Filter Include="Header Files\ResourceManager\Geometry">
       <UniqueIdentifier>{189dbe2f-49a1-4267-8d80-8987fe12d306}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{2de4853a-a1d3-4360-9c89-fdce25b33c69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{13556157-0efd-4862-b16a-e404ca67bb88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI\Forms">
+      <UniqueIdentifier>{563ec4cc-2ec4-4b9b-80e3-ffe68ab4bdd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\GUI">
+      <UniqueIdentifier>{117c71f5-5da3-4b48-9301-8e4335777e97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -176,6 +188,15 @@
     </ClCompile>
     <ClCompile Include="Drawable\PointLight.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\GUIManager.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\GUIElement.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\ChooseRenderTechnique.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -314,6 +335,21 @@
     <ClInclude Include="Bindable\Bindables\ConstantBuffersEx.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="GUI\GUIManager.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\GUIElement.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\ChooseRenderTechnique.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Forms\Rectangle.h">
+      <Filter>Header Files\GUI\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\UI_ID.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\VertexShader.hlsl">
@@ -399,6 +435,12 @@
     </FxCompile>
     <FxCompile Include="Shaders\Forward\F_PhongVSNotex.hlsl">
       <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\GUI\PhongVS.hlsl">
+      <Filter>Shaders\GUI</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\GUI\PhongPS.hlsl">
+      <Filter>Shaders\GUI</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -32,6 +32,16 @@ bool Mouse::IsInWindow() const noexcept
 	return m_bIsInWindow;
 }
 
+bool Mouse::LeftIsReleased() const noexcept
+{
+	for ( auto& mouseEvent : m_qBuffer )
+	{
+		if ( mouseEvent.GetType() == Event::Type::LRelease )
+			return true;
+	}
+	return false;
+}
+
 bool Mouse::LeftIsPressed() const noexcept
 {
 	return m_bLeftIsPressed;
@@ -47,7 +57,7 @@ std::optional<Mouse::Event> Mouse::Read() noexcept
 	if ( m_qBuffer.size() > 0u )
 	{
 		Mouse::Event e = m_qBuffer.front();
-		m_qBuffer.pop();
+		m_qBuffer.pop_front();
 		return e;
 	}
 	return {};
@@ -55,7 +65,7 @@ std::optional<Mouse::Event> Mouse::Read() noexcept
 
 void Mouse::Flush() noexcept
 {
-	m_qBuffer = std::queue<Event>();
+	m_qBuffer = std::deque<Event>();
 }
 
 void Mouse::EnableRaw() noexcept
@@ -78,21 +88,21 @@ void Mouse::OnMouseMove( u32 newx, u32 newy ) noexcept
 	m_iX = newx;
 	m_iY = newy;
 
-	m_qBuffer.push( Mouse::Event( Mouse::Event::Type::Move, *this ) );
+	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::Move, *this ) );
 	TrimBuffer();
 }
 
 void Mouse::OnMouseLeave() noexcept
 {
 	m_bIsInWindow = false;
-	m_qBuffer.push( Mouse::Event( Mouse::Event::Type::Leave, *this ) );
+	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::Leave, *this ) );
 	TrimBuffer();
 }
 
 void Mouse::OnMouseEnter() noexcept
 {
 	m_bIsInWindow = true;
-	m_qBuffer.push( Mouse::Event( Mouse::Event::Type::Enter, *this ) );
+	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::Enter, *this ) );
 	TrimBuffer();
 }
 
@@ -106,7 +116,7 @@ void Mouse::OnLeftPressed( u32 m_iX, u32 m_iY ) noexcept
 {
 	m_bLeftIsPressed = true;
 
-	m_qBuffer.push( Mouse::Event( Mouse::Event::Type::LPress, *this ) );
+	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::LPress, *this ) );
 	TrimBuffer();
 }
 
@@ -114,7 +124,7 @@ void Mouse::OnLeftReleased( u32 m_iX, u32 m_iY ) noexcept
 {
 	m_bLeftIsPressed = false;
 
-	m_qBuffer.push( Mouse::Event( Mouse::Event::Type::LRelease, *this ) );
+	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::LRelease, *this ) );
 	TrimBuffer();
 }
 
@@ -122,7 +132,7 @@ void Mouse::OnRightPressed( u32 m_iX, u32 m_iY ) noexcept
 {
 	m_bRightIsPressed = true;
 
-	m_qBuffer.push( Mouse::Event( Mouse::Event::Type::RPress, *this ) );
+	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::RPress, *this ) );
 	TrimBuffer();
 }
 
@@ -130,19 +140,19 @@ void Mouse::OnRightReleased( u32 m_iX, u32 m_iY ) noexcept
 {
 	m_bRightIsPressed = false;
 
-	m_qBuffer.push( Mouse::Event( Mouse::Event::Type::RRelease, *this ) );
+	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::RRelease, *this ) );
 	TrimBuffer();
 }
 
 void Mouse::OnWheelUp( u32 m_iX, u32 m_iY ) noexcept
 {
-	m_qBuffer.push( Mouse::Event( Mouse::Event::Type::WheelUp, *this ) );
+	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::WheelUp, *this ) );
 	TrimBuffer();
 }
 
 void Mouse::OnWheelDown( u32 m_iX, u32 m_iY ) noexcept
 {
-	m_qBuffer.push( Mouse::Event( Mouse::Event::Type::WheelDown, *this ) );
+	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::WheelDown, *this ) );
 	TrimBuffer();
 }
 
@@ -150,7 +160,7 @@ void Mouse::TrimBuffer() noexcept
 {
 	while ( m_qBuffer.size() > m_iBufferSize )
 	{
-		m_qBuffer.pop();
+		m_qBuffer.pop_back();
 	}
 }
 
