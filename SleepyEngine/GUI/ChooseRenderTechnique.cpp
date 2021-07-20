@@ -14,7 +14,7 @@ bool ChooseRenderTechnique::DoElement( UI_ID& active, UI_ID& hot, Mouse& mouse )
 	bool result = false;
 	if ( active.Name == "ChooseRenderTechnique" )
 	{
-		if ( mouse.LeftIsPressed() )
+		if ( !mouse.LeftIsPressed() )
 		{
 			if ( hot.Name == "ChooseRenderTechnique" )
 				result = true;
@@ -26,7 +26,6 @@ bool ChooseRenderTechnique::DoElement( UI_ID& active, UI_ID& hot, Mouse& mouse )
 		if ( mouse.LeftIsPressed() )
 		{
 			active.Name = (char*)"ChooseRenderTechnique";
-			result = true;
 		}
 	}
 
@@ -34,11 +33,6 @@ bool ChooseRenderTechnique::DoElement( UI_ID& active, UI_ID& hot, Mouse& mouse )
 		hot.Name = (char*)"ChooseRenderTechnique";
 
 	return result;
-}
-
-void ChooseRenderTechnique::Activate()
-{
-
 }
 
 void ChooseRenderTechnique::Draw( GraphicsDeviceInterface& gdi )
@@ -68,11 +62,13 @@ void ChooseRenderTechnique::Interact( SceneManager& sceneManager )
 	{
 		color.color = { 0.0f, 1.0f, 0.0f, 1.0f };
 		sceneManager.SetRenderTechnique( RenderTechnique::Forward );
+		isForwardRender = false;
 	}	
 	else
 	{
 		color.color = { 0.0f, 0.0f, 1.0f, 1.0f };
 		sceneManager.SetRenderTechnique( RenderTechnique::Deferred );
+		isForwardRender = true;
 	}
 }
 

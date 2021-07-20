@@ -10,7 +10,6 @@ void GUIManager::Initialize( GraphicsDeviceInterface& gdi, SceneManager& sceneMa
 	m_pMouse = &mouse;
 	m_pActive = new UI_ID{ (char*)"No Active Elements", 100 };
 	m_pHot = new UI_ID{ (char*)"No Hot Elements", 100 };
-	// need to make it so 0.0 is on the left?
 	m_vecOfGUIElements.push_back( new ChooseRenderTechnique( 0.0f, 0.0f, 100.0f, 50.0f ) );
 	m_bIsInitialized = true;
 }

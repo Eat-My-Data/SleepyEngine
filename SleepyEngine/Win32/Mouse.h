@@ -75,6 +75,7 @@ public:
 	u32 GetPosX() const noexcept;
 	u32 GetPosY() const noexcept;
 	bool IsInWindow() const noexcept;
+	bool LeftIsReleased() const noexcept;
 	bool LeftIsPressed() const noexcept;
 	bool RightIsPressed() const noexcept;
 	std::optional<Mouse::Event> Read() noexcept;
@@ -109,6 +110,6 @@ private:
 	bool m_bIsInWindow = false;
 	u32 m_iWheelDeltaCarry = 0;
 	bool m_bRawEnabled = false;
-	std::queue<Event> m_qBuffer;
+	std::deque<Event> m_qBuffer;
 	std::queue<RawDelta> m_qRawDeltaBuffer;
 };

@@ -13,7 +13,6 @@ public:
 	GUIElement( f32 x, f32 y, f32 width, f32 height );
 public:
 	virtual bool DoElement( UI_ID& active, UI_ID& hot, Mouse& mouse ) = 0;
-	virtual void Activate() = 0;
 	virtual void Draw( class GraphicsDeviceInterface& gdi ) = 0;
 	virtual void Interact( class SceneManager& sceneManager ) = 0;
 private:
