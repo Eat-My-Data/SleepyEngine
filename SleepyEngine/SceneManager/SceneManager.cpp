@@ -21,7 +21,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_pForwardDirectionalLight = new DirectionalLight( gdi, RenderTechnique::Forward );
 	m_pDeferredDirectionalLight = new DirectionalLight( gdi, RenderTechnique::Deferred );
 	m_pForwardPointLight = new PointLight( gdi, 10.0f,RenderTechnique::Forward );
-	//m_pDeferredPointLight = new PointLight( gdi, 10.0f, RenderTechnique::Deferred );
+	m_pDeferredPointLight = new PointLight( gdi, 10.0f, RenderTechnique::Deferred );
 }
 
 bool SceneManager::IsInitialzed() noexcept
@@ -157,9 +157,9 @@ void SceneManager::DeferredRender()
 	m_pDeferredDirectionalLight->Draw( *m_pGDI );
 
 	// point light
-	//m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
-	//m_pPointLight->UpdateCBuffers( *m_pGDI, m_Camera.GetViewMatrix(), m_Camera.GetProjectionMatrix(), m_Camera.GetPosition() );
-	//m_pPointLight->Draw( *m_pGDI, m_Camera.GetPosition() );
+	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
+	m_pDeferredPointLight->UpdateCBuffers( *m_pGDI, m_Camera.GetViewMatrix(), m_Camera.GetProjectionMatrix(), m_Camera.GetPosition() );
+	m_pDeferredPointLight->Draw( *m_pGDI, m_Camera.GetPosition() );
 
 	// clear shader resources
 	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr, nullptr };
