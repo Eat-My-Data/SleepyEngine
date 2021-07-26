@@ -50,9 +50,7 @@ Win32Window::Win32Window( u32 width, u32 height, const wchar_t* name )
 	wr.top = 100;
 	wr.bottom = height + wr.top;
 	if ( AdjustWindowRect( &wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE ) == 0 )
-	{
 		throw std::exception();
-	}
 
 	// create window and get hWnd
 	m_hWnd = CreateWindow(
@@ -77,9 +75,7 @@ Win32Window::Win32Window( u32 width, u32 height, const wchar_t* name )
 	rid.dwFlags = 0;
 	rid.hwndTarget = nullptr;
 	if ( RegisterRawInputDevices( &rid, 1, sizeof( rid ) ) == FALSE )
-	{
-		throw std::exception();
-	} */
+		throw std::exception();*/
 }
 
 Win32Window::~Win32Window()
@@ -110,17 +106,11 @@ bool Win32Window::CursorEnabled() noexcept
 std::optional<u32> Win32Window::ProcessMessages() noexcept
 {
 	MSG msg;
-	// while queue has messages, remove and dispatch them ( but do not block on no messages )
 	while ( PeekMessage( &msg, nullptr, 0, 0, PM_REMOVE ) )
 	{
-		// check for quit because peekmessage does not signal the via return
 		if ( msg.message == WM_QUIT )
-		{
-			// return optional wrapping int ( arg to PostQuitMessage is in wparam )
 			return (int)msg.wParam;
-		}
 
-		// TranslateMessage will post auxillary WM_CHAR messages from key msgs
 		TranslateMessage( &msg );
 		DispatchMessage( &msg );
 	}

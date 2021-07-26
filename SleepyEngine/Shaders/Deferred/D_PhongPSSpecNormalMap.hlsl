@@ -13,9 +13,20 @@ struct PSOut
 PSOut main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord)
 {
     PSOut output;
-
+    
     // Sample the color from the texture and store it for output to the render target.
     output.color = tex.Sample(splr, tc);
+    
+     #ifdef MASK_BOI
+    // bail if highly translucent
+    clip(output.color.a < 0.1f ? -1 : 1);
+    // flip normal when backface
+    if (dot(viewNormal, viewFragPos) >= 0.0f)
+    {
+        viewNormal = -viewNormal;
+    }
+    #endif
+    
     output.specular = spec.Sample(splr, tc);
 
     // 0 to 1 for normal

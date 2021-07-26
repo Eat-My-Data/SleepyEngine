@@ -11,7 +11,7 @@ cbuffer ObjectCBuf
 	float padding[1];
 };
 
-cbuffer ObjectCBuf
+cbuffer DirectionalLight
 {
     float3 lightDirection;
     float padding2[1];
@@ -58,18 +58,11 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         viewFragPos, directionalAtt, specularPower
     );
     
-    float3 combinedDiffuse = (diffuse + directionalDiffuse) / 2.0f;
-    float3 combinedSpecular = (specular + directionalSpecular) / 2.0f;
-
     float fragDepth = lightViewPos.z / lightViewPos.w;
-    float sampleDepth = depthTextureFromLight.Sample(splr, ((lightViewPos.xy / lightViewPos.w) / 2.0f) + 0.5f).r;
-    
-    if (sampleDepth < fragDepth)
-    {
-        // placeholder shadow
-        return float4(saturate((combinedDiffuse + ambient) * tex.Sample(splr, tc).rgb + combinedSpecular), 1.0f) * float4(.4, .4, .4, 1.0);
-    }
+    float sampleDepth = depthTextureFromLight.Sample(splr, ((lightViewPos.xy / lightViewPos.w) / 2.0f) + 0.5f).r;    
+    float isInLight = sampleDepth > fragDepth;
+    float3 combinedColor = diffuse + specular + ((directionalDiffuse + directionalSpecular) * isInLight) + ambient;
     
    	// final color
-    return float4(saturate((combinedDiffuse + ambient) * tex.Sample(splr, tc).rgb + combinedSpecular), 1.0f);
+    return float4((combinedColor * tex.Sample(splr, tc).rgb), 1.0f);
 } 

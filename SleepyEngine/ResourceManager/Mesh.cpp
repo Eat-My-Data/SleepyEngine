@@ -12,7 +12,9 @@
 
 namespace dx = DirectX;
 
-Mesh::Mesh( GraphicsDeviceInterface& gdi, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs )
+Mesh::Mesh( GraphicsDeviceInterface& gdi, bool isAlpha, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs )
+	:
+	isAlpha( isAlpha )
 {
 	AddBind( Bind::Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
@@ -23,6 +25,12 @@ Mesh::Mesh( GraphicsDeviceInterface& gdi, std::vector<std::shared_ptr<Bind::Bind
 
 	AddBind( std::make_shared<Bind::TransformCbuf>( gdi, *this ) );
 }
+
+bool Mesh::HasAlpha()
+{
+	return isAlpha;
+}
+
 void Mesh::Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept
 {
 	DirectX::XMStoreFloat4x4( &transform, accumulatedTransform );
@@ -31,6 +39,7 @@ void Mesh::Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTra
 	else
 		Drawable::DrawDepth( gdi );
 }
+
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 {
 	return DirectX::XMLoadFloat4x4( &transform );
@@ -38,10 +47,11 @@ DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 
 
 // Node
-Node::Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in ) noexcept
+Node::Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, std::vector<Mesh*> meshPtrsAlpha, const DirectX::XMMATRIX& transform_in ) noexcept
 	:
 	id( id ),
 	meshPtrs( std::move( meshPtrs ) ),
+	meshPtrsAlpha( std::move( meshPtrsAlpha ) ),
 	name( name )
 {
 	dx::XMStoreFloat4x4( &transform, transform_in );
@@ -61,6 +71,10 @@ void Node::Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTra
 	for ( const auto& pc : childPtrs )
 	{
 		pc->Draw( gdi, built, isDepthPass );
+	}
+	for ( const auto& pa : meshPtrsAlpha )
+	{
+		pa->Draw( gdi, built, isDepthPass );
 	}
 }
 
@@ -643,8 +657,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gdi, const aiMe
 	bindablePtrs.push_back( Rasterizer::Resolve( gdi, hasAlphaDiffuse ) );
 
 	//bindablePtrs.push_back( Blender::Resolve( gdi, false ) );
-
-	return std::make_unique<Mesh>( gdi, std::move( bindablePtrs ) );
+	return std::make_unique<Mesh>( gdi, hasAlphaDiffuse, std::move( bindablePtrs ) );
 }
 
 std::unique_ptr<Node> Model::ParseNode( int& nextId, const aiNode& node ) noexcept
@@ -655,14 +668,19 @@ std::unique_ptr<Node> Model::ParseNode( int& nextId, const aiNode& node ) noexce
 	) );
 
 	std::vector<Mesh*> curMeshPtrs;
+	std::vector<Mesh*> curMeshAlphaPtrs;
 	curMeshPtrs.reserve( node.mNumMeshes );
 	for ( size_t i = 0; i < node.mNumMeshes; i++ )
 	{
 		const auto meshIdx = node.mMeshes[i];
-		curMeshPtrs.push_back( meshPtrs.at( meshIdx ).get() );
+		Mesh* pMesh = meshPtrs.at( meshIdx ).get();
+		if ( !pMesh->HasAlpha() )
+			curMeshPtrs.push_back( pMesh );
+		else
+			curMeshAlphaPtrs.push_back( pMesh );
 	}
 
-	auto pNode = std::make_unique<Node>( nextId++, node.mName.C_Str(), std::move( curMeshPtrs ), transform );
+	auto pNode = std::make_unique<Node>( nextId++, node.mName.C_Str(), std::move( curMeshPtrs ), std::move( curMeshAlphaPtrs ), transform );
 	for ( size_t i = 0; i < node.mNumChildren; i++ )
 	{
 		pNode->AddChild( ParseNode( nextId, *node.mChildren[i] ) );

@@ -222,6 +222,7 @@
     <ClInclude Include="Bindable\Bindables\PixelShader.h" />
     <ClInclude Include="Bindable\Bindables\Rasterizer.h" />
     <ClInclude Include="Bindable\Bindables\Sampler.h" />
+    <ClInclude Include="Bindable\Bindables\StructuedBuffer.h" />
     <ClInclude Include="Bindable\Bindables\Texture.h" />
     <ClInclude Include="Bindable\Bindables\Topology.h" />
     <ClInclude Include="Bindable\Bindables\TransformCBuf.h" />

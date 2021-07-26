@@ -20,6 +20,6 @@ private:
 	GUIManager m_GUIManager;
 	FrameTimer timer;
 	// TODO: 
-	// - Platform Interface
 	// - Raw Mouse Input
+	// - Platform Interface
 };

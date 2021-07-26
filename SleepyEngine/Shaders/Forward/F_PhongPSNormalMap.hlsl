@@ -10,6 +10,12 @@ cbuffer ObjectCBuf
     float padding[1];
 };
 
+cbuffer DirectionalLight
+{
+    float3 lightDirection;
+    float padding2[1];
+}
+
 Texture2D tex;
 Texture2D nmap : register(t2);
 Texture2D depthTextureFromLight : register(t4);
@@ -37,15 +43,23 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         lv.vToL, viewFragPos, att, specularPower
     );
     
+     // fragment to light vector data
+    const LightVectorData directionalLV = CalculateLightVectorData(viewLightPos, viewFragPos);
+	// attenuation
+    const float directionalAtt = 0.8f;
+	// diffuse intensity
+    const float3 directionalDiffuse = Diffuse(diffuseColor, diffuseIntensity, directionalAtt, -lightDirection, viewNormal);
+	// specular
+    const float3 directionalSpecular = Speculate(
+        specularPower.rrr, 1.0f, viewNormal, -lightDirection,
+        viewFragPos, directionalAtt, specularPower
+    );
+    
     float fragDepth = lightViewPos.z / lightViewPos.w;
     float sampleDepth = depthTextureFromLight.Sample(splr, ((lightViewPos.xy / lightViewPos.w) / 2.0f) + 0.5f).r;
+    float isInLight = sampleDepth > fragDepth;
+    float3 combinedColor = diffuse + specular + ((directionalDiffuse + directionalSpecular) * isInLight) + ambient;
     
-    if (sampleDepth < fragDepth)
-    {
-        // placeholder shadow
-        return float4(saturate((diffuse + ambient) * tex.Sample(splr, tc).rgb + specular), 1.0f) * float4(.2, .2, .2, 1.0);
-    }
-    
-	// final color
-    return float4(saturate((diffuse + ambient) * tex.Sample(splr, tc).rgb + specular), 1.0f);
+   	// final color
+    return float4((combinedColor * tex.Sample(splr, tc).rgb), 1.0f);
 }

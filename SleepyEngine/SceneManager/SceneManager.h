@@ -34,12 +34,17 @@ private:
 	GraphicsAPI m_GraphicsAPI = GraphicsAPI::Uninitialized;
 	GraphicsDeviceInterface* m_pGDI = nullptr;
 	Camera m_Camera = { L"Character Camera", MatrixType::Perspective, ViewSpace( 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ), DirectX::XMFLOAT3{ -13.5f, 5.0f, 3.5f }, 0.0f, PI / 2.0f };
-	Camera m_DirectionalLightOrthoCamera = { L"Directional Light Camera", MatrixType::Orthographic, ViewSpace( 400.0f, 400.0f, 1.0f, 1200.0f ), DirectX::XMFLOAT3{ 0.0f,200.8f,100.0f },  PI / 2.0f, -PI };
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 private:
+	// stucture buffers for lights - list of lights
 	DirectionalLight* m_pForwardDirectionalLight;
 	DirectionalLight* m_pDeferredDirectionalLight;
 	PointLight* m_pForwardPointLight;
 	PointLight* m_pDeferredPointLight;
 	std::vector<Model*> m_vecOfModels;
+	// TODO: 
+	// - Consolidate into one Directional and one Point Light
+	//		- Or seperate into ForwardDirectionalLight and DeferredDirectionalLight classes?
+	// - Resource Manager?
+	// - Stop load two whole games worth of resources to be able to have both deferred and forward?
 };
