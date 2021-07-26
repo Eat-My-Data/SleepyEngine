@@ -21,6 +21,5 @@ private:
 	FrameTimer timer;
 	// TODO: 
 	// - Raw Mouse Input
-	// - GUI
 	// - Platform Interface
 };

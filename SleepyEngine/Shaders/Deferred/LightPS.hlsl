@@ -22,7 +22,7 @@ cbuffer LightBuffer : register(b0)
 cbuffer CamPosBuffer : register(b1)
 {
     float4 camPos;
-    row_major float4x4 lightViewProjectionMatrix;
+     float4x4 lightViewProjectionMatrix;
 };
 
 
@@ -51,8 +51,7 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     
     // world to light and shadow map check
     float4 fragPositionInLightView = mul(worldSpacePos, lightViewProjectionMatrix);
-    //fragPositionInLightView /= fragPositionInLightView.w;
-    //fragPositionInLightView = (fragPositionInLightView / 2.0f) + 0.5f;
+    
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
 
@@ -68,7 +67,6 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     float sampleDepth = depthTextureFromLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f) + 0.5f).r;
     float isInLight = sampleDepth > fragDepth;
     float3 combinedColor = ((diffuseIntensity + specularResult) * isInLight) + ambient;
-    
    	// final color
     return float4((combinedColor * colors.rgb), 1.0f);
 }

@@ -46,4 +46,5 @@ private:
 	// - Consolidate into one Directional and one Point Light
 	//		- Or seperate into ForwardDirectionalLight and DeferredDirectionalLight classes?
 	// - Resource Manager?
+	// - Stop load two whole games worth of resources to be able to have both deferred and forward?
 };
