@@ -189,6 +189,7 @@
     <ClCompile Include="Drawable\DirectionalLight.cpp" />
     <ClCompile Include="Drawable\Drawable.cpp" />
     <ClCompile Include="Drawable\PointLight.cpp" />
+    <ClCompile Include="Drawable\SolidSphere.cpp" />
     <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp" />
     <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp" />
     <ClCompile Include="GUI\GUIElement.cpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="ResourceManager\Surface.cpp" />
     <ClCompile Include="ResourceManager\Vertex.cpp" />
     <ClCompile Include="SceneManager\Camera.cpp" />
+    <ClCompile Include="SceneManager\LightManager.cpp" />
     <ClCompile Include="SceneManager\SceneManager.cpp" />
     <ClCompile Include="Utilities\FrameTimer.cpp" />
     <ClCompile Include="Utilities\SleepyUtil.cpp" />
@@ -222,7 +224,7 @@
     <ClInclude Include="Bindable\Bindables\PixelShader.h" />
     <ClInclude Include="Bindable\Bindables\Rasterizer.h" />
     <ClInclude Include="Bindable\Bindables\Sampler.h" />
-    <ClInclude Include="Bindable\Bindables\StructuedBuffer.h" />
+    <ClInclude Include="Bindable\Bindables\StructuredBuffers.h" />
     <ClInclude Include="Bindable\Bindables\Texture.h" />
     <ClInclude Include="Bindable\Bindables\Topology.h" />
     <ClInclude Include="Bindable\Bindables\TransformCBuf.h" />
@@ -232,6 +234,7 @@
     <ClInclude Include="Drawable\DirectionalLight.h" />
     <ClInclude Include="Drawable\Drawable.h" />
     <ClInclude Include="Drawable\PointLight.h" />
+    <ClInclude Include="Drawable\SolidSphere.h" />
     <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h" />
     <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h" />
     <ClInclude Include="GUI\Forms\Rectangle.h" />
@@ -247,6 +250,7 @@
     <ClInclude Include="ResourceManager\Surface.h" />
     <ClInclude Include="ResourceManager\Vertex.h" />
     <ClInclude Include="SceneManager\Camera.h" />
+    <ClInclude Include="SceneManager\LightManager.h" />
     <ClInclude Include="SceneManager\RenderTechnique.h" />
     <ClInclude Include="SceneManager\SceneManager.h" />
     <ClInclude Include="Utilities\FrameTimer.h" />

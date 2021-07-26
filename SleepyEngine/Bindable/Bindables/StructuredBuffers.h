@@ -5,29 +5,29 @@
 namespace Bind
 {
 	template<typename C>
-	class StructuredBuffer : public Bindable
+	class StructuredBuffers : public Bindable
 	{
 	public:
 		void Update( GraphicsDeviceInterface& gdi, const C& consts )
 		{
 			D3D11_MAPPED_SUBRESOURCE msr;
 			GetContext( gdi )->Map(
-				m_pConstantBuffer, 0u,
+				m_pStructuredBuffer, 0u,
 				D3D11_MAP_WRITE_DISCARD, 0u,
 				&msr
 			);
 			memcpy( msr.pData, &consts, sizeof( consts ) );
 			GetContext( gdi )->Unmap( m_pConstantBuffer, 0u );
 		}
-		StructuredBuffer( GraphicsDeviceInterface& gdi, const C& consts, UINT slot = 0u )
+		StructuredBuffers( GraphicsDeviceInterface& gdi, const C& consts, UINT slot = 0u )
 			:
 			m_iSlot( slot )
 		{
 			D3D11_BUFFER_DESC cbd;
-			cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			cbd.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 			cbd.Usage = D3D11_USAGE_DYNAMIC;
 			cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			cbd.MiscFlags = 0u;
+			cbd.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 			cbd.ByteWidth = sizeof( C );
 			cbd.StructureByteStride = 0u;
 
@@ -35,31 +35,31 @@ namespace Bind
 			csd.pSysMem = &consts;
 			GetDevice( gdi )->CreateBuffer( &cbd, &csd, &m_pConstantBuffer );
 		}
-		StructuredBuffer( GraphicsDeviceInterface& gdi, UINT slot = 0u )
+		StructuredBuffers( GraphicsDeviceInterface& gdi, UINT slot = 0u )
 			:
 			m_iSlot( slot )
 		{
 			D3D11_BUFFER_DESC cbd;
-			cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			cbd.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 			cbd.Usage = D3D11_USAGE_DYNAMIC;
 			cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			cbd.MiscFlags = 0u;
+			cbd.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 			cbd.ByteWidth = sizeof( C );
 			cbd.StructureByteStride = 0u;
 			GetDevice( gdi )->CreateBuffer( &cbd, nullptr, &m_pConstantBuffer );
 		}
 	protected:
-		ID3D11Buffer* m_pConstantBuffer;
+		ID3D11Buffer* m_pStructuredBuffer;
 		UINT m_iSlot;
 	};
 	template<typename C>
-	class PixelStructuredBuffer: public ConstantBuffer<C>
+	class PixelStructuredBuffer: public StructuredBuffers<C>
 	{
-		using StructuredBuffer<C>::m_pStructuredBuffer;
-		using StructuredBuffer<C>::m_iSlot;
+		using StructuredBuffers<C>::m_pStructuredBuffer;
+		using StructuredBuffers<C>::m_iSlot;
 		using Bindable::GetContext;
 	public:
-		using StructuredBuffer<C>::StructuredBuffer;
+		using StructuredBuffers<C>::StructuredBuffers;
 		void Bind( GraphicsDeviceInterface& gdi ) noexcept override
 		{
 			GetContext( gdi )->PSSetStructuredBuffers( m_iSlot, 1u, &m_pStructuredBuffer );

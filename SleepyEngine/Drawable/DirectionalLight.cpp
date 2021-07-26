@@ -4,7 +4,7 @@
 #include "../Bindable/Bindables/Sampler.h"
 #include "../Bindable/Bindables/Blender.h"
 
-DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi, RenderTechnique renderTechnique )
+DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi )
 {
 	using namespace Bind;
 	namespace dx = DirectX;
@@ -14,23 +14,19 @@ DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi, RenderTechniqu
 	m_pCameraPCBuf = PixelConstantBuffer<CamBuffer>::Resolve( gdi, cambuf, 1u );
 	AddBind( m_pCameraPCBuf );
 
-	if ( renderTechnique == RenderTechnique::Deferred )
-	{
-		auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/LightVS.cso" );
-		auto pvsbc = pvs->GetBytecode();
-		AddBind( std::move( pvs ) );
-		AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/LightPS.cso" ) );
-		AddBind( Sampler::Resolve( gdi ) );
-		AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-		AddBind( Rasterizer::Resolve( gdi, true ) );
-	}
-	else if ( renderTechnique == RenderTechnique::Forward )
-	{
-		m_pForwardLightPCbuf = PixelConstantBuffer<ForwardLightBuffer>::Resolve( gdi, dlcbuf, 2u );
-		AddBind( m_pForwardLightPCbuf );
-		m_pForwardLightMatrices = VertexConstantBuffer<ForwaredMatrices>::Resolve( gdi, matrixcbuf, 1u );
-		AddBind( m_pForwardLightMatrices );
-	}
+	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/LightVS.cso" );
+	auto pvsbc = pvs->GetBytecode();
+	AddBind( std::move( pvs ) );
+	AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/LightPS.cso" ) );
+	AddBind( Sampler::Resolve( gdi ) );
+	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+	AddBind( Rasterizer::Resolve( gdi, true ) );
+
+	m_pForwardLightPCbuf = PixelConstantBuffer<ForwardLightBuffer>::Resolve( gdi, dlcbuf, 2u );
+	AddBind( m_pForwardLightPCbuf );
+	m_pForwardLightMatrices = VertexConstantBuffer<ForwaredMatrices>::Resolve( gdi, matrixcbuf, 1u );
+	AddBind( m_pForwardLightMatrices );
+	
 }
 
 
