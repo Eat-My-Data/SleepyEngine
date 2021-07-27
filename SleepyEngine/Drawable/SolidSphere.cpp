@@ -6,7 +6,7 @@
 
 SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
 {
-	using namespace Bind;
+	/*using namespace Bind;
 	namespace dx = DirectX;
 
 	auto model = Sphere::Make();
@@ -32,7 +32,7 @@ SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
 
 	AddBind( std::make_shared<Topology>( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
-	AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );
+	AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );*/
 }
 
 void SolidSphere::SetPos( DirectX::XMFLOAT3 pos ) noexcept

@@ -109,7 +109,7 @@ DirectX::XMMATRIX PointLight::GetTransformXM() const noexcept
 	return DirectX::XMMatrixTranslation( m_StructuredBufferData.pos.x, m_StructuredBufferData.pos.y, m_StructuredBufferData.pos.z );
 }
 
-void PointLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos )
+void PointLight::Update( DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos )
 {
 		DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( viewMatrix );
 		DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, viewMatrix );
@@ -124,7 +124,7 @@ void PointLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMat
 
 void PointLight::Draw( GraphicsDeviceInterface& gdi )
 {
-	m_SolidSphere->Draw( gdi );
+	//m_SolidSphere->Draw( gdi );
 
 	// bindables
 	for ( auto& b : binds )

@@ -32,23 +32,23 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         viewNormal = MapNormal(normalize(viewTan), normalize(viewBitan), viewNormal, tc, nmap, splr);
     }
 	// fragment to light vector data
-    const LightVectorData lv = CalculateLightVectorData(viewLightPos, viewFragPos);
+    const LightVectorData lv = CalculateLightVectorData(pointLightData[0].viewLightPos, viewFragPos);
 	// attenuation
-    const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
+    const float att = Attenuate(pointLightData[0].attConst, pointLightData[0].attLin, pointLightData[0].attQuad, lv.distToL);
 	// diffuse
-    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, viewNormal);
+    const float3 diffuse = Diffuse(pointLightData[0].diffuseColor, pointLightData[0].diffuseIntensity, att, lv.dirToL, viewNormal);
     // specular
     const float3 specular = Speculate(
-        diffuseColor, diffuseIntensity, viewNormal,
+       pointLightData[0].diffuseColor, pointLightData[0].diffuseIntensity, viewNormal,
         lv.vToL, viewFragPos, att, specularPower
     );
     
      // fragment to light vector data
-    const LightVectorData directionalLV = CalculateLightVectorData(viewLightPos, viewFragPos);
+    const LightVectorData directionalLV = CalculateLightVectorData(pointLightData[0].viewLightPos, viewFragPos);
 	// attenuation
     const float directionalAtt = 0.8f;
 	// diffuse intensity
-    const float3 directionalDiffuse = Diffuse(diffuseColor, diffuseIntensity, directionalAtt, -lightDirection, viewNormal);
+    const float3 directionalDiffuse = Diffuse(pointLightData[0].diffuseColor, pointLightData[0].diffuseIntensity, directionalAtt, -lightDirection, viewNormal);
 	// specular
     const float3 directionalSpecular = Speculate(
         specularPower.rrr, 1.0f, viewNormal, -lightDirection,
@@ -58,7 +58,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     float fragDepth = lightViewPos.z / lightViewPos.w;
     float sampleDepth = depthTextureFromLight.Sample(splr, ((lightViewPos.xy / lightViewPos.w) / 2.0f) + 0.5f).r;
     float isInLight = sampleDepth > fragDepth;
-    float3 combinedColor = diffuse + specular + ((directionalDiffuse + directionalSpecular) * isInLight) + ambient;
+    float3 combinedColor = diffuse + specular + ((directionalDiffuse + directionalSpecular) * isInLight) + pointLightData[0].ambient;
     
    	// final color
     return float4((combinedColor * tex.Sample(splr, tc).rgb), 1.0f);

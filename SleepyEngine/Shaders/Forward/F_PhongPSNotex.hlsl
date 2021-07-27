@@ -23,11 +23,11 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 li
     // normalize the mesh normal
     viewNormal = normalize(viewNormal);
 	// fragment to light vector data
-    const LightVectorData lv = CalculateLightVectorData(viewLightPos, viewFragPos);
+    const LightVectorData lv = CalculateLightVectorData(pointLightData[0].viewLightPos, viewFragPos);
 	// attenuation
-    const float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
+    const float att = Attenuate(pointLightData[0].attConst, pointLightData[0].attLin, pointLightData[0].attQuad, lv.distToL);
 	// diffuse
-    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lv.dirToL, viewNormal);
+    const float3 diffuse = Diffuse(pointLightData[0].diffuseColor, pointLightData[0].diffuseIntensity, att, lv.dirToL, viewNormal);
     // specular
     const float3 specular = Speculate(
         specularColor.rgb, 1.0f, viewNormal,
@@ -35,11 +35,11 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 li
     );
     
     // fragment to light vector data
-    const LightVectorData directionalLV = CalculateLightVectorData(viewLightPos, viewFragPos);
+    const LightVectorData directionalLV = CalculateLightVectorData(pointLightData[0].viewLightPos, viewFragPos);
 	// attenuation
     const float directionalAtt = 0.8f;
 	// diffuse intensity
-    const float3 directionalDiffuse = Diffuse(diffuseColor, diffuseIntensity, directionalAtt, -lightDirection, viewNormal);
+    const float3 directionalDiffuse = Diffuse(pointLightData[0].diffuseColor, pointLightData[0].diffuseIntensity, directionalAtt, -lightDirection, viewNormal);
 	// specular
     const float3 directionalSpecular = Speculate(
         specularPower.rrr, 1.0f, viewNormal, -lightDirection,
@@ -54,5 +54,5 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 li
     float shadowValue = sampleDepth > fragDepth;
     
    	// final color
-    return float4((combinedColor * shadowValue) + ambient, 1.0f);
+    return float4((combinedColor * shadowValue) + pointLightData[0].ambient, 1.0f);
 }

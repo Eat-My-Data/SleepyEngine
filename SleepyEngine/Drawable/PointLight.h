@@ -1,6 +1,5 @@
 #pragma once
 #include "./Drawable.h"
-#include "../Bindable/Bindables/StructuredBuffers.h"
 #include "../SceneManager/RenderTechnique.h"
 #include "../Drawable/SolidSphere.h"
 
@@ -9,11 +8,11 @@ class PointLight : public Drawable
 public:
 	PointLight( GraphicsDeviceInterface& gdi, float radius );
 	void Draw( GraphicsDeviceInterface& gdi );
-	void Update( GraphicsDeviceInterface& gdi, DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos );
+	void Update( DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void Translate( DirectX::XMFLOAT3 vec );
 	bool CameraIsInside( DirectX::XMFLOAT3 camPos );
-private:
+public:
 	struct PointLightData
 	{
 		alignas( 16 ) DirectX::XMFLOAT3 pos = { 10.0f, 9.0f, 2.5f };
@@ -28,7 +27,6 @@ private:
 		DirectX::XMMATRIX cameraMatrix;
 		DirectX::XMMATRIX projInvMatrix;
 	};
-public:
 	PointLightData m_StructuredBufferData;
 private:
 	SolidSphere* m_SolidSphere;

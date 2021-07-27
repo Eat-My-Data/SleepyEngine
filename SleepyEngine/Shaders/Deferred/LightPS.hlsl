@@ -22,7 +22,7 @@ cbuffer LightBuffer : register(b0)
 cbuffer CamPosBuffer : register(b1)
 {
     float4 camPos;
-     float4x4 lightViewProjectionMatrix;
+    float4x4 lightViewProjectionMatrix;
 };
 
 

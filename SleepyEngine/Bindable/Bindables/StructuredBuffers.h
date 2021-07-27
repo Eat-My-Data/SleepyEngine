@@ -17,7 +17,7 @@ namespace Bind
 				&msr
 			);
 			memcpy( msr.pData, &consts, sizeof( consts ) );
-			GetContext( gdi )->Unmap( m_pConstantBuffer, 0u );
+			GetContext( gdi )->Unmap( m_pStructuredBuffer, 0u );
 		}
 		StructuredBuffers( GraphicsDeviceInterface& gdi, const C& consts, UINT slot = 0u )
 			:
@@ -33,7 +33,7 @@ namespace Bind
 
 			D3D11_SUBRESOURCE_DATA csd = {};
 			csd.pSysMem = &consts;
-			GetDevice( gdi )->CreateBuffer( &cbd, &csd, &m_pConstantBuffer );
+			GetDevice( gdi )->CreateBuffer( &cbd, &csd, &m_pStructuredBuffer );
 		}
 		StructuredBuffers( GraphicsDeviceInterface& gdi, UINT slot = 0u )
 			:
@@ -46,7 +46,7 @@ namespace Bind
 			cbd.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 			cbd.ByteWidth = sizeof( C );
 			cbd.StructureByteStride = 0u;
-			GetDevice( gdi )->CreateBuffer( &cbd, nullptr, &m_pConstantBuffer );
+			GetDevice( gdi )->CreateBuffer( &cbd, nullptr, &m_pStructuredBuffer );
 		}
 	protected:
 		ID3D11Buffer* m_pStructuredBuffer;
@@ -62,7 +62,15 @@ namespace Bind
 		using StructuredBuffers<C>::StructuredBuffers;
 		void Bind( GraphicsDeviceInterface& gdi ) noexcept override
 		{
-			GetContext( gdi )->PSSetStructuredBuffers( m_iSlot, 1u, &m_pStructuredBuffer );
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+			srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+			srvDesc.Buffer.FirstElement = 0;
+			srvDesc.Buffer.NumElements = sizeof( C );
+
+			ID3D11ShaderResourceView* pStructBufSRV;
+			gdi.GetDevice()->CreateShaderResourceView( m_pStructuredBuffer, &srvDesc, &pStructBufSRV );
+			GetContext( gdi )->PSSetShaderResources( m_iSlot, 1u, &pStructBufSRV );
 		}
 		static std::shared_ptr<PixelStructuredBuffer> Resolve( GraphicsDeviceInterface& gdi, const C& consts, UINT slot = 0 )
 		{
