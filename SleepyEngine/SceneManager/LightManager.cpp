@@ -12,7 +12,7 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 {
 	m_pDirectionalLight->Update( *m_pGDI, camPos );
-	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>::PixelStructuredBuffer( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData ).Bind( *m_pGDI );
+	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>::PixelStructuredBuffer( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData, 5u ).Bind( *m_pGDI );
 
 	PointLight::PointLightData* bufferData = new PointLight::PointLightData[2];
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
@@ -20,7 +20,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 		m_vecOfPointLights[i]->Update( m_pGDI->GetViewMatrix(), m_pGDI->GetProjMatrix(), camPos );
 		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
 	}
-	Bind::PixelStructuredBuffer<PointLight::PointLightData>::PixelStructuredBuffer( *m_pGDI, bufferData[0] ).Bind( *m_pGDI );
+	//Bind::PixelStructuredBuffer<PointLight::PointLightData>::PixelStructuredBuffer( *m_pGDI, bufferData[0], 5u ).Bind( *m_pGDI );
 }
 
 void LightManager::Draw()

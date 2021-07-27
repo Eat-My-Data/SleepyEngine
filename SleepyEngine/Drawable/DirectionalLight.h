@@ -24,6 +24,7 @@ public:
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
 		float specularIntensity = 1.0f;
 		float att = 0.5f;
+		float padding[2];
 		float specularPower = 128.0f;
 		DirectX::XMFLOAT3 camPos;
 		DirectX::XMMATRIX cameraMatrix;

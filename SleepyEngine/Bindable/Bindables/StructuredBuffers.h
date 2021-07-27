@@ -23,13 +23,13 @@ namespace Bind
 			:
 			m_iSlot( slot )
 		{
-			D3D11_BUFFER_DESC cbd;
+			D3D11_BUFFER_DESC cbd = {};
 			cbd.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 			cbd.Usage = D3D11_USAGE_DYNAMIC;
 			cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 			cbd.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 			cbd.ByteWidth = sizeof( C );
-			cbd.StructureByteStride = 0u;
+			cbd.StructureByteStride = sizeof( C );
 
 			D3D11_SUBRESOURCE_DATA csd = {};
 			csd.pSysMem = &consts;
@@ -39,13 +39,13 @@ namespace Bind
 			:
 			m_iSlot( slot )
 		{
-			D3D11_BUFFER_DESC cbd;
+			D3D11_BUFFER_DESC cbd = {};
 			cbd.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 			cbd.Usage = D3D11_USAGE_DYNAMIC;
 			cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 			cbd.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 			cbd.ByteWidth = sizeof( C );
-			cbd.StructureByteStride = 0u;
+			cbd.StructureByteStride = sizeof( C );
 			GetDevice( gdi )->CreateBuffer( &cbd, nullptr, &m_pStructuredBuffer );
 		}
 	protected:
@@ -66,7 +66,7 @@ namespace Bind
 			srvDesc.Format = DXGI_FORMAT_UNKNOWN;
 			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
 			srvDesc.Buffer.FirstElement = 0;
-			srvDesc.Buffer.NumElements = sizeof( C );
+			srvDesc.Buffer.NumElements = 1;
 
 			ID3D11ShaderResourceView* pStructBufSRV;
 			gdi.GetDevice()->CreateShaderResourceView( m_pStructuredBuffer, &srvDesc, &pStructBufSRV );
