@@ -40,7 +40,7 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     // normal to clip space
     normals = (normals * 2.0) - 1.0;
     
-    // world to camera 
+    //// world to camera 
     float4 worldDepth = float4(clipX, clipY, depthSample, 1.0);
     float4 worldPosition = mul(worldDepth, directionalLightData[0].projInvMatrix);
     worldPosition /= worldPosition.w;
@@ -49,7 +49,7 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     
     // world to light and shadow map check
     float4 fragPositionInLightView = mul(worldSpacePos, directionalLightData[0].lightViewProjectionMatrix);
-    
+
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - directionalLightData[0].camPos.xyz;
 
@@ -58,8 +58,12 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     // diffuse light
     float diffuseIntensity = dot(normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection.xyz));
 
-    // specular
-    float3 specularResult = Speculate(specular.xyz, directionalLightData[0].specularIntensity, normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection), camToFrag, directionalLightData[0].att, directionalLightData[0].specularPower);
+    float specIntensity = directionalLightData[0].specularIntensity;
+    float lightDir = directionalLightData[0].lightDirection;
+    float lightAtt = directionalLightData[0].att;
+    float specPower = directionalLightData[0].specularPower;
+    //// specular
+    float3 specularResult = Speculate(specular.xyz, specIntensity, normalize(normals.xyz), normalize(-lightDir), camToFrag, lightAtt, specPower);
 
     float fragDepth = fragPositionInLightView.z;
     float sampleDepth = depthTextureFromLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f) + 0.5f).r;
