@@ -4,7 +4,7 @@ App::App()
 	:
 	m_Win32Window( 1280, 720, L"Sleepy Engine" )
 {
-	m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
+	m_SceneManager.SetRenderTechnique( RenderTechnique::Deferred );
 }
 
 u32 App::Launch()

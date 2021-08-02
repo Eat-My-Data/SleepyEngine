@@ -24,7 +24,7 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 	ID3DBlob* pBlob;
 	D3DReadFileToBlob( L"../SleepyEngine/Shaders/Bin/PointLightPS.cso", &pBlob );
 	gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
-	AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/PointLightPS.cso" ) );
+
 	AddBind( Sampler::Resolve( gdi ) );
 
 	Dvtx::VertexBuffer vbuf( std::move(
@@ -103,6 +103,7 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 	gdi.GetDevice()->CreateRasterizerState( &rasterizerDescOutside, &rasterizerOutside );
 
 	m_SolidSphere = new SolidSphere( gdi, 0.75f );
+	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }
 
 DirectX::XMMATRIX PointLight::GetTransformXM() const noexcept

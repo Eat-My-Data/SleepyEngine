@@ -6,11 +6,6 @@ using namespace Bind;
 
 void Drawable::Draw( GraphicsDeviceInterface& gdi ) const noexcept
 {
-	// set blend state to default for geometry
-	gdi.GetContext()->RSSetState( NULL );
-	const float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
-	gdi.GetContext()->OMSetBlendState( NULL, blendFactor, 0xFFFFFFFF );
-
 	// bindables
 	for ( auto& b : binds )
 	{
@@ -23,11 +18,6 @@ void Drawable::Draw( GraphicsDeviceInterface& gdi ) const noexcept
 
 void Drawable::DrawDepth( GraphicsDeviceInterface& gdi ) const noexcept
 {
-	// set blend state to default for geometry
-	gdi.GetContext()->RSSetState( NULL );
-	const float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
-	gdi.GetContext()->OMSetBlendState( NULL, blendFactor, 0xFFFFFFFF );
-
 	// bindables
 	for ( auto& b : binds )
 	{
