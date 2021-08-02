@@ -40,7 +40,7 @@ void DirectionalLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 c
 	m_StructuredBufferData.camPos = camPos;
 	m_StructuredBufferData.cameraMatrix = cameraMatrix;
 	m_StructuredBufferData.projInvMatrix = projInvMatrix;
-	m_StructuredBufferData.lightViewProjectionMatrix = m_OrthoCamera.GetProjectionMatrix() * m_OrthoCamera.GetViewMatrix() ;
+	m_StructuredBufferData.lightViewProjectionMatrix = m_OrthoCamera.GetViewMatrix() * m_OrthoCamera.GetProjectionMatrix();
 
 	matrixcbuf.lightViewMatrix = m_OrthoCamera.GetViewMatrix();
 	matrixcbuf.lightProjMatrix = m_OrthoCamera.GetProjectionMatrix();

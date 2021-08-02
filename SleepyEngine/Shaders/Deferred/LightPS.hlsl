@@ -41,13 +41,16 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
 
     float lightAtt = directionalLightData[0].att;
     float specPower = directionalLightData[0].specularPower;
+    
+    // specular result is currently 0 and isInLight fails/is 0.0 need to debug further
     //// specular
     float3 specularResult = Speculate(specular.xyz, directionalLightData[0].specularIntensity, normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection), camToFrag, lightAtt, specPower);
 
-    float fragDepth = fragPositionInLightView.z;
+    float fragDepth = fragPositionInLightView.z / fragPositionInLightView.w;
     float sampleDepth = depthTextureFromLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f) + 0.5f).r;
     float isInLight = sampleDepth > fragDepth;
     float3 combinedColor = ((diffuseIntensity + specularResult) * isInLight) + ambient;
+    //return float4(fragDepth, 0.0f, 0.0f, 1.0f);
    	// final color
     return float4((combinedColor * colors.rgb), 1.0f);
 }
