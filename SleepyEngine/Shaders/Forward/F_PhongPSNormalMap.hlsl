@@ -33,17 +33,18 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
 	// diffuse
     const float3 diffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, att, lv.dirToL, viewNormal);
     // specular
-    const float3 specular = Speculate(
-       pointLightData[0].color, pointLightData[0].diffuseIntensity, viewNormal,
-        lv.vToL, viewFragPos, att, specularPower
-    );
-    
+    //const float3 specular = Speculate(
+    //   pointLightData[0].color, pointLightData[0].diffuseIntensity, viewNormal,
+    //    lv.vToL, viewFragPos, att, specularPower
+    //);
+    const float3 specular = { 0.0f, 0.0f, 0.0f };
      // fragment to light vector data
     const LightVectorData directionalLV = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation
-    const float directionalAtt = 0.8f;
+    DirectionalLightData dl = directionalLightData[0];
+    const float directionalAtt = directionalLightData[0].att;
 	// diffuse intensity
-    const float3 directionalDiffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, directionalAtt, -directionalLightData[0].lightDirection, viewNormal);
+    const float3 directionalDiffuse = Diffuse(pointLightData[0].color, dl.specularIntensity, directionalAtt, -dl.lightDirection, viewNormal);
 	// specular
     const float3 directionalSpecular = Speculate(
         specularPower.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
@@ -53,7 +54,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     float fragDepth = lightViewPos.z / lightViewPos.w;
     float sampleDepth = depthTextureFromLight.Sample(splr, ((lightViewPos.xy / lightViewPos.w) / 2.0f) + 0.5f).r;
     float isInLight = sampleDepth > fragDepth;
-    float3 combinedColor = diffuse + specular + ((directionalDiffuse + directionalSpecular) * isInLight) + pointLightData[0].ambient;
+    float3 pl = pointLightData[0].ambient;
+    float3 combinedColor = diffuse + specular + ((directionalDiffuse + directionalSpecular) * isInLight) + pl;
     
    	// final color
     return float4((combinedColor * tex.Sample(splr, tc).rgb), 1.0f);
