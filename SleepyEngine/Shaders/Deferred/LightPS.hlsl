@@ -1,4 +1,5 @@
 #include "../Common/ShaderOps.hlsl"
+#include "../Common/DirectionalLight.hlsl"
 
 Texture2D colorTexture : register(t0);
 Texture2D normalTexture : register(t1);
@@ -7,24 +8,6 @@ Texture2D depthTexture : register(t3);
 Texture2D depthTextureFromLight : register(t4);
 
 SamplerState SampleTypePoint : register(s0);
-
-struct DirectionalLightData
-{
-    float3 lightDirection;
-    float padding0;
-    float specularIntensity;
-    float att;
-    float specularPower;
-    float padding1;
-    float3 camPos;
-    float padding2;
-    row_major float4x4 cameraMatrix;
-    row_major float4x4 projInvMatrix;
-    row_major float4x4 lightViewProjectionMatrix;
-};
-
-StructuredBuffer<DirectionalLightData> directionalLightData : register(t5);
-
 
 float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
 {
@@ -56,12 +39,10 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     // diffuse light
     float diffuseIntensity = dot(normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection.xyz));
 
-    float specIntensity = directionalLightData[0].specularIntensity;
-    float lightDir = directionalLightData[0].lightDirection;
     float lightAtt = directionalLightData[0].att;
     float specPower = directionalLightData[0].specularPower;
     //// specular
-    float3 specularResult = Speculate(specular.xyz, specIntensity, normalize(normals.xyz), normalize(-lightDir), camToFrag, lightAtt, specPower);
+    float3 specularResult = Speculate(specular.xyz, directionalLightData[0].specularIntensity, normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection), camToFrag, lightAtt, specPower);
 
     float fragDepth = fragPositionInLightView.z;
     float sampleDepth = depthTextureFromLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f) + 0.5f).r;

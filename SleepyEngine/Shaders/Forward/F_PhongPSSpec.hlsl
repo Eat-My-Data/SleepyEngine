@@ -26,7 +26,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     // normalize the mesh normal
     viewNormal = normalize(viewNormal);
 	// fragment to light vector data
-    const LightVectorData lv = CalculateLightVectorData(pointLightData[0].viewLightPos, viewFragPos);
+    const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
     // specular parameters
     float specularPowerLoaded = specularPower;
     const float4 specularSample = spec.Sample(splr, tc);
@@ -38,7 +38,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 	// attenuation
     const float att = Attenuate(pointLightData[0].attConst, pointLightData[0].attLin, pointLightData[0].attQuad, lv.distToL);
 	// diffuse light
-    const float3 diffuse = Diffuse(pointLightData[0].diffuseColor, pointLightData[0].diffuseIntensity, att, lv.dirToL, viewNormal);
+    const float3 diffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, att, lv.dirToL, viewNormal);
     // specular reflected
     const float3 specular = Speculate(
         specularReflectionColor, 1.0f, viewNormal,
@@ -46,11 +46,11 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     );
     
      // fragment to light vector data
-    const LightVectorData directionalLV = CalculateLightVectorData(pointLightData[0].viewLightPos, viewFragPos);
+    const LightVectorData directionalLV = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation
     const float directionalAtt = 0.8f;
 	// diffuse intensity
-    const float3 directionalDiffuse = Diffuse(pointLightData[0].diffuseColor, pointLightData[0].diffuseIntensity, directionalAtt, -lightDirection, viewNormal);
+    const float3 directionalDiffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, directionalAtt, -lightDirection, viewNormal);
 	// specular
     const float3 directionalSpecular = Speculate(
         specularPower.rrr, 1.0f, viewNormal, -lightDirection,

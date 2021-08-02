@@ -38,8 +38,8 @@ void SceneManager::Draw()
 		DeferredRender();
 
 	// clear shader resources
-	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr, nullptr };
-	m_pGDI->GetContext()->PSSetShaderResources( 0, 5, null );
+	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+	m_pGDI->GetContext()->PSSetShaderResources( 0, 6, null );
 }
 
 void SceneManager::Present()

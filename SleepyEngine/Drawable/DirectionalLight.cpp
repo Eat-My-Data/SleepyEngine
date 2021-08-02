@@ -41,6 +41,10 @@ void DirectionalLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 c
 	m_StructuredBufferData.cameraMatrix = cameraMatrix;
 	m_StructuredBufferData.projInvMatrix = projInvMatrix;
 	m_StructuredBufferData.lightViewProjectionMatrix = m_OrthoCamera.GetProjectionMatrix() * m_OrthoCamera.GetViewMatrix() ;
+
+	matrixcbuf.lightViewMatrix = m_OrthoCamera.GetViewMatrix();
+	matrixcbuf.lightProjMatrix = m_OrthoCamera.GetProjectionMatrix();
+	m_pForwardLightMatrices->Update( gdi, matrixcbuf );
 }
 
 void DirectionalLight::Draw( GraphicsDeviceInterface& gdi ) const noexcept

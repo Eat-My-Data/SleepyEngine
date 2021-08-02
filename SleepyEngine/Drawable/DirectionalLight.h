@@ -26,9 +26,9 @@ public:
 		float specularIntensity = 1.0f;
 		float att = 0.5f;
 		float specularPower = 128.0f;
-		float padding2;
+		float padding1;
 		DirectX::XMFLOAT3 camPos;
-		float padding3;
+		float padding2;
 		DirectX::XMMATRIX cameraMatrix;
 		DirectX::XMMATRIX projInvMatrix;
 		DirectX::XMMATRIX lightViewProjectionMatrix;

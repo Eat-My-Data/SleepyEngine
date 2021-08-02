@@ -457,5 +457,8 @@
     <FxCompile Include="Shaders\GUI\PhongPS.hlsl">
       <Filter>Shaders\GUI</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Common\DirectionalLight.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

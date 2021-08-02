@@ -1,6 +1,7 @@
 #include "../Common/ShaderOps.hlsl"
 #include "../Common/LightVectorData.hlsl"
 #include "../Common/PointLight.hlsl"
+#include "../Common/DirectionalLight.hlsl"
 
 cbuffer ObjectCBuf
 {
@@ -8,12 +9,6 @@ cbuffer ObjectCBuf
     float specularPower;
     float padding[2];
 };
-
-cbuffer DirectionalLight
-{
-    float3 lightDirection;
-    float padding2[1];
-}
 
 Texture2D tex;
 Texture2D depthTextureFromLight : register(t4);
@@ -25,23 +20,23 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 	// renormalize interpolated normal
     viewNormal = normalize(viewNormal);
 	// fragment to light vector data
-    const LightVectorData lv = CalculateLightVectorData(pointLightData[0].viewLightPos, viewFragPos);
+    const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation
     const float att = Attenuate(pointLightData[0].attConst, pointLightData[0].attLin, pointLightData[0].attQuad, lv.distToL);
 	// diffuse
-    const float3 diffuse = Diffuse(pointLightData[0].diffuseColor, pointLightData[0].diffuseIntensity, att, lv.dirToL, viewNormal);
+    const float3 diffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, att, lv.dirToL, viewNormal);
 	// specular
-    const float3 specular = Speculate(pointLightData[0].diffuseColor, pointLightData[0].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
+    const float3 specular = Speculate(pointLightData[0].color, pointLightData[0].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
     
      // fragment to light vector data
-    const LightVectorData directionalLV = CalculateLightVectorData(pointLightData[0].viewLightPos, viewFragPos);
+    const LightVectorData directionalLV = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation
     const float directionalAtt = 0.8f;
 	// diffuse intensity
-    const float3 directionalDiffuse = Diffuse(pointLightData[0].diffuseColor, pointLightData[0].diffuseIntensity, directionalAtt, -lightDirection, viewNormal);
+    const float3 directionalDiffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, directionalAtt, -directionalLightData[0].lightDirection, viewNormal);
 	// specular
     const float3 directionalSpecular = Speculate(
-        specularPower.rrr, 1.0f, viewNormal, -lightDirection,
+        specularPower.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
         viewFragPos, directionalAtt, specularPower
     );
     
