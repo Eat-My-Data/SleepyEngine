@@ -22,11 +22,13 @@ public:
 	struct DirectionalLightData
 	{
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
+		float padding0;
 		float specularIntensity = 1.0f;
 		float att = 0.5f;
-		float padding[2];
 		float specularPower = 128.0f;
+		float padding2;
 		DirectX::XMFLOAT3 camPos;
+		float padding3;
 		DirectX::XMMATRIX cameraMatrix;
 		DirectX::XMMATRIX projInvMatrix;
 		DirectX::XMMATRIX lightViewProjectionMatrix;

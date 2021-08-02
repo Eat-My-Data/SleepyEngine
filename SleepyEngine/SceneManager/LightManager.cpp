@@ -20,7 +20,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 		m_vecOfPointLights[i]->Update( m_pGDI->GetViewMatrix(), m_pGDI->GetProjMatrix(), camPos );
 		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
 	}
-	//Bind::PixelStructuredBuffer<PointLight::PointLightData>::PixelStructuredBuffer( *m_pGDI, bufferData[0], 5u ).Bind( *m_pGDI );
+	Bind::PixelStructuredBuffer<PointLight::PointLightData>::PixelStructuredBuffer( *m_pGDI, bufferData[0], 6u ).Bind( *m_pGDI );
 }
 
 void LightManager::Draw()
@@ -37,7 +37,7 @@ void LightManager::Draw()
 	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
-		m_vecOfPointLights[i]->Draw( *m_pGDI );
+		//m_vecOfPointLights[i]->Draw( *m_pGDI );
 	}
 }
 

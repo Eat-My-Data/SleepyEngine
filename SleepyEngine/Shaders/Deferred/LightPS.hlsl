@@ -11,11 +11,13 @@ SamplerState SampleTypePoint : register(s0);
 struct DirectionalLightData
 {
     float3 lightDirection;
+    float padding0;
     float specularIntensity;
     float att;
-    float2 padding;
     float specularPower;
+    float padding1;
     float3 camPos;
+    float padding2;
     row_major float4x4 cameraMatrix;
     row_major float4x4 projInvMatrix;
     row_major float4x4 lightViewProjectionMatrix;
@@ -41,12 +43,8 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     normals = (normals * 2.0) - 1.0;
     
     //// world to camera 
-    float4 worldDepth = float4(clipX, clipY, depthSample, 1.0);
-    float4 worldPosition = mul(worldDepth, directionalLightData[0].projInvMatrix);
-    worldPosition /= worldPosition.w;
-    float4 worldSpacePos = mul(worldPosition, directionalLightData[0].cameraMatrix);
-    worldSpacePos /= worldSpacePos.w;
-    
+    float4 worldSpacePos = CalculateWorldSpacePosition( float4(clipX, clipY, depthSample, 1.0), directionalLightData[0].projInvMatrix, directionalLightData[0].cameraMatrix );
+
     // world to light and shadow map check
     float4 fragPositionInLightView = mul(worldSpacePos, directionalLightData[0].lightViewProjectionMatrix);
 
