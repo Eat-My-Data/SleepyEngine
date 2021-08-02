@@ -66,11 +66,11 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
 	// diffuse light
     const float3 diffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, att, lv.dirToL, viewNormal);
     // specular reflected
-    const float3 specular = Speculate(
-        specularReflectionColor, 1.0f, viewNormal,
-        lv.vToL, viewFragPos, att, specularPower
-    );
-    
+    //const float3 specular = Speculate(
+    //    specularReflectionColor, 1.0f, viewNormal,
+    //    lv.vToL, viewFragPos, att, specularPower
+    //);
+    const float3 specular = { 0.0f, 0.0f, 0.0f };
     // fragment to light vector data
     const LightVectorData directionalLV = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation
@@ -78,10 +78,12 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
 	// diffuse intensity
     const float3 directionalDiffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, directionalAtt, -directionalLightData[0].lightDirection, viewNormal);
 	// specular
-    const float3 directionalSpecular = Speculate(
-        specularPower.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
-        viewFragPos, directionalAtt, specularPower
-    );
+    //const float3 directionalSpecular = Speculate(
+    //    specularPower.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
+    //    viewFragPos, directionalAtt, specularPower
+    //);
+    const float3 directionalSpecular = { 0.0f, 0.0f, 0.0f };
+
     
     float fragDepth = lightViewPos.z / lightViewPos.w;
     float sampleDepth = depthTextureFromLight.Sample(splr, ((lightViewPos.xy / lightViewPos.w) / 2.0f) + 0.5f).r;
