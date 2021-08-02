@@ -1,38 +1,43 @@
 #include "SolidSphere.h"
 #include "../Bindable/BindableCommon.h"
+#include "../Bindable/Bindables/Blender.h"
 #include "../ResourceManager/Vertex.h"
 #include "../ResourceManager/Geometry/Sphere.h"
 
 
 SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
 {
-	/*using namespace Bind;
+	using namespace Bind;
 	namespace dx = DirectX;
 
 	auto model = Sphere::Make();
-
 	model.Transform( dx::XMMatrixScaling( radius, radius, radius ) );
-	AddBind( std::make_shared<VertexBuffer>( gdi, model.m_VBVertices ) );
-	AddBind( std::make_shared<IndexBuffer>( gdi, model.m_vecOfIndices ) );
+	const auto geometryTag = "$sphere." + std::to_string( radius );
+	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
+	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 
-	auto pvs = std::make_shared<VertexShader>( gdi, "SolidVS.cso" );
+	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SolidVS.cso" );
 	auto pvsbc = pvs->GetBytecode();
 	AddBind( std::move( pvs ) );
 
-	AddBind( std::make_shared<PixelShader>( gdi, L"SolidPS.cso" ) );
+	AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SolidPS.cso" ) );
 
 	struct PSColorConstant
 	{
 		dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
 		float padding;
 	} colorConst;
-	AddBind( std::make_shared<PixelConstantBuffer<PSColorConstant>>( gdi, colorConst ) );
+	AddBind( PixelConstantBuffer<PSColorConstant>::Resolve( gdi, colorConst, 1u ) );
 
-	AddBind( std::make_shared<InputLayout>( gdi, model.m_VBVertices.GetLayout().GetD3DLayout(), pvsbc ) );
+	AddBind( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 
-	AddBind( std::make_shared<Topology>( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
-	AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );*/
+	AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );
+
+	AddBind( Blender::Resolve( gdi, false ) );
+
+	AddBind( Rasterizer::Resolve( gdi, false ) );
 }
 
 void SolidSphere::SetPos( DirectX::XMFLOAT3 pos ) noexcept

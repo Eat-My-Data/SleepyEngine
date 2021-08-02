@@ -10,6 +10,7 @@ public:
 	void Initialize( GraphicsDeviceInterface& gdi );
 	void UpdateBuffers( DirectX::XMFLOAT3 camPos );
 	void Draw();
+	void RenderSolidSpheres();
 	void PrepareDepthFromLight();
 public:
 	void TranslatePointLight( DirectX::XMFLOAT3 translation );

@@ -42,6 +42,14 @@ void LightManager::Draw()
 	}
 }
 
+void LightManager::RenderSolidSpheres()
+{
+	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
+	{
+		m_vecOfPointLights[i]->m_SolidSphere->Draw( *m_pGDI );
+	}
+}
+
 void LightManager::PrepareDepthFromLight()
 {
 	m_pGDI->SetViewMatrix( m_pDirectionalLight->GetViewMatrix() );

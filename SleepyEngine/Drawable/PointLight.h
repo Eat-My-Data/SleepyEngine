@@ -30,7 +30,7 @@ public:
 		DirectX::XMMATRIX projInvMatrix;
 	};
 	PointLightData m_StructuredBufferData;
-private:
+public:
 	SolidSphere* m_SolidSphere;
 private:
 	ID3D11PixelShader* pPixelShader;

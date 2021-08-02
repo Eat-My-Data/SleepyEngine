@@ -101,7 +101,8 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 	rasterizerDescOutside.DepthClipEnable = false;
 
 	gdi.GetDevice()->CreateRasterizerState( &rasterizerDescOutside, &rasterizerOutside );
-	
+
+	m_SolidSphere = new SolidSphere( gdi, 0.75f );
 }
 
 DirectX::XMMATRIX PointLight::GetTransformXM() const noexcept
@@ -124,7 +125,7 @@ void PointLight::Update( DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX project
 
 void PointLight::Draw( GraphicsDeviceInterface& gdi )
 {
-	//m_SolidSphere->Draw( gdi );
+	m_SolidSphere->Draw( gdi );
 
 	// bindables
 	for ( auto& b : binds )
@@ -165,6 +166,7 @@ void PointLight::Translate( DirectX::XMFLOAT3 vec )
 	m_StructuredBufferData.pos.x += vec.x;
 	m_StructuredBufferData.pos.y += vec.y;
 	m_StructuredBufferData.pos.z += vec.z;
+	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }
 
 bool PointLight::CameraIsInside( DirectX::XMFLOAT3 camPos )
