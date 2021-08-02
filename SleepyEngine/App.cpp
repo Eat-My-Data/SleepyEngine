@@ -4,7 +4,7 @@ App::App()
 	:
 	m_Win32Window( 1280, 720, L"Sleepy Engine" )
 {
-	m_SceneManager.SetRenderTechnique( RenderTechnique::Deferred );
+	m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
 }
 
 u32 App::Launch()
@@ -128,9 +128,9 @@ void App::ExecuteFrame()
 	else if ( m_Win32Window.CursorEnabled() )
 	{
 		// render techniques
-		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && m_Win32Window.m_Kbd.KeyIsPressed( 'D' ) )
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && m_Win32Window.m_Kbd.KeyIsPressed( 'Z' ) )
 			m_SceneManager.SetRenderTechnique( RenderTechnique::Deferred );
-		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && m_Win32Window.m_Kbd.KeyIsPressed( 'F' ) )
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && m_Win32Window.m_Kbd.KeyIsPressed( 'X' ) )
 			m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
 	}
 

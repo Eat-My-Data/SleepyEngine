@@ -1,4 +1,5 @@
 #include "../Common/ShaderOps.hlsl"
+#include "../Common/DirectionalLight.hlsl"
 
 Texture2D colorTexture : register(t0);
 Texture2D normalTexture : register(t1);
@@ -7,24 +8,6 @@ Texture2D depthTexture : register(t3);
 Texture2D depthTextureFromLight : register(t4);
 
 SamplerState SampleTypePoint : register(s0);
-
-cbuffer LightBuffer : register(b0)
-{
-    float3 lightDirection;
-    float specularIntensity;
-    float att;
-    float specularPower;
-    float2 padding;
-    row_major float4x4 cameraMatrix;
-    row_major float4x4 projInvMatrix;
-};
-
-cbuffer CamPosBuffer : register(b1)
-{
-    float4 camPos;
-     float4x4 lightViewProjectionMatrix;
-};
-
 
 float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
 {
@@ -42,31 +25,32 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     // normal to clip space
     normals = (normals * 2.0) - 1.0;
     
-    // world to camera 
-    float4 worldDepth = float4(clipX, clipY, depthSample, 1.0);
-    float4 worldPosition = mul(worldDepth, projInvMatrix);
-    worldPosition /= worldPosition.w;
-    float4 worldSpacePos = mul(worldPosition, cameraMatrix);
-    worldSpacePos /= worldSpacePos.w;
-    
+    //// world to camera 
+    float4 worldSpacePos = CalculateWorldSpacePosition( float4(clipX, clipY, depthSample, 1.0), directionalLightData[0].projInvMatrix, directionalLightData[0].cameraMatrix );
+
     // world to light and shadow map check
-    float4 fragPositionInLightView = mul(worldSpacePos, lightViewProjectionMatrix);
-    
+    float4 fragPositionInLightView = mul(worldSpacePos, directionalLightData[0].lightViewProjectionMatrix);
+
     // vector from camera to fragment
-    float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
+    float3 camToFrag = worldSpacePos.xyz - directionalLightData[0].camPos.xyz;
 
     float3 ambient = {0.2f, 0.2f, 0.2f};
     
     // diffuse light
-    float diffuseIntensity = dot(normalize(normals.xyz), normalize(-lightDirection.xyz));
+    float diffuseIntensity = dot(normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection.xyz));
 
-    // specular
-    float3 specularResult = Speculate(specular.xyz, specularIntensity, normalize(normals.xyz), normalize(-lightDirection), camToFrag, att, specularPower);
+    float lightAtt = directionalLightData[0].att;
+    float specPower = directionalLightData[0].specularPower;
+    
+    // specular result is currently 0 and isInLight fails/is 0.0 need to debug further
+    //// specular
+    float3 specularResult = Speculate(specular.xyz, directionalLightData[0].specularIntensity, normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection), camToFrag, lightAtt, specPower);
 
-    float fragDepth = fragPositionInLightView.z;
+    float fragDepth = fragPositionInLightView.z / fragPositionInLightView.w;
     float sampleDepth = depthTextureFromLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f) + 0.5f).r;
     float isInLight = sampleDepth > fragDepth;
     float3 combinedColor = ((diffuseIntensity + specularResult) * isInLight) + ambient;
+    //return float4(fragDepth, 0.0f, 0.0f, 1.0f);
    	// final color
     return float4((combinedColor * colors.rgb), 1.0f);
 }

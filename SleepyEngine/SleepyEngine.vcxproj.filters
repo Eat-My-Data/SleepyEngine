@@ -198,6 +198,12 @@
     <ClCompile Include="GUI\ChooseRenderTechnique.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager\LightManager.cpp">
+      <Filter>Source Files\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable\SolidSphere.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -350,8 +356,14 @@
     <ClInclude Include="GUI\UI_ID.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Bindable\Bindables\StructuedBuffer.h">
+    <ClInclude Include="Bindable\Bindables\StructuredBuffers.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager\LightManager.h">
+      <Filter>Header Files\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable\SolidSphere.h">
+      <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -444,6 +456,9 @@
     </FxCompile>
     <FxCompile Include="Shaders\GUI\PhongPS.hlsl">
       <Filter>Shaders\GUI</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\DirectionalLight.hlsl">
+      <Filter>Shaders\Common</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

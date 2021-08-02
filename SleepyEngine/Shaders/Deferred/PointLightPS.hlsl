@@ -8,34 +8,25 @@ Texture2D depthTexture : register(t3);
 
 SamplerState SampleTypePoint : register(s0);
 
-cbuffer CBuf : register(b0)
+struct PointLightData
 {
-    float3 color;
-    float radius;
-    
-    float attConst;
-    float attLin;
-    float attQuad;
+    float3 pos;
     float specularPower;
-    
+    float3 ambient;
     float diffuseIntensity;
-    float specularIntensity;
-    
+    float3 color;
+    float attConst;
+    float attQuad;
+    float attLin;
+    float2 padding;
+    float3 camPos;
+    float radius;
     row_major float4x4 cameraMatrix;
     row_major float4x4 projInvMatrix;
 };
 
-cbuffer CBuf : register(b1)
-{
-    float3 lightPosition;
-    float padding2;
-};
+StructuredBuffer<PointLightData> pointLightData : register(t6);
 
-cbuffer CamPosBuffer : register(b2)
-{
-    float3 camPos;
-    float padding3;
-};
 
 float4 main(float4 position : SV_POSITION) : SV_TARGET
 {
@@ -60,26 +51,27 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
 
     // world position
     float4 worldDepth = float4(clipX, clipY, depthSample, 1.0);
-    float4 worldPosition = mul(worldDepth, projInvMatrix);
+    float4 worldPosition = mul(worldDepth, pointLightData[0].projInvMatrix);
     worldPosition /= worldPosition.w;
-    float4 worldSpacePos = mul(worldPosition, cameraMatrix);
+    float4 worldSpacePos = mul(worldPosition, pointLightData[0].cameraMatrix);
     
+    PointLightData pl = pointLightData[0];
     // light
-    const LightVectorData lv = CalculateLightVectorData(lightPosition, worldSpacePos.xyz);
+    const LightVectorData lv = CalculateLightVectorData( pointLightData[0].pos, worldSpacePos.xyz);
     
     // vector from camera to fragment
-    float3 camToFrag = worldSpacePos.xyz - camPos;
+    float3 camToFrag = worldSpacePos.xyz - pl.camPos;
     
     // attenutation
-    float att = Attenuate(attConst, attLin, attQuad, lv.distToL);
+    float att = Attenuate(pointLightData[0].attConst, pl.attLin, pointLightData[0].attQuad, lv.distToL);
 
     // diffuse
-    float3 diffuseColor = Diffuse(colors.rgb, diffuseIntensity, att, -lv.dirToL / radius, normalize(normals.xyz));
+    float3 diffuseColor = Diffuse(colors.rgb, pl.diffuseIntensity, att, -lv.dirToL / pl.radius, normalize(normals.xyz));
     
     // specular
-    float3 specularResult = Speculate(specular.xyz, specularIntensity, normalize(normals.xyz), lv.dirToL / radius, camToFrag, att, specularPower);
+    float3 specularResult = Speculate(specular.xyz, pl.diffuseIntensity, normalize(normals.xyz), lv.dirToL / pl.radius, camToFrag, att, pl.specularPower);
     
     // final color
-    return float4(color, 1) * (float4(diffuseColor, 1) + float4(specularResult, 1.0f));
+    return float4(pointLightData[0].color, 1) * (float4(diffuseColor, 1) + float4(specularResult, 1.0f));
     
 }
