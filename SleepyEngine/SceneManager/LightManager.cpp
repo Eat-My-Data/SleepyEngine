@@ -37,7 +37,7 @@ void LightManager::Draw()
 	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
-		//m_vecOfPointLights[i]->Draw( *m_pGDI );
+		m_vecOfPointLights[i]->Draw( *m_pGDI );
 	}
 }
 

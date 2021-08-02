@@ -160,8 +160,8 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 	}
 
 	// clear shader resources
-	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr };
-	gdi.GetContext()->PSSetShaderResources( 0, 4, null );
+	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+	gdi.GetContext()->PSSetShaderResources( 0, 6, null );
 }
 
 void PointLight::Translate( DirectX::XMFLOAT3 vec )
