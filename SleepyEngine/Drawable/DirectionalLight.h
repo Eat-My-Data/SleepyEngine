@@ -21,6 +21,7 @@ private:
 public:
 	struct DirectionalLightData
 	{
+		DirectX::XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
 		float padding0;
 		float specularIntensity = 1.0f;

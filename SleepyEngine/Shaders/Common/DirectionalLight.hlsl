@@ -1,5 +1,6 @@
 struct DirectionalLightData
 {
+    float4 color;
     float3 lightDirection;
     float padding0;
     float specularIntensity;

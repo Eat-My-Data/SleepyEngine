@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "../Drawable/DirectionalLight.h"
 #include "../Drawable/PointLight.h"
+#include "../Bindable/Bindables/StructuredBuffers.h"
 
 class LightManager
 {
@@ -18,7 +19,9 @@ public:
 	void RotateDirectionalLight( const f32 dx, const f32 dy );
 private:
 	DirectionalLight* m_pDirectionalLight;
+	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>* m_pPixelStructuredBuffer;
 	std::vector<PointLight*> m_vecOfPointLights;
+	Bind::PixelArrStructuredBuffer<PointLight::PointLightData>* m_pPixelArrStructuredBuffer;
 private:
 	GraphicsDeviceInterface* m_pGDI = nullptr;
 };
