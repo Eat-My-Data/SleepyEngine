@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "../SleepyEngine/GraphicsDeviceInterface/D3D11Interface.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
