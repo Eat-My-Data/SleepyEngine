@@ -107,7 +107,7 @@ namespace Bind
 				D3D11_MAP_WRITE_DISCARD, 0u,
 				&msr
 			);
-			memcpy( msr.pData, &consts, sizeof( C ) * 2 );
+			memcpy( msr.pData, consts, sizeof( C ) * 2 );
 			GetContext( gdi )->Unmap( m_pStructuredBuffer, 0u );
 		}
 		PixelArrStructuredBuffer( GraphicsDeviceInterface& gdi, const C* consts, UINT slot = 0u )
@@ -123,7 +123,7 @@ namespace Bind
 			cbd.StructureByteStride = sizeof( C );
 
 			D3D11_SUBRESOURCE_DATA csd = {};
-			csd.pSysMem = &consts;
+			csd.pSysMem = consts;
 			GetDevice( gdi )->CreateBuffer( &cbd, &csd, &m_pStructuredBuffer );
 		}
 		PixelArrStructuredBuffer( GraphicsDeviceInterface& gdi, UINT slot = 0u )

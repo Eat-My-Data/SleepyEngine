@@ -24,6 +24,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 		m_vecOfPointLights[i]->Update( m_pGDI->GetViewMatrix(), m_pGDI->GetProjMatrix(), camPos );
 		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
 	}
+	m_pPixelArrStructuredBuffer->Update( *m_pGDI, bufferData );
 	m_pPixelArrStructuredBuffer->Bind( *m_pGDI );
 }
 
