@@ -4,6 +4,7 @@
 #include "./SceneManager/SceneManager.h"
 #include "./GUI/GUIManager.h"
 #include "./Utilities/FrameTimer.h"
+#include "./Win32/Win32MessageMap.h"
 
 class App
 {
