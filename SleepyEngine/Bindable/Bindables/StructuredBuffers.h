@@ -107,7 +107,7 @@ namespace Bind
 				D3D11_MAP_WRITE_DISCARD, 0u,
 				&msr
 			);
-			memcpy( msr.pData, &consts, sizeof( consts ) );
+			memcpy( msr.pData, &consts, sizeof( C ) * 2 );
 			GetContext( gdi )->Unmap( m_pStructuredBuffer, 0u );
 		}
 		PixelArrStructuredBuffer( GraphicsDeviceInterface& gdi, const C* consts, UINT slot = 0u )
