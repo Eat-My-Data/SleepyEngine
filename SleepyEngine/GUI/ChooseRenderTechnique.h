@@ -2,7 +2,6 @@
 #include "GUIElement.h"
 #include "../Bindable/Bindable.h"
 #include "DirectXMath.h"
-#include "../Win32/Win32MessageMap.h"
 
 class ChooseRenderTechnique : public GUIElement
 {
