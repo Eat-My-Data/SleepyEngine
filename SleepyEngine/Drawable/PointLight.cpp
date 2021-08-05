@@ -24,7 +24,7 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 	ID3DBlob* pBlob;
 	D3DReadFileToBlob( L"../SleepyEngine/Shaders/Bin/PointLightPS.cso", &pBlob );
 	gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
-	AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/PointLightPS.cso" ) );
+
 	AddBind( Sampler::Resolve( gdi ) );
 
 	Dvtx::VertexBuffer vbuf( std::move(
@@ -101,7 +101,9 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 	rasterizerDescOutside.DepthClipEnable = false;
 
 	gdi.GetDevice()->CreateRasterizerState( &rasterizerDescOutside, &rasterizerOutside );
-	
+
+	m_SolidSphere = new SolidSphere( gdi, 0.75f );
+	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }
 
 DirectX::XMMATRIX PointLight::GetTransformXM() const noexcept
@@ -124,7 +126,7 @@ void PointLight::Update( DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX project
 
 void PointLight::Draw( GraphicsDeviceInterface& gdi )
 {
-	//m_SolidSphere->Draw( gdi );
+	m_SolidSphere->Draw( gdi );
 
 	// bindables
 	for ( auto& b : binds )
@@ -165,6 +167,7 @@ void PointLight::Translate( DirectX::XMFLOAT3 vec )
 	m_StructuredBufferData.pos.x += vec.x;
 	m_StructuredBufferData.pos.y += vec.y;
 	m_StructuredBufferData.pos.z += vec.z;
+	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }
 
 bool PointLight::CameraIsInside( DirectX::XMFLOAT3 camPos )

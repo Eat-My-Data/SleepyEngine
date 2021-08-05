@@ -101,6 +101,8 @@ void SceneManager::ForwardRender()
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	m_pGDI->GetContext()->PSSetShaderResources( 4, 1, m_pGDI->GetShadowResource() );
 	m_vecOfModels[0]->Draw( *m_pGDI, false );
+
+	m_LightManager.RenderSolidSpheres();
 }
 
 void SceneManager::DeferredRender()

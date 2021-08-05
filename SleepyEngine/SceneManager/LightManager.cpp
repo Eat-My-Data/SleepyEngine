@@ -1,5 +1,4 @@
 #include "LightManager.h"
-#include "../Bindable/Bindables/StructuredBuffers.h"
 
 void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 {
@@ -7,12 +6,17 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	m_pDirectionalLight = new DirectionalLight( gdi );
 	m_vecOfPointLights.push_back( new PointLight( gdi, 10 ) );
 	m_vecOfPointLights.push_back( new PointLight( gdi, 10 ) );
+
+	m_pPixelStructuredBuffer = new Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>{ gdi, 5u };
+	m_pPixelArrStructuredBuffer = new Bind::PixelArrStructuredBuffer<PointLight::PointLightData>{ gdi, 6u };
 }
 
 void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 {
 	m_pDirectionalLight->Update( *m_pGDI, camPos );
-	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>::PixelStructuredBuffer( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData, 5u ).Bind( *m_pGDI );
+	const DirectionalLight::DirectionalLightData* directionalLightData = &m_pDirectionalLight->m_StructuredBufferData;
+	m_pPixelStructuredBuffer->Update( *m_pGDI, *directionalLightData );
+	m_pPixelStructuredBuffer->Bind( *m_pGDI );
 
 	PointLight::PointLightData* bufferData = new PointLight::PointLightData[2];
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
@@ -20,8 +24,8 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 		m_vecOfPointLights[i]->Update( m_pGDI->GetViewMatrix(), m_pGDI->GetProjMatrix(), camPos );
 		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
 	}
-	
-	Bind::PixelStructuredBuffer<PointLight::PointLightData>::PixelStructuredBuffer( *m_pGDI, bufferData[0], 6u ).Bind( *m_pGDI );
+	m_pPixelArrStructuredBuffer->Update( *m_pGDI, bufferData );
+	m_pPixelArrStructuredBuffer->Bind( *m_pGDI );
 }
 
 void LightManager::Draw()
@@ -39,6 +43,14 @@ void LightManager::Draw()
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
 		m_vecOfPointLights[i]->Draw( *m_pGDI );
+	}
+}
+
+void LightManager::RenderSolidSpheres()
+{
+	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
+	{
+		m_vecOfPointLights[i]->m_SolidSphere->Draw( *m_pGDI );
 	}
 }
 
