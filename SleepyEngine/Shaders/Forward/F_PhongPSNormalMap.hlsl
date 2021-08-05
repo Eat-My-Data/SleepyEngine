@@ -27,7 +27,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         viewNormal = MapNormal(normalize(viewTan), normalize(viewBitan), viewNormal, tc, nmap, splr);
     }
     float3 combinedPointLightDiffuse;
-    float3 combinedPointLightSpecular;
+    float3 combinedPointLightSpecular = { 0.0f, 0.0f, 0.0f };
     float specularPower = directionalLightData[0].specularPower;
     
     for (float i = 0; i < 2; i++)
@@ -40,7 +40,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
 	    // diffuse
         combinedPointLightDiffuse += Diffuse(pl.color, pl.diffuseIntensity, att, lv.dirToL, viewNormal);
 	    // specular
-        combinedPointLightSpecular += Speculate(pl.color, pl.diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
+        //combinedPointLightSpecular += Speculate(pl.color, pl.diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
     }
     // specular
     //const float3 specular = Speculate(
