@@ -28,7 +28,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
     // specular parameters
-    float specularPowerLoaded = specularPower;
+    float specularPowerLoaded = pointLightData[0].specularPower;
     const float4 specularSample = spec.Sample(splr, tc);
     const float3 specularReflectionColor = specularSample.rgb * specularMapWeight;
     if (hasGloss)
@@ -54,7 +54,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 	// specular
     const float3 directionalSpecular = Speculate(
         specularPower.rrr, 1.0f, viewNormal, -lightDirection,
-        viewFragPos, directionalAtt, specularPower
+        viewFragPos, directionalAtt, specularPowerLoaded
     );
     
     float fragDepth = lightViewPos.z / lightViewPos.w;

@@ -29,6 +29,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
       	// bring normal from object space into view space
         viewNormal = normalize(mul(objectNormal, (float3x3) modelView));
     }
+    const float specularPower2 = pointLightData[0].specularPower;
 	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation
@@ -38,7 +39,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 	// specular
     const float3 specular = Speculate(
         specularIntensity.rrr, 1.0f, viewNormal, lv.vToL,
-        viewFragPos, att, specularPower
+        viewFragPos, att, specularPower2
     );
     
     // fragment to light vector data
@@ -50,7 +51,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 	// specular
     const float3 directionalSpecular = Speculate(
         specularIntensity.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
-        viewFragPos, directionalAtt, specularPower
+        viewFragPos, directionalAtt, specularPower2
     );
     
     float fragDepth = lightViewPos.z / lightViewPos.w;

@@ -18,6 +18,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 li
     // normalize the mesh normal
     viewNormal = normalize(viewNormal);
 	// fragment to light vector data
+    float specularPower2 = pointLightData[0].specularPower;
     const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation
     const float att = Attenuate(pointLightData[0].attConst, pointLightData[0].attLin, pointLightData[0].attQuad, lv.distToL);
@@ -26,7 +27,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 li
     // specular
     const float3 specular = Speculate(
         specularColor.rgb, 1.0f, viewNormal,
-        lv.vToL, viewFragPos, att, specularPower
+        lv.vToL, viewFragPos, att, specularPower2
     );
     
     // fragment to light vector data
@@ -38,7 +39,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 li
 	// specular
     const float3 directionalSpecular = Speculate(
         specularPower.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
-        viewFragPos, directionalAtt, specularPower
+        viewFragPos, directionalAtt, specularPower2
     );
 
     float3 combinedColor = diffuse + directionalDiffuse + specular + directionalSpecular;
