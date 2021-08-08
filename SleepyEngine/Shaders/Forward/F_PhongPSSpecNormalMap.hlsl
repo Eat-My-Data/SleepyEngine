@@ -85,11 +85,10 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
 	// diffuse intensity
     const float3 directionalDiffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, directionalAtt, -directionalLightData[0].lightDirection, viewNormal);
 	// specular
-    //const float3 directionalSpecular = Speculate(
-    //    specularPower.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
-    //    viewFragPos, directionalAtt, specularPower
-    //);
-    const float3 directionalSpecular = { 0.0f, 0.0f, 0.0f };
+    const float3 directionalSpecular = Speculate(
+        specularPower.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
+        viewFragPos, directionalAtt, specularPower
+    );
 
     
     float fragDepth = lightViewPos.z / lightViewPos.w;

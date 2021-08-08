@@ -64,7 +64,7 @@ void LightManager::PrepareDepthFromLight()
 
 void LightManager::TranslatePointLight( DirectX::XMFLOAT3 translation )
 {
-	m_vecOfPointLights[0]->Translate( translation );
+	m_vecOfPointLights[1]->Translate( translation );
 }
 
 void LightManager::TranslateDirectionalLight( DirectX::XMFLOAT3 translation )
