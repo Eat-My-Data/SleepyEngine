@@ -62,9 +62,14 @@ void LightManager::PrepareDepthFromLight()
 	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV() );
 }
 
+void LightManager::SelectLight( const u32 index )
+{
+	m_iSelectedLight = index;
+}
+
 void LightManager::TranslatePointLight( DirectX::XMFLOAT3 translation )
 {
-	m_vecOfPointLights[1]->Translate( translation );
+	m_vecOfPointLights[m_iSelectedLight]->Translate( translation );
 }
 
 void LightManager::TranslateDirectionalLight( DirectX::XMFLOAT3 translation )

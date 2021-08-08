@@ -57,6 +57,11 @@ void SceneManager::TranslateCamera( DirectX::XMFLOAT3 camDelta )
 	m_Camera.Translate( camDelta );
 }
 
+void SceneManager::SetActiveLight( const u32 index )
+{
+	m_LightManager.SelectLight( index );
+}
+
 void SceneManager::TranslatePointLight( DirectX::XMFLOAT3 translation )
 {
 	m_LightManager.TranslatePointLight( translation );
