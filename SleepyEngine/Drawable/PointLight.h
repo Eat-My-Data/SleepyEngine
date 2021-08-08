@@ -18,7 +18,7 @@ public:
 		DirectX::XMFLOAT3 pos = { 10.0f, 9.0f, 2.5f };
 		float specularPower = 128.0f;
 		DirectX::XMFLOAT3 ambient = { 0.2f, 0.2f, 0.2f };
-		float diffuseIntensity = 1.0f;
+		float diffuseIntensity = 0.5f;
 		DirectX::XMFLOAT3 diffuseColor = { 1.0f, 1.0f, 1.0f };
 		float attConst = 0.8f;
 		float attQuad = 0.0075f;
