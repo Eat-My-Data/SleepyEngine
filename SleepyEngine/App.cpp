@@ -90,9 +90,9 @@ void App::ExecuteFrame()
 			m_SceneManager.SetRenderTechnique( RenderTechnique::Deferred );
 		if ( m_Win32Window.m_Kbd.KeyIsPressed( 'X' ) )
 			m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
-		if ( m_Win32Window.m_Kbd.KeyIsPressed( '0') )
-			m_SceneManager.SetActiveLight( 0 );
 		if ( m_Win32Window.m_Kbd.KeyIsPressed( '1') )
+			m_SceneManager.SetActiveLight( 0 );
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( '2') )
 			m_SceneManager.SetActiveLight( 1 );
 
 		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && !m_Win32Window.m_Kbd.KeyIsPressed( VK_CONTROL ) )

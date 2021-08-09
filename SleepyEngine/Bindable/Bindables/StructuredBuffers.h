@@ -145,7 +145,7 @@ namespace Bind
 			srvDesc.Format = DXGI_FORMAT_UNKNOWN;
 			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
 			srvDesc.Buffer.FirstElement = 0;
-			srvDesc.Buffer.NumElements = 1;
+			srvDesc.Buffer.NumElements = 2;
 
 			ID3D11ShaderResourceView* pStructBufSRV;
 			gdi.GetDevice()->CreateShaderResourceView( m_pStructuredBuffer, &srvDesc, &pStructBufSRV );

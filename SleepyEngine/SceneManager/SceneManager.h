@@ -40,4 +40,5 @@ private:
 	std::vector<Model*> m_vecOfModels;
 	// TODO: 
 	// - Resource Manager
+	// - Culling
 };

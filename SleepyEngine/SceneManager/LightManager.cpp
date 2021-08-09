@@ -26,6 +26,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	}
 	m_pPixelArrStructuredBuffer->Update( *m_pGDI, bufferData );
 	m_pPixelArrStructuredBuffer->Bind( *m_pGDI );
+	delete[] bufferData;
 }
 
 void LightManager::Draw()

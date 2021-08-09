@@ -26,4 +26,8 @@ private:
 private:
 	u32 m_iSelectedLight = 0;
 	GraphicsDeviceInterface* m_pGDI = nullptr;
+	// TODO:
+	// - Shadows for Point Light
+	// - Spotlight
+	// - Shadows for Spotlight
 };
