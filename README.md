@@ -5,4 +5,6 @@ Personal game engine written in C++ using DirectX11.
 
 # Render Techniques
 - Forward
+![Screenshot](Images/ForwardRender.jpg)
 - Deferred
+![Screenshot](Images/DeferredRender.jpg)
