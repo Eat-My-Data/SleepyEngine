@@ -22,15 +22,13 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         // fragment to light vector data
         const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	    // attenuation
-        const float att = Attenuate(pointLightData[0].attConst, pointLightData[0].attLin, pointLightData[0].attQuad, lv.distToL);
+        const float att = Attenuate(pointLightData[i].attConst, pointLightData[0].attLin, pointLightData[i].attQuad, lv.distToL);
 	    // diffuse
-        combinedPointLightDiffuse += Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, att, lv.dirToL, viewNormal);
+        combinedPointLightDiffuse += Diffuse(pointLightData[i].color, pointLightData[i].diffuseIntensity, att, lv.dirToL, viewNormal);
 	    // specular
-        combinedPointLightSpecular += Speculate(pointLightData[0].color, pointLightData[0].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
+        combinedPointLightSpecular += Speculate(pointLightData[i].color, pointLightData[i].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
     }
     
-    // fragment to light vector data    
-    const LightVectorData directionalLV = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation
     const float directionalAtt = 0.8f;
 	// diffuse intensity

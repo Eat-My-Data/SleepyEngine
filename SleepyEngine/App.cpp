@@ -53,9 +53,9 @@ void App::ExecuteFrame()
 		}
 	}
 
+	f32 rotato = 500.f;
 	if ( !m_Win32Window.CursorEnabled() )
 	{
-		f32 rotato = 500.f;
 		if ( !m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && !m_Win32Window.m_Kbd.KeyIsPressed( VK_CONTROL ) )
 		{
 			// camera translation
@@ -82,7 +82,20 @@ void App::ExecuteFrame()
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_LEFT ) )
 				m_SceneManager.RotateCamera( -dt * rotato, 0.0f );
 		}
-		else if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && !m_Win32Window.m_Kbd.KeyIsPressed( VK_CONTROL ) )
+	}
+	else if ( m_Win32Window.CursorEnabled() )
+	{
+		// render techniques
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( 'Z' ) )
+			m_SceneManager.SetRenderTechnique( RenderTechnique::Deferred );
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( 'X' ) )
+			m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( '1') )
+			m_SceneManager.SetActiveLight( 0 );
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( '2') )
+			m_SceneManager.SetActiveLight( 1 );
+
+		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && !m_Win32Window.m_Kbd.KeyIsPressed( VK_CONTROL ) )
 		{
 			// point light translation
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'W' ) )
@@ -124,14 +137,6 @@ void App::ExecuteFrame()
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_LEFT ) )
 				m_SceneManager.RotateDirectionalLight( -dt * rotato, 0.0f );
 		}
-	}
-	else if ( m_Win32Window.CursorEnabled() )
-	{
-		// render techniques
-		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && m_Win32Window.m_Kbd.KeyIsPressed( 'Z' ) )
-			m_SceneManager.SetRenderTechnique( RenderTechnique::Deferred );
-		if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) && m_Win32Window.m_Kbd.KeyIsPressed( 'X' ) )
-			m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
 	}
 
 	// raw mouse input

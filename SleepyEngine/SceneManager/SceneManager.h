@@ -22,6 +22,7 @@ public:
 	void RotateCamera( const f32 dx, const f32 dy );
 	void TranslateCamera( DirectX::XMFLOAT3 camDelta );
 public:
+	void SetActiveLight( const u32 index );
 	void TranslatePointLight( DirectX::XMFLOAT3 translation );
 	void TranslateDirectionalLight( DirectX::XMFLOAT3 translation );
 	void RotateDirectionalLight( const f32 dx, const f32 dy );
@@ -39,4 +40,5 @@ private:
 	std::vector<Model*> m_vecOfModels;
 	// TODO: 
 	// - Resource Manager
+	// - Culling
 };
