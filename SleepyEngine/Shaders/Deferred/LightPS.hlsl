@@ -15,7 +15,7 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     float4 colors = colorTexture.Load(int3(position.xy, 0));
     float4 normals = normalTexture.Sample(SampleTypePoint, tex);
     float4 specular = specularTexture.Sample(SampleTypePoint, tex);
-    float depthSample = (depthTexture.Sample(SampleTypePoint, tex).r );
+    float depthSample = depthTexture.Sample(SampleTypePoint, tex).r;
     
     // clip space, negate y because directx
     float clipX = (tex.x * 2.0) - 1.0;
