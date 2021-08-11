@@ -67,6 +67,9 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     // attenutation
     float att = 0.8f; //Attenuate(pointLightData[0].attConst, pl.attLin, pointLightData[0].attQuad, lv.distToL);
 
+    // TODO:
+    // - Find out why diffuse is nearly 0
+
     // diffuse
     float3 diffuseColor = Diffuse(pointLightData[0].color, pl.diffuseIntensity, att, lv.dirToL / pl.radius, normalize(normals.xyz));
     

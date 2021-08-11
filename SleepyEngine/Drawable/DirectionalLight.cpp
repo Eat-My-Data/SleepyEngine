@@ -44,17 +44,13 @@ void DirectionalLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 c
 
 	matrixcbuf.lightViewMatrix = m_OrthoCamera.GetViewMatrix();
 	matrixcbuf.lightProjMatrix = m_OrthoCamera.GetProjectionMatrix();
+
 	m_pForwardLightMatrices->Update( gdi, matrixcbuf );
 	m_pForwardLightMatrices->Bind( gdi );
 }
 
 void DirectionalLight::Draw( GraphicsDeviceInterface& gdi ) const noexcept
 {
-	// set blend state to default for geometry
-	gdi.GetContext()->RSSetState( NULL );
-	const float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
-	gdi.GetContext()->OMSetBlendState( NULL, blendFactor, 0xFFFFFFFF );
-
 	// bindables
 	for ( auto& b : binds )
 	{
