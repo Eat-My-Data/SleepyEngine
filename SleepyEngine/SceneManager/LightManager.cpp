@@ -14,8 +14,7 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 {
 	m_pDirectionalLight->Update( *m_pGDI, camPos );
-	const DirectionalLight::DirectionalLightData* directionalLightData = &m_pDirectionalLight->m_StructuredBufferData;
-	m_pPixelStructuredBuffer->Update( *m_pGDI, *directionalLightData );
+	m_pPixelStructuredBuffer->Update( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData );
 	m_pPixelStructuredBuffer->Bind( *m_pGDI );
 
 	PointLight::PointLightData* bufferData = new PointLight::PointLightData[2];

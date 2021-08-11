@@ -107,11 +107,16 @@ void SceneManager::ForwardRender()
 	m_pGDI->GetContext()->PSSetShaderResources( 4, 1, m_pGDI->GetShadowResource() );
 	m_vecOfModels[0]->Draw( *m_pGDI, false );
 
+	// light cores
 	m_LightManager.RenderSolidSpheres();
 }
 
 void SceneManager::DeferredRender()
 {
+	// depth from light
+	m_LightManager.PrepareDepthFromLight();
+	m_vecOfModels[1]->Draw( *m_pGDI, true );
+
 	// gbuffers
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
@@ -119,13 +124,7 @@ void SceneManager::DeferredRender()
 	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
 	m_vecOfModels[1]->Draw( *m_pGDI, false );
 
-	// depth from light
-	m_LightManager.PrepareDepthFromLight();
-	m_vecOfModels[1]->Draw( *m_pGDI, true );
-
 	// lights
-	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
-	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_LightManager.Draw();
 }

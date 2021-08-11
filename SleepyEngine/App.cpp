@@ -4,7 +4,7 @@ App::App()
 	:
 	m_Win32Window( 1280, 720, L"Sleepy Engine" )
 {
-	m_SceneManager.SetRenderTechnique( RenderTechnique::Forward );
+	m_SceneManager.SetRenderTechnique( RenderTechnique::Deferred );
 }
 
 u32 App::Launch()
@@ -140,16 +140,16 @@ void App::ExecuteFrame()
 	}
 
 	// raw mouse input
-	/*while ( const auto delta = m_Win32Window.m_Mouse.ReadRawDelta() )
+	while ( const auto delta = m_Win32Window.m_Mouse.ReadRawDelta() )
 	{
 		if ( !m_Win32Window.CursorEnabled() )
 			m_SceneManager.RotateCamera( (f32)delta->x, (f32)delta->y );
-	}*/
+	}
 
-	m_GUIManager.Update();
+	//m_GUIManager.Update();
 
 	m_SceneManager.Draw();
-	m_GUIManager.Draw();
+	//m_GUIManager.Draw();
 
 	m_SceneManager.Present();
 }
