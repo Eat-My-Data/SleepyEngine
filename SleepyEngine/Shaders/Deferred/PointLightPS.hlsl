@@ -46,7 +46,7 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     float3 ambient = { 0.2f, 0.2f, 0.2f };
 
     // attenutation
-    float att = 0.8f; //Attenuate(pointLightData[0].attConst, pl.attLin, pointLightData[0].attQuad, lv.distToL);
+    float att = 0.8f;
 
     // TODO:
     // - Find out why diffuse is nearly 0
@@ -59,5 +59,5 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     float3 combinedColor = ((diffuseColor + specularResult)) + ambient;
 
     // final color
-    return float4((combinedColor * colors.rgb), 1.0f);    
+    return float4((combinedColor * colors.rgb), 1.0f);
 }
