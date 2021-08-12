@@ -127,5 +127,8 @@ void SceneManager::DeferredRender()
 	// lights
 	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_LightManager.Draw();
+
+	// light cores
+	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
 	m_LightManager.RenderSolidSpheres();
 }
