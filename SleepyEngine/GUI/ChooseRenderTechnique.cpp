@@ -9,30 +9,25 @@ ChooseRenderTechnique::ChooseRenderTechnique( f32 x, f32 y, f32 width, f32 heigh
 	: GUIElement( x,  y, width, height )
 {}
 
-bool ChooseRenderTechnique::DoElement( UI_ID& active, UI_ID& hot, Mouse& mouse )
+bool ChooseRenderTechnique::DoElement( class GraphicsDeviceInterface& gdi, UI_ID& active, UI_ID& hot, Mouse& mouse )
 {
-	bool result = false;
-	if ( active.Name == "ChooseRenderTechnique" )
+	// chack whether the button should be hot
+	if ( Inside( mouse.GetPos() ) )
 	{
-		if ( !mouse.LeftIsPressed() )
-		{
-			if ( hot.Name == "ChooseRenderTechnique" )
-				result = true;
-			active.Name = (char*)"No Active Elements";
-		}
-	}
-	else if ( hot.Name == "ChooseRenderTechnique" )
-	{
-		if ( mouse.LeftIsPressed() )
-		{
-			active.Name = (char*)"ChooseRenderTechnique";
-		}
+		hot.Name = m_sName;
+		if ( active.Name == "No Active Elements" && mouse.LeftIsPressed() )
+			active.Name = m_sName;
 	}
 
-	if ( active.Name == "No Active Elements" && Inside(mouse.GetPos()) )
-		hot.Name = (char*)"ChooseRenderTechnique";
+	// render button
+	Draw( gdi );
 
-	return result;
+	// if button is hot and active, but mouse button is not
+	// down, the user must have clicked the button.
+	if ( mouse.LeftIsReleased() && active.Name == m_sName && hot.Name == m_sName )
+		return true;
+
+	return false;
 }
 
 void ChooseRenderTechnique::Draw( GraphicsDeviceInterface& gdi )

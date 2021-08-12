@@ -21,20 +21,21 @@ bool GUIManager::IsInitialized() noexcept
 
 void GUIManager::Update()
 {
-	for ( u32 i = 0; i < m_vecOfGUIElements.size(); i++ )
-	{
-		if ( m_vecOfGUIElements[i]->DoElement( *m_pActive, *m_pHot, *m_pMouse ) )
-			m_vecOfGUIElements[i]->Interact( *m_pSceneManager );
-	}
-}
+	delete m_pHot;
+	m_pHot = new UI_ID{ (char*)"No Hot Elements", 100 };
 
-void GUIManager::Draw()
-{
 	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), nullptr );
 	m_GUITransformCbuf.guiTransform = m_GUITransformCamera.GetProjectionMatrix();
-	Bind::VertexConstantBuffer<GUITransform>::VertexConstantBuffer( *m_pGDI, m_GUITransformCbuf).Bind(* m_pGDI );
+	Bind::VertexConstantBuffer<GUITransform>::VertexConstantBuffer( *m_pGDI, m_GUITransformCbuf ).Bind( *m_pGDI );
+
 	for ( u32 i = 0; i < m_vecOfGUIElements.size(); i++ )
 	{
-		m_vecOfGUIElements[i]->Draw( *m_pGDI );
+		if ( m_vecOfGUIElements[i]->DoElement( *m_pGDI, *m_pActive, *m_pHot, *m_pMouse ) )
+		{
+			m_vecOfGUIElements[i]->Interact( *m_pSceneManager );
+
+			delete m_pActive;
+			m_pActive = new UI_ID{ (char*)"No Active Elements", 100 };
+		}
 	}
 }

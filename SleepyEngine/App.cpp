@@ -146,10 +146,7 @@ void App::ExecuteFrame()
 			m_SceneManager.RotateCamera( (f32)delta->x, (f32)delta->y );
 	}
 
-	//m_GUIManager.Update();
-
 	m_SceneManager.Draw();
-	//m_GUIManager.Draw();
-
+	m_GUIManager.Update();
 	m_SceneManager.Present();
 }

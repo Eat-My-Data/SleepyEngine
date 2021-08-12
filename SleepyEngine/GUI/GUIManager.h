@@ -16,7 +16,6 @@ public:
 	void Initialize( class GraphicsDeviceInterface& gdi, class SceneManager& sceneManager, class Mouse& mouse );
 	bool IsInitialized() noexcept;
 	void Update();
-	void Draw();
 private:
 	std::vector<GUIElement*> m_vecOfGUIElements;
 private:
