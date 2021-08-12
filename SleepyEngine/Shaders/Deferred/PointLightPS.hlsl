@@ -1,5 +1,6 @@
 #include "../Common/ShaderOps.hlsl"
 #include "../Common/LightVectorData.hlsl"
+#include "../Common/PointLight.hlsl"
 
 Texture2D colorTexture : register(t0);
 Texture2D normalTexture : register(t1);
@@ -7,26 +8,6 @@ Texture2D specularTexture : register(t2);
 Texture2D depthTexture : register(t3);
 
 SamplerState SampleTypePoint : register(s0);
-
-struct PointLightData
-{
-    float3 pos;
-    float specularPower;
-    float3 ambient;
-    float diffuseIntensity;
-    float3 color;
-    float attConst;
-    float attQuad;
-    float attLin;
-    float2 padding;
-    float3 camPos;
-    float radius;
-    row_major float4x4 cameraMatrix;
-    row_major float4x4 projInvMatrix;
-};
-
-StructuredBuffer<PointLightData> pointLightData : register(t6);
-
 
 float4 main(float4 position : SV_POSITION) : SV_TARGET
 {
@@ -65,15 +46,18 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     float3 ambient = { 0.2f, 0.2f, 0.2f };
 
     // attenutation
-    float att = 0.8f; //Attenuate(pointLightData[0].attConst, pl.attLin, pointLightData[0].attQuad, lv.distToL);
+    float att = 0.8f;
+
+    // TODO:
+    // - Find out why diffuse is nearly 0
 
     // diffuse
     float3 diffuseColor = Diffuse(pointLightData[0].color, pl.diffuseIntensity, att, lv.dirToL / pl.radius, normalize(normals.xyz));
     
     // specular
-    float3 specularResult = float3(0.0f, 0.0f, 0.0f); //Speculate(specular.xyz, pl.diffuseIntensity, normalize(normals.xyz), lv.dirToL / pl.radius, camToFrag, att, pl.specularPower);
+    float3 specularResult = Speculate(specular.xyz, pl.diffuseIntensity, normalize(normals.xyz), lv.dirToL / pl.radius, camToFrag, att, pl.specularPower);
     float3 combinedColor = ((diffuseColor + specularResult)) + ambient;
 
     // final color
-    return float4((combinedColor * colors.rgb), 1.0f);    
+    return float4((combinedColor * colors.rgb), 1.0f);
 }
