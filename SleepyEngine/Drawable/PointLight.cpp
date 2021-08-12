@@ -126,13 +126,14 @@ void PointLight::Update( DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX project
 
 void PointLight::Draw( GraphicsDeviceInterface& gdi )
 {
-	m_SolidSphere->Draw( gdi );
+	//m_SolidSphere->Draw( gdi );
 
 	// bindables
 	for ( auto& b : binds )
 	{
 		b->Bind( gdi );
 	}
+
 
 	// figure out if camera is inside point light
 	if ( CameraIsInside( m_StructuredBufferData.camPos ) )

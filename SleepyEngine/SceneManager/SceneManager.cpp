@@ -127,4 +127,5 @@ void SceneManager::DeferredRender()
 	// lights
 	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_LightManager.Draw();
+	m_LightManager.RenderSolidSpheres();
 }
