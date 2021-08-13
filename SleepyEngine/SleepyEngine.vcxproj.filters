@@ -88,6 +88,12 @@
     <Filter Include="Shaders\GUI">
       <UniqueIdentifier>{117c71f5-5da3-4b48-9301-8e4335777e97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI\Text">
+      <UniqueIdentifier>{f5c7eabe-53d0-4a37-a6fc-b7af55d5e9b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\Text">
+      <UniqueIdentifier>{d087ec5a-a836-4307-a497-a301d7331c6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -203,6 +209,18 @@
     </ClCompile>
     <ClCompile Include="Drawable\SolidSphere.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Text\TextureClass.cpp">
+      <Filter>Source Files\GUI\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Text\TextClass.cpp">
+      <Filter>Source Files\GUI\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Text\FontShaderClass.cpp">
+      <Filter>Source Files\GUI\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Text\FontClass.cpp">
+      <Filter>Source Files\GUI\Text</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -365,14 +383,20 @@
     <ClInclude Include="Drawable\SolidSphere.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="GUI\Text\TextureClass.h">
+      <Filter>Header Files\GUI\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Text\TextClass.h">
+      <Filter>Header Files\GUI\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Text\FontShaderClass.h">
+      <Filter>Header Files\GUI\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Text\FontClass.h">
+      <Filter>Header Files\GUI\Text</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\VertexShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\PixelShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
@@ -466,5 +490,13 @@
     <FxCompile Include="Shaders\Common\SolidVS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\GUI\FontPS.hlsl">
+      <Filter>Shaders\GUI</Filter>
+    </None>
+    <None Include="Shaders\GUI\FontVS.hlsl">
+      <Filter>Shaders\GUI</Filter>
+    </None>
   </ItemGroup>
 </Project>
