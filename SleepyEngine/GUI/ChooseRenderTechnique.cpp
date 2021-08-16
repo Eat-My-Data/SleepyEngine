@@ -4,10 +4,47 @@
 #include "./Forms/Rectangle.h"
 #include "../Bindable/BindableCommon.h"
 #include "../Win32/Mouse.h"
+#include <fstream>
 
 ChooseRenderTechnique::ChooseRenderTechnique( f32 x, f32 y, f32 width, f32 height )
 	: GUIElement( x,  y, width, height )
-{}
+{
+	std::ifstream fin;
+	int i;
+	char temp;
+
+	// Create the font spacing buffer.
+	m_pFontData = new FontType[95];
+
+	// Read in the font size and spacing between chars.
+	fin.open( "./GUI/Text/IndexFile.txt" );
+	if ( fin.fail() )
+	{
+		throw std::exception();
+	}
+
+	// Read in the 95 used ascii characters for text.
+	for ( i = 0; i < 95; i++ )
+	{
+		fin.get( temp );
+		while ( temp != ' ' )
+		{
+			fin.get( temp );
+		}
+		fin.get( temp );
+		while ( temp != ' ' )
+		{
+			fin.get( temp );
+		}
+
+		fin >> m_pFontData[i].left;
+		fin >> m_pFontData[i].right;
+		fin >> m_pFontData[i].size;
+	}
+
+	// Close the file.
+	fin.close();
+}
 
 bool ChooseRenderTechnique::DoElement( class GraphicsDeviceInterface& gdi, UI_ID& active, UI_ID& hot, Mouse& mouse )
 {
