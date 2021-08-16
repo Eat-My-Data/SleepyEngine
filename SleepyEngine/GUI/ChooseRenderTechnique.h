@@ -18,18 +18,6 @@ private:
 	bool isActive = false;
 	bool isForwardRender = false;
 private:
-	struct FontType
-	{
-		float left, right;
-		int size;
-	};
-	struct VertexType
-	{
-		DirectX::XMFLOAT3 position;
-		DirectX::XMFLOAT2 texture;
-	};
-	FontType* m_pFontData;
-private:
 	struct ColorConst
 	{
 		DirectX::XMFLOAT4 color = { 0.0f, 1.0f, 1.0f, 1.0f };
