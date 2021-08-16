@@ -195,10 +195,6 @@
     <ClCompile Include="GUI\GUIElement.cpp" />
     <ClCompile Include="GUI\GUIManager.cpp" />
     <ClCompile Include="GUI\ChooseRenderTechnique.cpp" />
-    <ClCompile Include="GUI\Text\FontClass.cpp" />
-    <ClCompile Include="GUI\Text\FontShaderClass.cpp" />
-    <ClCompile Include="GUI\Text\TextClass.cpp" />
-    <ClCompile Include="GUI\Text\TextureClass.cpp" />
     <ClCompile Include="ResourceManager\LayoutCodex.cpp" />
     <ClCompile Include="ResourceManager\Mesh.cpp" />
     <ClCompile Include="ResourceManager\Surface.cpp" />
@@ -245,10 +241,6 @@
     <ClInclude Include="GUI\GUIElement.h" />
     <ClInclude Include="GUI\GUIManager.h" />
     <ClInclude Include="GUI\ChooseRenderTechnique.h" />
-    <ClInclude Include="GUI\Text\FontClass.h" />
-    <ClInclude Include="GUI\Text\FontShaderClass.h" />
-    <ClInclude Include="GUI\Text\TextClass.h" />
-    <ClInclude Include="GUI\Text\TextureClass.h" />
     <ClInclude Include="GUI\UI_ID.h" />
     <ClInclude Include="ResourceManager\Color.h" />
     <ClInclude Include="ResourceManager\Geometry\Sphere.h" />

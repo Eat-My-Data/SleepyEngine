@@ -210,18 +210,6 @@
     <ClCompile Include="Drawable\SolidSphere.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\Text\TextureClass.cpp">
-      <Filter>Source Files\GUI\Text</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\Text\TextClass.cpp">
-      <Filter>Source Files\GUI\Text</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\Text\FontShaderClass.cpp">
-      <Filter>Source Files\GUI\Text</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\Text\FontClass.cpp">
-      <Filter>Source Files\GUI\Text</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -382,18 +370,6 @@
     </ClInclude>
     <ClInclude Include="Drawable\SolidSphere.h">
       <Filter>Header Files\Drawable</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\Text\TextureClass.h">
-      <Filter>Header Files\GUI\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\Text\TextClass.h">
-      <Filter>Header Files\GUI\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\Text\FontShaderClass.h">
-      <Filter>Header Files\GUI\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\Text\FontClass.h">
-      <Filter>Header Files\GUI\Text</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
