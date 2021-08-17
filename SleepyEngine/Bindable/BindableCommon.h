@@ -9,3 +9,4 @@
 #include "./Bindables/Topology.h"
 #include "./Bindables/TransformCBuf.h"
 #include "./Bindables/Rasterizer.h"
+#include "./Bindables/Texture.h"

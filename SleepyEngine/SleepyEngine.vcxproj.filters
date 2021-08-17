@@ -94,6 +94,9 @@
     <Filter Include="Source Files\GUI\Text">
       <UniqueIdentifier>{d087ec5a-a836-4307-a497-a301d7331c6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GUI\Forms">
+      <UniqueIdentifier>{7af72b16-6eb6-45da-a0d8-2f36f83366bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -209,6 +212,15 @@
     </ClCompile>
     <ClCompile Include="Drawable\SolidSphere.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Text\TextManager.cpp">
+      <Filter>Source Files\GUI\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Forms\TextBox.cpp">
+      <Filter>Source Files\GUI\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Forms\Form.cpp">
+      <Filter>Source Files\GUI\Forms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -370,6 +382,15 @@
     </ClInclude>
     <ClInclude Include="Drawable\SolidSphere.h">
       <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Text\TextManager.h">
+      <Filter>Header Files\GUI\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Forms\Form.h">
+      <Filter>Header Files\GUI\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Forms\TextBox.h">
+      <Filter>Header Files\GUI\Forms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
