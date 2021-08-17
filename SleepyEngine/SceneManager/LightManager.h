@@ -30,4 +30,5 @@ private:
 	// - Shadows for Point Light
 	// - Spotlight
 	// - Shadows for Spotlight
+	//   - Will need to separate PrepareDepthFromLight and point lights paths, maybe a GetPointLights() function?
 };
