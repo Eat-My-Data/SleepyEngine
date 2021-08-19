@@ -12,8 +12,8 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 
 	// texture descriptor
 	D3D11_TEXTURE2D_DESC textureDesc = {};
-	textureDesc.Width = 1280;
-	textureDesc.Height = 720;
+	textureDesc.Width = 1000;
+	textureDesc.Height = 1000;
 	textureDesc.MipLevels = 1;
 	textureDesc.ArraySize = 6;
 	textureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS;
@@ -59,7 +59,7 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 		descDSV.Texture2D.MipSlice = 0u;
 		ID3D11DepthStencilView* tempDSV = {};
 		gdi.GetDevice()->CreateDepthStencilView( pDepthStencil, &descDSV, &tempDSV );
-		depthBuffers.push_back( tempDSV );
+		depthBuffers[face] = std::move( tempDSV );
 	}
 
 	DirectX::XMStoreFloat4x4(
@@ -84,7 +84,6 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	// -z
 	DirectX::XMStoreFloat3( &cameraDirections[5], DirectX::XMVectorSet( 0.0f, 0.0f, -1.0f, 0.0f ) );
 	DirectX::XMStoreFloat3( &cameraUps[5], DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
-
 }
 
 void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
@@ -136,6 +135,21 @@ void LightManager::PrepareDepthFromLight()
 	m_pGDI->SetProjMatrix( m_pDirectionalLight->GetProjectionMatrix() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
 	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV() );
+}
+
+void LightManager::RenderPointLightCubeTextures( const Model& model )
+{
+	const auto pos = DirectX::XMLoadFloat3( &m_vecOfPointLights[0]->m_StructuredBufferData.pos );
+
+	m_pGDI->SetProjMatrix( DirectX::XMLoadFloat4x4( &projection ) );
+	for ( u32 i = 0; i < 6; i++ )                                                                                                                                                                                                                                                                                                     
+	{
+		m_pGDI->GetContext()->ClearDepthStencilView( depthBuffers[i], D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
+		m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, depthBuffers[i] );
+		const auto lookAt = DirectX::XMVectorAdd( pos, DirectX::XMLoadFloat3( &cameraDirections[i] ) );
+		m_pGDI->SetViewMatrix( DirectX::XMMatrixLookAtLH( pos, lookAt, DirectX::XMLoadFloat3( &cameraUps[i] ) ) );
+		model.Draw( *m_pGDI, true );
+	}
 }
 
 void LightManager::SelectLight( const u32 index )

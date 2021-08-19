@@ -4,6 +4,7 @@
 #include "../Drawable/DirectionalLight.h"
 #include "../Drawable/PointLight.h"
 #include "../Bindable/Bindables/StructuredBuffers.h"
+#include "../ResourceManager/Mesh.h"
 
 class LightManager
 {
@@ -13,6 +14,7 @@ public:
 	void Draw();
 	void RenderSolidSpheres();
 	void PrepareDepthFromLight();
+	void RenderPointLightCubeTextures( const Model& model );
 public:
 	void SelectLight( const u32 index );
 	void TranslatePointLight( DirectX::XMFLOAT3 translation );
