@@ -26,6 +26,12 @@ private:
 private:
 	u32 m_iSelectedLight = 0;
 	GraphicsDeviceInterface* m_pGDI = nullptr;
+private:
+	ID3D11ShaderResourceView* pTextureView;
+	DirectX::XMFLOAT4X4 projection;
+	std::vector<ID3D11DepthStencilView*> depthBuffers{ 6 };
+	std::vector<DirectX::XMFLOAT3> cameraDirections{ 6 };
+	std::vector<DirectX::XMFLOAT3> cameraUps{ 6 };
 	// TODO:
 	// - Shadows for Point Light
 	// - Spotlight

@@ -9,6 +9,82 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 
 	m_pPixelStructuredBuffer = new Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>{ gdi, 5u };
 	m_pPixelArrStructuredBuffer = new Bind::PixelArrStructuredBuffer<PointLight::PointLightData>{ gdi, 6u };
+
+	// texture descriptor
+	D3D11_TEXTURE2D_DESC textureDesc = {};
+	textureDesc.Width = 1280;
+	textureDesc.Height = 720;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 6;
+	textureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.SampleDesc.Quality = 0;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+	// create the texture resource
+	ID3D11Texture2D* pTexture;
+	gdi.GetDevice()->CreateTexture2D( &textureDesc, nullptr, &pTexture );
+
+	// create the resource view on the texture
+	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	srvDesc.Texture2D.MostDetailedMip = 0;
+	srvDesc.Texture2D.MipLevels = 1;
+	gdi.GetDevice()->CreateShaderResourceView( pTexture, &srvDesc, &pTextureView );
+
+	// make depth buffer resources for capturing shadow map
+	for ( u32 face = 0; face < 6; face++ )
+	{
+		// create depth stensil texture
+		ID3D11Texture2D* pDepthStencil;
+		D3D11_TEXTURE2D_DESC descDepth = {};
+		descDepth.Width = 1280;
+		descDepth.Height = 720;
+		descDepth.MipLevels = 1u;
+		descDepth.ArraySize = 1u;
+		descDepth.Format = DXGI_FORMAT_R24G8_TYPELESS;
+		descDepth.SampleDesc.Count = 1u;
+		descDepth.SampleDesc.Quality = 0u;
+		descDepth.Usage = D3D11_USAGE_DEFAULT;
+		descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL |  D3D11_BIND_SHADER_RESOURCE;
+		gdi.GetDevice()->CreateTexture2D( &descDepth, nullptr, &pDepthStencil );
+
+		// create target view of depth stensil texture
+		D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
+		descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		descDSV.Texture2D.MipSlice = 0u;
+		ID3D11DepthStencilView* tempDSV = {};
+		gdi.GetDevice()->CreateDepthStencilView( pDepthStencil, &descDSV, &tempDSV );
+		depthBuffers.push_back( tempDSV );
+	}
+
+	DirectX::XMStoreFloat4x4(
+		&projection,
+		DirectX::XMMatrixPerspectiveFovLH( PI / 2.0f, 1.0f, 0.5f, 100.0f )
+	);
+	// +x
+	DirectX::XMStoreFloat3( &cameraDirections[0], DirectX::XMVectorSet( 1.0f, 0.0f, 0.0f, 0.0f ) );
+	DirectX::XMStoreFloat3( &cameraUps[0], DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
+	// -x
+	DirectX::XMStoreFloat3( &cameraDirections[1], DirectX::XMVectorSet( -1.0f, 0.0f, 0.0f, 0.0f ) );
+	DirectX::XMStoreFloat3( &cameraUps[1], DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
+	// +y
+	DirectX::XMStoreFloat3( &cameraDirections[2], DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
+	DirectX::XMStoreFloat3( &cameraUps[2], DirectX::XMVectorSet( 0.0f, 0.0f, -1.0f, 0.0f ) );
+	// -y
+	DirectX::XMStoreFloat3( &cameraDirections[3], DirectX::XMVectorSet( 0.0f, -1.0f, 0.0f, 0.0f ) );
+	DirectX::XMStoreFloat3( &cameraUps[3], DirectX::XMVectorSet( 0.0f, 0.0f, 1.0f, 0.0f ) );
+	// +z
+	DirectX::XMStoreFloat3( &cameraDirections[4], DirectX::XMVectorSet( 0.0f, 0.0f, 1.0f, 0.0f ) );
+	DirectX::XMStoreFloat3( &cameraUps[4], DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
+	// -z
+	DirectX::XMStoreFloat3( &cameraDirections[5], DirectX::XMVectorSet( 0.0f, 0.0f, -1.0f, 0.0f ) );
+	DirectX::XMStoreFloat3( &cameraUps[5], DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
+
 }
 
 void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
