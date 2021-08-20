@@ -109,7 +109,7 @@ private:
 	bool m_bRightIsPressed = false;
 	bool m_bIsInWindow = false;
 	u32 m_iWheelDeltaCarry = 0;
-	bool m_bRawEnabled = false;
+	bool m_bRawEnabled = true;
 	std::deque<Event> m_qBuffer;
 	std::queue<RawDelta> m_qRawDeltaBuffer;
 };
