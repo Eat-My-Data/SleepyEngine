@@ -38,27 +38,16 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	// make depth buffer resources for capturing shadow map
 	for ( u32 face = 0; face < 6; face++ )
 	{
-		// create depth stensil texture
-		ID3D11Texture2D* pDepthStencil;
-		D3D11_TEXTURE2D_DESC descDepth = {};
-		descDepth.Width = 1280;
-		descDepth.Height = 720;
-		descDepth.MipLevels = 1u;
-		descDepth.ArraySize = 1u;
-		descDepth.Format = DXGI_FORMAT_R24G8_TYPELESS;
-		descDepth.SampleDesc.Count = 1u;
-		descDepth.SampleDesc.Quality = 0u;
-		descDepth.Usage = D3D11_USAGE_DEFAULT;
-		descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL |  D3D11_BIND_SHADER_RESOURCE;
-		gdi.GetDevice()->CreateTexture2D( &descDepth, nullptr, &pDepthStencil );
-
 		// create target view of depth stensil texture
-		D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
-		descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-		descDSV.Texture2D.MipSlice = 0u;
+		D3D11_DEPTH_STENCIL_VIEW_DESC descView = {};
+		descView.Format = DXGI_FORMAT_D32_FLOAT;
+		descView.Flags = 0;
+		descView.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+		descView.Texture2DArray.MipSlice = 0;
+		descView.Texture2DArray.ArraySize = 1;
+		descView.Texture2DArray.FirstArraySlice = face;
 		ID3D11DepthStencilView* tempDSV = {};
-		gdi.GetDevice()->CreateDepthStencilView( pDepthStencil, &descDSV, &tempDSV );
+		gdi.GetDevice()->CreateDepthStencilView( pTexture, &descView, &tempDSV );
 		depthBuffers[face] = std::move( tempDSV );
 	}
 
