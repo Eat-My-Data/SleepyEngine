@@ -228,6 +228,9 @@
     <ClCompile Include="GUI\Elements\GUIElement.cpp">
       <Filter>Source Files\GUI\Elements</Filter>
     </ClCompile>
+    <ClCompile Include="GUI\Elements\Title.cpp">
+      <Filter>Source Files\GUI\Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -396,6 +399,9 @@
       <Filter>Header Files\GUI\Elements</Filter>
     </ClInclude>
     <ClInclude Include="GUI\Elements\GUIElement.h">
+      <Filter>Header Files\GUI\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Elements\Title.h">
       <Filter>Header Files\GUI\Elements</Filter>
     </ClInclude>
   </ItemGroup>

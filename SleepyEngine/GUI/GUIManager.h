@@ -1,6 +1,7 @@
 #pragma once
 #include "../SceneManager/Camera.h"
 #include "../Utilities/NumericDataTypes.h"
+#include "GUIContainer.h"
 #include "UI_ID.h"
 #include "DirectXMath.h"
 #include <vector>
@@ -28,6 +29,7 @@ private:
 private:
 	GraphicsDeviceInterface* m_pGDI = nullptr;
 	SceneManager* m_pSceneManager = nullptr;
+	GUIContainer m_pGUIContainer;
 	Mouse* m_pMouse;
 private:
 	UI_ID* m_pHot = nullptr;

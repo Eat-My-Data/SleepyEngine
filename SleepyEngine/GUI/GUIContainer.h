@@ -1,13 +1,16 @@
 #pragma once
+#include "./Elements/GUIElement.h"
+#include "Elements\Title.h"
+
+#include <vector>
 
 class GraphicsDeviceInterface;
 
 class GUIContainer
 {
 public:
-	void Draw( class GraphicsDeviceInterface& gdi  );
-	void AddElement( /*Element like text or button*/ );
-	void Flush();
+	static void AddElement( GUIElement* element );
+	static void Draw( class GraphicsDeviceInterface& gdi  );
 private:
-	// vector of elements
+	static std::vector<GUIElement*> m_vecOfElements;
 };

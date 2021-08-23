@@ -1,5 +1,5 @@
 #pragma once
-#include "../GUIElement.h"
+#include "../Elements/GUIElement.h"
 #include "../../Bindable/BindableCommon.h"
 #include "DirectXMath.h"
 

@@ -10,7 +10,6 @@ void GUIManager::Initialize( GraphicsDeviceInterface& gdi, SceneManager& sceneMa
 	m_pMouse = &mouse;
 	m_pActive = new UI_ID{ (char*)"No Active Elements", 100 };
 	m_pHot = new UI_ID{ (char*)"No Hot Elements", 100 };
-	//m_vecOfGUIElements.push_back( new ChooseRenderTechnique( 0.0f, 0.0f, 100.0f, 50.0f ) );
 	m_bIsInitialized = true;
 }
 
@@ -23,6 +22,7 @@ bool GUIManager::Begin( char* title )
 {
 	// TODO: 
 	// - Create new container that holds items and has a title
+	GUIContainer::AddElement( new Title( 0.0f, 0.0f, 10.0f, 10.0f ) );
 	return false;
 }
 

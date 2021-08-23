@@ -194,6 +194,7 @@
     <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp" />
     <ClCompile Include="GUI\Elements\GUIElement.cpp" />
     <ClCompile Include="GUI\Elements\Text.cpp" />
+    <ClCompile Include="GUI\Elements\Title.cpp" />
     <ClCompile Include="GUI\Forms\Form.cpp" />
     <ClCompile Include="GUI\GUIContainer.cpp" />
     <ClCompile Include="GUI\GUIManager.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h" />
     <ClInclude Include="GUI\Elements\GUIElement.h" />
     <ClInclude Include="GUI\Elements\Text.h" />
+    <ClInclude Include="GUI\Elements\Title.h" />
     <ClInclude Include="GUI\Forms\Form.h" />
     <ClInclude Include="GUI\Forms\Rectangle.h" />
     <ClInclude Include="GUI\GUIContainer.h" />
