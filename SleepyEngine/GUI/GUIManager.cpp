@@ -10,7 +10,7 @@ void GUIManager::Initialize( GraphicsDeviceInterface& gdi, SceneManager& sceneMa
 	m_pMouse = &mouse;
 	m_pActive = new UI_ID{ (char*)"No Active Elements", 100 };
 	m_pHot = new UI_ID{ (char*)"No Hot Elements", 100 };
-	m_vecOfGUIElements.push_back( new ChooseRenderTechnique( 0.0f, 0.0f, 100.0f, 50.0f ) );
+	//m_vecOfGUIElements.push_back( new ChooseRenderTechnique( 0.0f, 0.0f, 100.0f, 50.0f ) );
 	m_bIsInitialized = true;
 }
 
@@ -19,23 +19,41 @@ bool GUIManager::IsInitialized() noexcept
 	return m_bIsInitialized;
 }
 
-void GUIManager::Update()
+bool GUIManager::Begin( char* title )
 {
-	delete m_pHot;
-	m_pHot = new UI_ID{ (char*)"No Hot Elements", 100 };
-
-	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), nullptr );
-	m_GUITransformCbuf.guiTransform = m_GUITransformCamera.GetProjectionMatrix();
-	Bind::VertexConstantBuffer<GUITransform>::VertexConstantBuffer( *m_pGDI, m_GUITransformCbuf ).Bind( *m_pGDI );
-
-	for ( u32 i = 0; i < m_vecOfGUIElements.size(); i++ )
-	{
-		if ( m_vecOfGUIElements[i]->DoElement( *m_pGDI, *m_pActive, *m_pHot, *m_pMouse ) )
-		{
-			m_vecOfGUIElements[i]->Interact( *m_pSceneManager );
-
-			delete m_pActive;
-			m_pActive = new UI_ID{ (char*)"No Active Elements", 100 };
-		}
-	}
+	return false;
 }
+
+void GUIManager::Text( char* sentence )
+{
+}
+
+bool GUIManager::Button( char* sentence )
+{
+	return false;
+}
+
+void GUIManager::End()
+{
+}
+
+//void GUIManager::Update()
+//{
+//	delete m_pHot;
+//	m_pHot = new UI_ID{ (char*)"No Hot Elements", 100 };
+//
+//	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), nullptr );
+//	m_GUITransformCbuf.guiTransform = m_GUITransformCamera.GetProjectionMatrix();
+//	Bind::VertexConstantBuffer<GUITransform>::VertexConstantBuffer( *m_pGDI, m_GUITransformCbuf ).Bind( *m_pGDI );
+//
+//	for ( u32 i = 0; i < m_vecOfGUIElements.size(); i++ )
+//	{
+//		//if ( m_vecOfGUIElements[i]->DoElement( *m_pGDI, *m_pActive, *m_pHot, *m_pMouse ) )
+//		//{
+//		//	m_vecOfGUIElements[i]->Interact( *m_pSceneManager );
+//
+//		//	delete m_pActive;
+//		//	m_pActive = new UI_ID{ (char*)"No Active Elements", 100 };
+//		//}
+//	}
+//}

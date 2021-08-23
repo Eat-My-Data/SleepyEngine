@@ -97,6 +97,12 @@
     <Filter Include="Source Files\GUI\Forms">
       <UniqueIdentifier>{7af72b16-6eb6-45da-a0d8-2f36f83366bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GUI\Elements">
+      <UniqueIdentifier>{3c4be242-12a4-4b69-bb9e-d1c91ea9484d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI\Elements">
+      <UniqueIdentifier>{48c1d445-d2d7-450d-9169-fc8a3099ad3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -204,9 +210,6 @@
     <ClCompile Include="GUI\GUIElement.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\ChooseRenderTechnique.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager\LightManager.cpp">
       <Filter>Source Files\SceneManager</Filter>
     </ClCompile>
@@ -221,6 +224,12 @@
     </ClCompile>
     <ClCompile Include="GUI\Forms\Form.cpp">
       <Filter>Source Files\GUI\Forms</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Elements\ChooseRenderTechnique.cpp">
+      <Filter>Source Files\GUI\Elements</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Elements\MainController.cpp">
+      <Filter>Source Files\GUI\Elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -365,9 +374,6 @@
     <ClInclude Include="GUI\GUIElement.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\ChooseRenderTechnique.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="GUI\Forms\Rectangle.h">
       <Filter>Header Files\GUI\Forms</Filter>
     </ClInclude>
@@ -391,6 +397,12 @@
     </ClInclude>
     <ClInclude Include="GUI\Forms\TextBox.h">
       <Filter>Header Files\GUI\Forms</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Elements\ChooseRenderTechnique.h">
+      <Filter>Header Files\GUI\Elements</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\Elements\MainController.h">
+      <Filter>Header Files\GUI\Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

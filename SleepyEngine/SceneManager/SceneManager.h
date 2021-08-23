@@ -18,6 +18,7 @@ public:
 	void SetRenderTechnique( RenderTechnique renderTechnique ) noexcept;
 public:
 	void Draw();
+	void DrawControlPanel();
 	void Present();
 	void RotateCamera( const f32 dx, const f32 dy );
 	void TranslateCamera( DirectX::XMFLOAT3 camDelta );

@@ -147,6 +147,6 @@ void App::ExecuteFrame()
 	}
 
 	m_SceneManager.Draw();
-	m_GUIManager.Update();
+	//m_SceneManager.DrawControlPanel();
 	m_SceneManager.Present();
 }

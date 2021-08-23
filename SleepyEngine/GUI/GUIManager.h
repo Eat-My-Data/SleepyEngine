@@ -1,5 +1,5 @@
 #pragma once
-#include "ChooseRenderTechnique.h"
+#include "./Elements/ChooseRenderTechnique.h"
 #include "../SceneManager/Camera.h"
 #include "DirectXMath.h"
 #include "../Utilities/NumericDataTypes.h"
@@ -15,9 +15,11 @@ class GUIManager
 public:
 	void Initialize( class GraphicsDeviceInterface& gdi, class SceneManager& sceneManager, class Mouse& mouse );
 	bool IsInitialized() noexcept;
-	void Update();
-private:
-	std::vector<GUIElement*> m_vecOfGUIElements;
+public:
+	static bool Begin( char* title );
+	static void Text( char* sentence );
+	static bool Button( char* sentence );
+	static void End();
 private:
 	struct GUITransform
 	{

@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
+#include "../GUI/GUIManager.h"
 
 SceneManager::~SceneManager()
 {
@@ -40,6 +41,21 @@ void SceneManager::Draw()
 	// clear shader resources
 	ID3D11ShaderResourceView* null[] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	m_pGDI->GetContext()->PSSetShaderResources( 0, 6, null );
+}
+
+void SceneManager::DrawControlPanel()
+{
+	if ( GUIManager::Begin( (char*)"Test" ) )
+	{
+		GUIManager::Text( (char*)"Press this button!" );
+		if ( GUIManager::Button( (char*)"Change Render Technique" ) )
+		{ 
+			if ( m_RenderTechnique == RenderTechnique::Deferred )
+				m_RenderTechnique = RenderTechnique::Forward;
+			else
+				m_RenderTechnique = RenderTechnique::Deferred;
+		}
+	}
 }
 
 void SceneManager::Present()
