@@ -1,12 +1,12 @@
-#include "TextBox.h"
-#include "Rectangle.h"
+#include "Text.h"
+#include "../Forms/Rectangle.h"
 #include "../../Bindable/BindableCommon.h"
 
-TextBox::TextBox( f32 x, f32 y, f32 width, f32 height )
-	: Form( x, y, width, height )
+Text::Text( f32 x, f32 y, f32 width, f32 height )
+	: GUIElement( x, y, width, height )
 {}
 
-void TextBox::Draw( GraphicsDeviceInterface & gdi )
+void Text::Draw( GraphicsDeviceInterface & gdi )
 {
 	// can add in different draw states based on wheter
 	using namespace Bind;

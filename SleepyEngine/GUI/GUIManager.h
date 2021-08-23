@@ -1,9 +1,8 @@
 #pragma once
-#include "./Elements/ChooseRenderTechnique.h"
 #include "../SceneManager/Camera.h"
-#include "DirectXMath.h"
 #include "../Utilities/NumericDataTypes.h"
 #include "UI_ID.h"
+#include "DirectXMath.h"
 #include <vector>
 
 class GraphicsDeviceInterface;
@@ -37,4 +36,7 @@ private:
 	bool m_bIsInitialized = false;
 	u32 m_iScreenWidth = 1280;
 	u32 m_iScreenHeight = 720;
+	// TODO:
+	// - Figure out how to Add every element that is called in any order
+	//   - Button Could come after text or color modifier could be anywhere
 };

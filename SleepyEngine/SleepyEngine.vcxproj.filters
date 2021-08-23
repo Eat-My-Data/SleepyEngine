@@ -207,9 +207,6 @@
     <ClCompile Include="GUI\GUIManager.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\GUIElement.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager\LightManager.cpp">
       <Filter>Source Files\SceneManager</Filter>
     </ClCompile>
@@ -219,16 +216,16 @@
     <ClCompile Include="GUI\Text\TextManager.cpp">
       <Filter>Source Files\GUI\Text</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\Forms\TextBox.cpp">
-      <Filter>Source Files\GUI\Forms</Filter>
-    </ClCompile>
     <ClCompile Include="GUI\Forms\Form.cpp">
       <Filter>Source Files\GUI\Forms</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\Elements\ChooseRenderTechnique.cpp">
+    <ClCompile Include="GUI\GUIContainer.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\Elements\Text.cpp">
       <Filter>Source Files\GUI\Elements</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\Elements\MainController.cpp">
+    <ClCompile Include="GUI\Elements\GUIElement.cpp">
       <Filter>Source Files\GUI\Elements</Filter>
     </ClCompile>
   </ItemGroup>
@@ -371,9 +368,6 @@
     <ClInclude Include="GUI\GUIManager.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\GUIElement.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="GUI\Forms\Rectangle.h">
       <Filter>Header Files\GUI\Forms</Filter>
     </ClInclude>
@@ -395,13 +389,13 @@
     <ClInclude Include="GUI\Forms\Form.h">
       <Filter>Header Files\GUI\Forms</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\Forms\TextBox.h">
-      <Filter>Header Files\GUI\Forms</Filter>
+    <ClInclude Include="GUI\GUIContainer.h">
+      <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\Elements\ChooseRenderTechnique.h">
+    <ClInclude Include="GUI\Elements\Text.h">
       <Filter>Header Files\GUI\Elements</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\Elements\MainController.h">
+    <ClInclude Include="GUI\Elements\GUIElement.h">
       <Filter>Header Files\GUI\Elements</Filter>
     </ClInclude>
   </ItemGroup>

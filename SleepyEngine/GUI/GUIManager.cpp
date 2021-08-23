@@ -21,20 +21,29 @@ bool GUIManager::IsInitialized() noexcept
 
 bool GUIManager::Begin( char* title )
 {
+	// TODO: 
+	// - Create new container that holds items and has a title
 	return false;
 }
 
 void GUIManager::Text( char* sentence )
-{
+{	
+	// TODO: 
+	// - Add Text Element to Container
 }
 
 bool GUIManager::Button( char* sentence )
 {
+	// TODO: 
+	// Add Button Element to Container and return whether it has been clicked
 	return false;
 }
 
 void GUIManager::End()
 {
+	// TODO: 
+	// - Draw Elements
+	// - Deconstruct Container For Next Element
 }
 
 //void GUIManager::Update()
