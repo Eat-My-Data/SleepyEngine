@@ -1,10 +1,10 @@
-#include "Title.h"
+#include "TextBox.h"
 #include "../Forms/Rectangle.h"
 #include "../../Bindable/BindableCommon.h"
 
-Title::Title( char* title )
+TextBox::TextBox( char* text )
 {}
 
-void Title::Draw()
+void TextBox::Draw()
 {
 }

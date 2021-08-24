@@ -1,9 +1,9 @@
 #pragma once
 #include "./GUIElement.h"
 
-class Title : public GUIElement
+class TextBox : public GUIElement
 {
 public:
-	Title( char* title );
+	TextBox( char* text );
 	void Draw() override;
 };

@@ -1,6 +1,7 @@
 #pragma once
 #include "./Elements/GUIElement.h"
-#include "Elements\Title.h"
+#include "./Elements/Title.h"
+#include "./Elements/TextBox.h"
 
 #include <vector>
 

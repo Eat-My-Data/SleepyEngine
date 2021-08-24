@@ -222,7 +222,7 @@
     <ClCompile Include="GUI\GUIContainer.cpp">
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\Elements\Text.cpp">
+    <ClCompile Include="GUI\Elements\TextBox.cpp">
       <Filter>Source Files\GUI\Elements</Filter>
     </ClCompile>
     <ClCompile Include="GUI\Elements\GUIElement.cpp">
@@ -395,7 +395,7 @@
     <ClInclude Include="GUI\GUIContainer.h">
       <Filter>Header Files\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\Elements\Text.h">
+    <ClInclude Include="GUI\Elements\TextBox.h">
       <Filter>Header Files\GUI\Elements</Filter>
     </ClInclude>
     <ClInclude Include="GUI\Elements\GUIElement.h">

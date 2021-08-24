@@ -20,16 +20,13 @@ bool GUIManager::IsInitialized() noexcept
 
 bool GUIManager::Begin( char* title )
 {
-	// TODO: 
-	// - Create new container that holds items and has a title
-	GUIContainer::AddElement( new Title( 0.0f, 0.0f, 10.0f, 10.0f ) );
-	return false;
+	GUIContainer::AddElement( new Title( title ) );
+	return true;
 }
 
-void GUIManager::Text( char* sentence )
+void GUIManager::Text( char* text )
 {	
-	// TODO: 
-	// - Add Text Element to Container
+	GUIContainer::AddElement( new TextBox( text ) );
 }
 
 bool GUIManager::Button( char* sentence )
