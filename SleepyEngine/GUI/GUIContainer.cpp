@@ -11,6 +11,7 @@ void GUIContainer::AddElement( GUIElement* element )
 
 void GUIContainer::Draw( GraphicsDeviceInterface& gdi )
 {
+
 	for ( u32 i = 0; i < m_vecOfElements.size(); i++ )
 	{
 		//m_vecOfElements[i]->Draw( gdi );

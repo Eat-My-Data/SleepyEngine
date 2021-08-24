@@ -38,9 +38,7 @@ bool GUIManager::Button( char* sentence )
 
 void GUIManager::End()
 {
-	// TODO: 
-	// - Draw Elements
-	// - Deconstruct Container For Next Element
+	// GUIContainer::Draw(  m_pGDI );
 }
 
 //void GUIManager::Update()
