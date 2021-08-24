@@ -1,5 +1,7 @@
 #include "GUIContainer.h"
 
+std::vector<GUIElement*> GUIContainer::m_vecOfElements;
+
 void GUIContainer::AddElement( GUIElement* element )
 {
 	// TODO: 
