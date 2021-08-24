@@ -126,8 +126,6 @@ void PointLight::Update( DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX project
 
 void PointLight::Draw( GraphicsDeviceInterface& gdi )
 {
-	//m_SolidSphere->Draw( gdi );
-
 	// bindables
 	for ( auto& b : binds )
 	{
@@ -174,8 +172,8 @@ void PointLight::Translate( DirectX::XMFLOAT3 vec )
 bool PointLight::CameraIsInside( DirectX::XMFLOAT3 camPos )
 {
 	float distFromCenterX = m_StructuredBufferData.pos.x - camPos.x;
-	float distFromCenterY = m_StructuredBufferData.camPos.y - camPos.y;
-	float distFromCenterZ = m_StructuredBufferData.camPos.z - camPos.z;
+	float distFromCenterY = m_StructuredBufferData.pos.y - camPos.y;
+	float distFromCenterZ = m_StructuredBufferData.pos.z - camPos.z;
 	float xSq = distFromCenterX * distFromCenterX;
 	float ySq = distFromCenterY * distFromCenterY;
 	float zSq = distFromCenterZ * distFromCenterZ;
