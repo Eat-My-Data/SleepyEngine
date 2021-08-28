@@ -25,7 +25,7 @@ public:
 		float attLin = 0.045f;
 		float padding[2];
 		DirectX::XMFLOAT3 camPos;
-		float radius = 5.0f;
+		float radius = 20.0f;
 		DirectX::XMMATRIX cameraMatrix;
 		DirectX::XMMATRIX projInvMatrix;
 	};

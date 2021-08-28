@@ -11,6 +11,8 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 	using namespace Bind;
 	namespace dx = DirectX;
 
+	m_StructuredBufferData.radius = radius;
+
 	auto model = Sphere::Make();
 	model.Transform( dx::XMMatrixScaling( radius, radius, radius ) );
 	const auto geometryTag = "$sphere." + std::to_string( radius );
@@ -132,7 +134,6 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 		b->Bind( gdi );
 	}
 
-
 	// figure out if camera is inside point light
 	if ( CameraIsInside( m_StructuredBufferData.camPos ) )
 	{
@@ -180,6 +181,7 @@ bool PointLight::CameraIsInside( DirectX::XMFLOAT3 camPos )
 	float distSq = xSq + ySq + zSq;
 
 	float radiusSq = ( m_StructuredBufferData.radius + 0.5f ) * ( m_StructuredBufferData.radius + 0.5f );
+
 
 	return distSq <= radiusSq;
 }
