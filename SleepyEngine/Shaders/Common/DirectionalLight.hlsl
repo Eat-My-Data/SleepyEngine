@@ -15,3 +15,6 @@ struct DirectionalLightData
 };
 
 StructuredBuffer<DirectionalLightData> directionalLightData : register(t5);
+
+// TODO:
+// - Make more re usable code 
