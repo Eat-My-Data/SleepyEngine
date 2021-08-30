@@ -22,13 +22,6 @@ SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
 
 	AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SolidPS.cso" ) );
 
-	struct PSColorConstant
-	{
-		dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
-		float padding;
-	} colorConst;
-	AddBind( PixelConstantBuffer<PSColorConstant>::Resolve( gdi, colorConst, 7u ) );
-
 	AddBind( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 
 	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );

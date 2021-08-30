@@ -89,6 +89,9 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	}
 	m_pPixelArrStructuredBuffer->Update( *m_pGDI, bufferData );
 	m_pPixelArrStructuredBuffer->Bind( *m_pGDI );
+
+	m_pGDI->GetContext()->PSSetShaderResources( 7u, 1u, &pTextureView );
+
 	delete[] bufferData;
 }
 
