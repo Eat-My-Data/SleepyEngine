@@ -26,8 +26,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 li
     {
         // fragment to light vector data
         const LightVectorData lv = CalculateLightVectorData(pointLightData[i].pos, viewFragPos);
-	    // attenuation
-        const float att = pointLightData[i].attConst;
+        float att = saturate((1 - (lv.distToL / pointLightData[i].radius)));
+        att *= att;
 	    // diffuse
         combinedPointLightDiffuse += Diffuse(pointLightData[i].color, pointLightData[i].diffuseIntensity, att, lv.dirToL, viewNormal);
 	    // specular

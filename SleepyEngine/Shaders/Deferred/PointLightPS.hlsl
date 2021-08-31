@@ -2,6 +2,12 @@
 #include "../Common/LightVectorData.hlsl"
 #include "../Common/PointLight.hlsl"
 
+cbuffer LightIndex : register(b10)
+{
+    float index;
+    float3 padding;
+};
+
 Texture2D colorTexture : register(t0);
 Texture2D normalTexture : register(t1);
 Texture2D specularTexture : register(t2);
@@ -36,9 +42,9 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     worldPosition /= worldPosition.w;
     float4 worldSpacePos = mul(worldPosition, pointLightData[0].cameraMatrix);
     
-    PointLightData pl = pointLightData[0];
+    PointLightData pl = pointLightData[index];
     // light
-    const LightVectorData lv = CalculateLightVectorData( pointLightData[0].pos, worldSpacePos.xyz);
+    const LightVectorData lv = CalculateLightVectorData(pointLightData[index].pos, worldSpacePos.xyz);
     
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - pl.camPos;
@@ -48,7 +54,7 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     att *= att;
 
     // diffuse
-    float3 diffuseColor = Diffuse(pointLightData[0].color, pl.diffuseIntensity, att, lv.dirToL, normalize(normals.xyz));
+    float3 diffuseColor = Diffuse(pointLightData[index].color, pl.diffuseIntensity, att, lv.dirToL, normalize(normals.xyz));
     
     // specular
     float3 specularResult = float3(0.0f, 0.0f, 0.0f); //Speculate(specular.xyz, pl.diffuseIntensity, normalize(normals.xyz), lv.dirToL, camToFrag, att / lv.distToL, pl.specularPower);

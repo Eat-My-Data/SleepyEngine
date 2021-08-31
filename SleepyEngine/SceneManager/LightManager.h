@@ -34,6 +34,12 @@ private:
 	std::vector<ID3D11DepthStencilView*> depthBuffers{ 6 };
 	std::vector<DirectX::XMFLOAT3> cameraDirections{ 6 };
 	std::vector<DirectX::XMFLOAT3> cameraUps{ 6 };
+	struct LightIndex
+	{
+		float index = 0;
+		float padding[3];
+	} m_LightIndexes;
+	Bind::PixelConstantBuffer<LightIndex>* m_pLightIndex;
 	// TODO:
 	// - Shadows for Point Light
 	// - Spotlight
