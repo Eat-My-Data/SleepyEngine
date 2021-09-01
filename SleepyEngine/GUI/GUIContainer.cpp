@@ -2,10 +2,14 @@
 
 std::vector<GUIElement*> GUIContainer::m_vecOfElements;
 
+static u32 m_iContainerWidth = 0;
+static u32 m_iContainerHeight = 0;
+
 void GUIContainer::AddElement( GUIElement* element )
 {
 	// TODO: 
 	// - Figure out how to automatically adjust all elements
+	AdjustContainer( element );
 	m_vecOfElements.push_back( std::move( element ) );
 }
 
@@ -17,4 +21,10 @@ void GUIContainer::Draw( GraphicsDeviceInterface& gdi )
 		//m_vecOfElements[i]->Draw( gdi );
 	}
 	m_vecOfElements.clear();
+}
+
+void GUIContainer::AdjustContainer( GUIElement* element )
+{
+	m_iContainerWidth += element->m_iWidth;
+	m_iContainerHeight += element->m_iHeight;
 }
