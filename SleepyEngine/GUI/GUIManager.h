@@ -29,7 +29,7 @@ private:
 private:
 	GraphicsDeviceInterface* m_pGDI = nullptr;
 	SceneManager* m_pSceneManager = nullptr;
-	GUIContainer m_pGUIContainer;
+	static GUIContainer* m_pGUIContainer;
 	Mouse* m_pMouse;
 private:
 	UI_ID* m_pHot = nullptr;

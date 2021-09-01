@@ -9,9 +9,11 @@ class GraphicsDeviceInterface;
 class GUIContainer
 {
 public:
-	static void AddElement( GUIElement* element );
-	static void Draw( class GraphicsDeviceInterface& gdi  );
+	void AddElement( GUIElement* element );
+	void Draw( class GraphicsDeviceInterface& gdi  );
 private:
-	static void AdjustContainer( GUIElement* element );
-	static std::vector<GUIElement*> m_vecOfElements;
+	void AdjustContainer( GUIElement* element );
+	std::vector<GUIElement*> m_vecOfElements;
+	f32 m_iContainerWidth = 0;
+	f32 m_iContainerHeight = 0;
 };

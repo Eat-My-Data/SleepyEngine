@@ -2,6 +2,7 @@
 #include "../Bindable/Bindables/ConstantBuffers.h"
 #include "../Win32/Mouse.h"
 #include "../Win32/Keyboard.h"
+#include <memory>
 
 void GUIManager::Initialize( GraphicsDeviceInterface& gdi, SceneManager& sceneManager, Mouse& mouse )
 {
@@ -10,6 +11,7 @@ void GUIManager::Initialize( GraphicsDeviceInterface& gdi, SceneManager& sceneMa
 	m_pMouse = &mouse;
 	m_pActive = new UI_ID{ (char*)"No Active Elements", 100 };
 	m_pHot = new UI_ID{ (char*)"No Hot Elements", 100 };
+	m_pGUIContainer = new GUIContainer{};
 	m_bIsInitialized = true;
 }
 
@@ -20,13 +22,13 @@ bool GUIManager::IsInitialized() noexcept
 
 bool GUIManager::Begin( char* title )
 {
-	GUIContainer::AddElement( new Title( title ) );
+	m_pGUIContainer->AddElement( new Title( title ) );
 	return true;
 }
 
 void GUIManager::Text( char* text )
 {	
-	GUIContainer::AddElement( new TextBox( text ) );
+	m_pGUIContainer->AddElement( new TextBox( text ) );
 }
 
 bool GUIManager::Button( char* sentence )
@@ -38,7 +40,8 @@ bool GUIManager::Button( char* sentence )
 
 void GUIManager::End()
 {
-	// GUIContainer::Draw(  m_pGDI );
+	/*std::shared_ptr<GraphicsDeviceInterface> tmp = m_pGDI;
+	m_pGUIContainer->Draw( std::static_cast<GraphicsDeviceInterface*>( m_pGDI ) );*/
 }
 
 //void GUIManager::Update()

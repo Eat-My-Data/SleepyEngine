@@ -1,10 +1,5 @@
 #include "GUIContainer.h"
 
-std::vector<GUIElement*> GUIContainer::m_vecOfElements;
-
-static u32 m_iContainerWidth = 0;
-static u32 m_iContainerHeight = 0;
-
 void GUIContainer::AddElement( GUIElement* element )
 {
 	// TODO: 
@@ -18,7 +13,7 @@ void GUIContainer::Draw( GraphicsDeviceInterface& gdi )
 
 	for ( u32 i = 0; i < m_vecOfElements.size(); i++ )
 	{
-		//m_vecOfElements[i]->Draw( gdi );
+		m_vecOfElements[i]->Draw( gdi );
 	}
 	m_vecOfElements.clear();
 }

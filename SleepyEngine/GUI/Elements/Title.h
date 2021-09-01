@@ -5,5 +5,5 @@ class Title : public GUIElement
 {
 public:
 	Title( char* title );
-	void Draw() override;
+	void Draw( GraphicsDeviceInterface& gdi ) override;
 };

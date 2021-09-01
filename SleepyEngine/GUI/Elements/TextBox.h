@@ -5,5 +5,5 @@ class TextBox : public GUIElement
 {
 public:
 	TextBox( char* text );
-	void Draw() override;
+	void Draw( GraphicsDeviceInterface& gdi ) override;
 };

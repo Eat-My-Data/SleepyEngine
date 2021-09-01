@@ -8,6 +8,6 @@ TextBox::TextBox( char* text )
 	m_iHeight = 20;
 }
 
-void TextBox::Draw()
+void TextBox::Draw( GraphicsDeviceInterface& gdi )
 {
 }
