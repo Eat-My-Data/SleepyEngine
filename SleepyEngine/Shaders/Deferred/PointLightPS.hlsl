@@ -57,7 +57,7 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     float3 diffuseColor = Diffuse(pointLightData[index].color, pl.diffuseIntensity, att, lv.dirToL, normalize(normals.xyz));
     
     // specular
-    float3 specularResult = float3(0.0f, 0.0f, 0.0f); //Speculate(specular.xyz, pl.diffuseIntensity, normalize(normals.xyz), lv.dirToL, camToFrag, att / lv.distToL, pl.specularPower);
+    float3 specularResult = Speculate(specular.xyz, pl.diffuseIntensity, normalize(normals.xyz), lv.dirToL, camToFrag, att, pl.specularPower);
     float3 combinedColor = ((diffuseColor + specularResult)) + ambient;
 
     // final color
