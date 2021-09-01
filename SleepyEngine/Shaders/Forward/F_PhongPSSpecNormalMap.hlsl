@@ -67,18 +67,33 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     specularPower = pointLightData[0].specularPower;
     for (float i = 0; i < 2; i++)
     {
+        // currently getting depth fine with vector from light to fragment
+        // that depth comes in 0 to 1
+        // how do i get depth from light
+      
+        // get vector between fragment position and light position
+        float3 fragToLight = viewFragPos - pointLightData[i].pos;
+        // use the light to fragment vector to sample from the depth map    
+        float closestDepth = pointLightShadowTexture.Sample(splr, fragToLight).r;
+        // it is currently in linear range between [0,1]. Re-transform back to original value
+        closestDepth *= 25;
+        // now get current linear depth as the length between the fragment and light position
+        float currentDepth = length(fragToLight);
+        // now test for shadows
+        float bias = 0.05;
+        float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;
+        
+        
         // fragment to light vector data
         const LightVectorData lv = CalculateLightVectorData(pointLightData[i].pos, viewFragPos);
-        float depthFromLight = pointLightShadowTexture.Sample(splr, -lv.vToL).r;
-        float isInLightPointLightView = depthFromLight > lv.distToL;
         float att = saturate((1 - (lv.distToL / pointLightData[i].radius)));
         att *= att;
 	    // diffuse
-        combinedPointLightDiffuse += Diffuse(pointLightData[i].color, pointLightData[i].diffuseIntensity, att, lv.dirToL, viewNormal);
-        combinedPointLightDiffuse *= isInLightPointLightView;
+        float3 localDiffuse = Diffuse(pointLightData[i].color, pointLightData[i].diffuseIntensity, att, lv.dirToL, viewNormal);
+        combinedPointLightDiffuse += localDiffuse * shadow;
 	    // specular
-        combinedPointLightSpecular += Speculate(pointLightData[i].color, pointLightData[i].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
-        combinedPointLightSpecular *= isInLightPointLightView;
+        float3 localSpecular = Speculate(pointLightData[i].color, pointLightData[i].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
+        combinedPointLightSpecular += localSpecular * shadow;
     }
     
     // fragment to light vector data
