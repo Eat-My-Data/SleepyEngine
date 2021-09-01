@@ -32,16 +32,19 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     
     for (float i = 0; i < 2; i++)
     {
-        PointLightData pl = pointLightData[i];
         // fragment to light vector data
         const LightVectorData lv = CalculateLightVectorData(pointLightData[i].pos, viewFragPos);
-        float att = saturate((1 - (lv.distToL / pl.radius)));
+        float depthFromLight = pointLightShadowTexture.Sample(splr, -lv.vToL).r;
+        float isInLightPointLightView = depthFromLight > lv.distToL;
+        float att = saturate((1 - (lv.distToL / pointLightData[i].radius)));
         att *= att;
-
 	    // diffuse
-        combinedPointLightDiffuse += Diffuse(pl.color, pl.diffuseIntensity, att, lv.dirToL, viewNormal);
+        combinedPointLightDiffuse += Diffuse(pointLightData[i].color, pointLightData[i].diffuseIntensity, att, lv.dirToL, viewNormal);
+        combinedPointLightDiffuse *= isInLightPointLightView;
 	    // specular
-        combinedPointLightSpecular += Speculate(pl.color, pl.diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
+        combinedPointLightSpecular += Speculate(pointLightData[i].color, pointLightData[i].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
+        combinedPointLightSpecular *= isInLightPointLightView;
+
     }
     
 	// attenuation

@@ -16,3 +16,5 @@ struct PointLightData
 };
 
 StructuredBuffer<PointLightData> pointLightData : register(t6);
+
+TextureCube pointLightShadowTexture : register(t7);

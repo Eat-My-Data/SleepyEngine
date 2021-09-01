@@ -65,17 +65,20 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     float3 combinedPointLightDiffuse;
     float3 combinedPointLightSpecular = { 0.0f, 0.0f, 0.0f };
     specularPower = pointLightData[0].specularPower;
-    
     for (float i = 0; i < 2; i++)
     {
         // fragment to light vector data
         const LightVectorData lv = CalculateLightVectorData(pointLightData[i].pos, viewFragPos);
+        float depthFromLight = pointLightShadowTexture.Sample(splr, -lv.vToL).r;
+        float isInLightPointLightView = depthFromLight > lv.distToL;
         float att = saturate((1 - (lv.distToL / pointLightData[i].radius)));
         att *= att;
 	    // diffuse
         combinedPointLightDiffuse += Diffuse(pointLightData[i].color, pointLightData[i].diffuseIntensity, att, lv.dirToL, viewNormal);
+        combinedPointLightDiffuse *= isInLightPointLightView;
 	    // specular
         combinedPointLightSpecular += Speculate(pointLightData[i].color, pointLightData[i].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
+        combinedPointLightSpecular *= isInLightPointLightView;
     }
     
     // fragment to light vector data
