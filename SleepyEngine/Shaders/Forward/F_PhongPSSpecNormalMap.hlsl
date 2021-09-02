@@ -60,13 +60,13 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     {
         specularReflectionColor = specularColor;
     }
-
-    float3 combinedPointLightDiffuse;
-    float3 combinedPointLightSpecular = { 0.0f, 0.0f, 0.0f };
     specularPower = pointLightData[0].specularPower;
+    
+    float3 combinedPointLightDiffuse;
+    float3 combinedPointLightSpecular;
     for (float i = 0; i < 2; i++)
     {
-        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, 25);
+        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, 5);
         
         // fragment to light vector data
         const LightVectorData lv = CalculateLightVectorData(pointLightData[i].pos, viewFragPos);

@@ -24,6 +24,3 @@ float CalculateDirectionalLightShadow( float4 lightViewPos, SamplerState splr )
     float sampleDepth = depthTextureFromLight.Sample(splr, ((lightViewPos.xy / lightViewPos.w) / 2.0f) + 0.5f).r;
     return sampleDepth > fragDepth;
 }
-
-// TODO:
-// - Make more re usable code 

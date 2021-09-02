@@ -29,12 +29,13 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         viewNormal = normalize(mul(objectNormal, (float3x3) modelView));
     }
     const float specularPower2 = pointLightData[0].specularPower;
-    float3 combinedPointLightDiffuse;
-    float3 combinedPointLightSpecular = { 0.0f, 0.0f, 0.0f };
+
     
+    float3 combinedPointLightDiffuse;
+    float3 combinedPointLightSpecular;
     for (float i = 0; i < 2; i++)
     {
-        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, 25);
+        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, 5);
         
         // fragment to light vector data
         const LightVectorData lv = CalculateLightVectorData(pointLightData[i].pos, viewFragPos);
@@ -44,7 +45,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         float3 localDiffuse = Diffuse(pointLightData[i].color, pointLightData[i].diffuseIntensity, att, lv.dirToL, viewNormal);
         combinedPointLightDiffuse += localDiffuse * shadow;
 	    // specular
-        float3 localSpecular = Speculate(pointLightData[i].color, pointLightData[i].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
+        float3 localSpecular = Speculate(pointLightData[i].color, pointLightData[i].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower2);
         combinedPointLightSpecular += localSpecular * shadow;
     }
     

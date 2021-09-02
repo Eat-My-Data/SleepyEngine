@@ -12,8 +12,6 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 	// renormalize interpolated normal
     viewNormal = normalize(viewNormal);
     
-    float3 combinedPointLightDiffuse;
-    float3 combinedPointLightSpecular;
     float specularPower = directionalLightData[0].specularPower;
    
     float dirLightShadow = CalculateDirectionalLightShadow(lightViewPos, splr);
@@ -29,9 +27,12 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         viewFragPos, directionalAtt, specularPower
     ) * dirLightShadow;
     
+    // point lights
+    float3 combinedPointLightDiffuse;
+    float3 combinedPointLightSpecular;
     for (float i = 0; i < 2; i++)
     {
-        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, 25);
+        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, 5);
         
         // fragment to light vector data
         const LightVectorData lv = CalculateLightVectorData(pointLightData[i].pos, viewFragPos);
