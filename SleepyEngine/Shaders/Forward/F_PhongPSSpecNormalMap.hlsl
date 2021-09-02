@@ -16,7 +16,6 @@ cbuffer ObjectCBuf
 Texture2D tex;
 Texture2D spec;
 Texture2D nmap;
-Texture2D depthTextureFromLight : register(t4);
 
 SamplerState splr;
 

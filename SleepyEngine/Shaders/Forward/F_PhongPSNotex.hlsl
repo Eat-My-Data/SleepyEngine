@@ -10,7 +10,6 @@ cbuffer ObjectCBuf
     float specularPower;
 };
 
-Texture2D depthTextureFromLight : register(t4);
 SamplerState splr;
 
 float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 lightViewPos : SV_Position) : SV_Target
