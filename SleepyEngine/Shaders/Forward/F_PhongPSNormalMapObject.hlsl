@@ -48,20 +48,21 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         combinedPointLightSpecular += localSpecular * shadow;
     }
     
+    float dirLightShadow = CalculateDirectionalLightShadow(lightViewPos, splr);
+
 	// attenuation
     const float directionalAtt = 0.8f;
 	// diffuse intensity
-    const float3 directionalDiffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, directionalAtt, -directionalLightData[0].lightDirection, viewNormal);
+    const float3 directionalDiffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, directionalAtt, 
+    -directionalLightData[0].lightDirection, viewNormal) * dirLightShadow;
 	// specular
     const float3 directionalSpecular = Speculate(
         specularIntensity.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
         viewFragPos, directionalAtt, specularPower2
-    );
+    ) * dirLightShadow;
     
-    float fragDepth = lightViewPos.z / lightViewPos.w;
-    float sampleDepth = depthTextureFromLight.Sample(splr, ((lightViewPos.xy / lightViewPos.w) / 2.0f) + 0.5f).r;    
-    float isInLight = sampleDepth > fragDepth;
-    float3 combinedColor = combinedPointLightDiffuse + combinedPointLightSpecular + ((directionalDiffuse + directionalSpecular) * isInLight) + pointLightData[0].ambient;
+  
+    float3 combinedColor = combinedPointLightDiffuse + combinedPointLightSpecular + directionalDiffuse + directionalSpecular + pointLightData[0].ambient;
     
    	// final color
     return float4((combinedColor * tex.Sample(splr, tc).rgb), 1.0f);
