@@ -19,6 +19,17 @@ StructuredBuffer<PointLightData> pointLightData : register(t6);
 
 TextureCube pointLightShadowTexture : register(t7);
 
+float VectorToDepthValue(float3 Vec)
+{
+    float3 AbsVec = abs(Vec);
+    float LocalZcomp = max(AbsVec.x, max(AbsVec.y, AbsVec.z));
+
+    const float f = 2048.0;
+    const float n = 1.0;
+    float NormZComp = (f + n) / (f - n) - (2 * f * n) / (f - n) / LocalZcomp;
+    return (NormZComp + 1.0) * 0.5;
+}
+
 float CalculatePointLightShadow(float3 viewFragPos, float3 lightPos, SamplerState splr, float farPlane )
 {
     // get vector between fragment position and light position
@@ -26,10 +37,10 @@ float CalculatePointLightShadow(float3 viewFragPos, float3 lightPos, SamplerStat
     // use the light to fragment vector to sample from the depth map    
     float closestDepth = pointLightShadowTexture.Sample(splr, fragToLight).r;
     // it is currently in linear range between [0,1]. Re-transform back to original value
-    closestDepth *= farPlane;
+    //closestDepth *= farPlane;
     // now get current linear depth as the length between the fragment and light position
-    float currentDepth = length(fragToLight);
+    float currentDepth = VectorToDepthValue(viewFragPos);
     // now test for shadows
     float bias = 0.05;
-    return currentDepth - bias > closestDepth ? 1.0 : 0.0;
+    return closestDepth + bias > currentDepth ? 1.0 : 0.0;
 }

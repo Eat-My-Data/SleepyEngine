@@ -25,7 +25,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     {
         viewNormal = MapNormal(normalize(viewTan), normalize(viewBitan), viewNormal, tc, nmap, splr);
     }
-    float specularPower = directionalLightData[0].specularPower;
+    float specularPower = pointLightData[0].specularPower;
     
     float3 combinedPointLightDiffuse;
     float3 combinedPointLightSpecular;
