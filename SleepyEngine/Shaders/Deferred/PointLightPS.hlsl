@@ -51,7 +51,6 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - pl.camPos;
     
-    float3 ambient = { 0.0f, 0.0f, 0.0f };
     float att = saturate((1 - (lv.distToL / pl.radius)));
     att *= att;
 
@@ -59,8 +58,8 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     float3 diffuseColor = Diffuse(pointLightData[index].color, pl.diffuseIntensity, att, lv.dirToL, normalize(normals.xyz)) * shadow;
     
     // specular
-    float3 specularResult = Speculate(specular.xyz, pl.diffuseIntensity, normalize(normals.xyz), lv.dirToL, camToFrag, att, pl.specularPower);
-    float3 combinedColor = ((diffuseColor + specularResult)) + ambient;
+    float3 specularResult = Speculate(specular.xyz, pl.diffuseIntensity, normalize(normals.xyz), lv.dirToL, camToFrag, att, pl.specularPower) * shadow;
+    float3 combinedColor = ((diffuseColor + specularResult));
 
     // final color
     return float4((combinedColor * colors.rgb), 1.0f);
