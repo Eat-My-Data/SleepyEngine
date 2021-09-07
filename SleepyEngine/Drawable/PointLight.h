@@ -39,6 +39,4 @@ private:
 	ID3D11DepthStencilState* pDSStateInfrontBackFaceOfLight;
 	ID3D11DepthStencilState* pDSStateLightingBehindFrontFaceOfLight;
 	ID3D11DepthStencilState* pDSStateInsideLighting;
-	// TODO:
-	// - Make Perpective camera with one perpective projection and 6 view projections
 };

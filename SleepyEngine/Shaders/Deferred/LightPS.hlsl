@@ -36,7 +36,7 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     float3 ambient = {0.2f, 0.2f, 0.2f};
     
     // diffuse light
-    float diffuseIntensity = dot(normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection.xyz));
+    float diffuseIntensity = max(0.0f, dot(normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection.xyz)));
 
     float lightAtt = directionalLightData[0].att;
     float specPower = directionalLightData[0].specularPower;
