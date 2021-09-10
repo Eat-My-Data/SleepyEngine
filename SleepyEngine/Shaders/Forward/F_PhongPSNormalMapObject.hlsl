@@ -35,7 +35,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     float3 combinedPointLightSpecular;
     for (float i = 0; i < numPointLights; i++)
     {
-        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, 5);
+        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, i);
         
         // fragment to light vector data
         const LightVectorData lv = CalculateLightVectorData(pointLightData[i].pos, viewFragPos);

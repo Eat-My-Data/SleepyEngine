@@ -23,7 +23,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 li
     
     for (float i = 0; i < numPointLights; i++)
     {
-        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, 25);
+        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, i);
         
         // fragment to light vector data
         const LightVectorData lv = CalculateLightVectorData(pointLightData[i].pos, viewFragPos);

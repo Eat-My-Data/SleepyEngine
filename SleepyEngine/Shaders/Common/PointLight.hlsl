@@ -18,6 +18,7 @@ struct PointLightData
 StructuredBuffer<PointLightData> pointLightData : register(t6);
 
 TextureCube pointLightShadowTexture : register(t7);
+TextureCube pointLightShadowTexture2 : register(t8);
 
 cbuffer LightIndex : register(b10)
 {
@@ -37,12 +38,17 @@ float VectorToDepthValue(float3 Vec)
     return (NormZComp + 1.0) * 0.5;
 }
 
-float CalculatePointLightShadow(float3 viewFragPos, float3 lightPos, SamplerState splr, float farPlane )
+float CalculatePointLightShadow(float3 viewFragPos, float3 lightPos, SamplerState splr, float lightNum )
 {
     // get vector between fragment position and light position
     float3 fragToLight = viewFragPos - lightPos;
     // use the light to fragment vector to sample from the depth map    
-    float closestDepth = pointLightShadowTexture.Sample(splr, normalize(fragToLight)).r;
+    float closestDepth = 1.0f;
+    if ( lightNum == 0 ) 
+        closestDepth = pointLightShadowTexture.Sample(splr, normalize(fragToLight)).r;
+    else if ( lightNum == 1 )
+        closestDepth = pointLightShadowTexture2.Sample(splr, normalize(fragToLight)).r;
+
     // it is currently in linear range between [0,1]. Re-transform back to original value
     //closestDepth *= farPlane;
     // now get current linear depth as the length between the fragment and light position

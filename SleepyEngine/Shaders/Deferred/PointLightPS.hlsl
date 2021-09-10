@@ -41,7 +41,7 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     const LightVectorData lv = CalculateLightVectorData(pointLightData[index].pos, worldSpacePos.xyz);
     float closestDepth = pointLightShadowTexture.Sample(SampleTypePoint, lv.vToL).r;
     
-    float shadow = CalculatePointLightShadow(worldSpacePos.xyz, pointLightData[index].pos, SampleTypePoint, 0.0f);
+    float shadow = CalculatePointLightShadow(worldSpacePos.xyz, pointLightData[index].pos, SampleTypePoint, index);
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - pl.camPos;
     

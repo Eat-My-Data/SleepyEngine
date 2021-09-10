@@ -26,7 +26,10 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
 	// create the texture resource
 	ID3D11Texture2D* pTexture;
+	ID3D11Texture2D* pTexture2;
+
 	gdi.GetDevice()->CreateTexture2D( &textureDesc, nullptr, &pTexture );
+	gdi.GetDevice()->CreateTexture2D( &textureDesc, nullptr, &pTexture2 );
 
 	// create the resource view on the texture
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
@@ -35,6 +38,7 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.MipLevels = 1;
 	gdi.GetDevice()->CreateShaderResourceView( pTexture, &srvDesc, &pTextureView );
+	gdi.GetDevice()->CreateShaderResourceView( pTexture2, &srvDesc, &pTextureView2 );
 
 	// make depth buffer resources for capturing shadow map
 	for ( u32 face = 0; face < 6; face++ )
@@ -50,6 +54,9 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 		ID3D11DepthStencilView* tempDSV = {};
 		gdi.GetDevice()->CreateDepthStencilView( pTexture, &descView, &tempDSV );
 		depthBuffers[face] = std::move( tempDSV );
+		ID3D11DepthStencilView* tempDSV2 = {};
+		gdi.GetDevice()->CreateDepthStencilView( pTexture2, &descView, &tempDSV2 );
+		depthBuffers2[face] = std::move( tempDSV2 );
 	}
 
 	DirectX::XMStoreFloat4x4(
@@ -96,6 +103,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	m_pLightIndex->Bind( *m_pGDI );
 
 	m_pGDI->GetContext()->PSSetShaderResources( 7u, 1u, &pTextureView );
+	m_pGDI->GetContext()->PSSetShaderResources( 8u, 1u, &pTextureView2 );
 
 	delete[] bufferData;
 }
@@ -141,6 +149,7 @@ void LightManager::PrepareDepthFromLight()
 void LightManager::RenderPointLightCubeTextures( const Model& model )
 {
 	const auto pos = DirectX::XMLoadFloat3( &m_vecOfPointLights[0]->m_StructuredBufferData.pos );
+	const auto pos2 = DirectX::XMLoadFloat3( &m_vecOfPointLights[1]->m_StructuredBufferData.pos );
 
 	m_pGDI->SetProjMatrix( DirectX::XMLoadFloat4x4( &projection ) );
 	for ( u32 i = 0; i < 6; i++ )                                                                                                                                                                                                                                                                                                     
@@ -149,6 +158,11 @@ void LightManager::RenderPointLightCubeTextures( const Model& model )
 		m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, depthBuffers[i] );
 		const auto lookAt = DirectX::XMVectorAdd( pos, DirectX::XMLoadFloat3( &cameraDirections[i] ) );
 		m_pGDI->SetViewMatrix( DirectX::XMMatrixLookAtLH( pos, lookAt, DirectX::XMLoadFloat3( &cameraUps[i] ) ) );
+		model.Draw( *m_pGDI, true );
+		m_pGDI->GetContext()->ClearDepthStencilView( depthBuffers2[i], D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
+		m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, depthBuffers2[i] );
+		const auto lookAt2 = DirectX::XMVectorAdd( pos2, DirectX::XMLoadFloat3( &cameraDirections[i] ) );
+		m_pGDI->SetViewMatrix( DirectX::XMMatrixLookAtLH( pos2, lookAt2, DirectX::XMLoadFloat3( &cameraUps[i] ) ) );
 		model.Draw( *m_pGDI, true );
 	}
 }

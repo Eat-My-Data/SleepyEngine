@@ -30,8 +30,10 @@ private:
 	GraphicsDeviceInterface* m_pGDI = nullptr;
 private:
 	ID3D11ShaderResourceView* pTextureView;
+	ID3D11ShaderResourceView* pTextureView2;
 	DirectX::XMFLOAT4X4 projection;
 	std::vector<ID3D11DepthStencilView*> depthBuffers{ 6 };
+	std::vector<ID3D11DepthStencilView*> depthBuffers2{ 6 };
 	std::vector<DirectX::XMFLOAT3> cameraDirections{ 6 };
 	std::vector<DirectX::XMFLOAT3> cameraUps{ 6 };
 	struct LightIndex
