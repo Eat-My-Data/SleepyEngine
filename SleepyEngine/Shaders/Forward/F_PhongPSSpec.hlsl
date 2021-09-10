@@ -51,7 +51,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         float3 localDiffuse = Diffuse(pointLightData[i].color, pointLightData[i].diffuseIntensity, att, lv.dirToL, viewNormal);
         combinedPointLightDiffuse += localDiffuse * shadow;
 	    // specular
-        float3 localSpecular = Speculate(pointLightData[i].color, pointLightData[i].diffuseIntensity, viewNormal, lv.vToL, viewFragPos, att, specularPower);
+        float3 localSpecular = Speculate(pointLightData[i].color, pointLightData[i].diffuseIntensity, viewNormal, lv.dirToL, viewFragPos, att, specularPower);
         combinedPointLightSpecular += localSpecular * shadow;
     }
     
