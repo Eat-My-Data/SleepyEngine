@@ -2,12 +2,6 @@
 #include "../Common/LightVectorData.hlsl"
 #include "../Common/PointLight.hlsl"
 
-cbuffer LightIndex : register(b10)
-{
-    float index;
-    float3 padding;
-};
-
 Texture2D colorTexture : register(t0);
 Texture2D normalTexture : register(t1);
 Texture2D specularTexture : register(t2);

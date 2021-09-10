@@ -39,7 +39,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     
     float3 combinedPointLightDiffuse;
     float3 combinedPointLightSpecular;
-    for (float i = 0; i < 2; i++)
+    for (float i = 0; i < numPointLights; i++)
     {
         float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, 5);
         

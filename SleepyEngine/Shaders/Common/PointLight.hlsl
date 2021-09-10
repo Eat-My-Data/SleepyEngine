@@ -19,6 +19,13 @@ StructuredBuffer<PointLightData> pointLightData : register(t6);
 
 TextureCube pointLightShadowTexture : register(t7);
 
+cbuffer LightIndex : register(b10)
+{
+    float index;
+    float numPointLights;
+    float2 padding;
+};
+
 float VectorToDepthValue(float3 Vec)
 {
     float3 AbsVec = abs(Vec);

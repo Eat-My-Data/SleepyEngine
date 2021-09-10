@@ -8,7 +8,7 @@ cbuffer ObjectCBuf
     float specularIntensity;
     float specularPower;
     bool normalMapEnabled;
-    float padding[1];
+    float padding2[1];
 };
 
 Texture2D tex;
@@ -29,7 +29,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     
     float3 combinedPointLightDiffuse;
     float3 combinedPointLightSpecular;
-    for (float i = 0; i < 2; i++)
+    for (float i = 0; i < numPointLights; i++)
     {
         float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[i].pos, splr, 5);
         

@@ -37,7 +37,8 @@ private:
 	struct LightIndex
 	{
 		float index = 0;
-		float padding[3];
+		float numPointLights = 2;
+		float padding[2];
 	} m_LightIndexes;
 	Bind::PixelConstantBuffer<LightIndex>* m_pLightIndex;
 	// TODO:

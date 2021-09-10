@@ -118,6 +118,9 @@ void SceneManager::DeferredRender()
 	m_LightManager.PrepareDepthFromLight();
 	m_vecOfModels[1]->Draw( *m_pGDI, true );
 
+	// point light depth pass
+	m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
+
 	// gbuffers
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );

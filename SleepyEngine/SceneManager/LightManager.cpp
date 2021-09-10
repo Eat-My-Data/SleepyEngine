@@ -91,6 +91,10 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	m_pPixelArrStructuredBuffer->Update( *m_pGDI, bufferData );
 	m_pPixelArrStructuredBuffer->Bind( *m_pGDI );
 
+	m_LightIndexes.numPointLights = (float)m_vecOfPointLights.size();
+	m_pLightIndex->Update( *m_pGDI, m_LightIndexes );
+	m_pLightIndex->Bind( *m_pGDI );
+
 	m_pGDI->GetContext()->PSSetShaderResources( 7u, 1u, &pTextureView );
 
 	delete[] bufferData;
@@ -108,6 +112,7 @@ void LightManager::Draw()
 	m_pDirectionalLight->Draw( *m_pGDI );
 
 	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
+
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
 		m_LightIndexes.index = (float)i;
