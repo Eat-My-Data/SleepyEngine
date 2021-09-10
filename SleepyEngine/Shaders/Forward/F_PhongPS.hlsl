@@ -22,10 +22,11 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     const float3 directionalDiffuse = Diffuse(directionalLightData[0].color.rgb, pointLightData[0].diffuseIntensity, 
     directionalAtt, -directionalLightData[0].lightDirection, viewNormal) * dirLightShadow;
 	// specular
+    const float3 camToFrag = viewFragPos - pointLightData[0].camPos;
     const float3 directionalSpecular = Speculate(
         specularPower.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
-        viewFragPos, directionalAtt, specularPower
-    ) * dirLightShadow;
+        camToFrag, directionalAtt, specularPower
+    );
     
     // point lights
     float3 combinedPointLightDiffuse;
