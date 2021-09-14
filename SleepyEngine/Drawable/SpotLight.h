@@ -23,7 +23,7 @@ public:
 	{
 		DirectX::XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
-		float range = 10.0f;
+		float range = 20.0f;
 		DirectX::XMFLOAT3 pos = { 0.0f, 0.0f, 0.0f };
 		float cone = 5.0f;
 	};

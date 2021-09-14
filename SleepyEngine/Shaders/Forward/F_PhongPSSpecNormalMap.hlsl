@@ -2,6 +2,7 @@
 #include "../Common/LightVectorData.hlsl"
 #include "../Common/PointLight.hlsl"
 #include "../Common/DirectionalLight.hlsl"
+#include "../Common/SpotLight.hlsl"
 
 cbuffer ObjectCBuf
 {
@@ -96,7 +97,14 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         camToFrag, directionalAtt, specularPower
     ) * dirLightShadow;
 
-    float3 combinedColor = combinedPointLightDiffuse + combinedPointLightSpecular + directionalDiffuse + directionalSpecular + pointLightData[0].ambient;
+    // spot light
+    float3 spotToFrag = spotLightData[0].pos - viewFragPos;
+    float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
+    att *= att;
+    
+    float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, -normalize(spotLightData[0].lightDirection), viewNormal);
+    
+    float3 combinedColor = combinedPointLightDiffuse + combinedPointLightSpecular + directionalDiffuse + directionalSpecular + spotDiffuse + pointLightData[0].ambient;
     
    	// final color
     return float4((combinedColor * tex.Sample(splr, tc).rgb), 1.0f);
