@@ -123,13 +123,13 @@ void App::ExecuteFrame()
 
 			// spot light translation
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'W' ) )
-				m_SceneManager.TranslateSpotLight( { 0.0f,0.0f,dt * 20.0f } );
-			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'S' ) )
-				m_SceneManager.TranslateSpotLight( { 0.0f,0.0f,-dt * 20.0f } );
-			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'A' ) )
-				m_SceneManager.TranslateSpotLight( { -dt * 20.0f,0.0f,0.0f } );
-			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'D' ) )
 				m_SceneManager.TranslateSpotLight( { dt * 20.0f,0.0f,0.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'S' ) )
+				m_SceneManager.TranslateSpotLight( { -dt * 20.0f,0.0f,0.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'A' ) )
+				m_SceneManager.TranslateSpotLight( { 0.0f,0.0f,dt * 20.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'D' ) )
+				m_SceneManager.TranslateSpotLight( { 0.0f,0.0f,-dt * 20.0f } );
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'R' ) )
 				m_SceneManager.TranslateSpotLight( { 0.0f,dt * 20.0f,0.0f } );
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'F' ) )
