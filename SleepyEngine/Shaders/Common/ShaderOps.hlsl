@@ -46,7 +46,8 @@ float3 Speculate(
     const float3 viewCamToFrag = normalize(viewPos);
     // calculate specular component color based on angle between
     // viewing vector and reflection vector, narrow with power function
-    return att * specularColor * specularIntensity * pow(max(0.0f, dot(-r, viewCamToFrag)), specularPower);
+    float temp = max(0.0f, dot(-r, viewCamToFrag));
+    return att * specularColor * specularIntensity * pow(temp, specularPower);
 }
 
 float4 CalculateWorldSpacePosition(
