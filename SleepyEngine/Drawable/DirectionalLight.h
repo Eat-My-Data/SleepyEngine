@@ -36,10 +36,10 @@ public:
 	};
 	DirectionalLightData m_StructuredBufferData;
 private:
-	struct ForwaredMatrices
+	struct ForwardMatrices
 	{
 		DirectX::XMMATRIX lightViewMatrix;
 		DirectX::XMMATRIX lightProjMatrix;
 	} matrixcbuf;
-	std::shared_ptr<Bind::VertexConstantBuffer<ForwaredMatrices>> m_pForwardLightMatrices;
+	std::shared_ptr<Bind::VertexConstantBuffer<ForwardMatrices>> m_pForwardLightMatrices;
 };

@@ -79,14 +79,14 @@
     <Filter Include="Header Files\GUI">
       <UniqueIdentifier>{2de4853a-a1d3-4360-9c89-fdce25b33c69}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GUI">
-      <UniqueIdentifier>{13556157-0efd-4862-b16a-e404ca67bb88}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\GUI\Forms">
       <UniqueIdentifier>{563ec4cc-2ec4-4b9b-80e3-ffe68ab4bdd2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders\GUI">
       <UniqueIdentifier>{117c71f5-5da3-4b48-9301-8e4335777e97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ResourceManager\GUI">
+      <UniqueIdentifier>{13556157-0efd-4862-b16a-e404ca67bb88}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -190,13 +190,13 @@
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
     <ClCompile Include="GUI\GUIManager.cpp">
-      <Filter>Source Files\GUI</Filter>
+      <Filter>Source Files\ResourceManager\GUI</Filter>
     </ClCompile>
     <ClCompile Include="GUI\GUIElement.cpp">
-      <Filter>Source Files\GUI</Filter>
+      <Filter>Source Files\ResourceManager\GUI</Filter>
     </ClCompile>
     <ClCompile Include="GUI\ChooseRenderTechnique.cpp">
-      <Filter>Source Files\GUI</Filter>
+      <Filter>Source Files\ResourceManager\GUI</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager\LightManager.cpp">
       <Filter>Source Files\SceneManager</Filter>
