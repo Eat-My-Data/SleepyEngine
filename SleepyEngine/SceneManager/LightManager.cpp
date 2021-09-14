@@ -13,8 +13,8 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 
 	// texture descriptor
 	D3D11_TEXTURE2D_DESC textureDesc = {};
-	textureDesc.Width = 1000;
-	textureDesc.Height = 1000;
+	textureDesc.Width = 1024;
+	textureDesc.Height = 1024;
 	textureDesc.MipLevels = 1;
 	textureDesc.ArraySize = 6;
 	textureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS;
@@ -61,7 +61,7 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 
 	DirectX::XMStoreFloat4x4(
 		&projection,
-		DirectX::XMMatrixPerspectiveFovLH( PI / 2.0f, 1.0f, 1.0f, 2048.0f )
+		DirectX::XMMatrixPerspectiveFovLH( PI / 4.0f, 1.0f, 1.0f, 2048.0f )
 	);
 	// +x
 	DirectX::XMStoreFloat3( &cameraDirections[0], DirectX::XMVectorSet( 1.0f, 0.0f, 0.0f, 0.0f ) );
