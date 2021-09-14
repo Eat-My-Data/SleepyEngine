@@ -20,7 +20,7 @@ StructuredBuffer<PointLightData> pointLightData : register(t6);
 TextureCube pointLightShadowTexture : register(t7);
 TextureCube pointLightShadowTexture2 : register(t8);
 
-cbuffer LightIndex : register(b10)
+cbuffer LightIndex : register(b9)
 {
     float index;
     float numPointLights;

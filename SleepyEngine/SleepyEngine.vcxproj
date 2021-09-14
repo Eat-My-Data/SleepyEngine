@@ -190,6 +190,7 @@
     <ClCompile Include="Drawable\Drawable.cpp" />
     <ClCompile Include="Drawable\PointLight.cpp" />
     <ClCompile Include="Drawable\SolidSphere.cpp" />
+    <ClCompile Include="Drawable\SpotLight.cpp" />
     <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp" />
     <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp" />
     <ClCompile Include="GUI\GUIElement.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="Drawable\Drawable.h" />
     <ClInclude Include="Drawable\PointLight.h" />
     <ClInclude Include="Drawable\SolidSphere.h" />
+    <ClInclude Include="Drawable\SpotLight.h" />
     <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h" />
     <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h" />
     <ClInclude Include="GUI\Forms\Rectangle.h" />
@@ -307,6 +309,10 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\SpotLight.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
