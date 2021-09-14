@@ -55,7 +55,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     const float3 directionalDiffuse = Diffuse(pointLightData[0].color, dl.specularIntensity, directionalAtt, -dl.lightDirection, viewNormal) * dirLightShadow;
 	// specular
     const float3 directionalSpecular = Speculate(
-        pointLightData[i].diffuseIntensity.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
+        directionalLightData[0].specularIntensity.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
         camToFrag, directionalAtt, specularPower
     ) * dirLightShadow;
 
