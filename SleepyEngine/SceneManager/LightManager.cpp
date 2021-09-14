@@ -4,11 +4,13 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 {
 	m_pGDI = &gdi;
 	m_pDirectionalLight = new DirectionalLight( gdi );
+	m_pSpotLight = new SpotLight( gdi );
 	m_vecOfPointLights.push_back( new PointLight( gdi, 20 ) );
 	m_vecOfPointLights.push_back( new PointLight( gdi, 20 ) );
 
 	m_pLightIndex = new Bind::PixelConstantBuffer<LightIndex>{ gdi, 9 };
 	m_pPixelStructuredBuffer = new Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>{ gdi, 5u };
+	m_pPixelStructuredBuffer2 = new Bind::PixelStructuredBuffer<SpotLight::SpotLightData>{ gdi, 10u };
 	m_pPixelArrStructuredBuffer = new Bind::PixelArrStructuredBuffer<PointLight::PointLightData>{ gdi, 6u };
 
 	// texture descriptor
@@ -88,6 +90,9 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	m_pDirectionalLight->Update( *m_pGDI, camPos );
 	m_pPixelStructuredBuffer->Update( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData );
 	m_pPixelStructuredBuffer->Bind( *m_pGDI );
+
+	m_pPixelStructuredBuffer2->Update( *m_pGDI, m_pSpotLight->m_StructuredBufferData );
+	m_pPixelStructuredBuffer2->Bind( *m_pGDI );
 
 	PointLight::PointLightData* bufferData = new PointLight::PointLightData[2];
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
@@ -175,6 +180,7 @@ void LightManager::SelectLight( const u32 index )
 void LightManager::TranslatePointLight( DirectX::XMFLOAT3 translation )
 {
 	m_vecOfPointLights[m_iSelectedLight]->Translate( translation );
+	m_pSpotLight->Translate( { -1.0f, 0.0f, 0.0f } );
 }
 
 void LightManager::TranslateDirectionalLight( DirectX::XMFLOAT3 translation )

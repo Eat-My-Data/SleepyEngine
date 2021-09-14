@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "../Drawable/DirectionalLight.h"
 #include "../Drawable/PointLight.h"
+#include "../Drawable/SpotLight.h"
 #include "../Bindable/Bindables/StructuredBuffers.h"
 #include "../ResourceManager/Mesh.h"
 
@@ -23,6 +24,8 @@ public:
 private:
 	DirectionalLight* m_pDirectionalLight;
 	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>* m_pPixelStructuredBuffer;
+	SpotLight* m_pSpotLight;
+	Bind::PixelStructuredBuffer<SpotLight::SpotLightData>* m_pPixelStructuredBuffer2;
 	std::vector<PointLight*> m_vecOfPointLights;
 	Bind::PixelArrStructuredBuffer<PointLight::PointLightData>* m_pPixelArrStructuredBuffer;
 private:
