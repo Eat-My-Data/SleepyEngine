@@ -172,15 +172,29 @@ void LightManager::RenderPointLightCubeTextures( const Model& model )
 	}
 }
 
-void LightManager::SelectLight( const u32 index )
+void LightManager::SelectPointLight( const u32 index )
 {
-	m_iSelectedLight = index;
+	m_iSelectedPointLight = index;
+}
+
+void LightManager::TranslateSpotLight( DirectX::XMFLOAT3 translation )
+{
+	m_pSpotLight->Translate( translation );
+}
+
+void LightManager::RotateSpotLight( const f32 dx, const f32 dy )
+{
+	m_pSpotLight->Rotate( dx, dy );
 }
 
 void LightManager::TranslatePointLight( DirectX::XMFLOAT3 translation )
 {
-	m_vecOfPointLights[m_iSelectedLight]->Translate( translation );
-	m_pSpotLight->Translate( { -1.0f, 0.0f, 0.0f } );
+	m_vecOfPointLights[m_iSelectedPointLight]->Translate( translation );
+}
+
+void LightManager::SelectSpotLight( const u32 index )
+{
+	m_iSelectedSpotLight = index;
 }
 
 void LightManager::TranslateDirectionalLight( DirectX::XMFLOAT3 translation )

@@ -59,6 +59,9 @@ void SpotLight::Draw( GraphicsDeviceInterface& gdi ) const noexcept
 void SpotLight::Translate( DirectX::XMFLOAT3 translation )
 {
 	m_PerspectiveCamera.Translate( translation );
+	m_StructuredBufferData.pos.x += translation.x;
+	m_StructuredBufferData.pos.y += translation.y;
+	m_StructuredBufferData.pos.z += translation.z;
 }
 
 void SpotLight::Rotate( const f32 dx, const f32 dy )

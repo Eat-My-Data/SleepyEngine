@@ -57,9 +57,9 @@ void SceneManager::TranslateCamera( DirectX::XMFLOAT3 camDelta )
 	m_Camera.Translate( camDelta );
 }
 
-void SceneManager::SetActiveLight( const u32 index )
+void SceneManager::SetActivePointLight( const u32 index )
 {
-	m_LightManager.SelectLight( index );
+	m_LightManager.SelectPointLight( index );
 }
 
 void SceneManager::TranslatePointLight( DirectX::XMFLOAT3 translation )
@@ -75,7 +75,21 @@ void SceneManager::TranslateDirectionalLight( DirectX::XMFLOAT3 translation )
 void SceneManager::RotateDirectionalLight( const f32 dx, const f32 dy )
 {
 	m_LightManager.RotateDirectionalLight( dx, dy );
+}
 
+void SceneManager::SetActiveSpotLight( const u32 index )
+{
+	m_LightManager.SelectSpotLight( index );
+}
+
+void SceneManager::TranslateSpotLight( DirectX::XMFLOAT3 translation )
+{
+	m_LightManager.TranslateSpotLight( translation );
+}
+
+void SceneManager::RotateSpotLight( const f32 dx, const f32 dy )
+{
+	m_LightManager.RotateSpotLight( dx, dy );
 }
 
 void SceneManager::PrepareFrame()

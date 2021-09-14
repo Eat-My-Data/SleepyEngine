@@ -22,10 +22,13 @@ public:
 	void RotateCamera( const f32 dx, const f32 dy );
 	void TranslateCamera( DirectX::XMFLOAT3 camDelta );
 public:
-	void SetActiveLight( const u32 index );
+	void SetActivePointLight( const u32 index );
 	void TranslatePointLight( DirectX::XMFLOAT3 translation );
 	void TranslateDirectionalLight( DirectX::XMFLOAT3 translation );
 	void RotateDirectionalLight( const f32 dx, const f32 dy );
+	void SetActiveSpotLight( const u32 index );
+	void TranslateSpotLight( DirectX::XMFLOAT3 translation );
+	void RotateSpotLight( const f32 dx, const f32 dy );
 private:
 	void PrepareFrame();
 	void ForwardRender();
