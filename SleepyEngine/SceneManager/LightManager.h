@@ -16,6 +16,8 @@ public:
 	void RenderSolidSpheres();
 	void PrepareDepthFromLight();
 	void RenderPointLightCubeTextures( const Model& model );
+	void PrepareDepthFromSpotLight();
+
 public:
 	void SelectPointLight( const u32 index );
 	void TranslatePointLight( DirectX::XMFLOAT3 translation );

@@ -172,6 +172,14 @@ void LightManager::RenderPointLightCubeTextures( const Model& model )
 	}
 }
 
+void LightManager::PrepareDepthFromSpotLight()
+{
+	m_pGDI->SetViewMatrix( m_pSpotLight->GetViewMatrix() );
+	m_pGDI->SetProjMatrix( m_pSpotLight->GetProjectionMatrix() );
+	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS2(), 1u );
+	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV() );
+}
+
 void LightManager::SelectPointLight( const u32 index )
 {
 	m_iSelectedPointLight = index;

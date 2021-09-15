@@ -103,6 +103,7 @@ void SceneManager::PrepareFrame()
 	}
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
+	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV2(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 }
 
 void SceneManager::ForwardRender()
@@ -113,6 +114,10 @@ void SceneManager::ForwardRender()
 
 	// point light depth pass
 	m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
+
+	// spot light pass
+	m_LightManager.PrepareDepthFromSpotLight();
+	m_vecOfModels[1]->Draw( *m_pGDI, true );
 
 	// update and render
 	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), *m_pGDI->GetDSV() );
