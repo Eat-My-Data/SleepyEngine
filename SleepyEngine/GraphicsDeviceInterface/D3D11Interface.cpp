@@ -180,7 +180,7 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 	}
 
 	hr = m_pDevice->CreateDepthStencilView( m_pShadowTexture, &descDSV, &m_pShadowDSV );
-	hr = m_pDevice->CreateDepthStencilView( m_pShadowTexture, &descDSV, &m_pShadowDSV2 );
+	hr = m_pDevice->CreateDepthStencilView( m_pShadowTexture2, &descDSV, &m_pShadowDSV2 );
 
 	if ( FAILED( hr ) )
 	{

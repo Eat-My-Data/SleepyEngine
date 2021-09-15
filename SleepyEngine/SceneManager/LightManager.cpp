@@ -179,7 +179,7 @@ void LightManager::PrepareDepthFromSpotLight()
 	m_pGDI->SetViewMatrix( m_pSpotLight->GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_pSpotLight->GetProjectionMatrix() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS2(), 1u );
-	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV() );
+	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV2() );
 }
 
 void LightManager::SelectPointLight( const u32 index )

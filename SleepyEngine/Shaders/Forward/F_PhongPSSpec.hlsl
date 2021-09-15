@@ -75,7 +75,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
     att *= att;
     
-    float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, -spotLightData[0].lightDirection, viewNormal);
+    float spotLightShadow = CalculateSpotLightShadow(spotLightViewPos, splr);
+    float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, -normalize(spotLightData[0].lightDirection), viewNormal);
     float3 combinedColor = combinedPointLightDiffuse + combinedPointLightSpecular + directionalDiffuse + directionalSpecular + spotDiffuse + pointLightData[0].ambient;
     
    	// final color
