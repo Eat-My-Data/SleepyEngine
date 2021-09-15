@@ -298,3 +298,8 @@ ID3D11DepthStencilView** D3D11Interface::GetShadowDSV2() noexcept
 {
 	return &m_pShadowDSV2;
 }
+
+ID3D11ShaderResourceView** D3D11Interface::GetShadowResource2() noexcept
+{
+	return &m_pShadowSRV2;
+}

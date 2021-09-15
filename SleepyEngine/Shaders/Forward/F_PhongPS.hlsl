@@ -7,7 +7,7 @@
 Texture2D tex;
 SamplerState splr;
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord, float4 lightViewPos : SV_Position) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord, float4 spotLightViewPos : Position2, float4 lightViewPos : SV_Position) : SV_Target
 {
     
 	// renormalize interpolated normal

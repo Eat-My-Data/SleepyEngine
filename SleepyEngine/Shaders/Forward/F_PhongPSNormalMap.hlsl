@@ -17,7 +17,7 @@ Texture2D nmap : register(t2);
 SamplerState splr;
 
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord, float4 lightViewPos : Position2) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord, float4 lightViewPos : Position2, float4 spotLightViewPos : Position3) : SV_Target
 {    
     // normalize the mesh normal
     viewNormal = normalize(viewNormal);
@@ -65,6 +65,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
     att *= att;
     float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, -normalize(spotLightData[0].lightDirection), viewNormal);
+    //float spotLightShadow = CalculateSpotLightShadow( )
     
     float3 pl = pointLightData[0].ambient;
     float3 combinedColor = combinedPointLightDiffuse + combinedPointLightSpecular + directionalDiffuse + directionalSpecular + pl + spotDiffuse;

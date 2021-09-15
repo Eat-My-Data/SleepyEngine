@@ -13,7 +13,7 @@ cbuffer ObjectCBuf
 
 SamplerState splr;
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 lightViewPos : SV_Position) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 spotLightViewPos : Position2, float4 lightViewPos : SV_Position) : SV_Target
 {
     // normalize the mesh normal
     viewNormal = normalize(viewNormal);

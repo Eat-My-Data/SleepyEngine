@@ -21,7 +21,7 @@ Texture2D nmap;
 SamplerState splr;
 
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord, float4 lightViewPos : Position2) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord, float4 spotLightViewPos : Position2, float4 lightViewPos : Position2) : SV_Target
 {
     // sample diffuse texture 
     float4 dtex = tex.Sample(splr, tc);

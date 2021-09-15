@@ -48,6 +48,7 @@ public:
 	ID3D11DepthStencilState* GetBufferDSS2() noexcept;
 	ID3D11DepthStencilView** GetShadowDSV() noexcept;
 	ID3D11DepthStencilView** GetShadowDSV2() noexcept;
+	ID3D11ShaderResourceView** GetShadowResource2() noexcept;
 private:
 	D3D11Interface m_D3D11Interface;
 	GraphicsAPI m_GraphicsAPI = GraphicsAPI::Uninitialized;

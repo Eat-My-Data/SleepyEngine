@@ -30,6 +30,7 @@ public:
 	ID3D11DepthStencilState* GetGBufferDSS2() noexcept;
 	ID3D11DepthStencilView** GetShadowDSV() noexcept;
 	ID3D11DepthStencilView** GetShadowDSV2() noexcept;
+	ID3D11ShaderResourceView** GetShadowResource2() noexcept;
 private:
 	IDXGISwapChain* m_pSwap;
 	ID3D11Device* m_pDevice;

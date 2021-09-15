@@ -120,3 +120,8 @@ ID3D11DepthStencilView** GraphicsDeviceInterface::GetShadowDSV2() noexcept
 {
 	return m_D3D11Interface.GetShadowDSV2();
 }
+
+ID3D11ShaderResourceView** GraphicsDeviceInterface::GetShadowResource2() noexcept
+{
+	return m_D3D11Interface.GetShadowResource2();
+}

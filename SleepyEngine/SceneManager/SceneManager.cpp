@@ -115,7 +115,7 @@ void SceneManager::ForwardRender()
 	// point light depth pass
 	m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
 
-	// spot light pass
+	// spot light depth pass
 	m_LightManager.PrepareDepthFromSpotLight();
 	m_vecOfModels[1]->Draw( *m_pGDI, true );
 
@@ -139,6 +139,10 @@ void SceneManager::DeferredRender()
 
 	// point light depth pass
 	m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
+
+	// spot light depth pass
+	m_LightManager.PrepareDepthFromSpotLight();
+	m_vecOfModels[1]->Draw( *m_pGDI, true );
 
 	// gbuffers
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );

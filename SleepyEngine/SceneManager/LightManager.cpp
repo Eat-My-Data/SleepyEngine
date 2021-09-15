@@ -91,6 +91,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	m_pPixelStructuredBuffer->Update( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData );
 	m_pPixelStructuredBuffer->Bind( *m_pGDI );
 
+	m_pSpotLight->Update( *m_pGDI, camPos );
 	m_pPixelStructuredBuffer2->Update( *m_pGDI, m_pSpotLight->m_StructuredBufferData );
 	m_pPixelStructuredBuffer2->Bind( *m_pGDI );
 
@@ -109,6 +110,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 
 	m_pGDI->GetContext()->PSSetShaderResources( 7u, 1u, &pTextureView );
 	m_pGDI->GetContext()->PSSetShaderResources( 8u, 1u, &pTextureView2 );
+	m_pGDI->GetContext()->PSSetShaderResources( 11u, 1u, m_pGDI->GetShadowResource2() );
 
 	delete[] bufferData;
 }
