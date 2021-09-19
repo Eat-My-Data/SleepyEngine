@@ -185,10 +185,12 @@ LRESULT WINAPI Win32Window::HandleMsgThunk( HWND m_hWnd, UINT msg, WPARAM wParam
 	return pWnd->HandleMsg( m_hWnd, msg, wParam, lParam );
 }
 
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
+
 LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept
 {
-	//if ( ImGui_ImplWin32_WndProcHandler( m_hWnd, msg, wParam, lParam ) )
-	//	return true;
+	if ( ImGui_ImplWin32_WndProcHandler( m_hWnd, msg, wParam, lParam ) )
+		return true;
 
 	const auto imio = ImGui::GetIO();
 
