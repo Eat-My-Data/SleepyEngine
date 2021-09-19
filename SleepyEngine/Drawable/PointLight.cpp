@@ -19,12 +19,12 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
 	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 
-	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/PointLightVS.cso" );
+	auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/PointLightVS.cso" );
 	auto pvsbc = pvs->GetBytecode();
 	AddBind( std::move( pvs ) );
 
 	ID3DBlob* pBlob;
-	D3DReadFileToBlob( L"../SleepyEngine/Shaders/Bin/PointLightPS.cso", &pBlob );
+	D3DReadFileToBlob( L"./Shaders/Bin/PointLightPS.cso", &pBlob );
 	gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
 
 	AddBind( Sampler::Resolve( gdi ) );

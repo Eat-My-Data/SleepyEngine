@@ -1,5 +1,7 @@
 #include "SceneManager.h"
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
+#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
+#include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
 SceneManager::~SceneManager()
 {
@@ -16,6 +18,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
 	m_LightManager.Initialize( *m_pGDI );
+	ImGui_ImplDX11_Init( m_pGDI->GetDevice(), m_pGDI->GetContext() );
 }
 
 bool SceneManager::IsInitialzed() noexcept
@@ -30,6 +33,13 @@ void SceneManager::SetRenderTechnique( RenderTechnique renderTechnique ) noexcep
 
 void SceneManager::Draw()
 {
+	if ( imguiEnabled )
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
+
 	PrepareFrame();
 
 	if ( m_RenderTechnique == RenderTechnique::Forward )
@@ -42,8 +52,23 @@ void SceneManager::Draw()
 	m_pGDI->GetContext()->PSSetShaderResources( 0, 10, null );
 }
 
+void SceneManager::DrawControlPanel()
+{
+	if ( imguiEnabled && ImGui::Begin( "Control Panel" ) )
+	{
+		ImGui::Text( "This is some useful text." );
+		ImGui::End();
+	}
+}
+
 void SceneManager::Present()
 {
+	if ( imguiEnabled )
+	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+	}
+
 	m_pGDI->GetSwap()->Present( 1u, 0u );
 }
 

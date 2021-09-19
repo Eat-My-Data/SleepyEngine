@@ -2,8 +2,8 @@
 #include "./Win32/Win32Window.h"
 #include "./GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 #include "./SceneManager/SceneManager.h"
-#include "./GUI/GUIManager.h"
 #include "./Utilities/FrameTimer.h"
+#include "./GUI/ImguiManager.h"
 
 class App
 {
@@ -14,12 +14,14 @@ public:
 private:
 	void ExecuteFrame();
 private:
+	ImguiManager imgui;
 	Win32Window m_Win32Window;
 	GraphicsDeviceInterface m_GDI;
 	SceneManager m_SceneManager;
-	GUIManager m_GUIManager;
 	FrameTimer timer;
 	// TODO: 
 	// - Raw Mouse Input
 	// - Platform Interface
+	// - Figure out how to initalize imgui in current set up
+	// - Figure out if it is worth it to make everything with a constructor rather than initialize functions.
 };
