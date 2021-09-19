@@ -94,6 +94,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	PointLight::PointLightData* bufferData = new PointLight::PointLightData[2];
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
+		m_vecOfPointLights[i]->Translate( { 0.0f,0.0f,0.0f } );
 		m_vecOfPointLights[i]->Update( m_pGDI->GetViewMatrix(), m_pGDI->GetProjMatrix(), camPos );
 		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
 	}
@@ -171,15 +172,16 @@ void LightManager::RenderPointLightCubeTextures( const Model& model )
 
 void LightManager::DrawControlPanel()
 {
-
-	ImGui::ColorEdit3( "Point Light Color", &m_vecOfPointLights[0]->m_StructuredBufferData.diffuseColor.x );
-	ImGui::SliderFloat( "X", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Y", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.y, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Z", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.z, -80.0f, 80.0f );
-	ImGui::ColorEdit3( "Point Light Color", &m_vecOfPointLights[1]->m_StructuredBufferData.diffuseColor.x );
-	ImGui::SliderFloat( "X", &m_vecOfPointLights[1]->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Y", &m_vecOfPointLights[1]->m_StructuredBufferData.pos.y, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Z", &m_vecOfPointLights[1]->m_StructuredBufferData.pos.z, -80.0f, 80.0f );
+	ImGui::Text( "Point Light #1" );
+	ImGui::ColorEdit3( "Color1", &m_vecOfPointLights[0]->m_StructuredBufferData.diffuseColor.x );
+	ImGui::SliderFloat( "X1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Y1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.y, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Z1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.z, -80.0f, 80.0f );
+	ImGui::Text( "Point Light #2" );
+	ImGui::ColorEdit3( "Color2", &m_vecOfPointLights[1]->m_StructuredBufferData.diffuseColor.x );
+	ImGui::SliderFloat( "X2", &m_vecOfPointLights[1]->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Y2", &m_vecOfPointLights[1]->m_StructuredBufferData.pos.y, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Z2", &m_vecOfPointLights[1]->m_StructuredBufferData.pos.z, -80.0f, 80.0f );
 }
 
 void LightManager::SelectLight( const u32 index )
