@@ -39,6 +39,8 @@ private:
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 private:
 	std::vector<Model*> m_vecOfModels;
+private:
+	bool imguiEnabled = true;
 	// TODO: 
 	// - Resource Manager
 	// - Culling

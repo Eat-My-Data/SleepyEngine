@@ -1,4 +1,5 @@
 #include "App.h"
+#include "./Libraries/imgui/imgui.h"
 
 App::App()
 	:
@@ -26,8 +27,6 @@ void App::ExecuteFrame()
 		m_Win32Window.InitializeGraphics( m_GDI, GraphicsAPI::DirectX );
 	if ( !m_SceneManager.IsInitialzed() )
 		m_SceneManager.Initialize( m_GDI, GraphicsAPI::DirectX );
-	if ( !m_GUIManager.IsInitialized() )
-		m_GUIManager.Initialize( m_GDI, m_SceneManager, m_Win32Window.m_Mouse );
 
 	const f32 dt = timer.Mark();
 

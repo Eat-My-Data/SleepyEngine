@@ -82,26 +82,8 @@
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{13556157-0efd-4862-b16a-e404ca67bb88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GUI\Forms">
-      <UniqueIdentifier>{563ec4cc-2ec4-4b9b-80e3-ffe68ab4bdd2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shaders\GUI">
       <UniqueIdentifier>{117c71f5-5da3-4b48-9301-8e4335777e97}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GUI\Text">
-      <UniqueIdentifier>{f5c7eabe-53d0-4a37-a6fc-b7af55d5e9b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GUI\Text">
-      <UniqueIdentifier>{d087ec5a-a836-4307-a497-a301d7331c6e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GUI\Forms">
-      <UniqueIdentifier>{7af72b16-6eb6-45da-a0d8-2f36f83366bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GUI\Elements">
-      <UniqueIdentifier>{3c4be242-12a4-4b69-bb9e-d1c91ea9484d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GUI\Elements">
-      <UniqueIdentifier>{48c1d445-d2d7-450d-9169-fc8a3099ad3e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -204,32 +186,14 @@
     <ClCompile Include="Drawable\PointLight.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\GUIManager.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager\LightManager.cpp">
       <Filter>Source Files\SceneManager</Filter>
     </ClCompile>
     <ClCompile Include="Drawable\SolidSphere.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\Text\TextManager.cpp">
-      <Filter>Source Files\GUI\Text</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\Forms\Form.cpp">
-      <Filter>Source Files\GUI\Forms</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\GUIContainer.cpp">
+    <ClCompile Include="GUI\ImguiManager.cpp">
       <Filter>Source Files\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\Elements\TextBox.cpp">
-      <Filter>Source Files\GUI\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\Elements\GUIElement.cpp">
-      <Filter>Source Files\GUI\Elements</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\Elements\Title.cpp">
-      <Filter>Source Files\GUI\Elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,15 +332,6 @@
     <ClInclude Include="Bindable\Bindables\ConstantBuffersEx.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\GUIManager.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\Forms\Rectangle.h">
-      <Filter>Header Files\GUI\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\UI_ID.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="Bindable\Bindables\StructuredBuffers.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
@@ -386,23 +341,8 @@
     <ClInclude Include="Drawable\SolidSphere.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\Text\TextManager.h">
-      <Filter>Header Files\GUI\Text</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\Forms\Form.h">
-      <Filter>Header Files\GUI\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\GUIContainer.h">
+    <ClInclude Include="GUI\ImguiManager.h">
       <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\Elements\TextBox.h">
-      <Filter>Header Files\GUI\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\Elements\GUIElement.h">
-      <Filter>Header Files\GUI\Elements</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\Elements\Title.h">
-      <Filter>Header Files\GUI\Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

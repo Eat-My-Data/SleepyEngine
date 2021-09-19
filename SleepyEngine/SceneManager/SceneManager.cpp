@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
-#include "../GUI/GUIManager.h"
+#include "../Libraries/imgui/imgui_impl_dx11.h"
+#include "../Libraries/imgui/imgui_impl_win32.h"
 
 SceneManager::~SceneManager()
 {
@@ -31,6 +32,13 @@ void SceneManager::SetRenderTechnique( RenderTechnique renderTechnique ) noexcep
 
 void SceneManager::Draw()
 {
+	if ( imguiEnabled )
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
+
 	PrepareFrame();
 
 	if ( m_RenderTechnique == RenderTechnique::Forward )
@@ -45,21 +53,17 @@ void SceneManager::Draw()
 
 void SceneManager::DrawControlPanel()
 {
-	if ( GUIManager::Begin( (char*)"Test" ) )
-	{
-		GUIManager::Text( (char*)"Press this button!" );
-		if ( GUIManager::Button( (char*)"Change Render Technique" ) )
-		{ 
-			if ( m_RenderTechnique == RenderTechnique::Deferred )
-				m_RenderTechnique = RenderTechnique::Forward;
-			else
-				m_RenderTechnique = RenderTechnique::Deferred;
-		}
-	}
+	
 }
 
 void SceneManager::Present()
 {
+	if ( imguiEnabled )
+	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+	}
+
 	m_pGDI->GetSwap()->Present( 1u, 0u );
 }
 
