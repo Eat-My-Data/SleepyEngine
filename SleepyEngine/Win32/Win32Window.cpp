@@ -1,6 +1,6 @@
 #include "Win32Window.h"
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
-//#include "../Libraries/imgui/imgui_impl_win32.h"
+#include "../Libraries/imgui/backends/imgui_impl_win32.h"
 #include <exception>
 
 Win32Window::WindowSingleton Win32Window::WindowSingleton::m_wSingleton;
@@ -70,7 +70,7 @@ Win32Window::Win32Window( u32 width, u32 height, const wchar_t* name )
 	ShowWindow( m_hWnd, SW_SHOWDEFAULT );
 
 	// Init ImGui Win32 Impl
-	//ImGui_ImplWin32_Init( m_hWnd );
+	ImGui_ImplWin32_Init( m_hWnd );
 
 	// register mouse raw input device
 	RAWINPUTDEVICE rid;
@@ -84,7 +84,7 @@ Win32Window::Win32Window( u32 width, u32 height, const wchar_t* name )
 
 Win32Window::~Win32Window()
 {
-	//ImGui_ImplWin32_Shutdown();
+	ImGui_ImplWin32_Shutdown();
 	DestroyWindow( m_hWnd );
 }
 
@@ -93,7 +93,7 @@ void Win32Window::EnableCursor() noexcept
 {
 	m_bCursorEnabled = true;
 	ShowCursor();
-	//ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+	ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
 	FreeCursor();
 }
 
@@ -101,7 +101,7 @@ void Win32Window::DisableCursor() noexcept
 {
 	m_bCursorEnabled = false;
 	HideCursor();
-	//ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
 	ConfineCursor();
 }
 
@@ -190,7 +190,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 	//if ( ImGui_ImplWin32_WndProcHandler( m_hWnd, msg, wParam, lParam ) )
 	//	return true;
 
-	//const auto imio = ImGui::GetIO();
+	const auto imio = ImGui::GetIO();
 
 	switch ( msg )
 	{
@@ -218,20 +218,20 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 	case WM_KEYDOWN:
 		// syskey commands need to be handled to track ALT key ( VK_MENU ) and F10
 	case WM_SYSKEYDOWN:
-		//if ( imio.WantCaptureKeyboard )
-		//	break;
+		if ( imio.WantCaptureKeyboard )
+			break;
 		if ( !( lParam & 0x40000000 ) || m_Kbd.AutorepeatIsEnabled() )
 			m_Kbd.OnKeyPressed( static_cast<unsigned char>( wParam ) );
 		break;
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
-		//if ( imio.WantCaptureKeyboard )
-		//	break;
+		if ( imio.WantCaptureKeyboard )
+			break;
 		m_Kbd.OnKeyReleased( static_cast<unsigned char>( wParam ) );
 		break;
 	case WM_CHAR:
-		//if ( imio.WantCaptureKeyboard )
-		//	break;
+		if ( imio.WantCaptureKeyboard )
+			break;
 		m_Kbd.OnChar( static_cast<unsigned char>( wParam ) );
 		break;
 	case WM_MOUSEMOVE:
@@ -248,8 +248,8 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			}
 			break;
 		}
-		//if ( imio.WantCaptureKeyboard )
-		//	break;
+		if ( imio.WantCaptureKeyboard )
+			break;
 		// in client region -> log move, and log enter + capture mouse ( if not previously stored )
 		if ( pt.x >= 0 && pt.x < (SHORT)m_iWidth && pt.y >= 0 && pt.y < (SHORT)m_iHeight )
 		{
@@ -283,40 +283,40 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			ConfineCursor();
 			HideCursor();
 		}
-		//if ( imio.WantCaptureKeyboard )
-		//	break;
+		if ( imio.WantCaptureKeyboard )
+			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		m_Mouse.OnLeftPressed( pt.x, pt.y );
 		break;
 	}
 	case WM_RBUTTONDOWN:
 	{
-		//if ( imio.WantCaptureKeyboard )
-		//	break;
+		if ( imio.WantCaptureKeyboard )
+			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		m_Mouse.OnRightPressed( pt.x, pt.y );
 		break;
 	}
 	case WM_LBUTTONUP:
 	{
-		//if ( imio.WantCaptureKeyboard )
-		//	break;
+		if ( imio.WantCaptureKeyboard )
+			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		m_Mouse.OnLeftReleased( pt.x, pt.y );
 		break;
 	}
 	case WM_RBUTTONUP:
 	{
-		//if ( imio.WantCaptureKeyboard )
-		//	break;
+		if ( imio.WantCaptureKeyboard )
+			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		m_Mouse.OnRightReleased( pt.x, pt.y );
 		break;
 	}
 	case WM_MOUSEWHEEL:
 	{
-		//if ( imio.WantCaptureKeyboard )
-		//	break;
+		if ( imio.WantCaptureKeyboard )
+			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		const int delta = GET_WHEEL_DELTA_WPARAM( wParam );
 		m_Mouse.OnWheelDelta( pt.x, pt.y, delta );

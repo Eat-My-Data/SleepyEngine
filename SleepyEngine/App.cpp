@@ -1,5 +1,4 @@
 #include "App.h"
-#include "./Libraries/imgui/imgui.h"
 
 App::App()
 	:

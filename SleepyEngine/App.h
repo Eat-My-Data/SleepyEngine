@@ -14,10 +14,10 @@ public:
 private:
 	void ExecuteFrame();
 private:
+	ImguiManager imgui;
 	Win32Window m_Win32Window;
 	GraphicsDeviceInterface m_GDI;
 	SceneManager m_SceneManager;
-	ImguiManager imgui;
 	FrameTimer timer;
 	// TODO: 
 	// - Raw Mouse Input

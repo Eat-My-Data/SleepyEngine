@@ -1,7 +1,7 @@
 #include "SceneManager.h"
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
-//#include "../Libraries/imgui/imgui_impl_dx11.h"
-//#include "../Libraries/imgui/imgui_impl_win32.h"
+#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
+#include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
 SceneManager::~SceneManager()
 {
@@ -18,6 +18,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
 	m_LightManager.Initialize( *m_pGDI );
+	ImGui_ImplDX11_Init( m_pGDI->GetDevice(), m_pGDI->GetContext() );
 }
 
 bool SceneManager::IsInitialzed() noexcept
@@ -34,9 +35,9 @@ void SceneManager::Draw()
 {
 	if ( imguiEnabled )
 	{
-		//ImGui_ImplDX11_NewFrame();
-		//ImGui_ImplWin32_NewFrame();
-		//ImGui::NewFrame();
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
 	}
 
 	PrepareFrame();
@@ -60,8 +61,8 @@ void SceneManager::Present()
 {
 	if ( imguiEnabled )
 	{
-		//ImGui::Render();
-		//ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
 	}
 
 	m_pGDI->GetSwap()->Present( 1u, 0u );
