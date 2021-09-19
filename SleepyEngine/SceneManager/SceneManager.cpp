@@ -54,7 +54,11 @@ void SceneManager::Draw()
 
 void SceneManager::DrawControlPanel()
 {
-	
+	if ( imguiEnabled && ImGui::Begin( "Control Panel" ) )
+	{
+		ImGui::Text( "This is some useful text." );
+		ImGui::End();
+	}
 }
 
 void SceneManager::Present()
