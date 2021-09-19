@@ -1,14 +1,14 @@
 #include "ImguiManager.h"
-#include "../Libraries/imgui/imgui.h"
+//#include "../Libraries/imgui/imgui.h"
 
 ImguiManager::ImguiManager()
 {
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGui::StyleColorsDark();
+	//IMGUI_CHECKVERSION();
+	//ImGui::CreateContext();
+	//ImGui::StyleColorsDark();
 }
 
 ImguiManager::~ImguiManager()
 {
-	ImGui::DestroyContext();
+	//ImGui::DestroyContext();
 }
