@@ -5,7 +5,6 @@ Texture2D colorTexture : register(t0);
 Texture2D normalTexture : register(t1);
 Texture2D specularTexture : register(t2);
 Texture2D depthTexture : register(t3);
-Texture2D depthTextureFromLight : register(t4);
 
 SamplerState SampleTypePoint : register(s0);
 
@@ -30,14 +29,14 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
 
     // world to light and shadow map check
     float4 fragPositionInLightView = mul(worldSpacePos, directionalLightData[0].lightViewProjectionMatrix);
-
+    
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - directionalLightData[0].camPos.xyz;
 
     float3 ambient = {0.2f, 0.2f, 0.2f};
     
     // diffuse light
-    float diffuseIntensity = dot(normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection.xyz));
+    float diffuseIntensity = max(0.0f, dot(normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection.xyz)));
 
     float lightAtt = directionalLightData[0].att;
     float specPower = directionalLightData[0].specularPower;
@@ -49,7 +48,7 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     float sampleDepth = depthTextureFromLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f + 0.5f)).r;
     float isInLight = sampleDepth > fragDepth;
     float3 combinedColor = ((diffuseIntensity + specularResult) * isInLight) + ambient;
-    //return float4(sampleDepth, 0.0f, 0.0f, 1.0f);
+
    	// final color
     return float4((combinedColor * colors.rgb), 1.0f);
 }

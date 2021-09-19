@@ -11,6 +11,8 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 	using namespace Bind;
 	namespace dx = DirectX;
 
+	m_StructuredBufferData.radius = radius;
+
 	auto model = Sphere::Make();
 	model.Transform( dx::XMMatrixScaling( radius, radius, radius ) );
 	const auto geometryTag = "$sphere." + std::to_string( radius );
@@ -126,14 +128,11 @@ void PointLight::Update( DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX project
 
 void PointLight::Draw( GraphicsDeviceInterface& gdi )
 {
-	//m_SolidSphere->Draw( gdi );
-
 	// bindables
 	for ( auto& b : binds )
 	{
 		b->Bind( gdi );
 	}
-
 
 	// figure out if camera is inside point light
 	if ( CameraIsInside( m_StructuredBufferData.camPos ) )
@@ -174,14 +173,15 @@ void PointLight::Translate( DirectX::XMFLOAT3 vec )
 bool PointLight::CameraIsInside( DirectX::XMFLOAT3 camPos )
 {
 	float distFromCenterX = m_StructuredBufferData.pos.x - camPos.x;
-	float distFromCenterY = m_StructuredBufferData.camPos.y - camPos.y;
-	float distFromCenterZ = m_StructuredBufferData.camPos.z - camPos.z;
+	float distFromCenterY = m_StructuredBufferData.pos.y - camPos.y;
+	float distFromCenterZ = m_StructuredBufferData.pos.z - camPos.z;
 	float xSq = distFromCenterX * distFromCenterX;
 	float ySq = distFromCenterY * distFromCenterY;
 	float zSq = distFromCenterZ * distFromCenterZ;
 	float distSq = xSq + ySq + zSq;
 
 	float radiusSq = ( m_StructuredBufferData.radius + 0.5f ) * ( m_StructuredBufferData.radius + 0.5f );
+
 
 	return distSq <= radiusSq;
 }
