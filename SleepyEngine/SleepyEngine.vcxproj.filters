@@ -91,11 +91,17 @@
     <Filter Include="Source Files\Libraries">
       <UniqueIdentifier>{c8dab9ae-3d2c-4909-b1f5-388871983c33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Libraries\ImGui">
-      <UniqueIdentifier>{2db283c1-705c-4485-abd3-72be7ba8c19c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Libraries\imgui">
       <UniqueIdentifier>{bca348e6-cf96-4938-9889-1f652f134254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries\imgui\backends">
+      <UniqueIdentifier>{d33ece29-a234-4549-addc-ea70bba5de2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\imgui">
+      <UniqueIdentifier>{2db283c1-705c-4485-abd3-72be7ba8c19c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\imgui\backends">
+      <UniqueIdentifier>{0574383d-e34f-4e24-93f1-9998ead04e46}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -208,19 +214,25 @@
       <Filter>Source Files\GUI</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\imgui\imgui_widgets.cpp">
-      <Filter>Source Files\Libraries\ImGui</Filter>
+      <Filter>Source Files\Libraries\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\imgui\imgui.cpp">
-      <Filter>Source Files\Libraries\ImGui</Filter>
+      <Filter>Source Files\Libraries\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\imgui\imgui_demo.cpp">
-      <Filter>Source Files\Libraries\ImGui</Filter>
+      <Filter>Source Files\Libraries\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\imgui\imgui_draw.cpp">
-      <Filter>Source Files\Libraries\ImGui</Filter>
+      <Filter>Source Files\Libraries\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\imgui\imgui_tables.cpp">
-      <Filter>Source Files\Libraries\ImGui</Filter>
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>Source Files\Libraries\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\backends\imgui_impl_dx11.cpp">
+      <Filter>Source Files\Libraries\imgui\backends</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,6 +400,12 @@
     </ClInclude>
     <ClInclude Include="Libraries\imgui\imstb_textedit.h">
       <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_win32.h">
+      <Filter>Header Files\Libraries\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_dx11.h">
+      <Filter>Header Files\Libraries\imgui\backends</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

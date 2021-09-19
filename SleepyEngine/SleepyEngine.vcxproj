@@ -193,6 +193,8 @@
     <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp" />
     <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp" />
     <ClCompile Include="GUI\ImguiManager.cpp" />
+    <ClCompile Include="Libraries\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Libraries\imgui\backends\imgui_impl_win32.cpp" />
     <ClCompile Include="Libraries\imgui\imgui.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_demo.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_draw.cpp" />
@@ -241,6 +243,8 @@
     <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h" />
     <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h" />
     <ClInclude Include="GUI\ImguiManager.h" />
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="Libraries\imgui\imconfig.h" />
     <ClInclude Include="Libraries\imgui\imgui.h" />
     <ClInclude Include="Libraries\imgui\imgui_internal.h" />
