@@ -171,7 +171,15 @@ void LightManager::RenderPointLightCubeTextures( const Model& model )
 
 void LightManager::DrawControlPanel()
 {
-	ImGui::ColorEdit3( "Point Light Color", &m_vecOfPointLights[m_iSelectedLight]->m_StructuredBufferData.diffuseColor.x );
+
+	ImGui::ColorEdit3( "Point Light Color", &m_vecOfPointLights[0]->m_StructuredBufferData.diffuseColor.x );
+	ImGui::SliderFloat( "X", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Y", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.y, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Z", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.z, -80.0f, 80.0f );
+	ImGui::ColorEdit3( "Point Light Color", &m_vecOfPointLights[1]->m_StructuredBufferData.diffuseColor.x );
+	ImGui::SliderFloat( "X", &m_vecOfPointLights[1]->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Y", &m_vecOfPointLights[1]->m_StructuredBufferData.pos.y, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Z", &m_vecOfPointLights[1]->m_StructuredBufferData.pos.z, -80.0f, 80.0f );
 }
 
 void LightManager::SelectLight( const u32 index )

@@ -71,6 +71,7 @@ void SceneManager::Present()
 	{
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+		ImGui::EndFrame();
 	}
 
 	m_pGDI->GetSwap()->Present( 1u, 0u );

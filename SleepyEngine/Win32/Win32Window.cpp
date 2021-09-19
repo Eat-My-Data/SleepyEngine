@@ -324,6 +324,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 		m_Mouse.OnWheelDelta( pt.x, pt.y, delta );
 		break;
 	}
+	// Raw Mouse Input
 	case WM_INPUT:
 	{
 		if ( !m_Mouse.RawEnabled() )
