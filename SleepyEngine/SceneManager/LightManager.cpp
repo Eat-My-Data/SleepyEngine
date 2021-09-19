@@ -172,6 +172,9 @@ void LightManager::RenderPointLightCubeTextures( const Model& model )
 
 void LightManager::DrawControlPanel()
 {
+	// TODO:
+	// - Figure out what's going on with point light colors for forward render
+	// - Make configurable 
 	ImGui::Text( "Point Light #1" );
 	ImGui::ColorEdit3( "Color1", &m_vecOfPointLights[0]->m_StructuredBufferData.diffuseColor.x );
 	ImGui::SliderFloat( "X1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
