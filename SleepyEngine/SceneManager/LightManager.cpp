@@ -1,4 +1,6 @@
 #include "LightManager.h"
+#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
+#include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
 void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 {
@@ -165,6 +167,11 @@ void LightManager::RenderPointLightCubeTextures( const Model& model )
 		m_pGDI->SetViewMatrix( DirectX::XMMatrixLookAtLH( pos2, lookAt2, DirectX::XMLoadFloat3( &cameraUps[i] ) ) );
 		model.Draw( *m_pGDI, true );
 	}
+}
+
+void LightManager::DrawControlPanel()
+{
+	ImGui::ColorEdit3( "Point Light Color", &m_vecOfPointLights[m_iSelectedLight]->m_StructuredBufferData.diffuseColor.x );
 }
 
 void LightManager::SelectLight( const u32 index )
