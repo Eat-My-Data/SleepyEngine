@@ -137,6 +137,9 @@ void LightManager::RenderSolidSpheres()
 {
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
+		m_LightIndexes.index = (float)i;
+		m_pLightIndex->Update( *m_pGDI, m_LightIndexes );
+		m_pLightIndex->Bind( *m_pGDI );
 		m_vecOfPointLights[i]->m_SolidSphere->Draw( *m_pGDI );
 	}
 }
