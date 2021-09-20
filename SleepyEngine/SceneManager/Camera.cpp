@@ -17,7 +17,7 @@ Camera::Camera( const wchar_t* name, MatrixType matrixType, ViewSpace viewSpace,
 Camera::~Camera()
 {}
 
-DirectX::XMFLOAT3 Camera::GetPosition() noexcept
+DirectX::XMFLOAT3& Camera::GetPosition() noexcept
 {
 	return m_Pos;
 }

@@ -16,6 +16,7 @@ public:
 	void Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api );
 	bool IsInitialzed() noexcept;
 	void SetRenderTechnique( RenderTechnique renderTechnique ) noexcept;
+	void ToggleImGuiEngabled() noexcept;
 public:
 	void Draw();
 	void DrawControlPanel();

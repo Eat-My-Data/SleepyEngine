@@ -39,11 +39,13 @@ void App::ExecuteFrame()
 		case VK_ESCAPE:
 			if ( m_Win32Window.CursorEnabled() )
 			{
+				m_SceneManager.ToggleImGuiEngabled();
 				m_Win32Window.DisableCursor();
 				m_Win32Window.m_Mouse.EnableRaw();
 			}
 			else
 			{
+				m_SceneManager.ToggleImGuiEngabled();
 				m_Win32Window.EnableCursor();
 				m_Win32Window.m_Mouse.DisableRaw();
 			}

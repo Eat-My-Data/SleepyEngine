@@ -31,6 +31,11 @@ void SceneManager::SetRenderTechnique( RenderTechnique renderTechnique ) noexcep
 	m_RenderTechnique = renderTechnique;
 }
 
+void SceneManager::ToggleImGuiEngabled() noexcept
+{
+	imguiEnabled = !imguiEnabled;
+}
+
 void SceneManager::Draw()
 {
 	if ( imguiEnabled )
@@ -56,6 +61,13 @@ void SceneManager::DrawControlPanel()
 {
 	if ( imguiEnabled && ImGui::Begin( "Control Panel" ) )
 	{
+		ImGui::Text( "Camera" );
+		ImGui::SliderFloat( "Camera X", &m_Camera.GetPosition().x, -80.0f, 80.0f );
+		ImGui::SliderFloat( "Camera Y", &m_Camera.GetPosition().y, -80.0f, 80.0f );
+		ImGui::SliderFloat( "Camera Z", &m_Camera.GetPosition().z, -80.0f, 80.0f );
+		ImGui::Text( "Camera Orientation" );
+		ImGui::SliderAngle( "Camera Pitch", &m_Camera.m_fPitch, 0.995f * -90.0f, 0.995f * 90.0f );
+		ImGui::SliderAngle( "Camera Yaw", &m_Camera.m_fYaw, -180.0f, 180.0f );
 		m_LightManager.DrawControlPanel();
 		if ( ImGui::Button( "Toggle Render Technique" ) )
 			m_RenderTechnique == RenderTechnique::Deferred ? SetRenderTechnique( RenderTechnique::Forward ) : SetRenderTechnique( RenderTechnique::Deferred );
