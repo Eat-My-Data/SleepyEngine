@@ -16,6 +16,7 @@ public:
 	void Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api );
 	bool IsInitialzed() noexcept;
 	void SetRenderTechnique( RenderTechnique renderTechnique ) noexcept;
+	void ToggleImGuiEngabled() noexcept;
 public:
 	void Draw();
 	void DrawControlPanel();
@@ -44,4 +45,6 @@ private:
 	// TODO: 
 	// - Resource Manager
 	// - Culling
+	// - Clean up shader files/minimize everything
+	// - Make to have as little buffers as possible
 };
