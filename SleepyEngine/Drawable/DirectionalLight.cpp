@@ -79,3 +79,8 @@ DirectX::XMMATRIX DirectionalLight::GetProjectionMatrix() noexcept
 {
 	return m_OrthoCamera.GetProjectionMatrix();
 }
+
+Camera& DirectionalLight::GetCamera()
+{
+	return m_OrthoCamera;
+}

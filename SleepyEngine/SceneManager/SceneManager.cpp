@@ -56,11 +56,11 @@ void SceneManager::DrawControlPanel()
 {
 	if ( imguiEnabled && ImGui::Begin( "Control Panel" ) )
 	{
+		m_LightManager.DrawControlPanel();
 		if ( ImGui::Button( "Toggle Render Technique" ) )
 			m_RenderTechnique == RenderTechnique::Deferred ? SetRenderTechnique( RenderTechnique::Forward ) : SetRenderTechnique( RenderTechnique::Deferred );
 		ImGui::SameLine();
 		ImGui::Text( m_RenderTechnique == RenderTechnique::Deferred ? "Deferred" : "Forward" );
-		m_LightManager.DrawControlPanel();
 		ImGui::End();
 	}
 }
