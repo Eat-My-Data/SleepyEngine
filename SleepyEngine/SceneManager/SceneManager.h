@@ -16,8 +16,10 @@ public:
 	void Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api );
 	bool IsInitialzed() noexcept;
 	void SetRenderTechnique( RenderTechnique renderTechnique ) noexcept;
+	void ToggleImGuiEngabled() noexcept;
 public:
 	void Draw();
+	void DrawControlPanel();
 	void Present();
 	void RotateCamera( const f32 dx, const f32 dy );
 	void TranslateCamera( DirectX::XMFLOAT3 camDelta );
@@ -41,7 +43,11 @@ private:
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 private:
 	std::vector<Model*> m_vecOfModels;
+private:
+	bool imguiEnabled = true;
 	// TODO: 
 	// - Resource Manager
 	// - Culling
+	// - Clean up shader files/minimize everything
+	// - Make to have as little buffers as possible
 };

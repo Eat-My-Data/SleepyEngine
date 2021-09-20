@@ -1,4 +1,6 @@
 #include "LightManager.h"
+#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
+#include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
 void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 {
@@ -98,6 +100,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	PointLight::PointLightData* bufferData = new PointLight::PointLightData[2];
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
+		m_vecOfPointLights[i]->Translate( { 0.0f,0.0f,0.0f } );
 		m_vecOfPointLights[i]->Update( m_pGDI->GetViewMatrix(), m_pGDI->GetProjMatrix(), camPos );
 		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
 	}
@@ -141,6 +144,9 @@ void LightManager::RenderSolidSpheres()
 {
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
+		m_LightIndexes.index = (float)i;
+		m_pLightIndex->Update( *m_pGDI, m_LightIndexes );
+		m_pLightIndex->Bind( *m_pGDI );
 		m_vecOfPointLights[i]->m_SolidSphere->Draw( *m_pGDI );
 	}
 }
@@ -192,7 +198,7 @@ void LightManager::TranslateSpotLight( DirectX::XMFLOAT3 translation )
 	m_pSpotLight->Translate( translation );
 }
 
-void LightManager::RotateSpotLight( const f32 dx, const f32 dy )
+void LightManager::SelectLight( const u32 index )
 {
 	m_pSpotLight->Rotate( dx, dy );
 }

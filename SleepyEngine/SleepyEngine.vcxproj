@@ -193,9 +193,14 @@
     <ClCompile Include="Drawable\SpotLight.cpp" />
     <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp" />
     <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp" />
-    <ClCompile Include="GUI\GUIElement.cpp" />
-    <ClCompile Include="GUI\GUIManager.cpp" />
-    <ClCompile Include="GUI\ChooseRenderTechnique.cpp" />
+    <ClCompile Include="GUI\ImguiManager.cpp" />
+    <ClCompile Include="Libraries\imgui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Libraries\imgui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="Libraries\imgui\imgui.cpp" />
+    <ClCompile Include="Libraries\imgui\imgui_demo.cpp" />
+    <ClCompile Include="Libraries\imgui\imgui_draw.cpp" />
+    <ClCompile Include="Libraries\imgui\imgui_tables.cpp" />
+    <ClCompile Include="Libraries\imgui\imgui_widgets.cpp" />
     <ClCompile Include="ResourceManager\LayoutCodex.cpp" />
     <ClCompile Include="ResourceManager\Mesh.cpp" />
     <ClCompile Include="ResourceManager\Surface.cpp" />
@@ -239,11 +244,15 @@
     <ClInclude Include="Drawable\SpotLight.h" />
     <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h" />
     <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h" />
-    <ClInclude Include="GUI\Forms\Rectangle.h" />
-    <ClInclude Include="GUI\GUIElement.h" />
-    <ClInclude Include="GUI\GUIManager.h" />
-    <ClInclude Include="GUI\ChooseRenderTechnique.h" />
-    <ClInclude Include="GUI\UI_ID.h" />
+    <ClInclude Include="GUI\ImguiManager.h" />
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_win32.h" />
+    <ClInclude Include="Libraries\imgui\imconfig.h" />
+    <ClInclude Include="Libraries\imgui\imgui.h" />
+    <ClInclude Include="Libraries\imgui\imgui_internal.h" />
+    <ClInclude Include="Libraries\imgui\imstb_rectpack.h" />
+    <ClInclude Include="Libraries\imgui\imstb_textedit.h" />
+    <ClInclude Include="Libraries\imgui\imstb_truetype.h" />
     <ClInclude Include="ResourceManager\Color.h" />
     <ClInclude Include="ResourceManager\Geometry\Sphere.h" />
     <ClInclude Include="ResourceManager\IndexedTriangleList.h" />
@@ -506,26 +515,10 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shaders\PixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
-    </FxCompile>
-    <FxCompile Include="Shaders\VertexShader.hlsl">
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0_level_9_3</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0_level_9_3</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0_level_9_3</ShaderModel>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0_level_9_3</ShaderModel>
-    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\GUI\FontPS.hlsl" />
+    <None Include="Shaders\GUI\FontVS.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

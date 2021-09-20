@@ -79,14 +79,29 @@
     <Filter Include="Header Files\GUI">
       <UniqueIdentifier>{2de4853a-a1d3-4360-9c89-fdce25b33c69}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GUI\Forms">
-      <UniqueIdentifier>{563ec4cc-2ec4-4b9b-80e3-ffe68ab4bdd2}</UniqueIdentifier>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{13556157-0efd-4862-b16a-e404ca67bb88}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders\GUI">
       <UniqueIdentifier>{117c71f5-5da3-4b48-9301-8e4335777e97}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ResourceManager\GUI">
-      <UniqueIdentifier>{13556157-0efd-4862-b16a-e404ca67bb88}</UniqueIdentifier>
+    <Filter Include="Header Files\Libraries">
+      <UniqueIdentifier>{0d66c685-0829-4b7e-bc57-76d986ae5a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries">
+      <UniqueIdentifier>{c8dab9ae-3d2c-4909-b1f5-388871983c33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries\imgui">
+      <UniqueIdentifier>{bca348e6-cf96-4938-9889-1f652f134254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Libraries\imgui\backends">
+      <UniqueIdentifier>{d33ece29-a234-4549-addc-ea70bba5de2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\imgui">
+      <UniqueIdentifier>{2db283c1-705c-4485-abd3-72be7ba8c19c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\imgui\backends">
+      <UniqueIdentifier>{0574383d-e34f-4e24-93f1-9998ead04e46}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -189,20 +204,35 @@
     <ClCompile Include="Drawable\PointLight.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="GUI\GUIManager.cpp">
-      <Filter>Source Files\ResourceManager\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\GUIElement.cpp">
-      <Filter>Source Files\ResourceManager\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="GUI\ChooseRenderTechnique.cpp">
-      <Filter>Source Files\ResourceManager\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager\LightManager.cpp">
       <Filter>Source Files\SceneManager</Filter>
     </ClCompile>
     <ClCompile Include="Drawable\SolidSphere.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\ImguiManager.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui_widgets.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui_demo.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui_draw.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui_tables.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>Source Files\Libraries\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\backends\imgui_impl_dx11.cpp">
+      <Filter>Source Files\Libraries\imgui\backends</Filter>
     </ClCompile>
     <ClCompile Include="Drawable\SpotLight.cpp">
       <Filter>Source Files\Drawable</Filter>
@@ -344,21 +374,6 @@
     <ClInclude Include="Bindable\Bindables\ConstantBuffersEx.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
-    <ClInclude Include="GUI\GUIManager.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\GUIElement.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\ChooseRenderTechnique.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\Forms\Rectangle.h">
-      <Filter>Header Files\GUI\Forms</Filter>
-    </ClInclude>
-    <ClInclude Include="GUI\UI_ID.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
     <ClInclude Include="Bindable\Bindables\StructuredBuffers.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
@@ -368,17 +383,38 @@
     <ClInclude Include="Drawable\SolidSphere.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
+    <ClInclude Include="GUI\ImguiManager.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imgui.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imgui_internal.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imconfig.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imstb_truetype.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imstb_rectpack.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imstb_textedit.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_win32.h">
+      <Filter>Header Files\Libraries\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\backends\imgui_impl_dx11.h">
+      <Filter>Header Files\Libraries\imgui\backends</Filter>
+    </ClInclude>
     <ClInclude Include="Drawable\SpotLight.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\VertexShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\PixelShader.hlsl">
-      <Filter>Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
@@ -475,5 +511,13 @@
     <FxCompile Include="Shaders\Common\SpotLight.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\GUI\FontPS.hlsl">
+      <Filter>Shaders\GUI</Filter>
+    </None>
+    <None Include="Shaders\GUI\FontVS.hlsl">
+      <Filter>Shaders\GUI</Filter>
+    </None>
   </ItemGroup>
 </Project>

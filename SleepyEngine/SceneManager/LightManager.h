@@ -17,7 +17,7 @@ public:
 	void PrepareDepthFromLight();
 	void RenderPointLightCubeTextures( const Model& model );
 	void PrepareDepthFromSpotLight();
-
+	void DrawControlPanel();
 public:
 	void SelectPointLight( const u32 index );
 	void TranslatePointLight( DirectX::XMFLOAT3 translation );

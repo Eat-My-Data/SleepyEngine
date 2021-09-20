@@ -26,8 +26,6 @@ void App::ExecuteFrame()
 		m_Win32Window.InitializeGraphics( m_GDI, GraphicsAPI::DirectX );
 	if ( !m_SceneManager.IsInitialzed() )
 		m_SceneManager.Initialize( m_GDI, GraphicsAPI::DirectX );
-	if ( !m_GUIManager.IsInitialized() )
-		m_GUIManager.Initialize( m_GDI, m_SceneManager, m_Win32Window.m_Mouse );
 
 	const f32 dt = timer.Mark();
 
@@ -41,11 +39,13 @@ void App::ExecuteFrame()
 		case VK_ESCAPE:
 			if ( m_Win32Window.CursorEnabled() )
 			{
+				m_SceneManager.ToggleImGuiEngabled();
 				m_Win32Window.DisableCursor();
 				m_Win32Window.m_Mouse.EnableRaw();
 			}
 			else
 			{
+				m_SceneManager.ToggleImGuiEngabled();
 				m_Win32Window.EnableCursor();
 				m_Win32Window.m_Mouse.DisableRaw();
 			}
@@ -154,10 +154,7 @@ void App::ExecuteFrame()
 			m_SceneManager.RotateCamera( (f32)delta->x, (f32)delta->y );
 	}
 
-	//m_GUIManager.Update();
-
 	m_SceneManager.Draw();
-	//m_GUIManager.Draw();
-
+	m_SceneManager.DrawControlPanel();
 	m_SceneManager.Present();
 }

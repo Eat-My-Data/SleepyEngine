@@ -9,10 +9,10 @@ DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi )
 	using namespace Bind;
 	namespace dx = DirectX;
 
-	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/LightVS.cso" );
+	auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/LightVS.cso" );
 	auto pvsbc = pvs->GetBytecode();
 	AddBind( std::move( pvs ) );
-	AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/LightPS.cso" ) );
+	AddBind( PixelShader::Resolve( gdi, "./Shaders/Bin/LightPS.cso" ) );
 	AddBind( Sampler::Resolve( gdi ) );
 	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 	AddBind( Rasterizer::Resolve( gdi, true ) );
@@ -78,4 +78,9 @@ DirectX::XMMATRIX DirectionalLight::GetViewMatrix() noexcept
 DirectX::XMMATRIX DirectionalLight::GetProjectionMatrix() noexcept
 {
 	return m_OrthoCamera.GetProjectionMatrix();
+}
+
+Camera& DirectionalLight::GetCamera()
+{
+	return m_OrthoCamera;
 }

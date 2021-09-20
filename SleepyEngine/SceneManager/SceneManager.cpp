@@ -1,5 +1,7 @@
 #include "SceneManager.h"
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
+#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
+#include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
 SceneManager::~SceneManager()
 {
@@ -16,6 +18,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
 	m_LightManager.Initialize( *m_pGDI );
+	ImGui_ImplDX11_Init( m_pGDI->GetDevice(), m_pGDI->GetContext() );
 }
 
 bool SceneManager::IsInitialzed() noexcept
@@ -28,8 +31,20 @@ void SceneManager::SetRenderTechnique( RenderTechnique renderTechnique ) noexcep
 	m_RenderTechnique = renderTechnique;
 }
 
+void SceneManager::ToggleImGuiEngabled() noexcept
+{
+	imguiEnabled = !imguiEnabled;
+}
+
 void SceneManager::Draw()
 {
+	if ( imguiEnabled )
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
+
 	PrepareFrame();
 
 	if ( m_RenderTechnique == RenderTechnique::Forward )
@@ -42,8 +57,35 @@ void SceneManager::Draw()
 	m_pGDI->GetContext()->PSSetShaderResources( 0, 10, null );
 }
 
+void SceneManager::DrawControlPanel()
+{
+	if ( imguiEnabled && ImGui::Begin( "Control Panel" ) )
+	{
+		ImGui::Text( "Camera" );
+		ImGui::SliderFloat( "Camera X", &m_Camera.GetPosition().x, -80.0f, 80.0f );
+		ImGui::SliderFloat( "Camera Y", &m_Camera.GetPosition().y, -80.0f, 80.0f );
+		ImGui::SliderFloat( "Camera Z", &m_Camera.GetPosition().z, -80.0f, 80.0f );
+		ImGui::Text( "Camera Orientation" );
+		ImGui::SliderAngle( "Camera Pitch", &m_Camera.m_fPitch, 0.995f * -90.0f, 0.995f * 90.0f );
+		ImGui::SliderAngle( "Camera Yaw", &m_Camera.m_fYaw, -180.0f, 180.0f );
+		m_LightManager.DrawControlPanel();
+		if ( ImGui::Button( "Toggle Render Technique" ) )
+			m_RenderTechnique == RenderTechnique::Deferred ? SetRenderTechnique( RenderTechnique::Forward ) : SetRenderTechnique( RenderTechnique::Deferred );
+		ImGui::SameLine();
+		ImGui::Text( m_RenderTechnique == RenderTechnique::Deferred ? "Deferred" : "Forward" );
+		ImGui::End();
+	}
+}
+
 void SceneManager::Present()
 {
+	if ( imguiEnabled )
+	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+		ImGui::EndFrame();
+	}
+
 	m_pGDI->GetSwap()->Present( 1u, 0u );
 }
 
