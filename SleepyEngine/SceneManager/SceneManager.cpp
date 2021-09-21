@@ -73,8 +73,8 @@ void SceneManager::DrawControlPanel()
 			m_RenderTechnique == RenderTechnique::Deferred ? SetRenderTechnique( RenderTechnique::Forward ) : SetRenderTechnique( RenderTechnique::Deferred );
 		ImGui::SameLine();
 		ImGui::Text( m_RenderTechnique == RenderTechnique::Deferred ? "Deferred" : "Forward" );
-		ImGui::End();
 	}
+	ImGui::End();
 }
 
 void SceneManager::Present()
