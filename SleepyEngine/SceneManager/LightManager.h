@@ -53,8 +53,12 @@ private:
 	} m_LightIndexes;
 	Bind::PixelConstantBuffer<LightIndex>* m_pLightIndex;
 	// TODO:
-	// - Shadows for Point Light
+	// - Make start positions available for lights
+	// - Optimize everything you can
+	// - Polish
+	// - Bugfix Shadows for Point Light
 	// - Spotlight
 	// - Shadows for Spotlight
-	//   - Will need to separate PrepareDepthFromLight and point lights paths, maybe a GetPointLights() function?
+	// - Add support to turn on/turn off lights
+	// - Support for changing lighting values
 };

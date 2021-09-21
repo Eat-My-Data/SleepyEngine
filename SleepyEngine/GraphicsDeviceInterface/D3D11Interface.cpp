@@ -173,12 +173,8 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
     descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
     descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
     descDSV.Texture2D.MipSlice = 0u;
-    hr = m_pDevice->CreateDepthStencilView( pDepthStencil, &descDSV, &m_pDSV );
-	if ( FAILED( hr ) )
-	{
-		throw std::exception();
-	}
 
+	hr = m_pDevice->CreateDepthStencilView( pDepthStencil, &descDSV, &m_pDSV );
 	hr = m_pDevice->CreateDepthStencilView( m_pShadowTexture, &descDSV, &m_pShadowDSV );
 	hr = m_pDevice->CreateDepthStencilView( m_pShadowTexture2, &descDSV, &m_pShadowDSV2 );
 
