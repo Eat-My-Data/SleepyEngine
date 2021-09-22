@@ -35,6 +35,8 @@ private:
 	void PrepareFrame();
 	void ForwardRender();
 	void DeferredRender();
+public:
+	bool imguiEnabled = true;
 private:
 	GraphicsAPI m_GraphicsAPI = GraphicsAPI::Uninitialized;
 	GraphicsDeviceInterface* m_pGDI = nullptr;
@@ -43,8 +45,6 @@ private:
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 private:
 	std::vector<Model*> m_vecOfModels;
-private:
-	bool imguiEnabled = true;
 	// TODO: 
 	// - Resource Manager
 	// - Culling

@@ -22,7 +22,6 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi )
 	AddBind( m_pForwardLightMatrices );	
 }
 
-
 DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
 {
 	return DirectX::XMMatrixTranslation( 1.0f, 1.0f, 1.0f );
@@ -31,12 +30,12 @@ DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
 void SpotLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
 {
 	// get camera matrix from view matrix
-	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
-	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, gdi.GetViewMatrix() );
+	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( m_PerspectiveCamera.GetViewMatrix() );
+	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, m_PerspectiveCamera.GetViewMatrix() );
 
 	// get inverse of the projection matrix
-	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( gdi.GetProjMatrix() );
-	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, gdi.GetProjMatrix() );
+	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( m_PerspectiveCamera.GetProjectionMatrix() );
+	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, m_PerspectiveCamera.GetProjectionMatrix() );
 
 	
 	matrixcbuf.lightViewMatrix = m_PerspectiveCamera.GetViewMatrix();
@@ -82,4 +81,9 @@ DirectX::XMMATRIX SpotLight::GetViewMatrix() noexcept
 DirectX::XMMATRIX SpotLight::GetProjectionMatrix() noexcept
 {
 	return m_PerspectiveCamera.GetProjectionMatrix();
+}
+
+Camera& SpotLight::GetCamera()
+{
+	return m_PerspectiveCamera;
 }

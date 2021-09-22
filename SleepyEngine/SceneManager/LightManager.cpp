@@ -142,6 +142,14 @@ void LightManager::Draw()
 
 void LightManager::DrawControlPanel()
 {
+	ImGui::Text( "Spot Light" );
+	ImGui::ColorEdit3( "Spot Color", &m_pSpotLight->m_StructuredBufferData.color.x );
+	ImGui::SliderFloat( "Spot X", &m_pSpotLight->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Spot Y", &m_pSpotLight->m_StructuredBufferData.pos.y, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Spot Z", &m_pSpotLight->m_StructuredBufferData.pos.z, -80.0f, 80.0f );
+	ImGui::Text( "Spot Orientation" );
+	ImGui::SliderAngle( "Spot Pitch", &m_pSpotLight->GetCamera().m_fPitch, 0.995f * -90.0f, 0.995f * 90.0f );
+	ImGui::SliderAngle( "Spot Yaw", &m_pSpotLight->GetCamera().m_fYaw, -180.0f, 180.0f );
 	ImGui::Text( "Directional Light" );
 	ImGui::ColorEdit3( "Color", &m_pDirectionalLight->m_StructuredBufferData.color.x );
 	ImGui::Text( "Orientation" );
