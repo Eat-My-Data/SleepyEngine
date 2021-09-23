@@ -237,6 +237,9 @@
     <ClCompile Include="Drawable\SpotLight.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="Drawable\SolidCone.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -412,6 +415,12 @@
     </ClInclude>
     <ClInclude Include="Drawable\SpotLight.h">
       <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable\SolidCone.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Geometry\Cone.h">
+      <Filter>Header Files\ResourceManager\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

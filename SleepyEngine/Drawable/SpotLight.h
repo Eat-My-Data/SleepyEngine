@@ -36,4 +36,7 @@ private:
 		DirectX::XMMATRIX lightProjMatrix;
 	} matrixcbuf;
 	std::shared_ptr<Bind::VertexConstantBuffer<ForwardMatrices>> m_pForwardLightMatrices;
+	// TODO:
+	// - Render a pyramid as the geometry for both the visual light ( solid sphere in point lights)
+	// - Also for lighting pass in deferred renderer
 };

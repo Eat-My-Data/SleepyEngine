@@ -185,6 +185,7 @@
     <ClCompile Include="Bindable\Bindables\TransformCBuf.cpp" />
     <ClCompile Include="Bindable\Bindables\VertexBuffer.cpp" />
     <ClCompile Include="Bindable\Bindables\VertexShader.cpp" />
+    <ClCompile Include="Drawable\SolidCone.cpp" />
     <ClCompile Include="Drawable\Cube.cpp" />
     <ClCompile Include="Drawable\DirectionalLight.cpp" />
     <ClCompile Include="Drawable\Drawable.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="Bindable\Bindables\TransformCBuf.h" />
     <ClInclude Include="Bindable\Bindables\VertexBuffer.h" />
     <ClInclude Include="Bindable\Bindables\VertexShader.h" />
+    <ClInclude Include="Drawable\SolidCone.h" />
     <ClInclude Include="Drawable\Cube.h" />
     <ClInclude Include="Drawable\DirectionalLight.h" />
     <ClInclude Include="Drawable\Drawable.h" />
@@ -254,6 +256,7 @@
     <ClInclude Include="Libraries\imgui\imstb_textedit.h" />
     <ClInclude Include="Libraries\imgui\imstb_truetype.h" />
     <ClInclude Include="ResourceManager\Color.h" />
+    <ClInclude Include="ResourceManager\Geometry\Cone.h" />
     <ClInclude Include="ResourceManager\Geometry\Sphere.h" />
     <ClInclude Include="ResourceManager\IndexedTriangleList.h" />
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
