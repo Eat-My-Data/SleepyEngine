@@ -138,6 +138,8 @@ void LightManager::Draw()
 		m_pLightIndex->Bind( *m_pGDI );
 		m_vecOfPointLights[i]->Draw( * m_pGDI );
 	}
+
+	m_pSpotLight->Draw( *m_pGDI );
 }
 
 void LightManager::DrawControlPanel()

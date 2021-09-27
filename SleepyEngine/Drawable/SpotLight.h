@@ -3,6 +3,7 @@
 #include "../Bindable/Bindables/ConstantBuffers.h"
 #include "../SceneManager/RenderTechnique.h"
 #include "../SceneManager/Camera.h"
+#include "../Drawable/SolidCone.h"
 
 class SpotLight : public Drawable
 {
@@ -29,6 +30,8 @@ public:
 		float cone = 5.0f;
 	};
 	SpotLightData m_StructuredBufferData;
+public:
+	SolidCone* m_pSolidCone;
 private:
 	struct ForwardMatrices
 	{
@@ -37,6 +40,6 @@ private:
 	} matrixcbuf;
 	std::shared_ptr<Bind::VertexConstantBuffer<ForwardMatrices>> m_pForwardLightMatrices;
 	// TODO:
-	// - Render a pyramid as the geometry for both the visual light ( solid sphere in point lights)
+	// - Render a cone as the geometry for both the visual light ( solid sphere in point lights)
 	// - Also for lighting pass in deferred renderer
 };

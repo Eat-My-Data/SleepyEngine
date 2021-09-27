@@ -20,6 +20,8 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi )
 
 	m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 2u );
 	AddBind( m_pForwardLightMatrices );	
+
+	m_pSolidCone = new SolidCone( gdi );
 }
 
 DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept

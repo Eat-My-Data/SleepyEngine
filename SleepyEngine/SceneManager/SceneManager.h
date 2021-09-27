@@ -45,6 +45,7 @@ private:
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 private:
 	std::vector<Model*> m_vecOfModels;
+	Model* m_pMonster;
 	// TODO: 
 	// - Resource Manager
 	// - Culling

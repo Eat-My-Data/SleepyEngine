@@ -8,104 +8,84 @@
 class Cone
 {
 public:
-	static IndexedTriangleList MakeTesselated( Dvtx::VertexLayout layout,int latDiv,int longDiv )
+	static IndexedTriangleList MakeTesselated( Dvtx::VertexLayout layout, f32 height, f32 stackCount, f32 topRadius, f32 bottomRadius, f32 sliceCount )
 	{
 		namespace dx = DirectX;
-		assert( latDiv >= 3 );
-		assert( longDiv >= 3 );
-
-		constexpr float radius = 1.0f;
-		const auto base = dx::XMVectorSet( 0.0f,0.0f,radius,0.0f );
-		const float lattitudeAngle = PI / latDiv;
-		const float longitudeAngle = 2.0f * PI / longDiv;
 
 		Dvtx::VertexBuffer vb{ std::move( layout ) };
-		for ( int iLat = 1; iLat < latDiv; iLat++ )
-		{
-			const auto latBase = dx::XMVector3Transform(
-				base,
-				dx::XMMatrixRotationX( lattitudeAngle * iLat )
-			);
-			for ( int iLong = 0; iLong < longDiv; iLong++ )
-			{
-				dx::XMFLOAT3 calculatedPos;
-				auto v = dx::XMVector3Transform(
-					latBase,
-					dx::XMMatrixRotationZ( longitudeAngle * iLong )
-				);
-				dx::XMStoreFloat3( &calculatedPos,v );
-				vb.EmplaceBack( calculatedPos );
-			}
-		}
+        f32 stackHeight = height / stackCount;
+        f32 radiusStep = ( topRadius - bottomRadius ) / stackCount;
+        f32 ringCount = stackCount + 1;
 
-		// add the cap vertices
-		const auto iNorthPole = (unsigned short)vb.Size();
-		{
-			dx::XMFLOAT3 northPos;
-			dx::XMStoreFloat3( &northPos,base );
-			vb.EmplaceBack( northPos );
-		}
-		const auto iSouthPole = (unsigned short)vb.Size();
-		{
-			dx::XMFLOAT3 southPos;
-			dx::XMStoreFloat3( &southPos,dx::XMVectorNegate(base) );
-			vb.EmplaceBack( southPos );
-		}
+        for ( int i = 0; i < ringCount; i++ ) {
+            f32 y = -0.5f * height + i * stackHeight;
+            f32 r = bottomRadius + i * radiusStep;
+            f32 dTheta = 2.0f * PI / sliceCount;
+            for ( f32 j = 0; j <= sliceCount; j++ ) {
 
-		const auto calcIdx = [latDiv,longDiv]( unsigned short iLat,unsigned short iLong )
-		{ return iLat * longDiv + iLong; };
-		std::vector<unsigned short> indices;
-		for ( unsigned short iLat = 0; iLat < latDiv - 2; iLat++ )
-		{
-			for ( unsigned short iLong = 0; iLong < longDiv - 1; iLong++ )
-			{
-				indices.push_back( calcIdx( iLat,iLong ) );
-				indices.push_back( calcIdx( iLat + 1,iLong ) );
-				indices.push_back( calcIdx( iLat,iLong + 1 ) );
-				indices.push_back( calcIdx( iLat,iLong + 1 ) );
-				indices.push_back( calcIdx( iLat + 1,iLong ) );
-				indices.push_back( calcIdx( iLat + 1,iLong + 1 ) );
-			}
-			// wrap band
-			indices.push_back( calcIdx( iLat,longDiv - 1 ) );
-			indices.push_back( calcIdx( iLat + 1,longDiv - 1 ) );
-			indices.push_back( calcIdx( iLat,0 ) );
-			indices.push_back( calcIdx( iLat,0 ) );
-			indices.push_back( calcIdx( iLat + 1,longDiv - 1 ) );
-			indices.push_back( calcIdx( iLat + 1,0 ) );
-		}
+                f32 c = dx::XMScalarCos( j * dTheta );
+                f32 s = dx::XMScalarSin( j * dTheta );
+                vb.EmplaceBack( dx::XMFLOAT3( r * c, y, r * s ) );
+            }
+        }
+        std::vector<unsigned short> indices;
+        u32 ringVertexCount = (u32)sliceCount + 1;
+        for ( int i = 0; i < stackCount; i++ ) {
+            for ( int j = 0; j < sliceCount; j++ ) {
+                indices.push_back( i * ringVertexCount + j );
+                indices.push_back( ( i + 1 ) * ringVertexCount + j );
+                indices.push_back( ( i + 1 ) * ringVertexCount + j + 1 );
 
-		// cap fans
-		for ( unsigned short iLong = 0; iLong < longDiv - 1; iLong++ )
-		{
-			// north
-			indices.push_back( iNorthPole );
-			indices.push_back( calcIdx( 0,iLong ) );
-			indices.push_back( calcIdx( 0,iLong + 1 ) );
-			// south
-			indices.push_back( calcIdx( latDiv - 2,iLong + 1 ) );
-			indices.push_back( calcIdx( latDiv - 2,iLong ) );
-			indices.push_back( iSouthPole );
-		}
-		// wrap triangles
-		// north
-		indices.push_back( iNorthPole );
-		indices.push_back( calcIdx( 0,longDiv - 1 ) );
-		indices.push_back( calcIdx( 0,0 ) );
-		// south
-		indices.push_back( calcIdx( latDiv - 2,0 ) );
-		indices.push_back( calcIdx( latDiv - 2,longDiv - 1 ) );
-		indices.push_back( iSouthPole );
+                indices.push_back( i * ringVertexCount + j );
+                indices.push_back( ( i + 1 ) * ringVertexCount + j + 1 );
+                indices.push_back( i * ringVertexCount + j + 1 );
+            }
+        }
+        //BuildCylinderTopCap( topRadius, height, sliceCount, ref ret );
+        u32 baseIndex = (u32)vb.Size();
+        f32 y = 0.5f * height;
+        f32 dTheta = 2.0f * PI / sliceCount;
+        for ( int i = 0; i <= sliceCount; i++ ) {
+            f32 x = topRadius * dx::XMScalarCos( i * dTheta );
+            f32 z = topRadius * dx::XMScalarSin( i * dTheta );
+            vb.EmplaceBack( dx::XMFLOAT3( x, y, z ) );
+        }
+        vb.EmplaceBack( dx::XMFLOAT3(0, y, 0 ) );
+        u32 centerIndex =  (u32)vb.Size() - 1;
+        for ( int i = 0; i < sliceCount; i++ ) {
+            indices.push_back( centerIndex );
+            indices.push_back( baseIndex + i + 1 );
+            indices.push_back( baseIndex + i );
+        }
 
-		return { std::move( vb ),std::move( indices ) };
+
+        //BuildCylinderBottomCap( bottomRadius, height, sliceCount, ref ret );
+        u32 baseIndex2 = (u32)vb.Size();
+        f32 y2 = -0.5f * height;
+        f32 dTheta2 = 2.0f * PI / sliceCount;
+        for ( int i = 0; i <= sliceCount; i++ ) {
+            f32 x = bottomRadius * dx::XMScalarCos( i * dTheta2 );
+            f32 z = bottomRadius * dx::XMScalarSin( i * dTheta2 );
+            vb.EmplaceBack( dx::XMFLOAT3( x, y, z ) );
+        }
+        vb.EmplaceBack( dx::XMFLOAT3( 0, y2, 0 ) );
+        u32 centerIndex2 = (u32)vb.Size() - 1;
+        for ( int i = 0; i < sliceCount; i++ ) {
+            indices.push_back( centerIndex );
+            indices.push_back( baseIndex2 + i );
+            indices.push_back( baseIndex2 + i + 1 );
+        }
+        return { std::move( vb ),std::move( indices ) };
 	}
+
 	static IndexedTriangleList Make( std::optional<Dvtx::VertexLayout> layout = std::nullopt )
 	{
 		using Element = Dvtx::VertexLayout::ElementType;
 		if ( !layout )
 		{
-			layout = Dvtx::VertexLayout{}.Append( Element::Position3D );
+			layout = Dvtx::VertexLayout{}
+                .Append( Element::Position3D );
 		}
-		return MakeTesselated(std::move(*layout), 12, 24);
+		return MakeTesselated(std::move(*layout), 20.0f, 10.0f, 5.0f, 10.0f, 10.0f );
 	}
 };

@@ -2,17 +2,17 @@
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/Blender.h"
 #include "../ResourceManager/Vertex.h"
-#include "../ResourceManager/Geometry/Sphere.h"
+#include "../ResourceManager/Geometry/Cone.h"
 
 
-SolidCone::SolidCone( GraphicsDeviceInterface& gdi, float radius )
+SolidCone::SolidCone( GraphicsDeviceInterface& gdi )
 {
 	using namespace Bind;
 	namespace dx = DirectX;
 
-	auto model = Sphere::Make();
-	model.Transform( dx::XMMatrixScaling( radius, radius, radius ) );
-	const auto geometryTag = "$sphere." + std::to_string( radius );
+	auto model = Cone::Make();
+	//model.Transform( dx::XMMatrixScaling( radius, radius, radius ) );
+	const auto geometryTag = "cone." + std::to_string( 10 );
 	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
 	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 
