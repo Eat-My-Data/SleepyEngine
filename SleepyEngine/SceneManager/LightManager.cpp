@@ -169,7 +169,7 @@ void LightManager::DrawControlPanel()
 	ImGui::SliderFloat( "Z2", &m_vecOfPointLights[1]->m_StructuredBufferData.pos.z, -80.0f, 80.0f );
 }
 
-void LightManager::RenderSolidSpheres()
+void LightManager::RenderLightGeometry()
 {
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
@@ -178,6 +178,8 @@ void LightManager::RenderSolidSpheres()
 		m_pLightIndex->Bind( *m_pGDI );
 		m_vecOfPointLights[i]->m_SolidSphere->Draw( *m_pGDI );
 	}
+
+	m_pSpotLight->m_pSolidCone->Draw( *m_pGDI );
 }
 
 void LightManager::PrepareDepthFromLight()

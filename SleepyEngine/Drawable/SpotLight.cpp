@@ -3,6 +3,7 @@
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/Sampler.h"
 #include "../Bindable/Bindables/Blender.h"
+#include "../ResourceManager/Geometry/Cone.h"
 #include <algorithm>
 
 SpotLight::SpotLight( GraphicsDeviceInterface& gdi )
@@ -10,10 +11,14 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi )
 	using namespace Bind;
 	namespace dx = DirectX;
 
-	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/LightVS.cso" );
+	auto model = Cone::Make();
+	const auto geometryTag = "cone." + std::to_string( 10 );
+	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
+	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
+	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightVS.cso" );
 	auto pvsbc = pvs->GetBytecode();
 	AddBind( std::move( pvs ) );
-	AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/LightPS.cso" ) );
+	AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightPS.cso" ) );
 	AddBind( Sampler::Resolve( gdi ) );
 	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 	AddBind( Rasterizer::Resolve( gdi, true ) );

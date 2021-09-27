@@ -13,7 +13,7 @@ public:
 	void Initialize( GraphicsDeviceInterface& gdi );
 	void UpdateBuffers( DirectX::XMFLOAT3 camPos );
 	void Draw();
-	void RenderSolidSpheres();
+	void RenderLightGeometry();
 	void PrepareDepthFromLight();
 	void RenderPointLightCubeTextures( const Model& model );
 	void PrepareDepthFromSpotLight();

@@ -41,6 +41,7 @@ public:
                 indices.push_back( i * ringVertexCount + j + 1 );
             }
         }
+
         //BuildCylinderTopCap( topRadius, height, sliceCount, ref ret );
         u32 baseIndex = (u32)vb.Size();
         f32 y = 0.5f * height;
@@ -57,7 +58,6 @@ public:
             indices.push_back( baseIndex + i + 1 );
             indices.push_back( baseIndex + i );
         }
-
 
         //BuildCylinderBottomCap( bottomRadius, height, sliceCount, ref ret );
         u32 baseIndex2 = (u32)vb.Size();

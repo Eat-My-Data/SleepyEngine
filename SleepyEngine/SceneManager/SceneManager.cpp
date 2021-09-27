@@ -171,7 +171,7 @@ void SceneManager::ForwardRender()
 	m_vecOfModels[0]->Draw( *m_pGDI, false );
 
 	// light cores
-	m_LightManager.RenderSolidSpheres();
+	m_LightManager.RenderLightGeometry();
 }
 
 void SceneManager::DeferredRender()
@@ -200,5 +200,5 @@ void SceneManager::DeferredRender()
 
 	// light cores
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
-	m_LightManager.RenderSolidSpheres();
+	m_LightManager.RenderLightGeometry();
 }
