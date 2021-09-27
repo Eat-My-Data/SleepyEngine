@@ -38,7 +38,14 @@ void SolidCone::SetPos( DirectX::XMFLOAT3 pos ) noexcept
 	this->pos = pos;
 }
 
+void SolidCone::Rotate( f32 dx, f32 dy ) noexcept
+{
+	this->rot.x += dx * 0.05f;
+	this->rot.y += dy * 0.05f;
+}
+
 DirectX::XMMATRIX SolidCone::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixTranslation( pos.x, pos.y, pos.z );
+	return DirectX::XMMatrixRotationRollPitchYawFromVector( DirectX::XMLoadFloat3( &rot ) )*
+		DirectX::XMMatrixTranslationFromVector( DirectX::XMLoadFloat3( &pos ) );
 }
