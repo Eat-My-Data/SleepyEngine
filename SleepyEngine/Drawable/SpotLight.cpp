@@ -69,6 +69,7 @@ void SpotLight::Translate( DirectX::XMFLOAT3 translation )
 	m_StructuredBufferData.pos.x += translation.x;
 	m_StructuredBufferData.pos.y += translation.y;
 	m_StructuredBufferData.pos.z += translation.z;
+	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
 }
 
 void SpotLight::Rotate( const f32 dx, const f32 dy )

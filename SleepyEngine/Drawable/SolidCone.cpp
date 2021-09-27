@@ -11,7 +11,7 @@ SolidCone::SolidCone( GraphicsDeviceInterface& gdi )
 	namespace dx = DirectX;
 
 	auto model = Cone::Make();
-	//model.Transform( dx::XMMatrixScaling( radius, radius, radius ) );
+	//model.Transform( dx::XMMatrixScaling( 0.5f, 0.5f, 0.5f ) );
 	const auto geometryTag = "cone." + std::to_string( 10 );
 	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
 	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );

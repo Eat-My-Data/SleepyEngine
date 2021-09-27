@@ -66,7 +66,7 @@ public:
         for ( int i = 0; i <= sliceCount; i++ ) {
             f32 x = bottomRadius * dx::XMScalarCos( i * dTheta2 );
             f32 z = bottomRadius * dx::XMScalarSin( i * dTheta2 );
-            vb.EmplaceBack( dx::XMFLOAT3( x, y, z ) );
+            vb.EmplaceBack( dx::XMFLOAT3( x, y2, z ) );
         }
         vb.EmplaceBack( dx::XMFLOAT3( 0, y2, 0 ) );
         u32 centerIndex2 = (u32)vb.Size() - 1;
@@ -86,6 +86,6 @@ public:
 			layout = Dvtx::VertexLayout{}
                 .Append( Element::Position3D );
 		}
-		return MakeTesselated(std::move(*layout), 20.0f, 10.0f, 5.0f, 10.0f, 10.0f );
+		return MakeTesselated(std::move(*layout), 2.0f, 10.0f, 0.5f, 1.0f, 10.0f );
 	}
 };
