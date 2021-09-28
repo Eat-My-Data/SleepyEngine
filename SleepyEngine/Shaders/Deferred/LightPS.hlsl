@@ -46,7 +46,8 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
 
     float fragDepth = fragPositionInLightView.z / fragPositionInLightView.w;
     float sampleDepth = depthTextureFromLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f + 0.5f)).r;
-    float isInLight = sampleDepth > fragDepth;
+    float bias = 0.0005;
+    float isInLight = sampleDepth + bias  > fragDepth;
     float3 combinedColor = ((diffuseIntensity + specularResult) * isInLight) + ambient;
 
    	// final color

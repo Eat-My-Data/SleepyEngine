@@ -33,7 +33,7 @@ float VectorToDepthValue(float3 Vec)
     float LocalZcomp = max(AbsVec.x, max(AbsVec.y, AbsVec.z));
 
     const float f = 200.0;
-    const float n = 1.0;
+    const float n = 0.001;
     float NormZComp = (f + n) / (f - n) - (2 * f * n) / (f - n) / LocalZcomp;
     return (NormZComp + 1.0) * 0.5;
 }
@@ -54,6 +54,6 @@ float CalculatePointLightShadow(float3 viewFragPos, float3 lightPos, SamplerStat
     // now get current linear depth as the length between the fragment and light position
     float currentDepth = VectorToDepthValue(fragToLight);
     // now test for shadows
-    float bias = 0.05;
+    float bias = 0.0005;
     return closestDepth + bias > currentDepth ? 1.0 : 0.0;
 }

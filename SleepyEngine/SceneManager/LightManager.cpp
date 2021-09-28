@@ -65,7 +65,7 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 
 	DirectX::XMStoreFloat4x4(
 		&projection,
-		DirectX::XMMatrixPerspectiveFovLH( PI / 4.0f, 1.0f, 1.0f, 200.0f )
+		DirectX::XMMatrixPerspectiveFovLH( PI / 2.0f, 1.0f, 0.001f, 200.0f )
 	);
 	// +x
 	DirectX::XMStoreFloat3( &cameraDirections[0], DirectX::XMVectorSet( 1.0f, 0.0f, 0.0f, 0.0f ) );
