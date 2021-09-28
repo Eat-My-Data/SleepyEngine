@@ -27,6 +27,7 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi )
 	AddBind( m_pForwardLightMatrices );	
 
 	m_pSolidCone = new SolidCone( gdi );
+	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
 }
 
 DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
@@ -75,8 +76,7 @@ void SpotLight::Translate( DirectX::XMFLOAT3 translation )
 void SpotLight::Rotate( const f32 dx, const f32 dy )
 {
 	m_PerspectiveCamera.Rotate( dx, dy );
-	
-	m_pSolidCone->Rotate( dx, dy );
+	m_pSolidCone->Rotate( m_PerspectiveCamera.m_fPitch, m_PerspectiveCamera.m_fYaw );
 	m_StructuredBufferData.lightDirection.x = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[0];
 	m_StructuredBufferData.lightDirection.y = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[1];
 	m_StructuredBufferData.lightDirection.z = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[2];

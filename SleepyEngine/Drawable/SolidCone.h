@@ -11,4 +11,6 @@ public:
 private:
 	DirectX::XMFLOAT3 rot = { 0.0f,0.0f,0.0f };
 	DirectX::XMFLOAT3 pos = { 1.0f,1.0f,1.0f };
+	f32 m_fPitch;
+	f32 m_fYaw;
 };
