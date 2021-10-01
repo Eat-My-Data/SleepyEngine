@@ -6,13 +6,14 @@
 #include "../ResourceManager/Geometry/Cone.h"
 #include <algorithm>
 
-SpotLight::SpotLight( GraphicsDeviceInterface& gdi )
+SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 {
 	using namespace Bind;
 	namespace dx = DirectX;
 
 	auto model = Cone::Make();
-	const auto geometryTag = "cone." + std::to_string( 10 );
+	model.Transform( dx::XMMatrixScaling( scale, scale, scale ) );
+	const auto geometryTag = "cone." + std::to_string( scale );
 	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
 	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightVS.cso" );
@@ -26,8 +27,9 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi )
 	m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 2u );
 	AddBind( m_pForwardLightMatrices );	
 
-	m_pSolidCone = new SolidCone( gdi );
+	m_pSolidCone = new SolidCone( gdi, 1.0f );
 	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
+	m_pSolidCone->Rotate( m_PerspectiveCamera.m_fPitch, m_PerspectiveCamera.m_fYaw );
 }
 
 DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
@@ -61,15 +63,13 @@ void SpotLight::Draw( GraphicsDeviceInterface& gdi ) const noexcept
 		b->Bind( gdi );
 	}
 
-	gdi.GetContext()->Draw( 3, 0 );
+	gdi.DrawIndexed( pIndexBuffer->GetCount() );
 }
 
 void SpotLight::Translate( DirectX::XMFLOAT3 translation )
 {
 	m_PerspectiveCamera.Translate( translation );
-	m_StructuredBufferData.pos.x += translation.x;
-	m_StructuredBufferData.pos.y += translation.y;
-	m_StructuredBufferData.pos.z += translation.z;
+	m_StructuredBufferData.pos = m_PerspectiveCamera.GetPosition();
 	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
 }
 

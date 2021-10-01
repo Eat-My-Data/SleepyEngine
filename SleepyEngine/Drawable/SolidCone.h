@@ -4,7 +4,7 @@
 class SolidCone : public Drawable
 {
 public:
-	SolidCone( GraphicsDeviceInterface& gdi );
+	SolidCone( GraphicsDeviceInterface& gdi, f32 scale );
 	void SetPos( DirectX::XMFLOAT3 pos ) noexcept;
 	void Rotate( f32 dx, f32 dy ) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;

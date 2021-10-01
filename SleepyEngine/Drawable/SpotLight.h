@@ -8,7 +8,7 @@
 class SpotLight : public Drawable
 {
 public:
-	SpotLight( GraphicsDeviceInterface& gdi );
+	SpotLight( GraphicsDeviceInterface& gdi, f32 scale );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos );
 	void Draw( GraphicsDeviceInterface& gdi ) const noexcept;

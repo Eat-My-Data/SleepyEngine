@@ -5,14 +5,14 @@
 #include "../ResourceManager/Geometry/Cone.h"
 
 
-SolidCone::SolidCone( GraphicsDeviceInterface& gdi )
+SolidCone::SolidCone( GraphicsDeviceInterface& gdi, f32 scale )
 {
 	using namespace Bind;
 	namespace dx = DirectX;
 
 	auto model = Cone::Make();
-	//model.Transform( dx::XMMatrixScaling( 0.5f, 0.5f, 0.5f ) );
-	const auto geometryTag = "cone." + std::to_string( 10 );
+	model.Transform( dx::XMMatrixScaling( scale, scale, scale ) );
+	const auto geometryTag = "cone." + std::to_string( scale );
 	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
 	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 
