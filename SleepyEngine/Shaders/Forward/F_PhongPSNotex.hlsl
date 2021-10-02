@@ -48,7 +48,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 sp
 	// specular
     const float3 camToFrag = viewFragPos - pointLightData[0].camPos;
     const float3 directionalSpecular = Speculate(
-         directionalLightData[0].specularIntensity.rrr, 1.0f, viewNormal, -directionalLightData[0].lightDirection,
+         directionalLightData[0].color.rgb, directionalLightData[0].specularIntensity, viewNormal, -directionalLightData[0].lightDirection,
         camToFrag, directionalAtt, specularPower
     );
         // spot light
