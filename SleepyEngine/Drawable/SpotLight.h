@@ -19,7 +19,7 @@ public:
 	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
 	Camera& GetCamera();
 private:
-	Camera m_PerspectiveCamera = { L"Spot Light Camera", MatrixType::Perspective, ViewSpace( 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ), DirectX::XMFLOAT3{ 0.0f,10.0f,0.0f },  PI / 2.0f, -PI };
+	Camera m_PerspectiveCamera = { L"Spot Light Camera", MatrixType::Perspective, ViewSpace( 1.0f, 9.0f / 16.0f, 0.001f, 200.0f ), DirectX::XMFLOAT3{ 0.0f,10.0f,0.0f },  PI / 2.0f, -PI };
 public:
 	struct SpotLightData
 	{
