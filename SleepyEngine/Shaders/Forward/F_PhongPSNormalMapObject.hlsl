@@ -71,7 +71,12 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     
     float spotLightShadow = CalculateSpotLightShadow(spotLightViewPos, splr);
     float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, -normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
-    float3 combinedColor = combinedPointLightDiffuse + combinedPointLightSpecular + directionalDiffuse + directionalSpecular + spotDiffuse + pointLightData[0].ambient;
+    const float3 spotSpecular = Speculate(
+        spotLightData[0].color.rgb, directionalLightData[0].specularIntensity, viewNormal, -spotLightData[0].lightDirection,
+        camToFrag, att, specularPower
+    ) * spotLightShadow;
+    
+    float3 combinedColor = combinedPointLightDiffuse + combinedPointLightSpecular + directionalDiffuse + directionalSpecular + spotDiffuse + spotSpecular + pointLightData[0].ambient;
     
    	// final color
     return float4((combinedColor * tex.Sample(splr, tc).rgb), 1.0f);

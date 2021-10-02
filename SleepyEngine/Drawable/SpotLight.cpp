@@ -30,6 +30,9 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 	m_pSolidCone = new SolidCone( gdi, 1.0f );
 	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
 	m_pSolidCone->Rotate( m_PerspectiveCamera.m_fPitch, m_PerspectiveCamera.m_fYaw );
+	m_StructuredBufferData.lightDirection.x = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[0];
+	m_StructuredBufferData.lightDirection.y = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[1];
+	m_StructuredBufferData.lightDirection.z = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[2];
 }
 
 DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
@@ -68,8 +71,10 @@ void SpotLight::Draw( GraphicsDeviceInterface& gdi ) const noexcept
 
 void SpotLight::Translate( DirectX::XMFLOAT3 translation )
 {
-	m_PerspectiveCamera.Translate( translation );
-	m_StructuredBufferData.pos = m_PerspectiveCamera.GetPosition();
+	m_StructuredBufferData.pos.x += translation.x;
+	m_StructuredBufferData.pos.y += translation.y;
+	m_StructuredBufferData.pos.z += translation.z;
+	m_PerspectiveCamera.SetPosition( m_StructuredBufferData.pos );
 	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
 }
 

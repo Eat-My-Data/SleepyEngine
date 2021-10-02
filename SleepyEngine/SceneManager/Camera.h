@@ -22,6 +22,7 @@ public:
 	Camera( const wchar_t* name, MatrixType matrixType, ViewSpace viewSpace, DirectX::XMFLOAT3 homePos = { 0.0f,0.0f,0.0f }, f32 homePitch = 0.0f, f32 homeYaw = 0.0f ) noexcept;
 	~Camera();
 public:
+	void SetPosition( DirectX::XMFLOAT3 position );
 	DirectX::XMFLOAT3& GetPosition() noexcept;
 	DirectX::XMMATRIX GetViewMatrix() noexcept;
 	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
