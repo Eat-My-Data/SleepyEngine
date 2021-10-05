@@ -37,25 +37,24 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     worldPosition /= worldPosition.w;
     float4 worldSpacePos = mul(worldPosition, pointLightData[0].cameraMatrix);
     
-    PointLightData pl = pointLightData[index];
-    // light
-    const LightVectorData lv = CalculateLightVectorData(spotLightData[0].pos, worldSpacePos.xyz);
-    float closestDepth = pointLightShadowTexture.Sample(SampleTypePoint, lv.vToL).r;
+    float4 fragPositionInLightView = mul(worldSpacePos, spotLightData[0].spotViewProjectionMatrix);
     
-    float shadow = CalculatePointLightShadow(worldSpacePos.xyz, spotLightData[0].pos, SampleTypePoint, index);
     // vector from camera to fragment
-    float3 camToFrag = worldSpacePos.xyz - pl.camPos;
+    float3 camToFrag = worldSpacePos.xyz - pointLightData[0].camPos.xyz;
+    // diffuse light
+    float diffuseIntensity = max(0.0f, dot(normalize(normals.xyz), normalize(-spotLightData[0].lightDirection)));
     
-    float att = saturate((1 - (lv.distToL / pl.radius)));
+    float3 spotToFrag = spotLightData[0].pos - worldSpacePos.xyz;
+    float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
     att *= att;
-
-    // diffuse
-    float3 diffuseColor = Diffuse(pointLightData[index].color, pl.diffuseIntensity, att, lv.dirToL, normalize(normals.xyz)) * shadow;
     
-    // specular
-    float3 specularResult = Speculate(specular.xyz, pl.diffuseIntensity, normalize(normals.xyz), lv.dirToL, camToFrag, att, pl.specularPower) * shadow;
-    float3 combinedColor = ((diffuseColor + specularResult));
+    float3 specularResult = Speculate(specular.xyz, 1.0f, normalize(normals.xyz), normalize(-spotLightData[0].lightDirection), camToFrag, att, 128.0f);
+    float fragDepth = fragPositionInLightView.z / fragPositionInLightView.w;
+    float sampleDepth = depthTextureFromSpotLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f + 0.5f)).r;
+    float bias = 0.0005;
+    float isInLight = sampleDepth + bias > fragDepth;
+    float3 combinedColor = ((diffuseIntensity + specularResult) * isInLight);
 
-    // final color
+   	// final color
     return float4((combinedColor * colors.rgb), 1.0f);
 }

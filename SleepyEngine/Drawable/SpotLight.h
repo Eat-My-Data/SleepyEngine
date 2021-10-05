@@ -28,6 +28,7 @@ public:
 		float range = 20.0f;
 		DirectX::XMFLOAT3 pos = { 0.0f, 10.0f, 0.0f };
 		float cone = 5.0f;
+		DirectX::XMMATRIX spotViewProjectionMatrix;
 	};
 	SpotLightData m_StructuredBufferData;
 public:

@@ -37,7 +37,7 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 
 DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixTranslation( 1.0f, 1.0f, 1.0f );
+	return DirectX::XMMatrixTranslation( m_StructuredBufferData.pos.x, m_StructuredBufferData.pos.y, m_StructuredBufferData.pos.z );
 }
 
 void SpotLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
@@ -50,7 +50,7 @@ void SpotLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
 	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( m_PerspectiveCamera.GetProjectionMatrix() );
 	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, m_PerspectiveCamera.GetProjectionMatrix() );
 
-	
+	m_StructuredBufferData.spotViewProjectionMatrix = m_PerspectiveCamera.GetViewMatrix() * m_PerspectiveCamera.GetProjectionMatrix();
 	matrixcbuf.lightViewMatrix = m_PerspectiveCamera.GetViewMatrix();
 	matrixcbuf.lightProjMatrix = m_PerspectiveCamera.GetProjectionMatrix();
 

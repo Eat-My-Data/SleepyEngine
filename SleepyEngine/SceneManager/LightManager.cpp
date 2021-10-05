@@ -100,7 +100,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	PointLight::PointLightData* bufferData = new PointLight::PointLightData[2];
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
-		m_vecOfPointLights[i]->Translate( { 0.0f,0.0f,0.0f } );
+		//m_vecOfPointLights[i]->Translate( { 0.0f,0.0f,0.0f } );
 		m_vecOfPointLights[i]->Update( m_pGDI->GetViewMatrix(), m_pGDI->GetProjMatrix(), camPos );
 		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
 	}
