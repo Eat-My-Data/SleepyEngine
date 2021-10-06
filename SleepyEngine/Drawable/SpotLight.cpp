@@ -37,7 +37,8 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 
 DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixTranslation( m_StructuredBufferData.pos.x, m_StructuredBufferData.pos.y, m_StructuredBufferData.pos.z );
+	return DirectX::XMMatrixRotationRollPitchYaw( m_PerspectiveCamera.m_fPitch, m_PerspectiveCamera.m_fYaw, 0.0f ) * 
+		DirectX::XMMatrixTranslation( m_StructuredBufferData.pos.x, m_StructuredBufferData.pos.y, m_StructuredBufferData.pos.z );
 }
 
 void SpotLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
