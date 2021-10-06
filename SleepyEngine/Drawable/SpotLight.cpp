@@ -13,6 +13,7 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 
 	auto model = Cone::Make();
 	model.Transform( dx::XMMatrixScaling( scale, scale, scale ) );
+	model.Transform( dx::XMMatrixTranslation( 0.0f, -scale, 0.0f ) );
 	const auto geometryTag = "cone2." + std::to_string( scale );
 	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
 	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );

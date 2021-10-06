@@ -6,9 +6,9 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 {
 	m_pGDI = &gdi;
 	m_pDirectionalLight = new DirectionalLight( gdi );
-	m_pSpotLight = new SpotLight( gdi, 2.0f  );
-	m_vecOfPointLights.push_back( new PointLight( gdi, 20 ) );
-	m_vecOfPointLights.push_back( new PointLight( gdi, 20 ) );
+	m_pSpotLight = new SpotLight( gdi, 5.0f  );
+	m_vecOfPointLights.push_back( new PointLight( gdi, 20.0f ) );
+	m_vecOfPointLights.push_back( new PointLight( gdi, 20.0f ) );
 
 	m_pLightIndex = new Bind::PixelConstantBuffer<LightIndex>{ gdi, 9 };
 	m_pPixelStructuredBuffer = new Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>{ gdi, 5u };
