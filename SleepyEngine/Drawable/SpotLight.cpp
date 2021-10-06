@@ -13,7 +13,7 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 
 	auto model = Cone::Make();
 	model.Transform( dx::XMMatrixScaling( scale, scale, scale ) );
-	const auto geometryTag = "cone." + std::to_string( scale );
+	const auto geometryTag = "cone2." + std::to_string( scale );
 	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
 	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightVS.cso" );
@@ -23,7 +23,7 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 	AddBind( Sampler::Resolve( gdi ) );
 	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 	AddBind( Rasterizer::Resolve( gdi, true ) );
-
+	AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );
 	m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 2u );
 	AddBind( m_pForwardLightMatrices );	
 
