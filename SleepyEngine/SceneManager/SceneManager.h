@@ -49,6 +49,5 @@ private:
 	// TODO: 
 	// - Resource Manager
 	// - Culling
-	// - Clean up shader files/minimize everything
 	// - Make to have as little buffers as possible
 };
