@@ -352,10 +352,6 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gdi, const aiMe
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gdi, meshTag, indices ) );
 
-		auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/PhongVSNormalMap.cso" );
-		auto pvsbc = pvs->GetBytecode();
-		bindablePtrs.push_back( std::move( pvs ) );
-
 		if ( isForward )
 		{
 			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/F_PhongVSNormalMap.cso" );
