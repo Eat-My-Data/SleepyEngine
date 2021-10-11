@@ -64,9 +64,12 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     float3 spotToFrag = spotLightData[0].pos - viewFragPos;
     float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
     att *= att;
+    
     // TODO:
     // - Angular attenuation
     // Dot product between light to frag and 
+    
+    float angularAtt = dot(normalize(spotLightData[0].lightDirection), spotToFrag);
 
     float spotLightShadow = CalculateSpotLightShadow(spotLightViewPos, splr);
     float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
