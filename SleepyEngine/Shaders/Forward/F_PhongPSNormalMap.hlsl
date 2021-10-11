@@ -64,11 +64,14 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     float3 spotToFrag = spotLightData[0].pos - viewFragPos;
     float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
     att *= att;
+    // TODO:
+    // - Angular attenuation
+    // Dot product between light to frag and 
 
     float spotLightShadow = CalculateSpotLightShadow(spotLightViewPos, splr);
-    float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, -normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
+    float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
     const float3 spotSpecular = Speculate(
-        spotLightData[0].color.rgb, dl.specularIntensity, viewNormal, -spotLightData[0].lightDirection,
+        spotLightData[0].color.rgb, dl.specularIntensity, viewNormal, normalize(spotLightData[0].lightDirection),
         camToFrag, att, specularPower
     ) * spotLightShadow;
     

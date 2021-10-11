@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+!x64/Debug/*.dll
+!x64/Release/*.dll
+
 # User-specific files
 *.rsuser
 *.suo
@@ -17,12 +20,8 @@
 mono_crash.*
 
 # Build results
-[Dd]ebug/
 [Dd]ebugPublic/
-[Rr]elease/
 [Rr]eleases/
-x64/
-x86/
 [Ww][Ii][Nn]32/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
@@ -360,3 +359,14 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/SleepyEngine/Release
+/SleepyEngine/Debug
+/SleepyEngine/x64/Debug/SleepyEngine.tlog
+/SleepyEngine/x64/Release/SleepyEngine.tlog
+/SleepyEngine/x64/Release
+/SleepyEngine/x64/Debug
+/Tests/Debug/Tests.tlog
+/Tests/Debug
+/Tests/Release/Tests.tlog
+/Tests/Release
+/Tests/x64

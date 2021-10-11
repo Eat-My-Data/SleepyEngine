@@ -17,6 +17,8 @@ struct PointLightData
 
 StructuredBuffer<PointLightData> pointLightData : register(t6);
 
+// TODO:
+// - Make array of textures
 TextureCube pointLightShadowTexture : register(t7);
 TextureCube pointLightShadowTexture2 : register(t8);
 
@@ -29,6 +31,8 @@ cbuffer LightIndex : register(b9)
 
 float VectorToDepthValue(float3 Vec)
 {
+    // TODO: 
+    // - Simplify Math for Shadow Calculation
     float3 AbsVec = abs(Vec);
     float LocalZcomp = max(AbsVec.x, max(AbsVec.y, AbsVec.z));
 

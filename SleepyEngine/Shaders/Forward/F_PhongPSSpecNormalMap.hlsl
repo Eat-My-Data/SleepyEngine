@@ -103,9 +103,9 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     att *= att;
     
     float spotLightShadow = CalculateSpotLightShadow(spotLightViewPos, splr);
-    float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, -normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
+    float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
     const float3 spotSpecular = Speculate(
-        spotLightData[0].color.rgb, directionalLightData[0].specularIntensity, viewNormal, -spotLightData[0].lightDirection,
+        spotLightData[0].color.rgb, directionalLightData[0].specularIntensity, viewNormal, normalize(spotLightData[0].lightDirection),
         camToFrag, att, specularPower
     ) * spotLightShadow;
     
