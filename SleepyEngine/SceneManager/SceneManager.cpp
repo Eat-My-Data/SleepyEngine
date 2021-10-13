@@ -17,7 +17,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_GraphicsAPI = api;
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
-	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.fbx", true, 2.0f );
+	m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_runcycle.obj", true, 1.0f / 20.0f );
 	m_LightManager.Initialize( *m_pGDI );
 	ImGui_ImplDX11_Init( m_pGDI->GetDevice(), m_pGDI->GetContext() );
 }
@@ -151,6 +151,8 @@ void SceneManager::PrepareFrame()
 
 void SceneManager::ForwardRender()
 {
+	m_pMonster->Draw( *m_pGDI, false );
+
 	// depth from light
 	m_LightManager.PrepareDepthFromLight();
 	m_vecOfModels[1]->Draw( *m_pGDI, true );
@@ -176,6 +178,8 @@ void SceneManager::ForwardRender()
 
 void SceneManager::DeferredRender()
 {
+	m_pMonster->Draw( *m_pGDI, false );
+
 	// depth from light
 	m_LightManager.PrepareDepthFromLight();
 	m_vecOfModels[1]->Draw( *m_pGDI, true );

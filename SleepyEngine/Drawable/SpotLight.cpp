@@ -30,32 +30,33 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 
 	m_pSolidCone = new SolidCone( gdi, 1.0f );
 	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
-	m_pSolidCone->Rotate( m_PerspectiveCamera.m_fPitch - ( PI / 2.0f), m_PerspectiveCamera.m_fYaw );
-	m_StructuredBufferData.cone = scale;
-	m_StructuredBufferData.lightDirection.x = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[0];
-	m_StructuredBufferData.lightDirection.y = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[1];
-	m_StructuredBufferData.lightDirection.z = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[2];
+	m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f), m_fYaw );
+	m_StructuredBufferData.outerRadius = scale;
+	m_StructuredBufferData.innerRadius = scale / 2.0f;
+	m_StructuredBufferData.lightDirection.x = GetViewMatrix().r[2].m128_f32[0];
+	m_StructuredBufferData.lightDirection.y = GetViewMatrix().r[2].m128_f32[1];
+	m_StructuredBufferData.lightDirection.z = GetViewMatrix().r[2].m128_f32[2];
 }
 
 DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixRotationRollPitchYaw( m_PerspectiveCamera.m_fPitch - ( PI / 2.0f ), m_PerspectiveCamera.m_fYaw, 0.0f ) *
+	return DirectX::XMMatrixRotationRollPitchYaw( m_fPitch - ( PI / 2.0f ), m_fYaw, 0.0f ) *
 		DirectX::XMMatrixTranslation( m_StructuredBufferData.pos.x, m_StructuredBufferData.pos.y, m_StructuredBufferData.pos.z );
 }
 
 void SpotLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
 {
 	// get camera matrix from view matrix
-	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( m_PerspectiveCamera.GetViewMatrix() );
-	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, m_PerspectiveCamera.GetViewMatrix() );
+	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( GetViewMatrix() );
+	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, GetViewMatrix() );
 
 	// get inverse of the projection matrix
-	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( m_PerspectiveCamera.GetProjectionMatrix() );
-	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, m_PerspectiveCamera.GetProjectionMatrix() );
+	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( GetProjectionMatrix() );
+	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, GetProjectionMatrix() );
 
-	m_StructuredBufferData.spotViewProjectionMatrix = m_PerspectiveCamera.GetViewMatrix() * m_PerspectiveCamera.GetProjectionMatrix();
-	matrixcbuf.lightViewMatrix = m_PerspectiveCamera.GetViewMatrix();
-	matrixcbuf.lightProjMatrix = m_PerspectiveCamera.GetProjectionMatrix();
+	m_StructuredBufferData.spotViewProjectionMatrix = GetViewMatrix() * GetProjectionMatrix();
+	matrixcbuf.lightViewMatrix = GetViewMatrix();
+	matrixcbuf.lightProjMatrix = GetProjectionMatrix();
 
 	m_pForwardLightMatrices->Update( gdi, matrixcbuf );
 	m_pForwardLightMatrices->Bind( gdi );
@@ -77,7 +78,6 @@ void SpotLight::Translate( DirectX::XMFLOAT3 translation )
 	m_StructuredBufferData.pos.x += translation.x;
 	m_StructuredBufferData.pos.y += translation.y;
 	m_StructuredBufferData.pos.z += translation.z;
-	m_PerspectiveCamera.SetPosition( m_StructuredBufferData.pos );
 	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
 }
 
@@ -85,27 +85,33 @@ void SpotLight::Rotate( const f32 dx, const f32 dy )
 {
 	// Fix rotation to not roll camera
 	
-	//m_fYaw = wrap_angle( m_fYaw + dx * m_fRotationSpeed );
-	//m_fPitch = std::clamp( m_fPitch + dy * m_fRotationSpeed, 0.995f * -PI, 0.995f * PI );
-	m_PerspectiveCamera.Rotate( dx, dy );
-	m_pSolidCone->Rotate( m_PerspectiveCamera.m_fPitch - ( PI / 2.0f ), m_PerspectiveCamera.m_fYaw );
-	m_StructuredBufferData.lightDirection.x = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[0];
-	m_StructuredBufferData.lightDirection.y = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[1];
-	m_StructuredBufferData.lightDirection.z = m_PerspectiveCamera.GetViewMatrix().r[2].m128_f32[2];
+	m_fYaw = wrap_angle( m_fYaw + dx * 0.004f );
+	m_fPitch = std::clamp( m_fPitch + dy * 0.004f, 0.995f * -PI, 0.995f * PI );
+	m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f ), m_fYaw );
+	m_StructuredBufferData.lightDirection.x = GetViewMatrix().r[2].m128_f32[0];
+	m_StructuredBufferData.lightDirection.y = GetViewMatrix().r[2].m128_f32[1];
+	m_StructuredBufferData.lightDirection.z = GetViewMatrix().r[2].m128_f32[2];
 }
 
 DirectX::XMMATRIX SpotLight::GetViewMatrix() noexcept
 {
-	return m_PerspectiveCamera.GetViewMatrix();
+	using namespace DirectX;
+
+	const XMVECTOR forwardBaseVector = XMVectorSet( 0.0f, 0.0f, 1.0f, 0.0f );
+	// apply the camera rotations to a base vector
+	const auto lookVector = XMVector3Transform( forwardBaseVector,
+		XMMatrixRotationRollPitchYaw( m_fPitch, m_fYaw, 0.0f )
+	);
+	// generate camera transform (applied to all objects to arrange them relative
+	// to camera position/orientation in world) from cam position and direction
+	// camera "top" always faces towards +Y (cannot do a barrel roll)
+	const auto camPosition = XMLoadFloat3( &m_StructuredBufferData.pos );
+	const auto camTarget = camPosition + lookVector;
+	return XMMatrixLookAtLH( camPosition, camTarget, XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
 }
 
 DirectX::XMMATRIX SpotLight::GetProjectionMatrix() noexcept
 {
-	// PerspectiveFOVLH()
-	return m_PerspectiveCamera.GetProjectionMatrix();
-}
 
-Camera& SpotLight::GetCamera()
-{
-	return m_PerspectiveCamera;
+	return DirectX::XMMatrixPerspectiveFovLH( PI / 2, 1.0f, 0.5f, 20.0f );
 }

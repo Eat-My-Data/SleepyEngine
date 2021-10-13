@@ -47,6 +47,4 @@ private:
 
 	static constexpr f32 m_fTravelSpeed = 12.0f;
 	static constexpr f32 m_fRotationSpeed = 0.004f;
-	// TODO:
-	// - Make Graphics API Independent
 };

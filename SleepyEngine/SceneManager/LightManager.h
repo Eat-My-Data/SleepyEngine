@@ -53,7 +53,6 @@ private:
 	} m_LightIndexes;
 	Bind::PixelConstantBuffer<LightIndex>* m_pLightIndex;
 	// TODO:
-	// - Fix depth texture for spot light
 	// - Make start positions available for lights
 	// - Optimize everything you can
 	// - Polish

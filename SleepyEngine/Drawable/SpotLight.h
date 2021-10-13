@@ -17,9 +17,9 @@ public:
 	void Rotate( const f32 dx, const f32 dy );
 	DirectX::XMMATRIX GetViewMatrix() noexcept;
 	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
-	Camera& GetCamera();
-private:
-	Camera m_PerspectiveCamera = { L"Spot Light Camera", MatrixType::Perspective, ViewSpace( 1.0f, 1.0f, 0.5f, 20.0f ), DirectX::XMFLOAT3{ 0.0f,10.0f,0.0f },  -PI / 2.0f, -PI };
+public:
+	f32 m_fPitch;
+	f32 m_fYaw;
 public:
 	struct SpotLightData
 	{
@@ -27,7 +27,9 @@ public:
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
 		float range = 20.0f;
 		DirectX::XMFLOAT3 pos = { 0.0f, 10.0f, 0.0f };
-		float cone = 5.0f;
+		float outerRadius = 5.0f;
+		float innerRadius = 2.5f;
+		float padding[3];
 		DirectX::XMMATRIX spotViewProjectionMatrix;
 	};
 	SpotLightData m_StructuredBufferData;

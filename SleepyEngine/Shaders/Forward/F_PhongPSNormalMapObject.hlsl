@@ -69,12 +69,18 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
     att *= att;
     
-    float spotLightShadow = CalculateSpotLightShadow(spotLightViewPos, splr);
-    float3 spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
-    const float3 spotSpecular = Speculate(
-        spotLightData[0].color.rgb, directionalLightData[0].specularIntensity, viewNormal, normalize(spotLightData[0].lightDirection),
-        camToFrag, att, specularPower
-    ) * spotLightShadow;
+    float angularAttFactor = max(0.0f, dot(normalize(spotLightData[0].lightDirection), spotToFrag));
+    float3 spotDiffuse = float3(0.0f, 0.0f, 0.0f);
+    float3 spotSpecular = float3(0.0f, 0.0f, 0.0f);
+    if (angularAttFactor > 0.835f)
+    {
+        float spotLightShadow = CalculateSpotLightShadow(spotLightViewPos, splr);
+        spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, -normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
+        spotSpecular = Speculate(
+            spotLightData[0].color.rgb, directionalLightData[0].specularIntensity, viewNormal, -normalize(spotLightData[0].lightDirection),
+            camToFrag, att, specularPower
+        ) * spotLightShadow;
+    }
     
     float3 combinedColor = combinedPointLightDiffuse + combinedPointLightSpecular + directionalDiffuse + directionalSpecular + spotDiffuse + spotSpecular + pointLightData[0].ambient;
     

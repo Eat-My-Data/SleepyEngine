@@ -577,7 +577,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gdi, const aiMe
 		auto buf = Dcb::Buffer( std::move( lay ) );
 		buf["specularIntensity"] = ( specularColor.x + specularColor.y + specularColor.z ) / 3.0f;
 		buf["specularPower"] = shininess;
-		buf["specularMapWeight"] = 1.0f;
+		//buf["specularMapWeight"] = 1.0f;
 
 		bindablePtrs.push_back( std::make_unique<Bind::CachingPixelConstantBufferEX>( gdi, buf, 1u ) );
 	}
