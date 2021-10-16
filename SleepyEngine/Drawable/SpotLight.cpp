@@ -88,9 +88,10 @@ void SpotLight::Rotate( const f32 dx, const f32 dy )
 	m_fYaw = wrap_angle( m_fYaw + dx * 0.004f );
 	m_fPitch = std::clamp( m_fPitch + dy * 0.004f, 0.995f * -PI, 0.995f * PI );
 	m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f ), m_fYaw );
-	m_StructuredBufferData.lightDirection.x = GetViewMatrix().r[2].m128_f32[0];
-	m_StructuredBufferData.lightDirection.y = GetViewMatrix().r[2].m128_f32[1];
-	m_StructuredBufferData.lightDirection.z = GetViewMatrix().r[2].m128_f32[2];
+	DirectX::XMMATRIX tmp = DirectX::XMMatrixTranspose( GetViewMatrix() );
+	m_StructuredBufferData.lightDirection.x = tmp.r[2].m128_f32[0];
+	m_StructuredBufferData.lightDirection.y = tmp.r[2].m128_f32[1];
+	m_StructuredBufferData.lightDirection.z = tmp.r[2].m128_f32[2];
 }
 
 DirectX::XMMATRIX SpotLight::GetViewMatrix() noexcept
