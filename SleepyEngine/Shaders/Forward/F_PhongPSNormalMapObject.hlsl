@@ -69,7 +69,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
     att *= att;
     
-    float angularAttFactor = max(0.0f, dot(normalize(spotLightData[0].lightDirection), spotToFrag));
+    float angularAttFactor = max(0.0f, dot(normalize(-spotLightData[0].lightDirection), normalize(spotToFrag)));
     float3 spotDiffuse = float3(0.0f, 0.0f, 0.0f);
     float3 spotSpecular = float3(0.0f, 0.0f, 0.0f);
     if (angularAttFactor > 0.835f)
