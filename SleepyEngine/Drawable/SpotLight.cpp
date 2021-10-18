@@ -82,14 +82,13 @@ void SpotLight::Translate( DirectX::XMFLOAT3 translation )
 void SpotLight::Rotate( const f32 dx, const f32 dy )
 {
 	// Fix rotation to not roll camera
-	
 	m_fYaw = wrap_angle( m_fYaw + dx * 0.004f );
 	m_fPitch = std::clamp( m_fPitch + dy * 0.004f, 0.995f * -PI, 0.995f * PI );
 	m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f ), m_fYaw );
-	DirectX::XMMATRIX tmp = DirectX::XMMatrixTranspose( GetViewMatrix() );
-	m_StructuredBufferData.lightDirection.x = tmp.r[2].m128_f32[0];
-	m_StructuredBufferData.lightDirection.y = tmp.r[2].m128_f32[1];
-	m_StructuredBufferData.lightDirection.z = tmp.r[2].m128_f32[2];
+	DirectX::XMMATRIX tView = DirectX::XMMatrixTranspose( GetViewMatrix() );
+	m_StructuredBufferData.lightDirection.x = tView.r[2].m128_f32[0];
+	m_StructuredBufferData.lightDirection.y = tView.r[2].m128_f32[1];
+	m_StructuredBufferData.lightDirection.z = tView.r[2].m128_f32[2];
 }
 
 DirectX::XMMATRIX SpotLight::GetViewMatrix() noexcept
@@ -111,6 +110,5 @@ DirectX::XMMATRIX SpotLight::GetViewMatrix() noexcept
 
 DirectX::XMMATRIX SpotLight::GetProjectionMatrix() noexcept
 {
-
 	return DirectX::XMMatrixPerspectiveFovLH( PI / 2, 1.0f, 0.05f, 20.0f );
 }
