@@ -42,13 +42,18 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - pointLightData[0].camPos.xyz;
     // diffuse light
-    float diffuseIntensity = max(0.0f, dot(normalize(normals.xyz), normalize(-spotLightData[0].lightDirection)));
-    
     float3 spotToFrag = spotLightData[0].pos - worldSpacePos.xyz;
     float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
     att *= att;
     
-    float3 specularResult = Speculate(specular.xyz, 1.0f, normalize(normals.xyz), normalize(-spotLightData[0].lightDirection), camToFrag, att, 128.0f);
+    float angularAttFactor = max(0.0f, dot(normalize(-spotLightData[0].lightDirection), normalize(spotToFrag)));
+    float conAtt = (1.0 - (1.0 - angularAttFactor) * 1.0 / (1.0 - spotLightData[0].outerRadius));
+        
+    if (angularAttFactor > spotLightData[0].innerRadius)
+        conAtt = 1.0f;
+    
+    float3 diffuseIntensity = Diffuse(float3(1.0f, 1.0f, 1.0f), 1.0f, att * conAtt, normalize(-spotLightData[0].lightDirection), normalize(normals.xyz));
+    float3 specularResult = Speculate(specular.xyz, 1.0f, normalize(normals.xyz), normalize(-spotLightData[0].lightDirection), camToFrag, att * conAtt, 128.0f);
     float fragDepth = fragPositionInLightView.z / fragPositionInLightView.w;
     float sampleDepth = depthTextureFromSpotLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f + 0.5f)).r;
     float bias = 0.0005;

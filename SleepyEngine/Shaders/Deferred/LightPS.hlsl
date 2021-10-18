@@ -36,11 +36,12 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     float3 ambient = {0.2f, 0.2f, 0.2f};
     
     // diffuse light
-    float diffuseIntensity = max(0.0f, dot(normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection.xyz)));
 
     float lightAtt = directionalLightData[0].att;
     float specPower = directionalLightData[0].specularPower;
     
+    float3 diffuseIntensity = Diffuse(float3(1.0f, 1.0f, 1.0f), 1.0f, lightAtt, normalize(-directionalLightData[0].lightDirection), normalize(normals.xyz));
+
     // specular
     float3 specularResult = Speculate(specular.xyz, directionalLightData[0].specularIntensity, normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection), camToFrag, lightAtt, specPower);
 

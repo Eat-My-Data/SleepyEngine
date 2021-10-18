@@ -6,7 +6,7 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 {
 	m_pGDI = &gdi;
 	m_pDirectionalLight = new DirectionalLight( gdi );
-	m_pSpotLight = new SpotLight( gdi, 5.0f  );
+	m_pSpotLight = new SpotLight( gdi, 10.0f  );
 	m_vecOfPointLights.push_back( new PointLight( gdi, 20.0f ) );
 	m_vecOfPointLights.push_back( new PointLight( gdi, 20.0f ) );
 
