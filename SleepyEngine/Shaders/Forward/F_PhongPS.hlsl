@@ -56,13 +56,18 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     float angularAttFactor = max(0.0f, dot(normalize(-spotLightData[0].lightDirection), normalize(spotToFrag)));
     float3 spotDiffuse = float3(0.0f, 0.0f, 0.0f);
     float3 spotSpecular = float3(0.0f, 0.0f, 0.0f);
-    if (angularAttFactor > 0.835f)
+    if (angularAttFactor > spotLightData[0].outerRadius && att > 0.0f)
     {
+        float conAtt = (1.0 - (1.0 - angularAttFactor) * 1.0 / (1.0 - spotLightData[0].outerRadius));
+        
+        if (angularAttFactor > spotLightData[0].innerRadius)
+            conAtt = 1.0f;
+        
         float spotLightShadow = CalculateSpotLightShadow(spotLightViewPos, splr);
-        spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att, -normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
+        spotDiffuse = Diffuse(spotLightData[0].color.rgb, 1.0f, att * conAtt, -normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
         spotSpecular = Speculate(
             spotLightData[0].color.rgb, directionalLightData[0].specularIntensity, viewNormal, -normalize(spotLightData[0].lightDirection),
-            camToFrag, att, specularPower
+            camToFrag, att * conAtt, specularPower
         ) * spotLightShadow;
     }
     

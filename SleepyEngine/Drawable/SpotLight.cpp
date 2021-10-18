@@ -31,8 +31,6 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 	m_pSolidCone = new SolidCone( gdi, 1.0f );
 	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
 	m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f), m_fYaw );
-	m_StructuredBufferData.outerRadius = scale;
-	m_StructuredBufferData.innerRadius = scale / 2.0f;
 	m_StructuredBufferData.lightDirection.x = GetViewMatrix().r[2].m128_f32[0];
 	m_StructuredBufferData.lightDirection.y = GetViewMatrix().r[2].m128_f32[1];
 	m_StructuredBufferData.lightDirection.z = GetViewMatrix().r[2].m128_f32[2];

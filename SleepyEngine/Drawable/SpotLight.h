@@ -25,10 +25,10 @@ public:
 	{
 		DirectX::XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
-		float range = 20.0f;
+		float range = 50.0f;
 		DirectX::XMFLOAT3 pos = { 0.0f, 10.0f, 0.0f };
-		float outerRadius = 5.0f;
-		float innerRadius = 2.5f;
+		float outerRadius = 0.835f;
+		float innerRadius = 0.955f;
 		float padding[3];
 		DirectX::XMMATRIX spotViewProjectionMatrix;
 	};
