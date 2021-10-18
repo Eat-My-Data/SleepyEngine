@@ -47,10 +47,8 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     att *= att;
     
     float angularAttFactor = max(0.0f, dot(normalize(-spotLightData[0].lightDirection), normalize(spotToFrag)));
-    float conAtt = (1.0 - (1.0 - angularAttFactor) * 1.0 / (1.0 - spotLightData[0].outerRadius));
-        
-    if (angularAttFactor > spotLightData[0].innerRadius)
-        conAtt = 1.0f;
+    float conAtt = saturate((angularAttFactor - spotLightData[0].outerRadius) / (spotLightData[0].innerRadius - spotLightData[0].outerRadius)); //(1.0 - (1.0 - angularAttFactor) * 1.0 / (1.0 - spotLightData[0].outerRadius));
+
     
     float3 diffuseIntensity = Diffuse(float3(1.0f, 1.0f, 1.0f), 1.0f, att * conAtt, normalize(-spotLightData[0].lightDirection), normalize(normals.xyz));
     float3 specularResult = Speculate(specular.xyz, 1.0f, normalize(normals.xyz), normalize(-spotLightData[0].lightDirection), camToFrag, att * conAtt, 128.0f);

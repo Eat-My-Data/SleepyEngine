@@ -43,5 +43,5 @@ private:
 	} matrixcbuf;
 	std::shared_ptr<Bind::VertexConstantBuffer<ForwardMatrices>> m_pForwardLightMatrices;
 	// TODO:
-	// - inner and outer radius angle, the inner has full light intensity and the outer stops getting light
+	// - draw look at vector for debugging
 };
