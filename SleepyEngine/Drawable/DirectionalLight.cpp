@@ -42,6 +42,11 @@ void DirectionalLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 c
 	m_StructuredBufferData.projInvMatrix = projInvMatrix;
 	m_StructuredBufferData.lightViewProjectionMatrix = m_OrthoCamera.GetViewMatrix() * m_OrthoCamera.GetProjectionMatrix();
 
+	DirectX::XMMATRIX tView = DirectX::XMMatrixTranspose( m_OrthoCamera.GetViewMatrix() );
+	m_StructuredBufferData.lightDirection.x = tView.r[2].m128_f32[0];
+	m_StructuredBufferData.lightDirection.y = tView.r[2].m128_f32[1];
+	m_StructuredBufferData.lightDirection.z = tView.r[2].m128_f32[2];
+
 	matrixcbuf.lightViewMatrix = m_OrthoCamera.GetViewMatrix();
 	matrixcbuf.lightProjMatrix = m_OrthoCamera.GetProjectionMatrix();
 
@@ -72,6 +77,7 @@ void DirectionalLight::Rotate( const f32 dx, const f32 dy )
 
 DirectX::XMMATRIX DirectionalLight::GetViewMatrix() noexcept
 {
+	// completely changes on tiny rotation
 	return m_OrthoCamera.GetViewMatrix();
 }
 

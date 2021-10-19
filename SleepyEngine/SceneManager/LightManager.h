@@ -26,7 +26,8 @@ public:
 	void RotateSpotLight( const f32 dx, const f32 dy );
 	void TranslateDirectionalLight( DirectX::XMFLOAT3 translation );
 	void RotateDirectionalLight( const f32 dx, const f32 dy );
-private:
+	// MAKE PRIVATE
+public:
 	DirectionalLight* m_pDirectionalLight;
 	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>* m_pPixelStructuredBuffer;
 	SpotLight* m_pSpotLight;

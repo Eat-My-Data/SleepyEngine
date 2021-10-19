@@ -110,5 +110,5 @@ DirectX::XMMATRIX SpotLight::GetViewMatrix() noexcept
 
 DirectX::XMMATRIX SpotLight::GetProjectionMatrix() noexcept
 {
-	return DirectX::XMMatrixPerspectiveFovLH( PI / 2, 1.0f, 0.05f, 20.0f );
+	return DirectX::XMMatrixPerspectiveFovLH( PI / 2, 1.0f, 0.05f, m_StructuredBufferData.range );
 }

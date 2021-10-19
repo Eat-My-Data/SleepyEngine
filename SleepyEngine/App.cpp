@@ -145,6 +145,32 @@ void App::ExecuteFrame()
 			if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_LEFT ) )
 				m_SceneManager.RotateSpotLight( -dt * rotato, 0.0f );
 		}
+		else if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_CONTROL ) && m_Win32Window.m_Kbd.KeyIsPressed( VK_SHIFT ) )
+		{
+			// directional light translation
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'W' ) )
+				m_SceneManager.TranslateDirectionalLight( { dt * 20.0f,0.0f,0.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'S' ) )
+				m_SceneManager.TranslateDirectionalLight( { -dt * 20.0f,0.0f,0.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'A' ) )
+				m_SceneManager.TranslateDirectionalLight( { 0.0f,0.0f,dt * 20.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'D' ) )
+				m_SceneManager.TranslateDirectionalLight( { 0.0f,0.0f,-dt * 20.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'R' ) )
+				m_SceneManager.TranslateDirectionalLight( { 0.0f,dt * 20.0f,0.0f } );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( 'F' ) )
+				m_SceneManager.TranslateDirectionalLight( { 0.0f,-dt * 20.0f,0.0f } );
+
+			// directional light rotation
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_UP ) )
+				m_SceneManager.RotateDirectionalLight( 0.0f, -dt );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_DOWN ) )
+				m_SceneManager.RotateDirectionalLight( 0.0f, dt );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_RIGHT ) )
+				m_SceneManager.RotateDirectionalLight( dt, 0.0f );
+			if ( m_Win32Window.m_Kbd.KeyIsPressed( VK_LEFT ) )
+				m_SceneManager.RotateDirectionalLight( -dt, 0.0f );
+		}
 	}
 
 	// raw mouse input

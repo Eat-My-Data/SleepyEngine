@@ -18,7 +18,7 @@ public:
 	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
 	Camera& GetCamera();
 private:
-	Camera m_OrthoCamera = { L"Directional Light Camera", MatrixType::Orthographic, ViewSpace( 400.0f, 400.0f, 1.0f, 1200.0f ), DirectX::XMFLOAT3{ 0.0f,200.8f,100.0f },  PI / 2.0f, -PI };
+	Camera m_OrthoCamera = { L"Directional Light Camera", MatrixType::Orthographic, ViewSpace( 1024.0f, 1024.0f, 1.0f, 1200.0f ), DirectX::XMFLOAT3{ 0.0f,200.8f,100.0f },  PI / 2.0f, -PI };
 public:
 	struct DirectionalLightData
 	{
