@@ -10,9 +10,9 @@ struct SpotLightData
     float4x4 spotViewProjectionMatrix;
 };
 
-StructuredBuffer<SpotLightData> spotLightData : register(t10);
+StructuredBuffer<SpotLightData> spotLightData : register(t8);
 
-Texture2D depthTextureFromSpotLight : register(t11);
+Texture2D depthTextureFromSpotLight : register(t9);
 
 float CalculateSpotLightShadow(float4 lightViewPos, SamplerState splr)
 {

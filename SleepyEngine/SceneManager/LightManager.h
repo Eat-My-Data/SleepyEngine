@@ -29,11 +29,11 @@ public:
 	// MAKE PRIVATE
 public:
 	DirectionalLight* m_pDirectionalLight;
-	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>* m_pPixelStructuredBuffer;
+	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>* m_pDirectionalLightBuffer;
 	SpotLight* m_pSpotLight;
-	Bind::PixelStructuredBuffer<SpotLight::SpotLightData>* m_pPixelStructuredBuffer2;
+	Bind::PixelStructuredBuffer<SpotLight::SpotLightData>* m_pSpotLightBuffer;
 	std::vector<PointLight*> m_vecOfPointLights;
-	Bind::PixelArrStructuredBuffer<PointLight::PointLightData>* m_pPixelArrStructuredBuffer;
+	Bind::PixelArrStructuredBuffer<PointLight::PointLightData>* m_pPointLightBuffer;
 private:
 	u32 m_iSelectedPointLight = 0;
 	u32 m_iSelectedSpotLight = 0;
@@ -46,6 +46,16 @@ private:
 	std::vector<ID3D11DepthStencilView*> depthBuffers2{ 6 };
 	std::vector<DirectX::XMFLOAT3> cameraDirections{ 6 };
 	std::vector<DirectX::XMFLOAT3> cameraUps{ 6 };
+private:
+	struct DefaultLightSettings
+	{
+		float specularPower = 128.0f;
+		float ambientLight = 0.2f;
+		float lightIntensity = 1.0f;
+		float padding;
+	};
+	Bind::PixelConstantBuffer<DefaultLightSettings>* m_pDefaultLightSettingsBuffer;
+
 	struct LightIndex
 	{
 		float index = 0;

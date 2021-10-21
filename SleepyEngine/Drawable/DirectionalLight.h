@@ -24,17 +24,10 @@ private:
 public:
 	struct DirectionalLightData
 	{
-		DirectX::XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
-		float padding0;
-		float specularIntensity = 1.0f;
+		DirectX::XMFLOAT3 color = { 1.0f, 1.0f, 1.0f };
 		float att = 0.8f;
-		float specularPower = 128.0f;
-		float padding1;
-		DirectX::XMFLOAT3 camPos;
-		float padding2;
-		DirectX::XMMATRIX cameraMatrix;
-		DirectX::XMMATRIX projInvMatrix;
+		float padding;
 		DirectX::XMMATRIX lightViewProjectionMatrix;
 	};
 	DirectionalLightData m_StructuredBufferData;

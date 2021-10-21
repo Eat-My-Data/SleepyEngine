@@ -10,10 +10,14 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	m_vecOfPointLights.push_back( new PointLight( gdi, 20.0f ) );
 	m_vecOfPointLights.push_back( new PointLight( gdi, 20.0f ) );
 
-	m_pLightIndex = new Bind::PixelConstantBuffer<LightIndex>{ gdi, 9 };
-	m_pPixelStructuredBuffer = new Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>{ gdi, 5u };
-	m_pPixelStructuredBuffer2 = new Bind::PixelStructuredBuffer<SpotLight::SpotLightData>{ gdi, 10u };
-	m_pPixelArrStructuredBuffer = new Bind::PixelArrStructuredBuffer<PointLight::PointLightData>{ gdi, 6u };
+	// 5, 7, and 9 are all textures
+	m_pDirectionalLightBuffer = new Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>{ gdi, 4u };
+	m_pPointLightBuffer = new Bind::PixelArrStructuredBuffer<PointLight::PointLightData>{ gdi, 6u };
+	m_pSpotLightBuffer = new Bind::PixelStructuredBuffer<SpotLight::SpotLightData>{ gdi, 8u };
+	m_pDefaultLightSettingsBuffer = new Bind::PixelConstantBuffer<DefaultLightSettings>{ gdi, 10u };
+
+	// TODO: Remove the need for light index if possible
+	m_pLightIndex = new Bind::PixelConstantBuffer<LightIndex>{ gdi, 11u };
 
 	// texture descriptor
 	D3D11_TEXTURE2D_DESC textureDesc = {};
@@ -29,11 +33,10 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
 	// create the texture resource
-	ID3D11Texture2D* pTexture;
-	ID3D11Texture2D* pTexture2;
+	ID3D11Texture2D* pTexture[2];
 
-	gdi.GetDevice()->CreateTexture2D( &textureDesc, nullptr, &pTexture );
-	gdi.GetDevice()->CreateTexture2D( &textureDesc, nullptr, &pTexture2 );
+	gdi.GetDevice()->CreateTexture2D( &textureDesc, nullptr, &pTexture[0] );
+	gdi.GetDevice()->CreateTexture2D( &textureDesc, nullptr, &pTexture[1] );
 
 	// create the resource view on the texture
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
@@ -41,8 +44,8 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.MipLevels = 1;
-	gdi.GetDevice()->CreateShaderResourceView( pTexture, &srvDesc, &pTextureView );
-	gdi.GetDevice()->CreateShaderResourceView( pTexture2, &srvDesc, &pTextureView2 );
+	gdi.GetDevice()->CreateShaderResourceView( pTexture[0], &srvDesc, &pTextureView );
+	gdi.GetDevice()->CreateShaderResourceView( pTexture[1], &srvDesc, &pTextureView2 );
 
 	// make depth buffer resources for capturing shadow map
 	for ( u32 face = 0; face < 6; face++ )
@@ -56,10 +59,10 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 		descView.Texture2DArray.ArraySize = 1;
 		descView.Texture2DArray.FirstArraySlice = face;
 		ID3D11DepthStencilView* tempDSV = {};
-		gdi.GetDevice()->CreateDepthStencilView( pTexture, &descView, &tempDSV );
+		gdi.GetDevice()->CreateDepthStencilView( pTexture[0], &descView, &tempDSV );
 		depthBuffers[face] = std::move( tempDSV );
 		ID3D11DepthStencilView* tempDSV2 = {};
-		gdi.GetDevice()->CreateDepthStencilView( pTexture2, &descView, &tempDSV2 );
+		gdi.GetDevice()->CreateDepthStencilView( pTexture[1], &descView, &tempDSV2 );
 		depthBuffers2[face] = std::move( tempDSV2 );
 	}
 
@@ -90,12 +93,12 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 {
 	m_pDirectionalLight->Update( *m_pGDI, camPos );
-	m_pPixelStructuredBuffer->Update( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData );
-	m_pPixelStructuredBuffer->Bind( *m_pGDI );
+	m_pDirectionalLightBuffer->Update( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData );
+	m_pDirectionalLightBuffer->Bind( *m_pGDI );
 
 	m_pSpotLight->Update( *m_pGDI, camPos );
-	m_pPixelStructuredBuffer2->Update( *m_pGDI, m_pSpotLight->m_StructuredBufferData );
-	m_pPixelStructuredBuffer2->Bind( *m_pGDI );
+	m_pSpotLightBuffer->Update( *m_pGDI, m_pSpotLight->m_StructuredBufferData );
+	m_pSpotLightBuffer->Bind( *m_pGDI );
 
 	PointLight::PointLightData* bufferData = new PointLight::PointLightData[2];
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
@@ -103,15 +106,14 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 		m_vecOfPointLights[i]->Update( m_pGDI->GetViewMatrix(), m_pGDI->GetProjMatrix(), camPos );
 		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
 	}
-	m_pPixelArrStructuredBuffer->Update( *m_pGDI, bufferData );
-	m_pPixelArrStructuredBuffer->Bind( *m_pGDI );
+	m_pPointLightBuffer->Update( *m_pGDI, bufferData );
+	m_pPointLightBuffer->Bind( *m_pGDI );
 
 	m_LightIndexes.numPointLights = (float)m_vecOfPointLights.size();
 	m_pLightIndex->Update( *m_pGDI, m_LightIndexes );
 	m_pLightIndex->Bind( *m_pGDI );
 
 	m_pGDI->GetContext()->PSSetShaderResources( 7u, 1u, &pTextureView );
-	m_pGDI->GetContext()->PSSetShaderResources( 8u, 1u, &pTextureView2 );
 	m_pGDI->GetContext()->PSSetShaderResources( 11u, 1u, m_pGDI->GetShadowResource2() );
 
 	delete[] bufferData;
@@ -125,7 +127,7 @@ void LightManager::Draw()
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetLightDSS(), 1u );
 	m_pGDI->GetContext()->PSSetShaderResources( 0, 3, m_pGDI->GetShaderResources() );
 	m_pGDI->GetContext()->PSSetShaderResources( 3, 1, m_pGDI->GetDepthResource() );
-	m_pGDI->GetContext()->PSSetShaderResources( 4, 1, m_pGDI->GetShadowResource() );
+	m_pGDI->GetContext()->PSSetShaderResources( 5, 1, m_pGDI->GetShadowResource() );
 	m_pDirectionalLight->Draw( *m_pGDI );
 
 	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );

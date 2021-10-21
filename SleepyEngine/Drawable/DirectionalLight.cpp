@@ -30,17 +30,6 @@ DirectX::XMMATRIX DirectionalLight::GetTransformXM() const noexcept
 
 void DirectionalLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
 {
-	// get camera matrix from view matrix
-	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
-	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, gdi.GetViewMatrix() );
-
-	// get inverse of the projection matrix
-	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( gdi.GetProjMatrix() );
-	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, gdi.GetProjMatrix() );
-
-	m_StructuredBufferData.camPos = camPos;
-	m_StructuredBufferData.cameraMatrix = cameraMatrix;
-	m_StructuredBufferData.projInvMatrix = projInvMatrix;
 	m_StructuredBufferData.lightViewProjectionMatrix = GetViewMatrix() * GetProjectionMatrix();
 
 	DirectX::XMMATRIX tView = DirectX::XMMatrixTranspose( GetViewMatrix() );

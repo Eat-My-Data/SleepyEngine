@@ -14,9 +14,9 @@ struct DirectionalLightData
     row_major float4x4 lightViewProjectionMatrix;
 };
 
-StructuredBuffer<DirectionalLightData> directionalLightData : register(t5);
+StructuredBuffer<DirectionalLightData> directionalLightData : register(t4);
 
-Texture2D depthTextureFromLight : register(t4);
+Texture2D depthTextureFromLight : register(t5);
 
 float CalculateDirectionalLightShadow( float4 lightViewPos, SamplerState splr )
 {
