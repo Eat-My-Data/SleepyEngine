@@ -17,7 +17,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_GraphicsAPI = api;
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
-	m_pCameraData = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
+	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.obj", true, 2000.0f );
 	m_LightManager.Initialize( *m_pGDI );
 	ImGui_ImplDX11_Init( m_pGDI->GetDevice(), m_pGDI->GetContext() );
@@ -160,8 +160,8 @@ void SceneManager::UpdateCameraBuffer()
 	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( m_Camera.GetProjectionMatrix() );
 	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, m_Camera.GetProjectionMatrix() );
 
-	m_CameraCBufferaData.camPos = m_Camera.GetPosition();
-	m_CameraCBufferaData.cameraMatrix = cameraMatrix;
+	m_CameraCBufferaData.camPos = DirectX::XMFLOAT4( m_Camera.GetPosition().x, m_Camera.GetPosition().y, m_Camera.GetPosition().z, 1.0f);
+	m_CameraCBufferaData.viewInvMatrix = cameraMatrix;
 	m_CameraCBufferaData.projInvMatrix = projInvMatrix;
 
 	m_pCameraBuffer->Update( *m_pGDI, m_CameraCBufferaData );

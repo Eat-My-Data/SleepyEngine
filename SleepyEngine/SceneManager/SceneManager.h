@@ -47,9 +47,8 @@ private:
 private:
 	struct CameraData
 	{
-		DirectX::XMFLOAT3 camPos;
-		float padding;
-		DirectX::XMMATRIX cameraMatrix;
+		DirectX::XMFLOAT4 camPos;
+		DirectX::XMMATRIX viewInvMatrix;
 		DirectX::XMMATRIX projInvMatrix;
 	};
 	CameraData m_CameraCBufferaData;

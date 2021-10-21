@@ -33,7 +33,7 @@ public:
 	SpotLight* m_pSpotLight;
 	Bind::PixelStructuredBuffer<SpotLight::SpotLightData>* m_pSpotLightBuffer;
 	std::vector<PointLight*> m_vecOfPointLights;
-	Bind::PixelArrStructuredBuffer<PointLight::PointLightData>* m_pPointLightBuffer;
+	Bind::PixelStructuredBuffer<PointLight::PointLightData>* m_pPointLightBuffer;
 private:
 	u32 m_iSelectedPointLight = 0;
 	u32 m_iSelectedSpotLight = 0;
@@ -53,7 +53,7 @@ private:
 		float ambientLight = 0.2f;
 		float lightIntensity = 1.0f;
 		float padding;
-	};
+	} m_DefaultLightSettings;
 	Bind::PixelConstantBuffer<DefaultLightSettings>* m_pDefaultLightSettingsBuffer;
 
 	struct LightIndex

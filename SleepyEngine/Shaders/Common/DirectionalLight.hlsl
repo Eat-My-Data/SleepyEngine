@@ -1,16 +1,9 @@
 struct DirectionalLightData
 {
-    float4 color;
     float3 lightDirection;
-    float padding0;
-    float specularIntensity;
+    float3 color;
     float att;
-    float specularPower;
-    float padding1;
-    float3 camPos;
-    float padding2;
-    row_major float4x4 cameraMatrix;
-    row_major float4x4 projInvMatrix;
+    float padding;
     row_major float4x4 lightViewProjectionMatrix;
 };
 

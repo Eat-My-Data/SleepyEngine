@@ -526,6 +526,12 @@
     <FxCompile Include="Shaders\Deferred\SpotLightVS.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Common\CameraData.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\DefaultLightSettings.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\GUI\FontPS.hlsl">

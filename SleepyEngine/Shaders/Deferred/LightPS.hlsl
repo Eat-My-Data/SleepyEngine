@@ -1,5 +1,7 @@
 #include "../Common/ShaderOps.hlsl"
 #include "../Common/DirectionalLight.hlsl"
+#include "../Common/CameraData.hlsl"
+#include "../Common/DefaultLightSettings.hlsl"
 
 Texture2D colorTexture : register(t0);
 Texture2D normalTexture : register(t1);
@@ -25,25 +27,24 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     normals = (normals * 2.0) - 1.0;
     
     // world to camera 
-    float4 worldSpacePos = CalculateWorldSpacePosition( float4(clipX, clipY, depthSample, 1.0), directionalLightData[0].projInvMatrix, directionalLightData[0].cameraMatrix );
+    float4 worldSpacePos = CalculateWorldSpacePosition(float4(clipX, clipY, depthSample, 1.0), projInvMatrix, viewInvMatrix);
 
     // world to light and shadow map check
     float4 fragPositionInLightView = mul(worldSpacePos, directionalLightData[0].lightViewProjectionMatrix);
     
     // vector from camera to fragment
-    float3 camToFrag = worldSpacePos.xyz - directionalLightData[0].camPos.xyz;
+    float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
 
     float3 ambient = {0.2f, 0.2f, 0.2f};
     
     // diffuse light
 
     float lightAtt = directionalLightData[0].att;
-    float specPower = directionalLightData[0].specularPower;
     
-    float3 diffuseIntensity = Diffuse(float3(1.0f, 1.0f, 1.0f), 1.0f, lightAtt, normalize(-directionalLightData[0].lightDirection), normalize(normals.xyz));
+    float3 diffuseIntensity = Diffuse(directionalLightData[0].color, defaultLightIntensity, lightAtt, normalize(-directionalLightData[0].lightDirection), normalize(normals.xyz));
 
     // specular
-    float3 specularResult = Speculate(specular.xyz, directionalLightData[0].specularIntensity, normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection), camToFrag, lightAtt, specPower);
+    float3 specularResult = Speculate(specular.xyz, defaultLightIntensity, normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection), camToFrag, lightAtt, defaultSpecularPower);
 
     float fragDepth = fragPositionInLightView.z / fragPositionInLightView.w;
     float sampleDepth = depthTextureFromLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f + 0.5f)).r;
