@@ -174,11 +174,11 @@ void App::ExecuteFrame()
 	}
 
 	// raw mouse input
-	while ( const auto delta = m_Win32Window.m_Mouse.ReadRawDelta() )
+	/*while ( const auto delta = m_Win32Window.m_Mouse.Read() )
 	{
 		if ( !m_Win32Window.CursorEnabled() )
 			m_SceneManager.RotateCamera( (f32)delta->x, (f32)delta->y );
-	}
+	}*/
 
 	m_SceneManager.Draw();
 

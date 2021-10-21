@@ -70,12 +70,12 @@ void Mouse::Flush() noexcept
 
 void Mouse::EnableRaw() noexcept
 {
-	m_bIsInWindow = true;
+	m_bRawEnabled = true;
 }
 
 void Mouse::DisableRaw() noexcept
 {
-	m_bIsInWindow = false;
+	m_bRawEnabled = false;
 }
 
 bool Mouse::RawEnabled() const noexcept
@@ -109,7 +109,7 @@ void Mouse::OnMouseEnter() noexcept
 void Mouse::OnRawDelta( u32 dx, u32 dy ) noexcept
 {
 	m_qRawDeltaBuffer.push( { dx,dy } );
-	TrimRawInputBuffer();
+	TrimBuffer();
 }
 
 void Mouse::OnLeftPressed( u32 m_iX, u32 m_iY ) noexcept
