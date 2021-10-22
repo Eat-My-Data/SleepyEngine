@@ -25,7 +25,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
 	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
     // specular parameters
-    float specularPowerLoaded = pointLightData[0].specularPower;
+    float specularPowerLoaded = defaultSpecularPower;
     const float4 specularSample = spec.Sample(splr, tc);
     const float3 specularReflectionColor = specularSample.rgb * specularMapWeight;
     if (hasGloss)
@@ -73,7 +73,6 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         spotSpecular = Speculate(
             spotLightData[0].color.rgb, defaultLightIntensity, viewNormal, -normalize(spotLightData[0].lightDirection),
             camToFrag, spotLightAtt * conAtt, specularPower) * spotLightShadow;
-        // TODO: Check if camToFrag should be placed in above speculate functions
     }
     
     float3 combinedColor = pointLightDiffuse + pointLightSpecular + directionalDiffuse + directionalSpecular + spotDiffuse + spotSpecular + defaultAmbientLight;

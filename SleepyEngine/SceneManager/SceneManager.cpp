@@ -216,6 +216,7 @@ void SceneManager::DeferredRender()
 	//m_pMonster->Draw( *m_pGDI, false );
 
 	// lights
+	UpdateCameraBuffer();
 	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_LightManager.Draw();
 

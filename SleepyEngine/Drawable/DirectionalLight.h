@@ -26,7 +26,7 @@ public:
 	{
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
 		DirectX::XMFLOAT3 color = { 1.0f, 1.0f, 1.0f };
-		float att = 0.5f;
+		float att = 0.7f;
 		float padding;
 		DirectX::XMMATRIX lightViewProjectionMatrix;
 	};

@@ -39,7 +39,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         dirLightAtt, -directionalLightData[0].lightDirection, viewNormal) * dirLightShadow;
     const float3 directionalSpecular = Speculate(
         directionalLightData[0].color.rgb, defaultLightIntensity, viewNormal, -directionalLightData[0].lightDirection,
-        camToFrag, dirLightAtt, specularPower) * dirLightShadow;
+        camToFrag, dirLightAtt, defaultSpecularPower) * dirLightShadow;
     
     // point light
     const float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[0].pos, splr, 0);
@@ -68,7 +68,6 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         spotSpecular = Speculate(
             spotLightData[0].color.rgb, defaultLightIntensity, viewNormal, -normalize(spotLightData[0].lightDirection),
             camToFrag, spotLightAtt * conAtt, defaultSpecularPower) * spotLightShadow;
-        // TODO: Check if camToFrag should be placed in above speculate functions
     }
     
     float3 combinedColor = pointLightDiffuse + pointLightSpecular + directionalDiffuse + directionalSpecular + defaultAmbientLight + spotDiffuse + spotSpecular;

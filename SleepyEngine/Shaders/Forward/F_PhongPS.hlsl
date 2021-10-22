@@ -30,8 +30,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
     float pointLightAtt = saturate((1 - (lv.distToL / pointLightData[0].radius)));
     pointLightAtt *= pointLightAtt;
-    float3 pointLightDiffuse = Diffuse(pointLightData[0].color, pointLightData[0].diffuseIntensity, pointLightAtt, lv.dirToL, viewNormal) * shadow;
-    float3 pointLightSpecular = Speculate(pointLightData[0].color, pointLightData[0].diffuseIntensity, viewNormal, lv.dirToL, viewFragPos, pointLightAtt, defaultSpecularPower) * shadow;
+    float3 pointLightDiffuse = Diffuse(pointLightData[0].color, defaultLightIntensity, pointLightAtt, lv.dirToL, viewNormal) * shadow;
+    float3 pointLightSpecular = Speculate(pointLightData[0].color, defaultLightIntensity, viewNormal, lv.dirToL, viewFragPos, pointLightAtt, defaultSpecularPower) * shadow;
     
     // spot light
     float3 spotToFrag = spotLightData[0].pos - viewFragPos;
@@ -52,7 +52,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         ) * spotLightShadow;
     }
     
-    float3 combinedColor = pointLightDiffuse + pointLightSpecular + directionalDiffuse + directionalSpecular + spotDiffuse + spotSpecular + pointLightData[0].ambient;
+    float3 combinedColor = pointLightDiffuse + pointLightSpecular + directionalDiffuse + directionalSpecular + spotDiffuse + spotSpecular + defaultAmbientLight;
     
    	// final color
     return float4((combinedColor * tex.Sample(splr, tc).rgb), 1.0f);

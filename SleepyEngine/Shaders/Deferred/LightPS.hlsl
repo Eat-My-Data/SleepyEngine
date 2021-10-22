@@ -34,8 +34,6 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
-
-    float3 ambient = {0.2f, 0.2f, 0.2f};
     
     // diffuse light
 
@@ -46,11 +44,9 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     // specular
     float3 specularResult = Speculate(specular.xyz, defaultLightIntensity, normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection), camToFrag, lightAtt, defaultSpecularPower);
 
-    float fragDepth = fragPositionInLightView.z / fragPositionInLightView.w;
-    float sampleDepth = depthTextureFromLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f + 0.5f)).r;
-    float bias = 0.0005;
-    float isInLight = sampleDepth + bias  > fragDepth;
-    float3 combinedColor = ((diffuseIntensity + specularResult) * isInLight) + ambient;
+    float shadow = CalculateDirectionalLightShadow(fragPositionInLightView, SampleTypePoint);
+
+    float3 combinedColor = ((diffuseIntensity + specularResult) * shadow) + defaultAmbientLight;
 
    	// final color
     return float4((combinedColor * colors.rgb), 1.0f);

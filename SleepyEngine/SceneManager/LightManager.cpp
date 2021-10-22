@@ -98,7 +98,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	m_pSpotLightBuffer->Update( *m_pGDI, m_pSpotLight->m_StructuredBufferData );
 	m_pSpotLightBuffer->Bind( *m_pGDI );
 
-	m_vecOfPointLights[0]->Update( m_pGDI->GetViewMatrix(), m_pGDI->GetProjMatrix(), camPos );
+	m_vecOfPointLights[0]->Update();
 	m_pPointLightBuffer->Update( *m_pGDI, m_vecOfPointLights[0]->m_StructuredBufferData );
 	m_pPointLightBuffer->Bind( *m_pGDI );
 
@@ -153,7 +153,7 @@ void LightManager::DrawControlPanel()
 	ImGui::SliderAngle( "Pitch", &m_pDirectionalLight->GetCamera().m_fPitch, 0.995f * -90.0f, 0.995f * 90.0f );
 	ImGui::SliderAngle( "Yaw", &m_pDirectionalLight->GetCamera().m_fYaw, -180.0f, 180.0f );
 	ImGui::Text( "Point Light #1" );
-	ImGui::ColorEdit3( "Color1", &m_vecOfPointLights[0]->m_StructuredBufferData.diffuseColor.x );
+	ImGui::ColorEdit3( "Color1", &m_vecOfPointLights[0]->m_StructuredBufferData.color.x );
 	ImGui::SliderFloat( "X1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
 	ImGui::SliderFloat( "Y1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.y, -80.0f, 80.0f );
 	ImGui::SliderFloat( "Z1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.z, -80.0f, 80.0f );

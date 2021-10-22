@@ -1,6 +1,8 @@
 #include "../Common/ShaderOps.hlsl"
 #include "../Common/LightVectorData.hlsl"
 #include "../Common/PointLight.hlsl"
+#include "../Common/CameraData.hlsl"
+#include "../Common/DefaultLightSettings.hlsl"
 
 Texture2D colorTexture : register(t0);
 Texture2D normalTexture : register(t1);
@@ -32,27 +34,27 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
 
     // world position
     float4 worldDepth = float4(clipX, clipY, depthSample, 1.0);
-    float4 worldPosition = mul(worldDepth, pointLightData[0].projInvMatrix);
+    float4 worldPosition = mul(worldDepth, projInvMatrix);
     worldPosition /= worldPosition.w;
-    float4 worldSpacePos = mul(worldPosition, pointLightData[0].cameraMatrix);
+    float4 worldSpacePos = mul(worldPosition, viewInvMatrix);
     
     PointLightData pl = pointLightData[0];
     // light
-    const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, worldSpacePos.xyz);
-    float closestDepth = pointLightShadowTexture.Sample(SampleTypePoint, lv.vToL).r;
+    const float3 pointToFrag  = pointLightData[0].pos - worldSpacePos.xyz;
+    float closestDepth = pointLightShadowTexture.Sample(SampleTypePoint, normalize(pointToFrag)).r;
     
     float shadow = CalculatePointLightShadow(worldSpacePos.xyz, pointLightData[0].pos, SampleTypePoint, 0);
     // vector from camera to fragment
-    float3 camToFrag = worldSpacePos.xyz - pl.camPos;
+    float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
     
-    float att = saturate((1 - (lv.distToL / pl.radius)));
+    float att = saturate((1 - (length(pointToFrag) / pointLightData[0].radius)));
     att *= att;
 
     // diffuse
-    float3 diffuseColor = Diffuse(pointLightData[0].color, pl.diffuseIntensity, att, lv.dirToL, normalize(normals.xyz)) * shadow;
+    float3 diffuseColor = Diffuse(pointLightData[0].color, defaultLightIntensity, att, normalize(pointToFrag), normalize(normals.xyz)) * shadow;
     
     // specular
-    float3 specularResult = Speculate(specular.xyz, pl.diffuseIntensity, normalize(normals.xyz), lv.dirToL, camToFrag, att, pl.specularPower) * shadow;
+    float3 specularResult = Speculate(specular.xyz, defaultLightIntensity, normalize(normals.xyz), normalize(pointToFrag), camToFrag, att, defaultSpecularPower) * shadow;
     float3 combinedColor = ((diffuseColor + specularResult));
 
     // final color

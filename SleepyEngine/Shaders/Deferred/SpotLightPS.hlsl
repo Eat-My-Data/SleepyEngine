@@ -2,6 +2,8 @@
 #include "../Common/LightVectorData.hlsl"
 #include "../Common/SpotLight.hlsl"
 #include "../Common/PointLight.hlsl"
+#include "../Common/CameraData.hlsl"
+#include "../Common/DefaultLightSettings.hlsl"
 
 Texture2D colorTexture : register(t0);
 Texture2D normalTexture : register(t1);
@@ -33,24 +35,24 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
 
     // world position
     float4 worldDepth = float4(clipX, clipY, depthSample, 1.0);
-    float4 worldPosition = mul(worldDepth, pointLightData[0].projInvMatrix);
+    float4 worldPosition = mul(worldDepth, projInvMatrix);
     worldPosition /= worldPosition.w;
-    float4 worldSpacePos = mul(worldPosition, pointLightData[0].cameraMatrix);
+    float4 worldSpacePos = mul(worldPosition, viewInvMatrix);
     
     float4 fragPositionInLightView = mul(worldSpacePos, spotLightData[0].spotViewProjectionMatrix);
     
     // vector from camera to fragment
-    float3 camToFrag = worldSpacePos.xyz - pointLightData[0].camPos.xyz;
+    float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
     // diffuse light
     float3 spotToFrag = spotLightData[0].pos - worldSpacePos.xyz;
     float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
     att *= att;
     
     float angularAttFactor = max(0.0f, dot(normalize(-spotLightData[0].lightDirection), normalize(spotToFrag)));
-    float conAtt = saturate((angularAttFactor - spotLightData[0].outerRadius) / (spotLightData[0].innerRadius - spotLightData[0].outerRadius)); //(1.0 - (1.0 - angularAttFactor) * 1.0 / (1.0 - spotLightData[0].outerRadius));
+    float conAtt = saturate((angularAttFactor - spotLightData[0].outerRadius) / (spotLightData[0].innerRadius - spotLightData[0].outerRadius));
 
     
-    float3 diffuseIntensity = Diffuse(float3(1.0f, 1.0f, 1.0f), 1.0f, att * conAtt, normalize(-spotLightData[0].lightDirection), normalize(normals.xyz));
+    float3 diffuseIntensity = Diffuse(spotLightData[0].color.rgb, defaultLightIntensity, att * conAtt, normalize(-spotLightData[0].lightDirection), normalize(normals.xyz));
     float3 specularResult = Speculate(specular.xyz, 1.0f, normalize(normals.xyz), normalize(-spotLightData[0].lightDirection), camToFrag, att * conAtt, 128.0f);
     float fragDepth = fragPositionInLightView.z / fragPositionInLightView.w;
     float sampleDepth = depthTextureFromSpotLight.Sample(SampleTypePoint, ((fragPositionInLightView.xy / fragPositionInLightView.w) / 2.0f + 0.5f)).r;
