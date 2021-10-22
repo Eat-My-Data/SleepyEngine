@@ -43,8 +43,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         dirLightAtt, -directionalLightData[0].lightDirection, viewNormal) * dirLightShadow;
     const float3 directionalSpecular = Speculate(
         directionalLightData[0].color.rgb, defaultLightIntensity, viewNormal, -directionalLightData[0].lightDirection,
-        camToFrag, dirLightAtt, specularPower
-    );
+        camToFrag, dirLightAtt, specularPower) * dirLightShadow;
     
     // point light
     const float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[0].pos, splr, 0);

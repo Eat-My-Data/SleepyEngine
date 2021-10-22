@@ -110,7 +110,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	m_pDefaultLightSettingsBuffer->Bind( *m_pGDI );
 
 	m_pGDI->GetContext()->PSSetShaderResources( 7u, 1u, &pTextureView );
-	m_pGDI->GetContext()->PSSetShaderResources( 11u, 1u, m_pGDI->GetShadowResource2() );
+	m_pGDI->GetContext()->PSSetShaderResources( 9u, 1u, m_pGDI->GetShadowResource2() );
 }
 
 void LightManager::Draw()

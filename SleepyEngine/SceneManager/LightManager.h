@@ -49,10 +49,10 @@ private:
 private:
 	struct DefaultLightSettings
 	{
+		DirectX::XMFLOAT3 ambientLight = { 0.2f, 0.2f, 0.2f };
 		float specularPower = 128.0f;
-		float ambientLight = 0.2f;
 		float lightIntensity = 1.0f;
-		float padding;
+		float padding[3];
 	} m_DefaultLightSettings;
 	Bind::PixelConstantBuffer<DefaultLightSettings>* m_pDefaultLightSettingsBuffer;
 

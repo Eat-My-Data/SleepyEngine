@@ -1,7 +1,7 @@
 cbuffer DefaultLightSettings : register(b7)
 {
+    float3 defaultAmbientLight;
     float defaultSpecularPower;
-    float defaultAmbientLight;
     float defaultLightIntensity;
-    float padding;
+    float3 padding;
 };

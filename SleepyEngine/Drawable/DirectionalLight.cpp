@@ -60,8 +60,8 @@ void DirectionalLight::Translate( DirectX::XMFLOAT3 translation )
 
 void DirectionalLight::Rotate( const f32 dx, const f32 dy )
 {
-	m_fYaw = wrap_angle( m_fYaw + dx );
-	m_fPitch = std::clamp( m_fPitch + dy, 0.995f * -PI, 0.995f * PI );
+	m_fYaw = wrap_angle( m_fYaw + dx * 0.05f );
+	m_fPitch = std::clamp( m_fPitch + dy * 0.05f, 0.995f * -PI, 0.995f * PI );
 }
 
 DirectX::XMMATRIX DirectionalLight::GetViewMatrix() noexcept
