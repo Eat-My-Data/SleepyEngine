@@ -17,6 +17,8 @@ public:
 	void Rotate( const f32 dx, const f32 dy );
 	DirectX::XMMATRIX GetViewMatrix() noexcept;
 	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
+private:
+	bool CameraIsInside( DirectX::XMFLOAT3 camPos ) noexcept;
 public:
 	f32 m_fPitch;
 	f32 m_fYaw;

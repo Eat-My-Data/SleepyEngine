@@ -81,8 +81,3 @@ DirectX::XMMATRIX DirectionalLight::GetProjectionMatrix() noexcept
 {
 	return DirectX::XMMatrixOrthographicLH( 400.0f, 400.0f, 1.0f, 1200.0f );
 }
-
-Camera& DirectionalLight::GetCamera()
-{
-	return m_OrthoCamera;
-}

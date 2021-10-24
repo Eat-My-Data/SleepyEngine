@@ -1,17 +1,5 @@
 # Blender MTL File: 'None'
-# Material Count: 5
-
-newmtl Accesorios
-Ns 35.181818
-Ka 1.000000 1.000000 1.000000
-Kd 1.000000 1.000000 1.000000
-Ks 1.000000 1.000000 1.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd textures\\accessories.png
-map_d textures\\accessories.png
+# Material Count: 4
 
 newmtl Body
 Ns 18.000005

@@ -150,8 +150,8 @@ void LightManager::DrawControlPanel()
 	ImGui::Text( "Directional Light" );
 	ImGui::ColorEdit3( "Color", &m_pDirectionalLight->m_StructuredBufferData.color.x );
 	ImGui::Text( "Orientation" );
-	ImGui::SliderAngle( "Pitch", &m_pDirectionalLight->GetCamera().m_fPitch, 0.995f * -90.0f, 0.995f * 90.0f );
-	ImGui::SliderAngle( "Yaw", &m_pDirectionalLight->GetCamera().m_fYaw, -180.0f, 180.0f );
+	//Gui::SliderAngle( "Pitch", &m_pDirectionalLight->GetCamera().m_fPitch, 0.995f * -90.0f, 0.995f * 90.0f );
+	//Gui::SliderAngle( "Yaw", &m_pDirectionalLight->GetCamera().m_fYaw, -180.0f, 180.0f );
 	ImGui::Text( "Point Light #1" );
 	ImGui::ColorEdit3( "Color1", &m_vecOfPointLights[0]->m_StructuredBufferData.color.x );
 	ImGui::SliderFloat( "X1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
