@@ -53,6 +53,7 @@ void SpotLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
 	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, GetProjectionMatrix() );
 
 	m_StructuredBufferData.spotViewProjectionMatrix = GetViewMatrix() * GetProjectionMatrix();
+
 	matrixcbuf.lightViewMatrix = GetViewMatrix();
 	matrixcbuf.lightProjMatrix = GetProjectionMatrix();
 
@@ -110,5 +111,5 @@ DirectX::XMMATRIX SpotLight::GetViewMatrix() noexcept
 
 DirectX::XMMATRIX SpotLight::GetProjectionMatrix() noexcept
 {
-	return DirectX::XMMatrixPerspectiveFovLH( PI / 2, 1.0f, 0.05f, m_StructuredBufferData.range );
+	return DirectX::XMMatrixPerspectiveFovLH( PI / 2, 1.0f, 0.005f, m_StructuredBufferData.range );
 }

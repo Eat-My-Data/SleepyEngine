@@ -23,13 +23,12 @@ public:
 public:
 	struct SpotLightData
 	{
-		DirectX::XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
+		DirectX::XMFLOAT3 color = { 1.0f, 1.0f, 1.0f };
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
 		float range = 50.0f;
 		DirectX::XMFLOAT3 pos = { 0.0f, 10.0f, 0.0f };
 		float outerRadius = 0.835f;
 		float innerRadius = 0.955f;
-		float padding[3];
 		DirectX::XMMATRIX spotViewProjectionMatrix;
 	};
 	SpotLightData m_StructuredBufferData;
