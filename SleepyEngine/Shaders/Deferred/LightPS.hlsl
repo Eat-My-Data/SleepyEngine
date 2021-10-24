@@ -26,26 +26,24 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     // normal to clip space
     normals = (normals * 2.0) - 1.0;
     
-    // world to camera 
-    float4 worldSpacePos = CalculateWorldSpacePosition(float4(clipX, clipY, depthSample, 1.0), projInvMatrix, viewInvMatrix);
+    // world position 
+    float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
 
-    // world to light and shadow map check
+    // frag position in light view and shadow map check
     float4 fragPositionInLightView = mul(worldSpacePos, directionalLightData[0].lightViewProjectionMatrix);
-    
+    float shadow = CalculateDirectionalLightShadow(fragPositionInLightView, SampleTypePoint);
+
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
     
-    // diffuse light
-
+    // attenuation
     float lightAtt = directionalLightData[0].att;
     
+    // lighting calculations
     float3 diffuseIntensity = Diffuse(directionalLightData[0].color, defaultLightIntensity, lightAtt, normalize(-directionalLightData[0].lightDirection), normalize(normals.xyz));
-
-    // specular
     float3 specularResult = Speculate(specular.xyz, defaultLightIntensity, normalize(normals.xyz), normalize(-directionalLightData[0].lightDirection), camToFrag, lightAtt, defaultSpecularPower);
 
-    float shadow = CalculateDirectionalLightShadow(fragPositionInLightView, SampleTypePoint);
-
+    // combined light
     float3 combinedColor = ((diffuseIntensity + specularResult) * shadow) + defaultAmbientLight;
 
    	// final color

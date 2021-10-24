@@ -32,8 +32,6 @@ void DirectionalLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 c
 {
 	m_StructuredBufferData.lightViewProjectionMatrix = GetViewMatrix() * GetProjectionMatrix();
 
-
-
 	matrixcbuf.lightViewMatrix = GetViewMatrix();
 	matrixcbuf.lightProjMatrix = GetProjectionMatrix();
 

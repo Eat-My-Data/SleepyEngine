@@ -82,9 +82,6 @@
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{13556157-0efd-4862-b16a-e404ca67bb88}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\GUI">
-      <UniqueIdentifier>{117c71f5-5da3-4b48-9301-8e4335777e97}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Libraries">
       <UniqueIdentifier>{0d66c685-0829-4b7e-bc57-76d986ae5a9d}</UniqueIdentifier>
     </Filter>
@@ -502,12 +499,6 @@
     <FxCompile Include="Shaders\Forward\F_PhongVSNotex.hlsl">
       <Filter>Shaders\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\GUI\PhongVS.hlsl">
-      <Filter>Shaders\GUI</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\GUI\PhongPS.hlsl">
-      <Filter>Shaders\GUI</Filter>
-    </FxCompile>
     <FxCompile Include="Shaders\Common\DirectionalLight.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
@@ -532,13 +523,5 @@
     <FxCompile Include="Shaders\Common\DefaultLightSettings.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\GUI\FontPS.hlsl">
-      <Filter>Shaders\GUI</Filter>
-    </None>
-    <None Include="Shaders\GUI\FontVS.hlsl">
-      <Filter>Shaders\GUI</Filter>
-    </None>
   </ItemGroup>
 </Project>

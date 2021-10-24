@@ -185,6 +185,8 @@ void SceneManager::ForwardRender()
 	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), *m_pGDI->GetDSV() );
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
+	//m_pGDI->SetViewMatrix( m_LightManager.m_pDirectionalLight->GetViewMatrix() );
+	//m_pGDI->SetProjMatrix( m_LightManager.m_pDirectionalLight->GetProjectionMatrix() );
 	m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
 	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_vecOfModels[0]->Draw( *m_pGDI, false );
