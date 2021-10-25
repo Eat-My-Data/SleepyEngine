@@ -114,14 +114,6 @@ DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
 
 void SpotLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
 {
-	// get camera matrix from view matrix
-	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( GetViewMatrix() );
-	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, GetViewMatrix() );
-
-	// get inverse of the projection matrix
-	DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( GetProjectionMatrix() );
-	DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, GetProjectionMatrix() );
-
 	m_StructuredBufferData.spotViewProjectionMatrix = GetViewMatrix() * GetProjectionMatrix();
 
 	matrixcbuf.lightViewMatrix = GetViewMatrix();
@@ -139,10 +131,14 @@ void SpotLight::Draw( GraphicsDeviceInterface& gdi )
 		b->Bind( gdi );
 	}
 
+	// get camera matrix from view matrix
+	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
+	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, gdi.GetViewMatrix() );
+
 	DirectX::XMFLOAT3 camPos = {
-		 gdi.GetViewMatrix().r[3].m128_f32[0],
-		 gdi.GetViewMatrix().r[3].m128_f32[1],
-		 gdi.GetViewMatrix().r[3].m128_f32[2]
+		 cameraMatrix.r[3].m128_f32[0],
+		 cameraMatrix.r[3].m128_f32[1],
+		 cameraMatrix.r[3].m128_f32[2]
 	};
 
 	//// figure out if camera is inside spot light

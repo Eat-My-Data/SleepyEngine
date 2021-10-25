@@ -126,11 +126,15 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 		b->Bind( gdi );
 	}
 
+	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
+	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, gdi.GetViewMatrix() );
+
 	DirectX::XMFLOAT3 camPos = {
-		 gdi.GetViewMatrix().r[3].m128_f32[0],
-		 gdi.GetViewMatrix().r[3].m128_f32[1],
-		 gdi.GetViewMatrix().r[3].m128_f32[2]
+		 cameraMatrix.r[3].m128_f32[0],
+		 cameraMatrix.r[3].m128_f32[1],
+		 cameraMatrix.r[3].m128_f32[2]
 	};
+
 	// figure out if camera is inside point light
 	if ( CameraIsInside( camPos ) )
 	{
