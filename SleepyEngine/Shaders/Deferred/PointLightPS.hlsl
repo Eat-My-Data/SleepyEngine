@@ -42,7 +42,7 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     float shadow = CalculatePointLightShadow(worldSpacePos.xyz, pointLightData[0].pos, SampleTypePoint, 0);
     
     // attenuation
-    const float3 pointToFrag = worldSpacePos.xyz - pointLightData[0].pos;
+    const float3 pointToFrag = pointLightData[0].pos - worldSpacePos.xyz;
     float att = saturate((1 - (length(pointToFrag) / pointLightData[0].radius)));
     att *= att;
 

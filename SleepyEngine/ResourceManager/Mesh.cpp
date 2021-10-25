@@ -202,8 +202,7 @@ Model::Model( GraphicsDeviceInterface& gdi, const std::string& pathString, bool 
 	:
 	pWindow( std::make_unique<ModelWindow>() )
 {
-	// TODO:
-	// - USE RELEASE ASSIMP
+	// TODO: USE RELEASE ASSIMP
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile( pathString.c_str(),
 		aiProcess_Triangulate |

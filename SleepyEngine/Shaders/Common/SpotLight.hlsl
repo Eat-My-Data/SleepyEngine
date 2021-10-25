@@ -6,7 +6,7 @@ struct SpotLightData
     float3 pos;
     float outerRadius;
     float innerRadius;
-    float4x4 spotViewProjectionMatrix;
+    row_major float4x4 spotViewProjectionMatrix;
 };
 
 StructuredBuffer<SpotLightData> spotLightData : register(t8);

@@ -11,14 +11,13 @@ public:
 	SpotLight( GraphicsDeviceInterface& gdi, f32 scale );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos );
-	void Draw( GraphicsDeviceInterface& gdi ) const noexcept;
+	void Draw( GraphicsDeviceInterface& gdi );
 public:
 	void Translate( DirectX::XMFLOAT3 translation );
 	void Rotate( const f32 dx, const f32 dy );
 	DirectX::XMMATRIX GetViewMatrix() noexcept;
 	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
-private:
-	bool CameraIsInside( DirectX::XMFLOAT3 camPos ) noexcept;
+	bool CameraIsInside( DirectX::XMFLOAT3 camPos );
 public:
 	f32 m_fPitch;
 	f32 m_fYaw;
@@ -43,6 +42,13 @@ private:
 		DirectX::XMMATRIX lightProjMatrix;
 	} matrixcbuf;
 	std::shared_ptr<Bind::VertexConstantBuffer<ForwardMatrices>> m_pForwardLightMatrices;
+private:
+	ID3D11PixelShader* pPixelShader;
+	ID3D11RasterizerState* rasterizerInside;
+	ID3D11RasterizerState* rasterizerOutside;
+	ID3D11DepthStencilState* pDSStateInfrontBackFaceOfLight;
+	ID3D11DepthStencilState* pDSStateLightingBehindFrontFaceOfLight;
+	ID3D11DepthStencilState* pDSStateInsideLighting;
 	// TODO:
 	// - draw look at vector for debugging
 };
