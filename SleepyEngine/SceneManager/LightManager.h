@@ -65,8 +65,5 @@ private:
 	Bind::PixelConstantBuffer<LightIndex>* m_pLightIndex;
 	// TODO:
 	// - Make start positions available for lights
-	// - Optimize everything you can
-	// - Polish
-	// - Shadows for Spotlight
 	// - Add support to turn on/turn off lights
 };

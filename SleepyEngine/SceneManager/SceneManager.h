@@ -59,5 +59,4 @@ private:
 	// TODO: 
 	// - Resource Manager
 	// - Culling
-	// - Make to have as little buffers as possible
 };
