@@ -6,9 +6,6 @@
 !x64/Debug/*.dll
 !x64/Release/*.dll
 
-!SleepyEngine/Libraries/x64/Debug/*.dll
-!SleepyEngine/Libraries/x64/Release/*.dll
-
 # User-specific files
 *.rsuser
 *.suo
