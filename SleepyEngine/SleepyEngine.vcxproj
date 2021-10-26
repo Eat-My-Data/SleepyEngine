@@ -81,12 +81,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include;</IncludePath>
-    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\;$(ProjectDir)Libraries\assimp\bin\$(Platform)\$(Configuration);$(Configuration);$(LibraryPath);</LibraryPath>
+    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(ProjectDir)Libraries\assimp\bin\$(Platform)\$(Configuration);$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include;</IncludePath>
-    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\;$(ProjectDir)Libraries\assimp\bin\$(Platform)\$(Configuration);$(Configuration);$(LibraryPath);</LibraryPath>
+    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(ProjectDir)Libraries\assimp\bin\$(Platform)\$(Configuration);$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
