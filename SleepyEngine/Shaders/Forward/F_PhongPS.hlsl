@@ -44,7 +44,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     {
         float conAtt = saturate((angularAttFactor - spotLightData[0].outerRadius) / (spotLightData[0].innerRadius - spotLightData[0].outerRadius));
         
-        float spotLightShadow = CalculateSpotLightShadow(spotLightViewPos, splr);
+        float4 fragPositionInLightView = mul(float4(viewFragPos, 1.0f), spotLightData[0].spotViewProjectionMatrix);
+        float spotLightShadow = CalculateSpotLightShadow(fragPositionInLightView, splr);
         spotDiffuse = Diffuse(spotLightData[0].color.rgb, defaultLightIntensity, att * conAtt, -normalize(spotLightData[0].lightDirection), viewNormal) * spotLightShadow;
         spotSpecular = Speculate(
             spotLightData[0].color.rgb, defaultLightIntensity, viewNormal, -normalize(spotLightData[0].lightDirection),

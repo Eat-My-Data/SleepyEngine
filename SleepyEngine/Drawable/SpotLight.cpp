@@ -22,10 +22,10 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightVS.cso" );
 	auto pvsbc = pvs->GetBytecode();
 	AddBind( std::move( pvs ) );
-	//AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightPS.cso" ) );
-	ID3DBlob* pBlob;
-	D3DReadFileToBlob( L"./Shaders/Bin/SpotLightPS.cso", &pBlob );
-	gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
+	AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightPS.cso" ) );
+	//ID3DBlob* pBlob;
+	//D3DReadFileToBlob( L"./Shaders/Bin/SpotLightPS.cso", &pBlob );
+	//gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
 	AddBind( Sampler::Resolve( gdi ) );
 	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 	AddBind( Rasterizer::Resolve( gdi, true ) );
@@ -141,34 +141,34 @@ void SpotLight::Draw( GraphicsDeviceInterface& gdi )
 		 cameraMatrix.r[3].m128_f32[2]
 	};
 
-	//// figure out if camera is inside spot light
-	if ( CameraIsInside( camPos ) )
-	{
-		gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
-		gdi.GetContext()->RSSetState( rasterizerInside );
-		gdi.GetContext()->OMSetDepthStencilState( pDSStateInsideLighting, 1u );
+	// figure out if camera is inside spot light
+	//if ( !CameraIsInside( camPos ) )
+	//{
+	//	gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
+	//	gdi.GetContext()->RSSetState( rasterizerInside );
+	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateInsideLighting, 1u );
 
-		// draw
-		gdi.DrawIndexed( pIndexBuffer->GetCount() );
-	}
-	else
-	{
-		gdi.GetContext()->PSSetShader( nullptr, nullptr, 0u );
-		gdi.GetContext()->RSSetState( rasterizerInside );
-		gdi.GetContext()->OMSetDepthStencilState( pDSStateInfrontBackFaceOfLight, 0x10 );
+	//	// draw
+	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
+	//}
+	//else
+	//{
+	//	gdi.GetContext()->PSSetShader( nullptr, nullptr, 0u );
+	//	gdi.GetContext()->RSSetState( rasterizerInside );
+	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateInfrontBackFaceOfLight, 0x10 );
 
-		// draw
-		gdi.DrawIndexed( pIndexBuffer->GetCount() );
+	//	// draw
+	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
 
-		gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
-		gdi.GetContext()->RSSetState( rasterizerOutside );
-		gdi.GetContext()->OMSetDepthStencilState( pDSStateLightingBehindFrontFaceOfLight, 0x10 );
+	//	gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
+	//	gdi.GetContext()->RSSetState( rasterizerOutside );
+	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateLightingBehindFrontFaceOfLight, 0x10 );
 
-		// draw
-		gdi.DrawIndexed( pIndexBuffer->GetCount() );
-	}
+	//	// draw
+	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
+	//}
 
-	//gdi.DrawIndexed( pIndexBuffer->GetCount() );
+	gdi.DrawIndexed( pIndexBuffer->GetCount() );
 }
 
 void SpotLight::Translate( DirectX::XMFLOAT3 translation )
@@ -224,10 +224,10 @@ bool SpotLight::CameraIsInside( DirectX::XMFLOAT3 camPos )
 	DirectX::XMFLOAT3 normalizedLightDirection = { m_StructuredBufferData.lightDirection.x / length, m_StructuredBufferData.lightDirection.y / length, m_StructuredBufferData.lightDirection.z / length };
 	float cone_dist = (pMinusX_X * normalizedLightDirection.x) + ( pMinusX_Y * normalizedLightDirection.y / length ) + ( pMinusX_Z * normalizedLightDirection.z );
 	
-	if ( 0.0f <= cone_dist && cone_dist <= 10.0f )
+	if ( cone_dist >= 0.0f && cone_dist <= 50.0f )
 		return false;
 
-	float cone_radius = ( cone_dist / 10.0f ) * m_StructuredBufferData.outerRadius;
+	float cone_radius = ( cone_dist / 50.0f ) * 15.0f;
 	float PMinusXMinusConeDistX = pMinusX_X - cone_dist;
 	float PMinusXMinusConeDistY = pMinusX_Y - cone_dist;
 	float PMinusXMinusConeDistZ = pMinusX_Z - cone_dist;

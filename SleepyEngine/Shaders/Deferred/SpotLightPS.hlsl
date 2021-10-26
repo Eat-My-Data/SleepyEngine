@@ -39,10 +39,7 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     // frag position in light view and shadow map check
     float4 fragPositionInLightView = mul(worldSpacePos, spotLightData[0].spotViewProjectionMatrix);
     float shadow = CalculateSpotLightShadow(fragPositionInLightView, SampleTypePoint);
-    //float fragDepth = fragPositionInLightView.z / fragPositionInLightView.w;
-    //float sampleDepth = depthTextureFromSpotLight.Sample(SampleTypePoint, ((float2(fragPositionInLightView.x, fragPositionInLightView.y) / fragPositionInLightView.w) / 2.0f) + 0.5f).r;
-    //float bias = 0.0005;
-    //float shadow = sampleDepth + bias > fragDepth;
+
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
         

@@ -12,6 +12,7 @@ StructuredBuffer<PointLightData> pointLightData : register(t6);
 // - Make array of textures
 TextureCube pointLightShadowTexture : register(t7);
 
+// Function found from: https://stackoverflow.com/questions/10786951/omnidirectional-shadow-mapping-with-depth-cubemap
 float VectorToDepthValue(float3 Vec)
 {
     // TODO: 
