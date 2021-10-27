@@ -22,10 +22,10 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightVS.cso" );
 	auto pvsbc = pvs->GetBytecode();
 	AddBind( std::move( pvs ) );
-	AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightPS.cso" ) );
-	//ID3DBlob* pBlob;
-	//D3DReadFileToBlob( L"./Shaders/Bin/SpotLightPS.cso", &pBlob );
-	//gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
+	//AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightPS.cso" ) );
+	ID3DBlob* pBlob;
+	D3DReadFileToBlob( L"./Shaders/Bin/SpotLightPS.cso", &pBlob );
+	gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
 	AddBind( Sampler::Resolve( gdi ) );
 	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 	AddBind( Rasterizer::Resolve( gdi, true ) );
@@ -142,33 +142,33 @@ void SpotLight::Draw( GraphicsDeviceInterface& gdi )
 	};
 
 	// figure out if camera is inside spot light
-	//if ( !CameraIsInside( camPos ) )
-	//{
-	//	gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
-	//	gdi.GetContext()->RSSetState( rasterizerInside );
-	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateInsideLighting, 1u );
+	if ( CameraIsInside( camPos ) )
+	{
+		gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
+		gdi.GetContext()->RSSetState( rasterizerInside );
+		gdi.GetContext()->OMSetDepthStencilState( pDSStateInsideLighting, 1u );
 
-	//	// draw
-	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
-	//}
-	//else
-	//{
-	//	gdi.GetContext()->PSSetShader( nullptr, nullptr, 0u );
-	//	gdi.GetContext()->RSSetState( rasterizerInside );
-	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateInfrontBackFaceOfLight, 0x10 );
+		// draw
+		gdi.DrawIndexed( pIndexBuffer->GetCount() );
+	}
+	else
+	{
+		gdi.GetContext()->PSSetShader( nullptr, nullptr, 0u );
+		gdi.GetContext()->RSSetState( rasterizerInside );
+		gdi.GetContext()->OMSetDepthStencilState( pDSStateInfrontBackFaceOfLight, 0x10 );
 
-	//	// draw
-	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
+		// draw
+		gdi.DrawIndexed( pIndexBuffer->GetCount() );
 
-	//	gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
-	//	gdi.GetContext()->RSSetState( rasterizerOutside );
-	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateLightingBehindFrontFaceOfLight, 0x10 );
+		gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
+		gdi.GetContext()->RSSetState( rasterizerOutside );
+		gdi.GetContext()->OMSetDepthStencilState( pDSStateLightingBehindFrontFaceOfLight, 0x10 );
 
-	//	// draw
-	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
-	//}
+		// draw
+		gdi.DrawIndexed( pIndexBuffer->GetCount() );
+	}
 
-	gdi.DrawIndexed( pIndexBuffer->GetCount() );
+	//gdi.DrawIndexed( pIndexBuffer->GetCount() );
 }
 
 void SpotLight::Translate( DirectX::XMFLOAT3 translation )
@@ -215,24 +215,69 @@ DirectX::XMMATRIX SpotLight::GetProjectionMatrix() noexcept
 
 bool SpotLight::CameraIsInside( DirectX::XMFLOAT3 camPos )
 {
-	// tried following: https://stackoverflow.com/questions/12826117/how-can-i-detect-if-a-point-is-inside-a-cone-or-not-in-3d-space	
-	float pMinusX_X = camPos.x - m_StructuredBufferData.pos.x;
-	float pMinusX_Y = camPos.y - m_StructuredBufferData.pos.y;
-	float pMinusX_Z = camPos.z - m_StructuredBufferData.pos.z;
+	//// tried following: https://stackoverflow.com/questions/12826117/how-can-i-detect-if-a-point-is-inside-a-cone-or-not-in-3d-space	
+	//float pMinusX_X = camPos.x - m_StructuredBufferData.pos.x;
+	//float pMinusX_Y = camPos.y - m_StructuredBufferData.pos.y;
+	//float pMinusX_Z = camPos.z - m_StructuredBufferData.pos.z;
 
-	float length = sqrt( sq( m_StructuredBufferData.lightDirection.x ) + sq( m_StructuredBufferData.lightDirection.y ) + sq( m_StructuredBufferData.lightDirection.z ) );
-	DirectX::XMFLOAT3 normalizedLightDirection = { m_StructuredBufferData.lightDirection.x / length, m_StructuredBufferData.lightDirection.y / length, m_StructuredBufferData.lightDirection.z / length };
-	float cone_dist = (pMinusX_X * normalizedLightDirection.x) + ( pMinusX_Y * normalizedLightDirection.y / length ) + ( pMinusX_Z * normalizedLightDirection.z );
-	
-	if ( cone_dist >= 0.0f && cone_dist <= 50.0f )
-		return false;
+	//float length = sqrt( sq( m_StructuredBufferData.lightDirection.x ) + sq( m_StructuredBufferData.lightDirection.y ) + sq( m_StructuredBufferData.lightDirection.z ) );
+	//DirectX::XMFLOAT3 normalizedLightDirection = { m_StructuredBufferData.lightDirection.x / length, m_StructuredBufferData.lightDirection.y / length, m_StructuredBufferData.lightDirection.z / length };
+	//float cone_dist = (pMinusX_X * normalizedLightDirection.x) + ( pMinusX_Y * normalizedLightDirection.y / length ) + ( pMinusX_Z * normalizedLightDirection.z );
+	//
+	//if ( cone_dist >= 0.0f && cone_dist <= 50.0f )
+	//	return false;
 
-	float cone_radius = ( cone_dist / 50.0f ) * 15.0f;
-	float PMinusXMinusConeDistX = pMinusX_X - cone_dist;
-	float PMinusXMinusConeDistY = pMinusX_Y - cone_dist;
-	float PMinusXMinusConeDistZ = pMinusX_Z - cone_dist;
-	DirectX::XMFLOAT3 whatINeedToSquare = { normalizedLightDirection.x * PMinusXMinusConeDistX, normalizedLightDirection.y * PMinusXMinusConeDistY, normalizedLightDirection.z * PMinusXMinusConeDistZ };
-	float orth_distance = sqrt( sq( whatINeedToSquare.x) + sq( whatINeedToSquare.y ) + sq( whatINeedToSquare.z ) );
+	//float cone_radius = ( cone_dist / 50.0f ) * 15.0f;
+	//float PMinusXMinusConeDistX = pMinusX_X - cone_dist;
+	//float PMinusXMinusConeDistY = pMinusX_Y - cone_dist;
+	//float PMinusXMinusConeDistZ = pMinusX_Z - cone_dist;
+	//DirectX::XMFLOAT3 whatINeedToSquare = { normalizedLightDirection.x * PMinusXMinusConeDistX, normalizedLightDirection.y * PMinusXMinusConeDistY, normalizedLightDirection.z * PMinusXMinusConeDistZ };
+	//float orth_distance = sqrt( sq( whatINeedToSquare.x) + sq( whatINeedToSquare.y ) + sq( whatINeedToSquare.z ) );
 
-	return orth_distance > cone_radius;
+	//return orth_distance > cone_radius;
+
+	// Vector pointing to X point from apex
+	DirectX::XMFLOAT3 apexToXVect = {};
+	apexToXVect.x = m_StructuredBufferData.pos.x - camPos.x;
+	apexToXVect.y = m_StructuredBufferData.pos.y - camPos.y;
+	apexToXVect.z = m_StructuredBufferData.pos.z - camPos.z;
+
+	// Vector pointing from apex to circle-center point.
+	//float[] axisVect = dif( t, b );
+	DirectX::XMMATRIX tView = DirectX::XMMatrixTranspose( GetViewMatrix() );
+	DirectX::XMFLOAT3 lightDirection = { tView.r[2].m128_f32[0],  tView.r[2].m128_f32[1], tView.r[2].m128_f32[2] };
+	// scale based off range of cone
+	lightDirection.x *= -m_StructuredBufferData.range;
+	lightDirection.y *= -m_StructuredBufferData.range;
+	lightDirection.z *= -m_StructuredBufferData.range;
+
+	DirectX::XMFLOAT3 axisVect = {};
+	axisVect.x = m_StructuredBufferData.pos.x + lightDirection.x;
+	axisVect.y = m_StructuredBufferData.pos.y + lightDirection.y;
+	axisVect.z = m_StructuredBufferData.pos.z + lightDirection.z;
+
+	// X is lying in cone only if it's lying in 
+	// infinite version of its cone -- that is, 
+	// not limited by "round basement".
+	// We'll use dotProd() to 
+	// determine angle between apexToXVect and axis.
+	float dotOfXAndAxis =  (apexToXVect.x * axisVect.x) + (apexToXVect.y * axisVect.y) + (apexToXVect.z * axisVect.z);
+	bool isInInfiniteCone = dotOfXAndAxis / sqrt( sq( apexToXVect.x ) + sq( apexToXVect.y ) + sq( apexToXVect.z ) )
+		/ sqrt( sq( axisVect.x ) + sq( axisVect.y ) + sq( axisVect.z ) )
+		> m_StructuredBufferData.outerRadius;
+	//boolean isInInfiniteCone = dotProd( apexToXVect, axisVect )
+		/// magn( apexToXVect ) / magn( axisVect )
+		//						 >
+		// We can safely compare cos() of angles 
+		// between vectors instead of bare angles.
+		//Math.cos( halfAperture );
+
+
+	if ( !isInInfiniteCone ) return false;
+
+	// X is contained in cone only if projection of apexToXVect to axis
+	// is shorter than axis. 
+	// We'll use dotProd() to figure projection length.
+	boolean isUnderRoundCap = true;
+	return isUnderRoundCap;
 }
