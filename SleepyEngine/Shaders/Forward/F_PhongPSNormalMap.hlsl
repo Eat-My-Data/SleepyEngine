@@ -48,6 +48,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     pointLightAtt *= pointLightAtt;
     const float3 pointLightDiffuse = Diffuse(pointLightData[0].color, defaultLightIntensity, pointLightAtt, normalize(pointToFrag),
         viewNormal) * shadow;
+    // TODO: Doesn't account for material properties/specular map
     const float3 pointLightSpecular = Speculate(pointLightData[0].color, defaultLightIntensity, viewNormal, normalize(pointToFrag),
         camToFrag, pointLightAtt, defaultSpecularPower) * shadow;
 
