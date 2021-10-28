@@ -42,12 +42,12 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     float shadow = CalculatePointLightShadow(worldSpacePos.xyz, pointLightData[0].pos, SampleTypePoint, 0);
     
     // attenuation
-    const float3 pointToFrag = pointLightData[0].pos - worldSpacePos.xyz;
-    float att = saturate((1 - (length(pointToFrag) / pointLightData[0].radius)));
+    const float3 pointToFrag = pointLightData[index].pos - worldSpacePos.xyz;
+    float att = saturate((1 - (length(pointToFrag) / pointLightData[index].radius)));
     att *= att;
 
     // lighting calculations
-    float3 diffuseColor = Diffuse(pointLightData[0].color, defaultLightIntensity, att, normalize(pointToFrag), normalize(normals.xyz)) * shadow;
+    float3 diffuseColor = Diffuse(pointLightData[index].color, defaultLightIntensity, att, normalize(pointToFrag), normalize(normals.xyz)) * shadow;
     float3 specularResult = Speculate(specular.xyz, defaultLightIntensity, normalize(normals.xyz), normalize(pointToFrag), camToFrag, att, defaultSpecularPower) * shadow;
     
     // combined color
