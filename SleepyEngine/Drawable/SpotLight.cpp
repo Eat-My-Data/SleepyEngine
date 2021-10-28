@@ -215,27 +215,7 @@ DirectX::XMMATRIX SpotLight::GetProjectionMatrix() noexcept
 
 bool SpotLight::CameraIsInside( DirectX::XMFLOAT3 camPos )
 {
-	//// tried following: https://stackoverflow.com/questions/12826117/how-can-i-detect-if-a-point-is-inside-a-cone-or-not-in-3d-space	
-	//float pMinusX_X = camPos.x - m_StructuredBufferData.pos.x;
-	//float pMinusX_Y = camPos.y - m_StructuredBufferData.pos.y;
-	//float pMinusX_Z = camPos.z - m_StructuredBufferData.pos.z;
-
-	//float length = sqrt( sq( m_StructuredBufferData.lightDirection.x ) + sq( m_StructuredBufferData.lightDirection.y ) + sq( m_StructuredBufferData.lightDirection.z ) );
-	//DirectX::XMFLOAT3 normalizedLightDirection = { m_StructuredBufferData.lightDirection.x / length, m_StructuredBufferData.lightDirection.y / length, m_StructuredBufferData.lightDirection.z / length };
-	//float cone_dist = (pMinusX_X * normalizedLightDirection.x) + ( pMinusX_Y * normalizedLightDirection.y / length ) + ( pMinusX_Z * normalizedLightDirection.z );
-	//
-	//if ( cone_dist >= 0.0f && cone_dist <= 50.0f )
-	//	return false;
-
-	//float cone_radius = ( cone_dist / 50.0f ) * 15.0f;
-	//float PMinusXMinusConeDistX = pMinusX_X - cone_dist;
-	//float PMinusXMinusConeDistY = pMinusX_Y - cone_dist;
-	//float PMinusXMinusConeDistZ = pMinusX_Z - cone_dist;
-	//DirectX::XMFLOAT3 whatINeedToSquare = { normalizedLightDirection.x * PMinusXMinusConeDistX, normalizedLightDirection.y * PMinusXMinusConeDistY, normalizedLightDirection.z * PMinusXMinusConeDistZ };
-	//float orth_distance = sqrt( sq( whatINeedToSquare.x) + sq( whatINeedToSquare.y ) + sq( whatINeedToSquare.z ) );
-
-	//return orth_distance > cone_radius;
-
+	///tried following: https://stackoverflow.com/questions/10768142/verify-if-point-is-inside-a-cone-in-3d-space
 	// Vector pointing to X point from apex
 	DirectX::XMFLOAT3 apexToXVect = {};
 	apexToXVect.x = m_StructuredBufferData.pos.x - camPos.x;
@@ -265,19 +245,14 @@ bool SpotLight::CameraIsInside( DirectX::XMFLOAT3 camPos )
 	bool isInInfiniteCone = dotOfXAndAxis / sqrt( sq( apexToXVect.x ) + sq( apexToXVect.y ) + sq( apexToXVect.z ) )
 		/ sqrt( sq( axisVect.x ) + sq( axisVect.y ) + sq( axisVect.z ) )
 		> m_StructuredBufferData.outerRadius;
-	//boolean isInInfiniteCone = dotProd( apexToXVect, axisVect )
-		/// magn( apexToXVect ) / magn( axisVect )
-		//						 >
-		// We can safely compare cos() of angles 
-		// between vectors instead of bare angles.
-		//Math.cos( halfAperture );
-
 
 	if ( !isInInfiniteCone ) return false;
 
 	// X is contained in cone only if projection of apexToXVect to axis
 	// is shorter than axis. 
 	// We'll use dotProd() to figure projection length.
-	boolean isUnderRoundCap = true;
+	bool isUnderRoundCap = dotOfXAndAxis
+		/ sqrt( sq( axisVect.x ) + sq( axisVect.y ) + sq( axisVect.z ) )
+		< m_StructuredBufferData.range;
 	return isUnderRoundCap;
 }
