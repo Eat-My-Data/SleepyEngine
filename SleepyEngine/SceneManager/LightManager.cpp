@@ -17,6 +17,7 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 
 	// constant buffer
 	m_pDefaultLightSettingsBuffer = new Bind::PixelConstantBuffer<DefaultLightSettings>{ gdi, 7u };
+	m_pSolidGeometryColorBuffer = new Bind::PixelConstantBuffer<SolidGeometryColor>{ gdi, 8u };
 
 
 	// TODO: Remove the need for light index if possible
@@ -102,7 +103,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	m_pPointLightBuffer->Update( *m_pGDI, m_vecOfPointLights[0]->m_StructuredBufferData );
 	m_pPointLightBuffer->Bind( *m_pGDI );
 
-	m_LightIndexes.numPointLights = (float)m_vecOfPointLights.size();
+	m_LightIndexes.numPointLights = (int)m_vecOfPointLights.size();
 	m_pLightIndex->Update( *m_pGDI, m_LightIndexes );
 	m_pLightIndex->Bind( *m_pGDI );
 
@@ -128,7 +129,7 @@ void LightManager::Draw()
 
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
-		m_LightIndexes.index = (float)i;
+		m_LightIndexes.index = i;
 		m_pLightIndex->Update( *m_pGDI, m_LightIndexes );
 		m_pLightIndex->Bind( *m_pGDI );
 		m_vecOfPointLights[i]->Draw( * m_pGDI );
@@ -141,36 +142,44 @@ void LightManager::Draw()
 
 void LightManager::DrawControlPanel()
 {
-	ImGui::Text( "Spot Light" );
-	ImGui::ColorEdit3( "Spot Color", &m_pSpotLight->m_StructuredBufferData.color.x );
-	ImGui::SliderFloat( "Spot X", &m_pSpotLight->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Spot Y", &m_pSpotLight->m_StructuredBufferData.pos.y, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Spot Z", &m_pSpotLight->m_StructuredBufferData.pos.z, -80.0f, 80.0f );
-	ImGui::Text( "Spot Orientation" );
-	ImGui::SliderAngle( "Spot Pitch", &m_pSpotLight->m_fPitch, 0.995f * -180.0f, 0.995f * 180.0f );
-	ImGui::SliderAngle( "Spot Yaw", &m_pSpotLight->m_fYaw, 0.995f * -180.0f, 0.995f * 180.0f );
-	ImGui::Text( "Directional Light" );
-	ImGui::ColorEdit3( "Color", &m_pDirectionalLight->m_StructuredBufferData.color.x );
-	ImGui::Text( "Orientation" );
-	//Gui::SliderAngle( "Pitch", &m_pDirectionalLight->GetCamera().m_fPitch, 0.995f * -90.0f, 0.995f * 90.0f );
-	//Gui::SliderAngle( "Yaw", &m_pDirectionalLight->GetCamera().m_fYaw, -180.0f, 180.0f );
-	ImGui::Text( "Point Light #1" );
-	ImGui::ColorEdit3( "Color1", &m_vecOfPointLights[0]->m_StructuredBufferData.color.x );
-	ImGui::SliderFloat( "X1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.x, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Y1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.y, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Z1", &m_vecOfPointLights[0]->m_StructuredBufferData.pos.z, -80.0f, 80.0f );
+	if ( ImGui::Begin( "Directional Light Manager" ) )
+	{
+		m_pDirectionalLight->DrawControlPanel();
+	}
+	ImGui::End();
+
+	if ( ImGui::Begin( "Point Light Manager" ) )
+	{
+		if ( ImGui::Button( "Spawn New Light" ) )
+			m_vecOfPointLights.push_back( new PointLight( *m_pGDI, 20.0f ) );
+
+		ImGui::InputInt( "Current Light", &m_iSelectedPointLight, 1, 1 );
+		m_vecOfPointLights[m_iSelectedPointLight]->DrawControlPanel();
+	}
+	ImGui::End();
+
+	if ( ImGui::Begin( "Spot Light Manager" ) )
+	{
+		m_pSpotLight->DrawControlPanel();
+	}
+	ImGui::End();
 }
 
 void LightManager::RenderLightGeometry()
 {
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
-		m_LightIndexes.index = (float)i;
+		m_LightIndexes.index = i;
 		m_pLightIndex->Update( *m_pGDI, m_LightIndexes );
 		m_pLightIndex->Bind( *m_pGDI );
+		m_SolidGeometryColor.color = m_vecOfPointLights[i]->m_StructuredBufferData.color;
+		m_pSolidGeometryColorBuffer->Update( *m_pGDI, m_SolidGeometryColor );
+		m_pSolidGeometryColorBuffer->Bind( *m_pGDI );
 		m_vecOfPointLights[i]->m_SolidSphere->Draw( *m_pGDI );
 	}
-
+	m_SolidGeometryColor.color = m_pSpotLight->m_StructuredBufferData.color;
+	m_pSolidGeometryColorBuffer->Update( *m_pGDI, m_SolidGeometryColor );
+	m_pSolidGeometryColorBuffer->Bind( *m_pGDI );
 	m_pSpotLight->m_pSolidCone->Draw( *m_pGDI );
 }
 

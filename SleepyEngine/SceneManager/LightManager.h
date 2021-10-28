@@ -26,8 +26,7 @@ public:
 	void RotateSpotLight( const f32 dx, const f32 dy );
 	void TranslateDirectionalLight( DirectX::XMFLOAT3 translation );
 	void RotateDirectionalLight( const f32 dx, const f32 dy );
-	// MAKE PRIVATE
-public:
+private:
 	DirectionalLight* m_pDirectionalLight;
 	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>* m_pDirectionalLightBuffer;
 	SpotLight* m_pSpotLight;
@@ -35,8 +34,8 @@ public:
 	std::vector<PointLight*> m_vecOfPointLights;
 	Bind::PixelStructuredBuffer<PointLight::PointLightData>* m_pPointLightBuffer;
 private:
-	u32 m_iSelectedPointLight = 0;
-	u32 m_iSelectedSpotLight = 0;
+	int m_iSelectedPointLight = 0;
+	int m_iSelectedSpotLight = 0;
 	GraphicsDeviceInterface* m_pGDI = nullptr;
 private:
 	ID3D11ShaderResourceView* pTextureView;
@@ -58,11 +57,18 @@ private:
 
 	struct LightIndex
 	{
-		float index = 0;
-		float numPointLights = 2;
+		int index = 0;
+		int numPointLights = 2;
 		float padding[2];
 	} m_LightIndexes;
 	Bind::PixelConstantBuffer<LightIndex>* m_pLightIndex;
+private:
+	struct SolidGeometryColor
+	{
+		DirectX::XMFLOAT3 color = { 1.0f, 1.0f, 1.0f };
+		float padding;
+	} m_SolidGeometryColor;
+	Bind::PixelConstantBuffer<SolidGeometryColor>* m_pSolidGeometryColorBuffer;
 	// TODO:
 	// - Make start positions available for lights
 	// - Add support to turn on/turn off lights

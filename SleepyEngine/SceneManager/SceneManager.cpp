@@ -71,13 +71,14 @@ void SceneManager::DrawControlPanel()
 		ImGui::Text( "Camera Orientation" );
 		ImGui::SliderAngle( "Camera Pitch", &m_Camera.m_fPitch, 0.995f * -90.0f, 0.995f * 90.0f );
 		ImGui::SliderAngle( "Camera Yaw", &m_Camera.m_fYaw, -180.0f, 180.0f );
-		m_LightManager.DrawControlPanel();
 		if ( ImGui::Button( "Toggle Render Technique" ) )
 			m_RenderTechnique == RenderTechnique::Deferred ? SetRenderTechnique( RenderTechnique::Forward ) : SetRenderTechnique( RenderTechnique::Deferred );
 		ImGui::SameLine();
 		ImGui::Text( m_RenderTechnique == RenderTechnique::Deferred ? "Deferred" : "Forward" );
 	}
 	ImGui::End();
+
+	m_LightManager.DrawControlPanel();
 }
 
 void SceneManager::Present()

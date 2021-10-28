@@ -10,13 +10,14 @@ public:
 	DirectionalLight( GraphicsDeviceInterface& gdi );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos );
+	void DrawControlPanel();
 	void Draw( GraphicsDeviceInterface& gdi ) const noexcept;
 public:
 	void Translate( DirectX::XMFLOAT3 translation );
 	void Rotate( const f32 dx, const f32 dy );
 	DirectX::XMMATRIX GetViewMatrix() noexcept;
 	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
-private:
+public:
 	f32 m_fPitch = PI / 2.0f;
 	f32 m_fYaw = -PI;
 public:

@@ -5,6 +5,8 @@
 #include "../ResourceManager/Vertex.h"
 #include "../ResourceManager/Geometry/Sphere.h"
 #include <d3dcompiler.h>
+#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
+#include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
 PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 {
@@ -115,7 +117,7 @@ DirectX::XMMATRIX PointLight::GetTransformXM() const noexcept
 
 void PointLight::Update()
 {
-
+	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }
 
 void PointLight::Draw( GraphicsDeviceInterface& gdi )
@@ -161,6 +163,15 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 		// draw
 		gdi.DrawIndexed( pIndexBuffer->GetCount() );
 	}
+}
+
+void PointLight::DrawControlPanel()
+{
+	ImGui::Text( "Point Light" );
+	ImGui::ColorEdit3( "Color", &m_StructuredBufferData.color.x );
+	ImGui::SliderFloat( "X", &m_StructuredBufferData.pos.x, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Y", &m_StructuredBufferData.pos.y, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Z", &m_StructuredBufferData.pos.z, -80.0f, 80.0f );
 }
 
 void PointLight::Translate( DirectX::XMFLOAT3 vec )

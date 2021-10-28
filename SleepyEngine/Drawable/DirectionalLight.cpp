@@ -4,6 +4,8 @@
 #include "../Bindable/Bindables/Sampler.h"
 #include "../Bindable/Bindables/Blender.h"
 #include <algorithm>
+#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
+#include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
 DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi )
 {
@@ -37,6 +39,14 @@ void DirectionalLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 c
 
 	m_pForwardLightMatrices->Update( gdi, matrixcbuf );
 	m_pForwardLightMatrices->Bind( gdi );
+}
+
+void DirectionalLight::DrawControlPanel()
+{
+	ImGui::Text( "Directional Light" );
+	ImGui::ColorEdit3( "Color", &m_StructuredBufferData.color.x );
+	ImGui::SliderAngle( "Pitch", &m_fPitch, 0.995f * -90.0f, 0.995f * 90.0f );
+	ImGui::SliderAngle( "Yaw", &m_fYaw, -180.0f, 180.0f );
 }
 
 void DirectionalLight::Draw( GraphicsDeviceInterface& gdi ) const noexcept

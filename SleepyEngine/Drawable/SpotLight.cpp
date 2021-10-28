@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <d3dcompiler.h>
 #include <math.h>
+#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
+#include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
 SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 {
@@ -124,6 +126,8 @@ DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
 
 void SpotLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
 {
+	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
+
 	m_StructuredBufferData.spotViewProjectionMatrix = GetViewMatrix() * GetProjectionMatrix();
 
 	matrixcbuf.lightViewMatrix = GetViewMatrix();
@@ -131,6 +135,17 @@ void SpotLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
 
 	m_pForwardLightMatrices->Update( gdi, matrixcbuf );
 	m_pForwardLightMatrices->Bind( gdi );
+}
+
+void SpotLight::DrawControlPanel()
+{
+	ImGui::Text( "Spot Light" );
+	ImGui::ColorEdit3( "Color", &m_StructuredBufferData.color.x );
+	ImGui::SliderFloat( "X", &m_StructuredBufferData.pos.x, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Y", &m_StructuredBufferData.pos.y, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Z", &m_StructuredBufferData.pos.z, -80.0f, 80.0f );
+	ImGui::SliderAngle( "Pitch", &m_fPitch, 0.995f * -180.0f, 0.995f * 180.0f );
+	ImGui::SliderAngle( "Yaw", &m_fYaw, 0.995f * -180.0f, 0.995f * 180.0f );
 }
 
 void SpotLight::Draw( GraphicsDeviceInterface& gdi )

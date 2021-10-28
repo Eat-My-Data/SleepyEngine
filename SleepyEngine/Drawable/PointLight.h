@@ -8,6 +8,7 @@ class PointLight : public Drawable
 public:
 	PointLight( GraphicsDeviceInterface& gdi, float radius );
 	void Draw( GraphicsDeviceInterface& gdi );
+	void DrawControlPanel();
 	void Update();
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void Translate( DirectX::XMFLOAT3 vec );

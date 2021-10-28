@@ -11,6 +11,7 @@ public:
 	SpotLight( GraphicsDeviceInterface& gdi, f32 scale );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos );
+	void DrawControlPanel();
 	void Draw( GraphicsDeviceInterface& gdi );
 public:
 	void Translate( DirectX::XMFLOAT3 translation );
