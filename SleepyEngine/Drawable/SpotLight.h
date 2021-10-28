@@ -28,7 +28,7 @@ public:
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
 		float range = 50.0f;
 		DirectX::XMFLOAT3 pos = { 0.0f, 10.0f, 0.0f };
-		float outerRadius = 0.835f;
+		float outerRadius = 0.885f;
 		float innerRadius = 0.955f;
 		DirectX::XMMATRIX spotViewProjectionMatrix;
 	};

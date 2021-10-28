@@ -134,6 +134,8 @@ void LightManager::Draw()
 		m_vecOfPointLights[i]->Draw( * m_pGDI );
 	}
 
+	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
+
 	m_pSpotLight->Draw( *m_pGDI );
 }
 

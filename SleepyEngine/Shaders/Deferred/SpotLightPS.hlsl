@@ -51,11 +51,11 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     float conAtt = saturate((angularAttFactor - spotLightData[0].outerRadius) / (spotLightData[0].innerRadius - spotLightData[0].outerRadius));
 
     // lighting calculations
-    float3 diffuseIntensity = Diffuse(spotLightData[0].color.rgb, defaultLightIntensity, att * conAtt, normalize(-spotLightData[0].lightDirection), normalize(normals.xyz));
-    float3 specularResult = Speculate(specular.xyz, 1.0f, normalize(normals.xyz), normalize(-spotLightData[0].lightDirection), camToFrag, att * conAtt, 128.0f);    
+    float3 diffuseIntensity = Diffuse(spotLightData[0].color.rgb, defaultLightIntensity, att * conAtt, normalize(-spotLightData[0].lightDirection), normalize(normals.xyz)) * shadow;
+    float3 specularResult = Speculate(specular.xyz, 1.0f, normalize(normals.xyz), normalize(-spotLightData[0].lightDirection), camToFrag, att * conAtt, 128.0f) * shadow;
 
     // combined light
-    float3 combinedColor = ((diffuseIntensity + specularResult) * shadow);
+    float3 combinedColor = ((diffuseIntensity + specularResult));
 
    	// final color
     return float4((combinedColor * colors.rgb), 1.0f);

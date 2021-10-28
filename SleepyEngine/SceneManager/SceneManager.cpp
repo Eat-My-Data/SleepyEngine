@@ -191,6 +191,7 @@ void SceneManager::ForwardRender()
 	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_vecOfModels[0]->Draw( *m_pGDI, false );
 	//m_pMonster->Draw( *m_pGDI, false );
+
 	// light cores
 	m_LightManager.RenderLightGeometry();
 }

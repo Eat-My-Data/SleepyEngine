@@ -15,21 +15,31 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 
 	auto model = Cone::Make();
 	model.Transform( dx::XMMatrixScaling( scale, scale, scale ) );
-	model.Transform( dx::XMMatrixTranslation( 0.0f, -scale + 1.0f, 0.0f ) );
+	model.Transform( dx::XMMatrixTranslation( 0.0f, -scale, 0.0f ) );
 	const auto geometryTag = "cone2." + std::to_string( scale );
 	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
 	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
+
 	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightVS.cso" );
 	auto pvsbc = pvs->GetBytecode();
 	AddBind( std::move( pvs ) );
-	//AddBind( PixelShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightPS.cso" ) );
+
 	ID3DBlob* pBlob;
 	D3DReadFileToBlob( L"./Shaders/Bin/SpotLightPS.cso", &pBlob );
 	gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
+
 	AddBind( Sampler::Resolve( gdi ) );
+
+	Dvtx::VertexBuffer vbuf( std::move(
+		Dvtx::VertexLayout{}
+		.Append( Dvtx::VertexLayout::Position3D )
+	) );
+	AddBind( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
+
 	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-	AddBind( Rasterizer::Resolve( gdi, true ) );
+
 	AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );
+
 	m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 2u );
 	AddBind( m_pForwardLightMatrices );	
 
