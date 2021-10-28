@@ -12,16 +12,14 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	// structured buffers
 	// 5, 7, and 9 are respective depth textures
 	m_pDirectionalLightBuffer = new Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>{ gdi, 4u };
-	m_pPointLightBuffer = new Bind::PixelStructuredBuffer<PointLight::PointLightData>{ gdi, 6u };
+	// TODO: PixelArrStructuredBuffer is limited to two = BAD
+	m_pPointLightBuffer = new Bind::PixelArrStructuredBuffer<PointLight::PointLightData>{ gdi, 6u };
 	m_pSpotLightBuffer = new Bind::PixelStructuredBuffer<SpotLight::SpotLightData>{ gdi, 8u };
 
 	// constant buffer
 	m_pDefaultLightSettingsBuffer = new Bind::PixelConstantBuffer<DefaultLightSettings>{ gdi, 7u };
 	m_pSolidGeometryColorBuffer = new Bind::PixelConstantBuffer<SolidGeometryColor>{ gdi, 8u };
-
-
-	// TODO: Remove the need for light index if possible
-	m_pLightIndex = new Bind::PixelConstantBuffer<LightIndex>{ gdi, 11u };
+	m_pLightIndex = new Bind::PixelConstantBuffer<LightIndex>{ gdi, 9u };
 
 	// texture descriptor
 	D3D11_TEXTURE2D_DESC textureDesc = {};
@@ -99,8 +97,14 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	m_pSpotLightBuffer->Update( *m_pGDI, m_pSpotLight->m_StructuredBufferData );
 	m_pSpotLightBuffer->Bind( *m_pGDI );
 
-	m_vecOfPointLights[0]->Update();
-	m_pPointLightBuffer->Update( *m_pGDI, m_vecOfPointLights[0]->m_StructuredBufferData );
+	// TODO: Currently limited to two lights = BAD
+	PointLight::PointLightData* bufferData = new PointLight::PointLightData[3];
+	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
+	{
+		m_vecOfPointLights[i]->Update();
+		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
+	}
+	m_pPointLightBuffer->Update( *m_pGDI, bufferData );
 	m_pPointLightBuffer->Bind( *m_pGDI );
 
 	m_LightIndexes.numPointLights = (int)m_vecOfPointLights.size();

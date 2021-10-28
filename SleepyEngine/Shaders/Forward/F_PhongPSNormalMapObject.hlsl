@@ -45,14 +45,17 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         camToFrag, dirLightAtt, specularPower) * dirLightShadow;
     
     // point light
-    const float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[0].pos, splr, 0);
-    const float3 pointToFrag = pointLightData[0].pos - viewFragPos;
-    float pointLightAtt = saturate((1 - (length(pointToFrag) / pointLightData[0].radius)));
-    pointLightAtt *= pointLightAtt;
-    const float3 pointLightDiffuse = Diffuse(pointLightData[0].color, defaultLightIntensity, pointLightAtt, normalize(pointToFrag),
-        viewNormal) * shadow;
-    const float3 pointLightSpecular = Speculate(pointLightData[0].color, defaultLightIntensity, viewNormal, normalize(pointToFrag),
-        viewFragPos, pointLightAtt, specularPower) * shadow;
+    float3 pointLightDiffuse = { 0.0f, 0.0f, 0.0f };
+    float3 pointLightSpecular = { 0.0f, 0.0f, 0.0f };
+    for (int index = 0; index < numPointLights; index++)
+    {
+        float shadow = 1.0f; //CalculatePointLightShadow(viewFragPos, pointLightData[index].pos, splr, 0);
+        const LightVectorData lv = CalculateLightVectorData(pointLightData[index].pos, viewFragPos);
+        float pointLightAtt = saturate((1 - (lv.distToL / pointLightData[index].radius)));
+        pointLightAtt *= pointLightAtt;
+        pointLightDiffuse += Diffuse(pointLightData[index].color, defaultLightIntensity, pointLightAtt, lv.dirToL, viewNormal) * shadow;
+        pointLightSpecular += Speculate(pointLightData[index].color, defaultLightIntensity, viewNormal, lv.dirToL, viewFragPos, pointLightAtt, defaultSpecularPower) * shadow;
+    }
     
     // spot light
     const float3 spotToFrag = spotLightData[0].pos - viewFragPos;

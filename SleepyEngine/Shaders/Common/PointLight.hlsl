@@ -8,6 +8,13 @@ struct PointLightData
 
 StructuredBuffer<PointLightData> pointLightData : register(t6);
 
+cbuffer LightIndex : register(b9)
+{
+    int index;
+    int numPointLights;
+    float2 index_padding;
+}
+
 // TODO:
 // - Make array of textures
 TextureCube pointLightShadowTexture : register(t7);

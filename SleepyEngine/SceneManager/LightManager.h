@@ -32,7 +32,7 @@ private:
 	SpotLight* m_pSpotLight;
 	Bind::PixelStructuredBuffer<SpotLight::SpotLightData>* m_pSpotLightBuffer;
 	std::vector<PointLight*> m_vecOfPointLights;
-	Bind::PixelStructuredBuffer<PointLight::PointLightData>* m_pPointLightBuffer;
+	Bind::PixelArrStructuredBuffer<PointLight::PointLightData>* m_pPointLightBuffer;
 private:
 	int m_iSelectedPointLight = 0;
 	int m_iSelectedSpotLight = 0;
