@@ -17,7 +17,7 @@ cbuffer LightIndex : register(b9)
 
 // TODO:
 // - Make array of textures
-TextureCube pointLightShadowTexture : register(t7);
+TextureCube pointLightShadowTexture[6] : register(t11);
 
 // Function found from: https://stackoverflow.com/questions/10786951/omnidirectional-shadow-mapping-with-depth-cubemap
 float VectorToDepthValue(float3 Vec)
@@ -39,7 +39,7 @@ float CalculatePointLightShadow(float3 viewFragPos, float3 lightPos, SamplerStat
     float3 fragToLight = viewFragPos - lightPos;
     
     // use the light to fragment vector to sample from the depth map    
-    float closestDepth = pointLightShadowTexture.Sample(splr, normalize(fragToLight)).r;
+    float closestDepth = pointLightShadowTexture[lightNum].Sample(splr, normalize(fragToLight)).r;
 
     // it is currently in linear range between [0,1]. Re-transform back to original value
     //closestDepth *= farPlane;

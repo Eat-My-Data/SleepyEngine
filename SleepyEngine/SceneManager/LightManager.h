@@ -27,6 +27,8 @@ public:
 	void TranslateDirectionalLight( DirectX::XMFLOAT3 translation );
 	void RotateDirectionalLight( const f32 dx, const f32 dy );
 private:
+	void InitializePointLightShadowResources();
+private:
 	DirectionalLight* m_pDirectionalLight;
 	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>* m_pDirectionalLightBuffer;
 	SpotLight* m_pSpotLight;
@@ -62,7 +64,7 @@ private:
 		float padding[2];
 	} m_LightIndexes;
 	Bind::PixelConstantBuffer<LightIndex>* m_pLightIndex;
-private:
+
 	struct SolidGeometryColor
 	{
 		DirectX::XMFLOAT3 color = { 1.0f, 1.0f, 1.0f };

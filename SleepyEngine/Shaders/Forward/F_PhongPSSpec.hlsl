@@ -50,7 +50,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     float3 pointLightSpecular = { 0.0f, 0.0f, 0.0f };
     for (int index = 0; index < numPointLights; index++)
     {
-        float shadow = 1.0f; //CalculatePointLightShadow(viewFragPos, pointLightData[index].pos, splr, 0);
+        float shadow = CalculatePointLightShadow(viewFragPos, pointLightData[index].pos, splr, index);
         const LightVectorData lv = CalculateLightVectorData(pointLightData[index].pos, viewFragPos);
         float pointLightAtt = saturate((1 - (lv.distToL / pointLightData[index].radius)));
         pointLightAtt *= pointLightAtt;
