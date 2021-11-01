@@ -66,6 +66,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	}
 	m_pPointLightBuffer->Update( *m_pGDI, bufferData );
 	m_pPointLightBuffer->Bind( *m_pGDI );
+	delete [] bufferData;
 
 	m_LightIndexes.numPointLights = (int)m_vecOfPointLights.size();
 	m_pLightIndex->Update( *m_pGDI, m_LightIndexes );
@@ -74,7 +75,7 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	m_pDefaultLightSettingsBuffer->Update( *m_pGDI, m_DefaultLightSettings );
 	m_pDefaultLightSettingsBuffer->Bind( *m_pGDI );
 
-	m_pGDI->GetContext()->PSSetShaderResources( 11u, 1u, &pTextureView );
+	m_pGDI->GetContext()->PSSetShaderResources( 11u, (UINT)m_vecOfPointLights.size(), &pTextureView[0] );
 	m_pGDI->GetContext()->PSSetShaderResources( 9u, 1u, m_pGDI->GetShadowResource2() );
 }
 
@@ -119,7 +120,8 @@ void LightManager::DrawControlPanel()
 			m_vecOfPointLights.push_back( new PointLight( *m_pGDI, 20.0f ) );
 			InitializePointLightShadowResources();
 		}
-		ImGui::InputInt( "Current Light", &m_iSelectedPointLight, 1, 1 );
+		if ( m_vecOfPointLights.size() > 1 )
+			ImGui::DragInt( "Current Light", &m_iSelectedPointLight, 1, 0, (int)m_vecOfPointLights.size()-1 );
 		m_vecOfPointLights[m_iSelectedPointLight]->DrawControlPanel();
 	}
 	ImGui::End();
@@ -256,13 +258,19 @@ void LightManager::InitializePointLightShadowResources()
 	srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
 	srvDesc.Texture2D.MostDetailedMip = 0;
 	srvDesc.Texture2D.MipLevels = 1;
-	m_pGDI->GetDevice()->CreateShaderResourceView( pTextures[0], &srvDesc, &pTextureView );
+
+	pTextureView.resize( m_vecOfPointLights.size() );
+
+	for ( int index = 0; index < m_vecOfPointLights.size(); index++ )
+	{
+		m_pGDI->GetDevice()->CreateShaderResourceView( pTextures[index], &srvDesc, &pTextureView[index] );
+	}
 
 	depthBuffers.resize( m_vecOfPointLights.size() * 6 );
 
 	for ( int index = 0; index < m_vecOfPointLights.size(); index++ )
 	{
-		for ( u32 face = 0; face < 6; face++ )
+		for ( int face = 0; face < 6; face++ )
 		{
 			// create target view of depth stensil texture
 			D3D11_DEPTH_STENCIL_VIEW_DESC descView = {};

@@ -40,7 +40,7 @@ private:
 	int m_iSelectedSpotLight = 0;
 	GraphicsDeviceInterface* m_pGDI = nullptr;
 private:
-	ID3D11ShaderResourceView* pTextureView;
+	std::vector<ID3D11ShaderResourceView*> pTextureView;
 	ID3D11ShaderResourceView* pTextureView2;
 	DirectX::XMFLOAT4X4 projection;
 	std::vector<ID3D11DepthStencilView*> depthBuffers{ 6 };
