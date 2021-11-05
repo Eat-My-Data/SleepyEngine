@@ -5,11 +5,12 @@
 Personal game engine written in C++ using DirectX11. 
 
 ## Notable Features
- - Immediate Mode GUI
- - Rendering:
+ - Render Technique Runtime Switching
 	- Forward Render
 	- Deferred Render
+ - Graphics Features:
 	- Shadow Mapping
+ - Add Lights at Runtime
 	
 Forward Render
 ![Screenshot](Images/ForwardRender.jpg)
@@ -19,3 +20,4 @@ Deferred Render
 ## Dependencies
  - Assimp - https://github.com/assimp/assimp
  - DirectXTex - https://github.com/microsoft/DirectXTex
+ - ImGUI - https://github.com/ocornut/imgui

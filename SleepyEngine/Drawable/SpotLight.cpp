@@ -192,8 +192,6 @@ void SpotLight::Draw( GraphicsDeviceInterface& gdi )
 		// draw
 		gdi.DrawIndexed( pIndexBuffer->GetCount() );
 	}
-
-	//gdi.DrawIndexed( pIndexBuffer->GetCount() );
 }
 
 void SpotLight::Translate( DirectX::XMFLOAT3 translation )
@@ -266,7 +264,7 @@ bool SpotLight::CameraIsInside( DirectX::XMFLOAT3 camPos )
 	// not limited by "round basement".
 	// We'll use dotProd() to 
 	// determine angle between apexToXVect and axis.
-	float dotOfXAndAxis =  (apexToXVect.x * axisVect.x) + (apexToXVect.y * axisVect.y) + (apexToXVect.z * axisVect.z);
+	float dotOfXAndAxis = (apexToXVect.x * axisVect.x) + (apexToXVect.y * axisVect.y) + (apexToXVect.z * axisVect.z);
 	bool isInInfiniteCone = dotOfXAndAxis / sqrt( sq( apexToXVect.x ) + sq( apexToXVect.y ) + sq( apexToXVect.z ) )
 		/ sqrt( sq( axisVect.x ) + sq( axisVect.y ) + sq( axisVect.z ) )
 		> m_StructuredBufferData.outerRadius;

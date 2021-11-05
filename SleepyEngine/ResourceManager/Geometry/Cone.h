@@ -43,37 +43,37 @@ public:
         }
 
         //BuildCylinderTopCap( topRadius, height, sliceCount, ref ret );
-        u32 baseIndex = (u32)vb.Size();
-        f32 y = 0.5f * height;
+        u32 topBaseIndex = (u32)vb.Size();
+        f32 topY = 0.5f * height;
         f32 dTheta = 2.0f * PI / sliceCount;
         for ( int i = 0; i <= sliceCount; i++ ) {
             f32 x = topRadius * dx::XMScalarCos( i * dTheta );
             f32 z = topRadius * dx::XMScalarSin( i * dTheta );
-            vb.EmplaceBack( dx::XMFLOAT3( x, y, z ) );
+            vb.EmplaceBack( dx::XMFLOAT3( x, topY, z ) );
         }
-        vb.EmplaceBack( dx::XMFLOAT3(0, y, 0 ) );
-        u32 centerIndex =  (u32)vb.Size() - 1;
+        vb.EmplaceBack( dx::XMFLOAT3(0, topY, 0 ) );
+        u32 topCenterIndex =  (u32)vb.Size() - 1;
         for ( int i = 0; i < sliceCount; i++ ) {
-            indices.push_back( centerIndex );
-            indices.push_back( baseIndex + i + 1 );
-            indices.push_back( baseIndex + i );
+            indices.push_back( topCenterIndex );
+            indices.push_back( topBaseIndex + i + 1 );
+            indices.push_back( topBaseIndex + i );
         }
 
         //BuildCylinderBottomCap( bottomRadius, height, sliceCount, ref ret );
-        u32 baseIndex2 = (u32)vb.Size();
-        f32 y2 = -0.5f * height;
+        u32 bottomBaseIndex = (u32)vb.Size();
+        f32 bottomY = -0.5f * height;
         f32 dTheta2 = 2.0f * PI / sliceCount;
         for ( int i = 0; i <= sliceCount; i++ ) {
             f32 x = bottomRadius * dx::XMScalarCos( i * dTheta2 );
             f32 z = bottomRadius * dx::XMScalarSin( i * dTheta2 );
-            vb.EmplaceBack( dx::XMFLOAT3( x, y2, z ) );
+            vb.EmplaceBack( dx::XMFLOAT3( x, bottomY, z ) );
         }
-        vb.EmplaceBack( dx::XMFLOAT3( 0, y2, 0 ) );
-        u32 centerIndex2 = (u32)vb.Size() - 1;
+        vb.EmplaceBack( dx::XMFLOAT3( 0, bottomY, 0 ) );
+        u32 bottomCenterIndex = (u32)vb.Size() - 1;
         for ( int i = 0; i < sliceCount; i++ ) {
-            indices.push_back( centerIndex );
-            indices.push_back( baseIndex2 + i );
-            indices.push_back( baseIndex2 + i + 1 );
+            indices.push_back( bottomCenterIndex );
+            indices.push_back( bottomBaseIndex + i );
+            indices.push_back( bottomBaseIndex + i + 1 );
         }
         return { std::move( vb ),std::move( indices ) };
 	}
