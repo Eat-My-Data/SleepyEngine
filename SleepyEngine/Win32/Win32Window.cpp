@@ -10,8 +10,9 @@ Win32Window::WindowSingleton::WindowSingleton() noexcept
 	m_hInst( GetModuleHandle( nullptr ) )
 {
 	// register window class
-	WNDCLASS wc = { 0 };
+	WNDCLASSEX  wc = { 0 };
 	//wc.cbSize = sizeof( wc );
+	wc.cbSize = sizeof( wc );
 	wc.style = CS_OWNDC;
 	wc.lpfnWndProc = HandleMsgSetup;
 	wc.cbClsExtra = 0;
@@ -21,7 +22,7 @@ Win32Window::WindowSingleton::WindowSingleton() noexcept
 	wc.hbrBackground = nullptr;
 	wc.lpszMenuName = nullptr;
 	wc.lpszClassName = (LPCWSTR)GetName();
-	RegisterClass( &wc );
+	RegisterClassEx( &wc );
 }
 
 Win32Window::WindowSingleton::~WindowSingleton()
@@ -73,11 +74,11 @@ Win32Window::Win32Window( u32 width, u32 height, const wchar_t* name )
 	ImGui_ImplWin32_Init( m_hWnd );
 
 	// register mouse raw input device
-	RAWINPUTDEVICE rid;
+	RAWINPUTDEVICE rid = {};
 	rid.usUsagePage = 0x01;
 	rid.usUsage = 0x02;
 	rid.dwFlags = 0;
-	rid.hwndTarget = nullptr;
+	rid.hwndTarget = 0;
 	if ( RegisterRawInputDevices( &rid, 1, sizeof( rid ) ) == FALSE )
 		throw std::exception();
 }
@@ -356,8 +357,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 		}
 		// process the raw input data
 		auto& ri = reinterpret_cast<const RAWINPUT&>( *m_RawMouseBuffer.data() );
-		if ( ri.header.dwType == RIM_TYPEMOUSE &&
-			( ri.data.mouse.lLastX != 0 || ri.data.mouse.lLastY != 0 ) )
+		if ( ri.header.dwType == RIM_TYPEMOUSE && ( ri.data.mouse.lLastX != 0 || ri.data.mouse.lLastY != 0 ) )
 			m_Mouse.OnRawDelta( ri.data.mouse.lLastX, ri.data.mouse.lLastY );
 		break;
 	}

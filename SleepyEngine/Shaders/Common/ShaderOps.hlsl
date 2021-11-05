@@ -48,15 +48,3 @@ float3 Speculate(
     // viewing vector and reflection vector, narrow with power function
     return att * specularColor * specularIntensity * pow(max(0.0f, dot(-r, viewCamToFrag)), specularPower);
 }
-
-float4 CalculateWorldSpacePosition(
-    float4 worldDepth,
-    float4x4 projInvMatrix,
-    float4x4 viewInvMatrix )
-{
-    float4 worldPosition = mul(worldDepth, projInvMatrix);
-    worldPosition /= worldPosition.w;
-    float4 worldSpacePos = mul(worldPosition, viewInvMatrix);
-    worldSpacePos /= worldSpacePos.w;
-    return worldSpacePos;
-}

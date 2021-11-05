@@ -5,6 +5,8 @@
 #include "../ResourceManager/Vertex.h"
 #include "../ResourceManager/Geometry/Sphere.h"
 #include <d3dcompiler.h>
+#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
+#include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
 PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 {
@@ -113,17 +115,9 @@ DirectX::XMMATRIX PointLight::GetTransformXM() const noexcept
 	return DirectX::XMMatrixTranslation( m_StructuredBufferData.pos.x, m_StructuredBufferData.pos.y, m_StructuredBufferData.pos.z );
 }
 
-void PointLight::Update( DirectX::XMMATRIX viewMatrix, DirectX::XMMATRIX projectionMatrix, DirectX::XMFLOAT3 camPos )
+void PointLight::Update()
 {
-		DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( viewMatrix );
-		DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, viewMatrix );
-		m_StructuredBufferData.cameraMatrix = cameraMatrix;
-		// get inverse of the projection matrix
-		DirectX::XMVECTOR determinant2 = DirectX::XMMatrixDeterminant( projectionMatrix );
-		DirectX::XMMATRIX projInvMatrix = DirectX::XMMatrixInverse( &determinant2, projectionMatrix );
-		m_StructuredBufferData.projInvMatrix = projInvMatrix;
-		// update camera position
-		m_StructuredBufferData.camPos = camPos;
+	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }
 
 void PointLight::Draw( GraphicsDeviceInterface& gdi )
@@ -134,8 +128,17 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 		b->Bind( gdi );
 	}
 
+	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
+	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, gdi.GetViewMatrix() );
+
+	DirectX::XMFLOAT3 camPos = {
+		 cameraMatrix.r[3].m128_f32[0],
+		 cameraMatrix.r[3].m128_f32[1],
+		 cameraMatrix.r[3].m128_f32[2]
+	};
+
 	// figure out if camera is inside point light
-	if ( CameraIsInside( m_StructuredBufferData.camPos ) )
+	if ( CameraIsInside( camPos ) )
 	{
 		gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
 		gdi.GetContext()->RSSetState( rasterizerInside );
@@ -160,6 +163,15 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 		// draw
 		gdi.DrawIndexed( pIndexBuffer->GetCount() );
 	}
+}
+
+void PointLight::DrawControlPanel()
+{
+	ImGui::Text( "Point Light" );
+	ImGui::ColorEdit3( "Color", &m_StructuredBufferData.color.x );
+	ImGui::SliderFloat( "X", &m_StructuredBufferData.pos.x, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Y", &m_StructuredBufferData.pos.y, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Z", &m_StructuredBufferData.pos.z, -80.0f, 80.0f );
 }
 
 void PointLight::Translate( DirectX::XMFLOAT3 vec )

@@ -24,14 +24,20 @@ public:
 	void RotateCamera( const f32 dx, const f32 dy );
 	void TranslateCamera( DirectX::XMFLOAT3 camDelta );
 public:
-	void SetActiveLight( const u32 index );
+	void SetActivePointLight( const u32 index );
 	void TranslatePointLight( DirectX::XMFLOAT3 translation );
 	void TranslateDirectionalLight( DirectX::XMFLOAT3 translation );
 	void RotateDirectionalLight( const f32 dx, const f32 dy );
+	void SetActiveSpotLight( const u32 index );
+	void TranslateSpotLight( DirectX::XMFLOAT3 translation );
+	void RotateSpotLight( const f32 dx, const f32 dy );
 private:
 	void PrepareFrame();
+	void UpdateCameraBuffer();
 	void ForwardRender();
 	void DeferredRender();
+public:
+	bool imguiEnabled = true;
 private:
 	GraphicsAPI m_GraphicsAPI = GraphicsAPI::Uninitialized;
 	GraphicsDeviceInterface* m_pGDI = nullptr;
@@ -39,12 +45,18 @@ private:
 	LightManager m_LightManager;
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 private:
-	std::vector<Model*> m_vecOfModels;
+	struct CameraData
+	{
+		DirectX::XMFLOAT4 camPos;
+		DirectX::XMMATRIX viewInvMatrix;
+		DirectX::XMMATRIX projInvMatrix;
+	};
+	CameraData m_CameraCBufferaData;
+	Bind::PixelConstantBuffer<CameraData>* m_pCameraBuffer;
 private:
-	bool imguiEnabled = true;
+	std::vector<Model*> m_vecOfModels;
+	Model* m_pMonster;
 	// TODO: 
 	// - Resource Manager
 	// - Culling
-	// - Clean up shader files/minimize everything
-	// - Make to have as little buffers as possible
 };

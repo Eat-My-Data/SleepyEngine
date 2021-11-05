@@ -202,6 +202,7 @@ Model::Model( GraphicsDeviceInterface& gdi, const std::string& pathString, bool 
 	:
 	pWindow( std::make_unique<ModelWindow>() )
 {
+	// TODO: USE RELEASE ASSIMP
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile( pathString.c_str(),
 		aiProcess_Triangulate |
@@ -351,10 +352,6 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gdi, const aiMe
 		bindablePtrs.push_back( VertexBuffer::Resolve( gdi, meshTag, vbuf ) );
 
 		bindablePtrs.push_back( IndexBuffer::Resolve( gdi, meshTag, indices ) );
-
-		auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/PhongVSNormalMap.cso" );
-		auto pvsbc = pvs->GetBytecode();
-		bindablePtrs.push_back( std::move( pvs ) );
 
 		if ( isForward )
 		{
@@ -581,7 +578,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gdi, const aiMe
 		auto buf = Dcb::Buffer( std::move( lay ) );
 		buf["specularIntensity"] = ( specularColor.x + specularColor.y + specularColor.z ) / 3.0f;
 		buf["specularPower"] = shininess;
-		buf["specularMapWeight"] = 1.0f;
+		//buf["specularMapWeight"] = 1.0f;
 
 		bindablePtrs.push_back( std::make_unique<Bind::CachingPixelConstantBufferEX>( gdi, buf, 1u ) );
 	}

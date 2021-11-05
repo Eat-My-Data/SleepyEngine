@@ -141,6 +141,8 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
 	hr = m_pDevice->CreateDepthStencilState( &dsDesc, &m_pGBufferDSS );
+	hr = m_pDevice->CreateDepthStencilState( &dsDesc, &m_pGBufferDSS2 );
+
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();
@@ -163,20 +165,19 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
     descDepth.Usage = D3D11_USAGE_DEFAULT;
     descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
     m_pDevice->CreateTexture2D( &descDepth, nullptr, &pDepthStencil );
-
 	m_pDevice->CreateTexture2D( &descDepth, nullptr, &m_pShadowTexture );
+	m_pDevice->CreateTexture2D( &descDepth, nullptr, &m_pShadowTexture2 );
+
 
     D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
     descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
     descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
     descDSV.Texture2D.MipSlice = 0u;
-    hr = m_pDevice->CreateDepthStencilView( pDepthStencil, &descDSV, &m_pDSV );
-	if ( FAILED( hr ) )
-	{
-		throw std::exception();
-	}
 
+	hr = m_pDevice->CreateDepthStencilView( pDepthStencil, &descDSV, &m_pDSV );
 	hr = m_pDevice->CreateDepthStencilView( m_pShadowTexture, &descDSV, &m_pShadowDSV );
+	hr = m_pDevice->CreateDepthStencilView( m_pShadowTexture2, &descDSV, &m_pShadowDSV2 );
+
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();
@@ -197,6 +198,7 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 	}
 
 	hr = m_pDevice->CreateShaderResourceView( m_pShadowTexture, &depthShaderResourceDesc, &m_pShadowSRV );
+	hr = m_pDevice->CreateShaderResourceView( m_pShadowTexture2, &depthShaderResourceDesc, &m_pShadowSRV2 );
 	if ( FAILED( hr ) )
 	{
 		throw std::exception();
@@ -278,7 +280,22 @@ ID3D11DepthStencilState* D3D11Interface::GetGBufferDSS() noexcept
 	return m_pGBufferDSS;
 }
 
+ID3D11DepthStencilState* D3D11Interface::GetGBufferDSS2() noexcept
+{
+	return m_pGBufferDSS2;
+}
+
 ID3D11DepthStencilView** D3D11Interface::GetShadowDSV() noexcept
 {
 	return &m_pShadowDSV;
+}
+
+ID3D11DepthStencilView** D3D11Interface::GetShadowDSV2() noexcept
+{
+	return &m_pShadowDSV2;
+}
+
+ID3D11ShaderResourceView** D3D11Interface::GetShadowResource2() noexcept
+{
+	return &m_pShadowSRV2;
 }

@@ -106,7 +106,22 @@ ID3D11DepthStencilState* GraphicsDeviceInterface::GetBufferDSS() noexcept
 	return m_D3D11Interface.GetGBufferDSS();
 }
 
+ID3D11DepthStencilState* GraphicsDeviceInterface::GetBufferDSS2() noexcept
+{
+	return m_D3D11Interface.GetGBufferDSS2();
+}
+
 ID3D11DepthStencilView** GraphicsDeviceInterface::GetShadowDSV() noexcept
 {
 	return m_D3D11Interface.GetShadowDSV();
+}
+
+ID3D11DepthStencilView** GraphicsDeviceInterface::GetShadowDSV2() noexcept
+{
+	return m_D3D11Interface.GetShadowDSV2();
+}
+
+ID3D11ShaderResourceView** GraphicsDeviceInterface::GetShadowResource2() noexcept
+{
+	return m_D3D11Interface.GetShadowResource2();
 }

@@ -10,32 +10,27 @@ public:
 	DirectionalLight( GraphicsDeviceInterface& gdi );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos );
+	void DrawControlPanel();
 	void Draw( GraphicsDeviceInterface& gdi ) const noexcept;
 public:
 	void Translate( DirectX::XMFLOAT3 translation );
 	void Rotate( const f32 dx, const f32 dy );
 	DirectX::XMMATRIX GetViewMatrix() noexcept;
 	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
-	Camera& GetCamera();
-private:
-	Camera m_OrthoCamera = { L"Directional Light Camera", MatrixType::Orthographic, ViewSpace( 400.0f, 400.0f, 1.0f, 1200.0f ), DirectX::XMFLOAT3{ 0.0f,200.8f,100.0f },  PI / 2.0f, -PI };
+public:
+	f32 m_fPitch = PI / 2.0f;
+	f32 m_fYaw = -PI;
 public:
 	struct DirectionalLightData
 	{
-		DirectX::XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
-		float padding0;
-		float specularIntensity = 1.0f;
-		float att = 0.8f;
-		float specularPower = 128.0f;
-		float padding1;
-		DirectX::XMFLOAT3 camPos;
-		float padding2;
-		DirectX::XMMATRIX cameraMatrix;
-		DirectX::XMMATRIX projInvMatrix;
+		DirectX::XMFLOAT3 color = { 1.0f, 1.0f, 1.0f };
+		float att = 0.7f;
+		float padding;
 		DirectX::XMMATRIX lightViewProjectionMatrix;
 	};
 	DirectionalLightData m_StructuredBufferData;
+	DirectX::XMFLOAT3 homePos = { 0.0f, 200.0f, 10.0f };
 private:
 	struct ForwardMatrices
 	{

@@ -70,12 +70,12 @@ void Mouse::Flush() noexcept
 
 void Mouse::EnableRaw() noexcept
 {
-	m_bIsInWindow = true;
+	m_bRawEnabled = true;
 }
 
 void Mouse::DisableRaw() noexcept
 {
-	m_bIsInWindow = false;
+	m_bRawEnabled = false;
 }
 
 bool Mouse::RawEnabled() const noexcept

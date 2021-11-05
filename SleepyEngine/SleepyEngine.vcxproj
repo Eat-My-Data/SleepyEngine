@@ -81,12 +81,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include;</IncludePath>
-    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(LibraryPath);$(ProjectDir)Libraries\assimp\bin\$(Platform)\$(Configuration);</LibraryPath>
+    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(ProjectDir)Libraries\assimp\bin\$(Platform)\$(Configuration);$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include;</IncludePath>
-    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(LibraryPath);$(ProjectDir)Libraries\assimp\bin\$(Platform)\$(Configuration);</LibraryPath>
+    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(ProjectDir)Libraries\assimp\bin\$(Platform)\$(Configuration);$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -185,11 +185,13 @@
     <ClCompile Include="Bindable\Bindables\TransformCBuf.cpp" />
     <ClCompile Include="Bindable\Bindables\VertexBuffer.cpp" />
     <ClCompile Include="Bindable\Bindables\VertexShader.cpp" />
+    <ClCompile Include="Drawable\SolidCone.cpp" />
     <ClCompile Include="Drawable\Cube.cpp" />
     <ClCompile Include="Drawable\DirectionalLight.cpp" />
     <ClCompile Include="Drawable\Drawable.cpp" />
     <ClCompile Include="Drawable\PointLight.cpp" />
     <ClCompile Include="Drawable\SolidSphere.cpp" />
+    <ClCompile Include="Drawable\SpotLight.cpp" />
     <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp" />
     <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp" />
     <ClCompile Include="GUI\ImguiManager.cpp" />
@@ -235,11 +237,13 @@
     <ClInclude Include="Bindable\Bindables\TransformCBuf.h" />
     <ClInclude Include="Bindable\Bindables\VertexBuffer.h" />
     <ClInclude Include="Bindable\Bindables\VertexShader.h" />
+    <ClInclude Include="Drawable\SolidCone.h" />
     <ClInclude Include="Drawable\Cube.h" />
     <ClInclude Include="Drawable\DirectionalLight.h" />
     <ClInclude Include="Drawable\Drawable.h" />
     <ClInclude Include="Drawable\PointLight.h" />
     <ClInclude Include="Drawable\SolidSphere.h" />
+    <ClInclude Include="Drawable\SpotLight.h" />
     <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h" />
     <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h" />
     <ClInclude Include="GUI\ImguiManager.h" />
@@ -252,6 +256,7 @@
     <ClInclude Include="Libraries\imgui\imstb_textedit.h" />
     <ClInclude Include="Libraries\imgui\imstb_truetype.h" />
     <ClInclude Include="ResourceManager\Color.h" />
+    <ClInclude Include="ResourceManager\Geometry\Cone.h" />
     <ClInclude Include="ResourceManager\Geometry\Sphere.h" />
     <ClInclude Include="ResourceManager\IndexedTriangleList.h" />
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
@@ -274,6 +279,16 @@
     <ClInclude Include="Win32\WinDefines.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Shaders\Common\CameraData.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\DefaultLightSettings.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="Shaders\Common\DirectionalLight.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -316,6 +331,10 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\SpotLight.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -423,6 +442,22 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
+    <FxCompile Include="Shaders\Deferred\SpotLightPS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\SpotLightVS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Shaders\Forward\F_PhongPS.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
@@ -497,22 +532,6 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="Shaders\GUI\PhongPS.hlsl">
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Shaders\GUI\PhongVS.hlsl">
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Shaders\GUI\FontPS.hlsl" />
-    <None Include="Shaders\GUI\FontVS.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

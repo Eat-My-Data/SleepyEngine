@@ -17,6 +17,11 @@ Camera::Camera( const wchar_t* name, MatrixType matrixType, ViewSpace viewSpace,
 Camera::~Camera()
 {}
 
+void Camera::SetPosition( DirectX::XMFLOAT3 position )
+{
+	m_Pos = position;
+}
+
 DirectX::XMFLOAT3& Camera::GetPosition() noexcept
 {
 	return m_Pos;
@@ -57,7 +62,7 @@ void Camera::Reset() noexcept
 void Camera::Rotate( const f32 dx, const f32 dy ) noexcept
 {
 	m_fYaw = wrap_angle( m_fYaw + dx * m_fRotationSpeed );
-	m_fPitch = std::clamp( m_fPitch + dy * m_fRotationSpeed, 0.995f * -PI / 2.0f, 0.995f * PI / 2.0f );
+	m_fPitch = std::clamp( m_fPitch + dy * m_fRotationSpeed, 0.995f * -PI, 0.995f * PI );
 }
 
 void Camera::Translate( DirectX::XMFLOAT3 translation ) noexcept

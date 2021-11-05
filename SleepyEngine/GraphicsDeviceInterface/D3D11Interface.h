@@ -27,7 +27,10 @@ public:
 	ID3D11DepthStencilView** GetDSV_ReadOnly() noexcept;
 	ID3D11DepthStencilState* GetLightDSS() noexcept;
 	ID3D11DepthStencilState* GetGBufferDSS() noexcept;
+	ID3D11DepthStencilState* GetGBufferDSS2() noexcept;
 	ID3D11DepthStencilView** GetShadowDSV() noexcept;
+	ID3D11DepthStencilView** GetShadowDSV2() noexcept;
+	ID3D11ShaderResourceView** GetShadowResource2() noexcept;
 private:
 	IDXGISwapChain* m_pSwap;
 	ID3D11Device* m_pDevice;
@@ -44,11 +47,15 @@ private:
 private:
 	ID3D11BlendState* m_pBlendState;
 	ID3D11DepthStencilState* m_pGBufferDSS;
+	ID3D11DepthStencilState* m_pGBufferDSS2;
 	ID3D11DepthStencilState* m_pLightingDSS;
 	ID3D11DepthStencilView* m_pDSV_ReadOnly;
 private:
 	ID3D11Texture2D* pDepthStencil;
 	ID3D11DepthStencilView* m_pShadowDSV;
+	ID3D11DepthStencilView* m_pShadowDSV2;
 	ID3D11Texture2D* m_pShadowTexture;
+	ID3D11Texture2D* m_pShadowTexture2;
 	ID3D11ShaderResourceView* m_pShadowSRV;
+	ID3D11ShaderResourceView* m_pShadowSRV2;
 };
