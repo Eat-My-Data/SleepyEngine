@@ -165,6 +165,12 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 	}
 }
 
+void PointLight::Submit( FrameCommander& frame ) const noexcept
+{
+	//mesh.SetPos( cbData.pos );
+	//mesh.Submit( frame );
+}
+
 void PointLight::DrawControlPanel()
 {
 	ImGui::Text( "Point Light" );

@@ -12,6 +12,7 @@ namespace Bind
 			Dvtx::VertexLayout layout,
 			ID3DBlob* pVertexShaderBytecode );
 		void Bind( GraphicsDeviceInterface& gdi ) noexcept override;
+		const Dvtx::VertexLayout GetLayout() const noexcept;
 		static std::shared_ptr<InputLayout> Resolve( GraphicsDeviceInterface& gdi,
 			const Dvtx::VertexLayout& layout, ID3DBlob* pVertexShaderBytecode );
 		static std::string GenerateUID( const Dvtx::VertexLayout& layout, ID3DBlob* pVertexShaderBytecode = nullptr );

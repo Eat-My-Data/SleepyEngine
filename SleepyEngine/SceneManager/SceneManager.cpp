@@ -15,8 +15,8 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 {		
 	m_pGDI = &gdi;
 	m_GraphicsAPI = api;
-	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
-	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
+	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
+	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.obj", true, 2000.0f );
 	//m_pMonster->SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -250.0f, 0.0f ) * DirectX::XMMatrixRotationY( -PI / 2.0f ) * DirectX::XMMatrixRotationZ( PI / 2.0f ) );
@@ -173,57 +173,57 @@ void SceneManager::UpdateCameraBuffer()
 void SceneManager::ForwardRender()
 {
 	// depth from light
-	m_LightManager.PrepareDepthFromLight();
-	m_vecOfModels[1]->Draw( *m_pGDI, true );
+	//m_LightManager.PrepareDepthFromLight();
+	//m_vecOfModels[1]->Draw( *m_pGDI, true );
 
 	// point light depth pass
-	m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
+	//m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
 
 	// spot light depth pass
-	m_LightManager.PrepareDepthFromSpotLight();
-	m_vecOfModels[1]->Draw( *m_pGDI, true );
+	//m_LightManager.PrepareDepthFromSpotLight();
+	//m_vecOfModels[1]->Draw( *m_pGDI, true );
 
 	// update and render
 	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), *m_pGDI->GetDSV() );
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
-	m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
+	//m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
 	UpdateCameraBuffer();
-	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
-	m_vecOfModels[0]->Draw( *m_pGDI, false );
+	//m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
+	//m_vecOfModels[0]->Draw( *m_pGDI, false );
 	//m_pMonster->Draw( *m_pGDI, false );
 
 	// light cores
-	m_LightManager.RenderLightGeometry();
+	//m_LightManager.RenderLightGeometry();
 }
 
 void SceneManager::DeferredRender()
 {
 	// depth from light
-	m_LightManager.PrepareDepthFromLight();
-	m_vecOfModels[1]->Draw( *m_pGDI, true );
+	//m_LightManager.PrepareDepthFromLight();
+	//m_vecOfModels[1]->Draw( *m_pGDI, true );
 
 	// point light depth pass
-	m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
+	//m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
 
 	// spot light depth pass
-	m_LightManager.PrepareDepthFromSpotLight();
-	m_vecOfModels[1]->Draw( *m_pGDI, true );
+	//m_LightManager.PrepareDepthFromSpotLight();
+	//m_vecOfModels[1]->Draw( *m_pGDI, true );
 
 	// gbuffers
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
 	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
-	m_vecOfModels[1]->Draw( *m_pGDI, false );
+	//m_vecOfModels[1]->Draw( *m_pGDI, false );
 	//m_pMonster->Draw( *m_pGDI, false );
 
 	// lights
 	UpdateCameraBuffer();
-	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
-	m_LightManager.Draw();
+	//m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
+	//m_LightManager.Draw();
 
 	// light cores
-	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
-	m_LightManager.RenderLightGeometry();
+	//m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
+	//m_LightManager.RenderLightGeometry();
 }

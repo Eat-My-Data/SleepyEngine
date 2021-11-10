@@ -13,8 +13,9 @@ SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
 	auto model = Sphere::Make();
 	model.Transform( dx::XMMatrixScaling( radius, radius, radius ) );
 	const auto geometryTag = "$sphere." + std::to_string( radius );
-	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
-	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
+	pVertices = VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices );
+	pIndices = IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices );
+	pTopology = Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
 	auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/SolidVS.cso" );
 	auto pvsbc = pvs->GetBytecode();

@@ -3,12 +3,16 @@
 #include <string>
 #include <memory>
 
+class Drawable;
+
 namespace Bind
 {
 	class Bindable
 	{
 	public:
 		virtual void Bind( GraphicsDeviceInterface& gdi ) noexcept = 0;
+		virtual void InitializeParentReference( const Drawable& ) noexcept
+		{}
 		virtual std::string GetUID() const noexcept
 		{
 			assert( false );

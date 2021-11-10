@@ -202,6 +202,9 @@
     <ClCompile Include="Libraries\imgui\imgui_draw.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_tables.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Job.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Step.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Technique.cpp" />
     <ClCompile Include="ResourceManager\LayoutCodex.cpp" />
     <ClCompile Include="ResourceManager\Mesh.cpp" />
     <ClCompile Include="ResourceManager\Surface.cpp" />
@@ -259,6 +262,11 @@
     <ClInclude Include="ResourceManager\Geometry\Cone.h" />
     <ClInclude Include="ResourceManager\Geometry\Sphere.h" />
     <ClInclude Include="ResourceManager\IndexedTriangleList.h" />
+    <ClInclude Include="ResourceManager\Jobber\FrameCommander.h" />
+    <ClInclude Include="ResourceManager\Jobber\Job.h" />
+    <ClInclude Include="ResourceManager\Jobber\Pass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Step.h" />
+    <ClInclude Include="ResourceManager\Jobber\Technique.h" />
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
     <ClInclude Include="ResourceManager\Mesh.h" />
     <ClInclude Include="ResourceManager\Surface.h" />

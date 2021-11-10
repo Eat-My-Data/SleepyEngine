@@ -24,6 +24,10 @@ namespace Bind
 	{
 		GetContext( gdi )->IASetInputLayout( m_pInputLayout );
 	}
+	const Dvtx::VertexLayout InputLayout::GetLayout() const noexcept
+	{
+		return m_VertexLayout;
+	}
 	std::shared_ptr<InputLayout> InputLayout::Resolve( GraphicsDeviceInterface& gdi,
 		const Dvtx::VertexLayout& layout, ID3DBlob* pVertexShaderBytecode )
 	{
