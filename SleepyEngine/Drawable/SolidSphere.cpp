@@ -7,7 +7,7 @@
 
 SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
 {
-	using namespace Bind;
+	/*using namespace Bind;
 	namespace dx = DirectX;
 
 	auto model = Sphere::Make();
@@ -31,7 +31,7 @@ SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
 
 	AddBind( Blender::Resolve( gdi, false ) );
 
-	AddBind( Rasterizer::Resolve( gdi, false ) );
+	AddBind( Rasterizer::Resolve( gdi, false ) );*/
 }
 
 void SolidSphere::SetPos( DirectX::XMFLOAT3 pos ) noexcept

@@ -17,6 +17,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_GraphicsAPI = api;
 	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
+	m_pTestCube = new Cube( gdi, { { 1.0f,1.0f,1.0f }, 0.0f, 0.0f, 0.0f }, 1.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.obj", true, 2000.0f );
 	//m_pMonster->SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -250.0f, 0.0f ) * DirectX::XMMatrixRotationY( -PI / 2.0f ) * DirectX::XMMatrixRotationZ( PI / 2.0f ) );
@@ -52,8 +53,8 @@ void SceneManager::Draw()
 
 	if ( m_RenderTechnique == RenderTechnique::Forward )
 		ForwardRender();
-	else if ( m_RenderTechnique == RenderTechnique::Deferred )
-		DeferredRender();
+	//else if ( m_RenderTechnique == RenderTechnique::Deferred )
+		//DeferredRender();
 
 	// clear shader resources
 	ID3D11ShaderResourceView* null[12] = {};
@@ -141,7 +142,7 @@ void SceneManager::RotateSpotLight( const f32 dx, const f32 dy )
 void SceneManager::PrepareFrame()
 {
 	// setup
-	const float color[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	const float color[] = { 0.07f,0.0f,0.12f };
 	m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetTarget(), color );
 	for ( int i = 0; i < 3; i++ )
 	{
@@ -189,41 +190,44 @@ void SceneManager::ForwardRender()
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	//m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
 	UpdateCameraBuffer();
+	m_pTestCube->Submit( m_FrameCommander );
+	m_FrameCommander.Execute( *m_pGDI );
 	//m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	//m_vecOfModels[0]->Draw( *m_pGDI, false );
 	//m_pMonster->Draw( *m_pGDI, false );
+	m_FrameCommander.Reset();
 
 	// light cores
 	//m_LightManager.RenderLightGeometry();
 }
 
-void SceneManager::DeferredRender()
-{
-	// depth from light
-	//m_LightManager.PrepareDepthFromLight();
-	//m_vecOfModels[1]->Draw( *m_pGDI, true );
-
-	// point light depth pass
-	//m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
-
-	// spot light depth pass
-	//m_LightManager.PrepareDepthFromSpotLight();
-	//m_vecOfModels[1]->Draw( *m_pGDI, true );
-
-	// gbuffers
-	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
-	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
-	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
-	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
-	//m_vecOfModels[1]->Draw( *m_pGDI, false );
-	//m_pMonster->Draw( *m_pGDI, false );
-
-	// lights
-	UpdateCameraBuffer();
-	//m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
-	//m_LightManager.Draw();
-
-	// light cores
-	//m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
-	//m_LightManager.RenderLightGeometry();
-}
+//void SceneManager::DeferredRender()
+//{
+//	// depth from light
+//	//m_LightManager.PrepareDepthFromLight();
+//	//m_vecOfModels[1]->Draw( *m_pGDI, true );
+//
+//	// point light depth pass
+//	//m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
+//
+//	// spot light depth pass
+//	//m_LightManager.PrepareDepthFromSpotLight();
+//	//m_vecOfModels[1]->Draw( *m_pGDI, true );
+//
+//	// gbuffers
+//	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
+//	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
+//	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
+//	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
+//	//m_vecOfModels[1]->Draw( *m_pGDI, false );
+//	//m_pMonster->Draw( *m_pGDI, false );
+//
+//	// lights
+//	UpdateCameraBuffer();
+//	//m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
+//	//m_LightManager.Draw();
+//
+//	// light cores
+//	//m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
+//	//m_LightManager.RenderLightGeometry();
+//}

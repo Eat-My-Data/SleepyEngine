@@ -12,110 +12,110 @@
 
 SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 {
-	using namespace Bind;
-	namespace dx = DirectX;
+	//using namespace Bind;
+	//namespace dx = DirectX;
 
-	auto model = Cone::Make();
-	model.Transform( dx::XMMatrixScaling( scale, scale, scale ) );
-	model.Transform( dx::XMMatrixTranslation( 0.0f, -scale, 0.0f ) );
-	const auto geometryTag = "cone2." + std::to_string( scale );
-	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
-	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
+	//auto model = Cone::Make();
+	//model.Transform( dx::XMMatrixScaling( scale, scale, scale ) );
+	//model.Transform( dx::XMMatrixTranslation( 0.0f, -scale, 0.0f ) );
+	//const auto geometryTag = "cone2." + std::to_string( scale );
+	//AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
+	//AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 
-	auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightVS.cso" );
-	auto pvsbc = pvs->GetBytecode();
-	AddBind( std::move( pvs ) );
+	//auto pvs = VertexShader::Resolve( gdi, "../SleepyEngine/Shaders/Bin/SpotLightVS.cso" );
+	//auto pvsbc = pvs->GetBytecode();
+	//AddBind( std::move( pvs ) );
 
-	ID3DBlob* pBlob;
-	D3DReadFileToBlob( L"./Shaders/Bin/SpotLightPS.cso", &pBlob );
-	gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
+	//ID3DBlob* pBlob;
+	//D3DReadFileToBlob( L"./Shaders/Bin/SpotLightPS.cso", &pBlob );
+	//gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
 
-	AddBind( Sampler::Resolve( gdi ) );
+	//AddBind( Sampler::Resolve( gdi ) );
 
-	Dvtx::VertexBuffer vbuf( std::move(
-		Dvtx::VertexLayout{}
-		.Append( Dvtx::VertexLayout::Position3D )
-	) );
-	AddBind( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
+	//Dvtx::VertexBuffer vbuf( std::move(
+	//	Dvtx::VertexLayout{}
+	//	.Append( Dvtx::VertexLayout::Position3D )
+	//) );
+	//AddBind( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
 
-	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+	//AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
-	AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );
+	//AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );
 
-	m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 2u );
-	AddBind( m_pForwardLightMatrices );	
+	//m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 2u );
+	//AddBind( m_pForwardLightMatrices );	
 
-	m_pSolidCone = new SolidCone( gdi, 1.0f );
-	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
-	m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f), m_fYaw );
-	m_StructuredBufferData.lightDirection.x = GetViewMatrix().r[2].m128_f32[0];
-	m_StructuredBufferData.lightDirection.y = GetViewMatrix().r[2].m128_f32[1];
-	m_StructuredBufferData.lightDirection.z = GetViewMatrix().r[2].m128_f32[2];
+	//m_pSolidCone = new SolidCone( gdi, 1.0f );
+	//m_pSolidCone->SetPos( m_StructuredBufferData.pos );
+	//m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f), m_fYaw );
+	//m_StructuredBufferData.lightDirection.x = GetViewMatrix().r[2].m128_f32[0];
+	//m_StructuredBufferData.lightDirection.y = GetViewMatrix().r[2].m128_f32[1];
+	//m_StructuredBufferData.lightDirection.z = GetViewMatrix().r[2].m128_f32[2];
 
-	// CameraIsInside Resources
-	D3D11_DEPTH_STENCIL_DESC dsDesInsideLight = {};
-	dsDesInsideLight.DepthEnable = TRUE;
-	dsDesInsideLight.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	dsDesInsideLight.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
-	HRESULT hr = gdi.GetDevice()->CreateDepthStencilState( &dsDesInsideLight, &pDSStateInsideLighting );
-	if ( FAILED( hr ) )
-	{
-		throw std::exception();
-	}
+	//// CameraIsInside Resources
+	//D3D11_DEPTH_STENCIL_DESC dsDesInsideLight = {};
+	//dsDesInsideLight.DepthEnable = TRUE;
+	//dsDesInsideLight.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	//dsDesInsideLight.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
+	//HRESULT hr = gdi.GetDevice()->CreateDepthStencilState( &dsDesInsideLight, &pDSStateInsideLighting );
+	//if ( FAILED( hr ) )
+	//{
+	//	throw std::exception();
+	//}
 
-	D3D11_DEPTH_STENCIL_DESC dsDescInfrontBackFace = {};
-	dsDescInfrontBackFace.DepthEnable = TRUE;
-	dsDescInfrontBackFace.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	dsDescInfrontBackFace.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
-	dsDescInfrontBackFace.StencilEnable = TRUE;
-	dsDescInfrontBackFace.StencilReadMask = 0xFF;
-	dsDescInfrontBackFace.StencilWriteMask = 0xFF;
-	dsDescInfrontBackFace.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	dsDescInfrontBackFace.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-	dsDescInfrontBackFace.FrontFace.StencilFunc = D3D11_COMPARISON_GREATER;
-	dsDescInfrontBackFace.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
-	dsDescInfrontBackFace.BackFace = dsDescInfrontBackFace.FrontFace;
-	hr = gdi.GetDevice()->CreateDepthStencilState( &dsDescInfrontBackFace, &pDSStateInfrontBackFaceOfLight );
-	if ( FAILED( hr ) )
-	{
-		throw std::exception();
-	}
+	//D3D11_DEPTH_STENCIL_DESC dsDescInfrontBackFace = {};
+	//dsDescInfrontBackFace.DepthEnable = TRUE;
+	//dsDescInfrontBackFace.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	//dsDescInfrontBackFace.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
+	//dsDescInfrontBackFace.StencilEnable = TRUE;
+	//dsDescInfrontBackFace.StencilReadMask = 0xFF;
+	//dsDescInfrontBackFace.StencilWriteMask = 0xFF;
+	//dsDescInfrontBackFace.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	//dsDescInfrontBackFace.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+	//dsDescInfrontBackFace.FrontFace.StencilFunc = D3D11_COMPARISON_GREATER;
+	//dsDescInfrontBackFace.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+	//dsDescInfrontBackFace.BackFace = dsDescInfrontBackFace.FrontFace;
+	//hr = gdi.GetDevice()->CreateDepthStencilState( &dsDescInfrontBackFace, &pDSStateInfrontBackFaceOfLight );
+	//if ( FAILED( hr ) )
+	//{
+	//	throw std::exception();
+	//}
 
-	D3D11_DEPTH_STENCIL_DESC dsDescBehindFrontFace = {};
-	dsDescBehindFrontFace.DepthEnable = TRUE;
-	dsDescBehindFrontFace.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	dsDescBehindFrontFace.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-	dsDescBehindFrontFace.StencilEnable = TRUE;
-	dsDescBehindFrontFace.StencilReadMask = 0xFF;
-	dsDescBehindFrontFace.StencilWriteMask = 0xFF;
-	dsDescBehindFrontFace.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	dsDescBehindFrontFace.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_ZERO;
-	dsDescBehindFrontFace.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
-	dsDescBehindFrontFace.FrontFace.StencilPassOp = D3D11_STENCIL_OP_ZERO;
-	dsDescBehindFrontFace.BackFace = dsDescInfrontBackFace.FrontFace;
-	hr = gdi.GetDevice()->CreateDepthStencilState( &dsDescBehindFrontFace, &pDSStateLightingBehindFrontFaceOfLight );
-	if ( FAILED( hr ) )
-	{
-		throw std::exception();
-	}
+	//D3D11_DEPTH_STENCIL_DESC dsDescBehindFrontFace = {};
+	//dsDescBehindFrontFace.DepthEnable = TRUE;
+	//dsDescBehindFrontFace.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	//dsDescBehindFrontFace.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	//dsDescBehindFrontFace.StencilEnable = TRUE;
+	//dsDescBehindFrontFace.StencilReadMask = 0xFF;
+	//dsDescBehindFrontFace.StencilWriteMask = 0xFF;
+	//dsDescBehindFrontFace.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	//dsDescBehindFrontFace.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_ZERO;
+	//dsDescBehindFrontFace.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+	//dsDescBehindFrontFace.FrontFace.StencilPassOp = D3D11_STENCIL_OP_ZERO;
+	//dsDescBehindFrontFace.BackFace = dsDescInfrontBackFace.FrontFace;
+	//hr = gdi.GetDevice()->CreateDepthStencilState( &dsDescBehindFrontFace, &pDSStateLightingBehindFrontFaceOfLight );
+	//if ( FAILED( hr ) )
+	//{
+	//	throw std::exception();
+	//}
 
-	// Setup rasterizer state inside
-	D3D11_RASTERIZER_DESC rasterizerDescInside;
-	ZeroMemory( &rasterizerDescInside, sizeof( rasterizerDescInside ) );
-	rasterizerDescInside.CullMode = D3D11_CULL_FRONT;
-	rasterizerDescInside.FillMode = D3D11_FILL_SOLID;
-	rasterizerDescInside.DepthClipEnable = false;
+	//// Setup rasterizer state inside
+	//D3D11_RASTERIZER_DESC rasterizerDescInside;
+	//ZeroMemory( &rasterizerDescInside, sizeof( rasterizerDescInside ) );
+	//rasterizerDescInside.CullMode = D3D11_CULL_FRONT;
+	//rasterizerDescInside.FillMode = D3D11_FILL_SOLID;
+	//rasterizerDescInside.DepthClipEnable = false;
 
-	gdi.GetDevice()->CreateRasterizerState( &rasterizerDescInside, &rasterizerInside );
+	//gdi.GetDevice()->CreateRasterizerState( &rasterizerDescInside, &rasterizerInside );
 
-	// Setup rasterizer state outside
-	D3D11_RASTERIZER_DESC rasterizerDescOutside;
-	ZeroMemory( &rasterizerDescOutside, sizeof( rasterizerDescOutside ) );
-	rasterizerDescOutside.CullMode = D3D11_CULL_BACK;
-	rasterizerDescOutside.FillMode = D3D11_FILL_SOLID;
-	rasterizerDescOutside.DepthClipEnable = false;
+	//// Setup rasterizer state outside
+	//D3D11_RASTERIZER_DESC rasterizerDescOutside;
+	//ZeroMemory( &rasterizerDescOutside, sizeof( rasterizerDescOutside ) );
+	//rasterizerDescOutside.CullMode = D3D11_CULL_BACK;
+	//rasterizerDescOutside.FillMode = D3D11_FILL_SOLID;
+	//rasterizerDescOutside.DepthClipEnable = false;
 
-	gdi.GetDevice()->CreateRasterizerState( &rasterizerDescOutside, &rasterizerOutside );
+	//gdi.GetDevice()->CreateRasterizerState( &rasterizerDescOutside, &rasterizerOutside );
 }
 
 DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
@@ -151,47 +151,47 @@ void SpotLight::DrawControlPanel()
 void SpotLight::Draw( GraphicsDeviceInterface& gdi )
 {
 	// bindables
-	for ( auto& b : binds )
-	{
-		b->Bind( gdi );
-	}
+	//for ( auto& b : binds )
+	//{
+	//	b->Bind( gdi );
+	//}
 
 	// get camera matrix from view matrix
-	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
-	DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, gdi.GetViewMatrix() );
+	//DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
+	//DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, gdi.GetViewMatrix() );
 
-	DirectX::XMFLOAT3 camPos = {
-		 cameraMatrix.r[3].m128_f32[0],
-		 cameraMatrix.r[3].m128_f32[1],
-		 cameraMatrix.r[3].m128_f32[2]
-	};
+	//DirectX::XMFLOAT3 camPos = {
+	//	 cameraMatrix.r[3].m128_f32[0],
+	//	 cameraMatrix.r[3].m128_f32[1],
+	//	 cameraMatrix.r[3].m128_f32[2]
+	//};
 
-	// figure out if camera is inside spot light
-	if ( CameraIsInside( camPos ) )
-	{
-		gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
-		gdi.GetContext()->RSSetState( rasterizerInside );
-		gdi.GetContext()->OMSetDepthStencilState( pDSStateInsideLighting, 1u );
+	//// figure out if camera is inside spot light
+	//if ( CameraIsInside( camPos ) )
+	//{
+	//	gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
+	//	gdi.GetContext()->RSSetState( rasterizerInside );
+	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateInsideLighting, 1u );
 
-		// draw
-		gdi.DrawIndexed( pIndexBuffer->GetCount() );
-	}
-	else
-	{
-		gdi.GetContext()->PSSetShader( nullptr, nullptr, 0u );
-		gdi.GetContext()->RSSetState( rasterizerInside );
-		gdi.GetContext()->OMSetDepthStencilState( pDSStateInfrontBackFaceOfLight, 0x10 );
+	//	// draw
+	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
+	//}
+	//else
+	//{
+	//	gdi.GetContext()->PSSetShader( nullptr, nullptr, 0u );
+	//	gdi.GetContext()->RSSetState( rasterizerInside );
+	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateInfrontBackFaceOfLight, 0x10 );
 
-		// draw
-		gdi.DrawIndexed( pIndexBuffer->GetCount() );
+	//	// draw
+	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
 
-		gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
-		gdi.GetContext()->RSSetState( rasterizerOutside );
-		gdi.GetContext()->OMSetDepthStencilState( pDSStateLightingBehindFrontFaceOfLight, 0x10 );
+	//	gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
+	//	gdi.GetContext()->RSSetState( rasterizerOutside );
+	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateLightingBehindFrontFaceOfLight, 0x10 );
 
-		// draw
-		gdi.DrawIndexed( pIndexBuffer->GetCount() );
-	}
+	//	// draw
+	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
+	//}
 }
 
 void SpotLight::Translate( DirectX::XMFLOAT3 translation )

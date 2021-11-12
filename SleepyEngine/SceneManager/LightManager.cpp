@@ -143,12 +143,12 @@ void LightManager::RenderLightGeometry()
 		m_SolidGeometryColor.color = m_vecOfPointLights[i]->m_StructuredBufferData.color;
 		m_pSolidGeometryColorBuffer->Update( *m_pGDI, m_SolidGeometryColor );
 		m_pSolidGeometryColorBuffer->Bind( *m_pGDI );
-		m_vecOfPointLights[i]->m_SolidSphere->Draw( *m_pGDI );
+		//m_vecOfPointLights[i]->m_SolidSphere->Draw( *m_pGDI );
 	}
 	m_SolidGeometryColor.color = m_pSpotLight->m_StructuredBufferData.color;
 	m_pSolidGeometryColorBuffer->Update( *m_pGDI, m_SolidGeometryColor );
 	m_pSolidGeometryColorBuffer->Bind( *m_pGDI );
-	m_pSpotLight->m_pSolidCone->Draw( *m_pGDI );
+	//m_pSpotLight->m_pSolidCone->Draw( *m_pGDI );
 }
 
 void LightManager::PrepareDepthFromLight()

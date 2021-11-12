@@ -177,6 +177,7 @@
     <ClCompile Include="Bindable\Bindables\DynamicConstant.cpp" />
     <ClCompile Include="Bindable\Bindables\IndexBuffer.cpp" />
     <ClCompile Include="Bindable\Bindables\InputLayout.cpp" />
+    <ClCompile Include="Bindable\Bindables\NullPixelShader.cpp" />
     <ClCompile Include="Bindable\Bindables\PixelShader.cpp" />
     <ClCompile Include="Bindable\Bindables\Rasterizer.cpp" />
     <ClCompile Include="Bindable\Bindables\Sampler.cpp" />
@@ -231,9 +232,11 @@
     <ClInclude Include="Bindable\Bindables\DynamicConstant.h" />
     <ClInclude Include="Bindable\Bindables\IndexBuffer.h" />
     <ClInclude Include="Bindable\Bindables\InputLayout.h" />
+    <ClInclude Include="Bindable\Bindables\NullPixelShader.h" />
     <ClInclude Include="Bindable\Bindables\PixelShader.h" />
     <ClInclude Include="Bindable\Bindables\Rasterizer.h" />
     <ClInclude Include="Bindable\Bindables\Sampler.h" />
+    <ClInclude Include="Bindable\Bindables\Stencil.h" />
     <ClInclude Include="Bindable\Bindables\StructuredBuffers.h" />
     <ClInclude Include="Bindable\Bindables\Texture.h" />
     <ClInclude Include="Bindable\Bindables\Topology.h" />
@@ -316,6 +319,22 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <FileType>Document</FileType>
     </ClInclude>
+    <FxCompile Include="Shaders\Common\PhongPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\PhongVS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Shaders\Common\ShaderOps.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

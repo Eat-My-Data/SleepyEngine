@@ -16,14 +16,14 @@ Mesh::Mesh( GraphicsDeviceInterface& gdi, bool isAlpha, std::vector<std::shared_
 	:
 	isAlpha( isAlpha )
 {
-	AddBind( Bind::Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+	/*AddBind( Bind::Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
 	for ( auto& pb : bindPtrs )
 	{
 		AddBind( std::move( pb ) );
 	}
 
-	AddBind( std::make_shared<Bind::TransformCbuf>( gdi, *this ) );
+	AddBind( std::make_shared<Bind::TransformCbuf>( gdi, *this ) );*/
 }
 
 bool Mesh::HasAlpha()
@@ -33,11 +33,11 @@ bool Mesh::HasAlpha()
 
 void Mesh::Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept
 {
-	DirectX::XMStoreFloat4x4( &transform, accumulatedTransform );
+	/*DirectX::XMStoreFloat4x4( &transform, accumulatedTransform );
 	if ( !isDepthPass )
 		Drawable::Draw( gdi );
 	else
-		Drawable::DrawDepth( gdi );
+		Drawable::DrawDepth( gdi );*/
 }
 
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
@@ -90,19 +90,23 @@ void Node::ShowTree( Node*& pSelectedNode ) const noexcept
 
 const Dcb::Buffer* Node::GetMaterialConstants() const noexcept
 {
-	if ( meshPtrs.size() == 0 )
+	/*if ( meshPtrs.size() == 0 )
 	{
 		return nullptr;
 	}
 	auto pBindable = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
-	return &pBindable->GetBuffer();
+	return &pBindable->GetBuffer();*/
+	Dcb::RawLayout lay;
+	lay.Add<Dcb::Bool>( "normalMapEnabled" );
+	const Dcb::Buffer* cbuf = new Dcb::Buffer{ std::move(lay) };
+	return cbuf;
 }
 
 void Node::SetMaterialConstants( const Dcb::Buffer& buf_in ) noexcept
 {
-	auto pcb = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
+	/*auto pcb = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
 	assert( pcb != nullptr );
-	pcb->SetBuffer( buf_in );
+	pcb->SetBuffer( buf_in );*/
 }
 
 void Node::SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept

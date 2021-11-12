@@ -9,7 +9,7 @@
 
 DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi )
 {
-	using namespace Bind;
+	/*using namespace Bind;
 	namespace dx = DirectX;
 
 	auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/LightVS.cso" );
@@ -21,7 +21,7 @@ DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi )
 	AddBind( Rasterizer::Resolve( gdi, true ) );
 
 	m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 1u );
-	AddBind( m_pForwardLightMatrices );	
+	AddBind( m_pForwardLightMatrices );	*/
 }
 
 
@@ -52,10 +52,10 @@ void DirectionalLight::DrawControlPanel()
 void DirectionalLight::Draw( GraphicsDeviceInterface& gdi ) const noexcept
 {
 	// bindables
-	for ( auto& b : binds )
-	{
-		b->Bind( gdi );
-	}
+	//for ( auto& b : binds )
+	//{
+	//	b->Bind( gdi );
+	//}
 
 	gdi.GetContext()->Draw( 3, 0 );
 }

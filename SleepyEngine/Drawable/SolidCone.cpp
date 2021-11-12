@@ -7,7 +7,7 @@
 
 SolidCone::SolidCone( GraphicsDeviceInterface& gdi, f32 scale )
 {
-	using namespace Bind;
+	/*using namespace Bind;
 	namespace dx = DirectX;
 
 	auto model = Cone::Make();
@@ -30,7 +30,7 @@ SolidCone::SolidCone( GraphicsDeviceInterface& gdi, f32 scale )
 
 	AddBind( Blender::Resolve( gdi, false ) );
 
-	AddBind( Rasterizer::Resolve( gdi, false ) );
+	AddBind( Rasterizer::Resolve( gdi, false ) );*/
 }
 
 void SolidCone::SetPos( DirectX::XMFLOAT3 pos ) noexcept

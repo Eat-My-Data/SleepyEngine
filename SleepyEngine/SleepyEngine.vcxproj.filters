@@ -252,6 +252,9 @@
     <ClCompile Include="ResourceManager\Jobber\Technique.cpp">
       <Filter>Source Files\ResourceManager\Jobber</Filter>
     </ClCompile>
+    <ClCompile Include="Bindable\Bindables\NullPixelShader.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -449,6 +452,12 @@
     <ClInclude Include="ResourceManager\Jobber\Pass.h">
       <Filter>Header Files\ResourceManager\Jobber</Filter>
     </ClInclude>
+    <ClInclude Include="Bindable\Bindables\Stencil.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\NullPixelShader.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
@@ -551,6 +560,12 @@
       <Filter>Shaders\Common</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Common\DefaultLightSettings.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\PhongVS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\PhongPS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
   </ItemGroup>

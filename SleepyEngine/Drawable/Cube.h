@@ -25,6 +25,7 @@ public:
 	const Data GetData() noexcept;
 private:
 	IndexedTriangleList MakeIndependent( Dvtx::VertexLayout layout );
+	IndexedTriangleList MakeIndependentTextured();
 private:
 	struct PSMaterialConstant
 	{
