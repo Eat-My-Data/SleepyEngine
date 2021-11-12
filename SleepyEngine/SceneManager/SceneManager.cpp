@@ -17,7 +17,8 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_GraphicsAPI = api;
 	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
-	m_pTestCube = new Cube( gdi, { { 1.0f,1.0f,1.0f }, 0.0f, 0.0f, 0.0f }, 1.0f );
+	m_pTestCube = new Cube( gdi, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f }, 1.0f );
+
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.obj", true, 2000.0f );
 	//m_pMonster->SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -250.0f, 0.0f ) * DirectX::XMMatrixRotationY( -PI / 2.0f ) * DirectX::XMMatrixRotationZ( PI / 2.0f ) );
@@ -173,6 +174,8 @@ void SceneManager::UpdateCameraBuffer()
 
 void SceneManager::ForwardRender()
 {
+	m_pTestCube->Submit( m_FrameCommander );
+
 	// depth from light
 	//m_LightManager.PrepareDepthFromLight();
 	//m_vecOfModels[1]->Draw( *m_pGDI, true );
@@ -190,7 +193,6 @@ void SceneManager::ForwardRender()
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	//m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
 	UpdateCameraBuffer();
-	m_pTestCube->Submit( m_FrameCommander );
 	m_FrameCommander.Execute( *m_pGDI );
 	//m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	//m_vecOfModels[0]->Draw( *m_pGDI, false );
