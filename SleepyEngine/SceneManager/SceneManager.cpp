@@ -193,8 +193,9 @@ void SceneManager::ForwardRender()
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	//m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
 	UpdateCameraBuffer();
+	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_FrameCommander.Execute( *m_pGDI );
-	//m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
+
 	//m_vecOfModels[0]->Draw( *m_pGDI, false );
 	//m_pMonster->Draw( *m_pGDI, false );
 	m_FrameCommander.Reset();

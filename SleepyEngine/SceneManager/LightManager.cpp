@@ -49,13 +49,13 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 
 void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 {
-	m_pDirectionalLight->Update( *m_pGDI, camPos );
-	m_pDirectionalLightBuffer->Update( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData );
-	m_pDirectionalLightBuffer->Bind( *m_pGDI );
+	//m_pDirectionalLight->Update( *m_pGDI, camPos );
+	//m_pDirectionalLightBuffer->Update( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData );
+	//m_pDirectionalLightBuffer->Bind( *m_pGDI );
 
-	m_pSpotLight->Update( *m_pGDI, camPos );
-	m_pSpotLightBuffer->Update( *m_pGDI, m_pSpotLight->m_StructuredBufferData );
-	m_pSpotLightBuffer->Bind( *m_pGDI );
+	//m_pSpotLight->Update( *m_pGDI, camPos );
+	//m_pSpotLightBuffer->Update( *m_pGDI, m_pSpotLight->m_StructuredBufferData );
+	//m_pSpotLightBuffer->Bind( *m_pGDI );
 
 	// TODO: Currently limited to two lights = BAD
 	PointLight::PointLightData* bufferData = new PointLight::PointLightData[3];
@@ -143,11 +143,11 @@ void LightManager::RenderLightGeometry()
 		m_SolidGeometryColor.color = m_vecOfPointLights[i]->m_StructuredBufferData.color;
 		m_pSolidGeometryColorBuffer->Update( *m_pGDI, m_SolidGeometryColor );
 		m_pSolidGeometryColorBuffer->Bind( *m_pGDI );
-		//m_vecOfPointLights[i]->m_SolidSphere->Draw( *m_pGDI );
+		//m_vecOfPointLights[i]->m_SolidSphere->Submit( *m_pGDI );
 	}
-	m_SolidGeometryColor.color = m_pSpotLight->m_StructuredBufferData.color;
-	m_pSolidGeometryColorBuffer->Update( *m_pGDI, m_SolidGeometryColor );
-	m_pSolidGeometryColorBuffer->Bind( *m_pGDI );
+	//m_SolidGeometryColor.color = m_pSpotLight->m_StructuredBufferData.color;
+	//m_pSolidGeometryColorBuffer->Update( *m_pGDI, m_SolidGeometryColor );
+	//m_pSolidGeometryColorBuffer->Bind( *m_pGDI );
 	//m_pSpotLight->m_pSolidCone->Draw( *m_pGDI );
 }
 
