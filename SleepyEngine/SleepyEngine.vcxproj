@@ -271,6 +271,7 @@
     <ClInclude Include="ResourceManager\Jobber\Step.h" />
     <ClInclude Include="ResourceManager\Jobber\Technique.h" />
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
+    <ClInclude Include="ResourceManager\Material.h.h" />
     <ClInclude Include="ResourceManager\Mesh.h" />
     <ClInclude Include="ResourceManager\Surface.h" />
     <ClInclude Include="ResourceManager\TechniqueProbe.h" />

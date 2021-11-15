@@ -464,6 +464,9 @@
     <ClInclude Include="ResourceManager\TechniqueProbe.h">
       <Filter>Header Files\ResourceManager\Jobber</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceManager\Material.h.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
