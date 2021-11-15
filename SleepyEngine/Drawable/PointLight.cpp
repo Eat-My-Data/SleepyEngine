@@ -106,8 +106,8 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 
 	//gdi.GetDevice()->CreateRasterizerState( &rasterizerDescOutside, &rasterizerOutside );
 
-	//m_SolidSphere = new SolidSphere( gdi, 0.75f );
-	//m_SolidSphere->SetPos( m_StructuredBufferData.pos );
+	m_SolidSphere = new SolidSphere( gdi, 0.75f );
+	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }
 
 DirectX::XMMATRIX PointLight::GetTransformXM() const noexcept
@@ -117,7 +117,7 @@ DirectX::XMMATRIX PointLight::GetTransformXM() const noexcept
 
 void PointLight::Update()
 {
-	//m_SolidSphere->SetPos( m_StructuredBufferData.pos );
+	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }
 
 void PointLight::Draw( GraphicsDeviceInterface& gdi )
@@ -167,8 +167,8 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 
 void PointLight::Submit( FrameCommander& frame ) const noexcept
 {
-	//mesh.SetPos( cbData.pos );
-	//mesh.Submit( frame );
+	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
+	m_SolidSphere->Submit( frame );
 }
 
 void PointLight::DrawControlPanel()

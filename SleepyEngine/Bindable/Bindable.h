@@ -4,6 +4,7 @@
 #include <memory>
 
 class Drawable;
+class TechniqueProbe;
 
 namespace Bind
 {
@@ -12,6 +13,8 @@ namespace Bind
 	public:
 		virtual void Bind( GraphicsDeviceInterface& gdi ) noexcept = 0;
 		virtual void InitializeParentReference( const Drawable& ) noexcept
+		{}
+		virtual void Accept( TechniqueProbe& )
 		{}
 		virtual std::string GetUID() const noexcept
 		{

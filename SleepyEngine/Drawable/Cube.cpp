@@ -1,8 +1,13 @@
 #include "Cube.h"
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/ConstantBuffers.h"
+#include "../Bindable/Bindables/DynamicConstant.h"
+#include "../Bindable/Bindables/ConstantBuffersEx.h"
+#include "../ResourceManager/Jobber/TechniqueProbe.h"
 #include <sstream>
 #include <memory>
+#include "../Libraries/imgui/imgui.h"
+
 
 Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
     :
@@ -20,7 +25,7 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 	pTopology = Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
 	{
-		Technique standard;
+		Technique shade( "Shade" );
 		{
 			Step only( 0 );
 
@@ -33,19 +38,25 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 
 			only.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/PhongPS.cso" ) );
 
-			only.AddBindable( PixelConstantBuffer<PSMaterialConstant>::Resolve( gdi, pmc, 1u ) );
+			Dcb::RawLayout lay;
+			lay.Add<Dcb::Float>( "specularIntensity" );
+			lay.Add<Dcb::Float>( "specularPower" );
+			auto buf = Dcb::Buffer( std::move( lay ) );
+			buf["specularIntensity"] = 0.1f;
+			buf["specularPower"] = 20.0f;
+			only.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEX>( gdi, buf, 1u ) );
 
 			only.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 
 			only.AddBindable( std::make_shared<TransformCbuf>( gdi ) );
 
-			standard.AddStep( std::move( only ) );
+			shade.AddStep( std::move( only ) );
 		}
-		AddTechnique( std::move( standard ) );
+		AddTechnique( std::move( shade ) );
 	}
 
 	{
-		Technique outline;
+		Technique outline( "Outline" );
 		{
 			Step mask( 1 );
 
@@ -72,6 +83,12 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			// this can be pass-constant
 			draw.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/SolidPS.cso" ) );
 
+			Dcb::RawLayout lay;
+			lay.Add<Dcb::Float4>( "color" );
+			auto buf = Dcb::Buffer( std::move( lay ) );
+			buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEX>( gdi, buf, 8u ) );
+
 			// TODO: better sub-layout generation tech for future consideration maybe
 			draw.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 
@@ -79,15 +96,35 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			class TransformCbufScaling : public TransformCbuf
 			{
 			public:
-				using TransformCbuf::TransformCbuf;
+				TransformCbufScaling( GraphicsDeviceInterface& gdi, float scale = 1.04 )
+					:
+					TransformCbuf( gdi ),
+					buf( MakeLayout() )
+				{
+					buf["scale"] = scale;
+				}
+				void Accept( TechniqueProbe& probe ) override
+				{
+					probe.VisitBuffer( buf );
+				}				
 				void Bind( GraphicsDeviceInterface& gdi ) noexcept override
 				{
-					const auto scale = dx::XMMatrixScaling( 1.04f, 1.04f, 1.04f );
+					const float scale = buf["scale"];
+					const auto scaleMatrix = dx::XMMatrixScaling( scale, scale, scale );
 					auto xf = GetTransforms( gdi );
-					xf.m_ModelViewMatrix = xf.m_ModelViewMatrix * scale;
-					xf.m_ModelViewProjMatrix = xf.m_ModelViewProjMatrix * scale;
+					xf.m_ModelViewMatrix = xf.m_ModelViewMatrix * scaleMatrix;
+					xf.m_ModelViewProjMatrix = xf.m_ModelViewProjMatrix * scaleMatrix;
 					UpdateBindImpl( gdi, xf );
 				}
+			private:
+				static Dcb::RawLayout MakeLayout()
+				{
+					Dcb::RawLayout layout;
+					layout.Add<Dcb::Float>( "scale" );
+					return layout;
+				}
+			private:
+				Dcb::Buffer buf;
 			};
 			draw.AddBindable( std::make_shared<TransformCbufScaling>( gdi ) );
 
@@ -133,6 +170,62 @@ DirectX::XMMATRIX Cube::GetTransformXM() const noexcept
 const Cube::Data Cube::GetData() noexcept
 {
     return m_Data;
+}
+
+void Cube::DrawControlPanel( const char* name )
+{
+	if ( ImGui::Begin( name ) )
+	{
+		ImGui::Text( "Position" );
+		ImGui::SliderFloat( "X", &m_Data.pos.x, -80.0f, 80.0f );
+		ImGui::SliderFloat( "Y", &m_Data.pos.y, -80.0f, 80.0f );
+		ImGui::SliderFloat( "Z", &m_Data.pos.z, -80.0f, 80.0f );
+		ImGui::Text( "Orientation" );
+		ImGui::SliderAngle( "Roll", &m_Data.roll, -180.0f, 180.0f );
+		ImGui::SliderAngle( "Pitch", &m_Data.pitch, -180.0f, 180.0f );
+		ImGui::SliderAngle( "Yaw", &m_Data.yaw, -180.0f, 180.0f );
+
+		class Probe : public TechniqueProbe
+		{
+		public:
+			void OnSetTechnique() override
+			{
+				using namespace std::string_literals;
+				ImGui::TextColored( { 0.4f,1.0f,0.6f,1.0f }, pTech->GetName().c_str() );
+				bool active = pTech->IsActive();
+				ImGui::Checkbox( ( "Tech Active##"s + pTech->GetName() ).c_str(), &active );
+				pTech->SetActiveState( active );
+			}
+			bool VisitBuffer( Dcb::Buffer& buf ) override
+			{
+				namespace dx = DirectX;
+				float dirty = false;
+				const auto dcheck = [&dirty]( bool changed ) {dirty = dirty || changed; };
+
+				if ( auto v = buf["scale"]; v.Exists() )
+				{
+					dcheck( ImGui::SliderFloat( "Scale", &v, 1.0f, 2.0f, "%.3f" ) );
+				}
+				if ( auto v = buf["color"]; v.Exists() )
+				{
+					dcheck( ImGui::ColorPicker4( "Color", reinterpret_cast<float*>( &static_cast<dx::XMFLOAT4&>( v ) ) ) );
+				}
+				if ( auto v = buf["specularIntensity"]; v.Exists() )
+				{
+					dcheck( ImGui::SliderFloat( "Spec. Intens.", &v, 0.0f, 1.0f ) );
+				}
+				if ( auto v = buf["specularPower"]; v.Exists() )
+				{
+					dcheck( ImGui::SliderFloat( "Glossiness", &v, 1.0f, 100.0f, "%.1f" ) );
+				}
+				return dirty;
+			}
+		};
+
+		static Probe probe;
+		Accept( probe );
+	}
+	ImGui::End();
 }
 
 IndexedTriangleList Cube::MakeIndependent( Dvtx::VertexLayout layout )

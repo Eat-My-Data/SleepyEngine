@@ -18,6 +18,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
 	m_pTestCube = new Cube( gdi, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f }, 1.0f );
+	m_pTestCube2 = new Cube( gdi, { { 4.2f,0.2f,0.2f }, 0.0f, 0.0f, 0.0f }, 1.0f );
 
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.obj", true, 2000.0f );
@@ -56,6 +57,13 @@ void SceneManager::Draw()
 		ForwardRender();
 	//else if ( m_RenderTechnique == RenderTechnique::Deferred )
 		//DeferredRender();
+
+	if ( imguiEnabled )
+	{
+		DrawControlPanel();
+		m_pTestCube->DrawControlPanel( "Cube #1" );
+		m_pTestCube2->DrawControlPanel( "Cube #2" );
+	}
 
 	// clear shader resources
 	ID3D11ShaderResourceView* null[12] = {};
@@ -175,7 +183,7 @@ void SceneManager::UpdateCameraBuffer()
 void SceneManager::ForwardRender()
 {
 	m_pTestCube->Submit( m_FrameCommander );
-
+	m_pTestCube2->Submit( m_FrameCommander );
 	// depth from light
 	//m_LightManager.PrepareDepthFromLight();
 	//m_vecOfModels[1]->Draw( *m_pGDI, true );

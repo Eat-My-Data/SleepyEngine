@@ -182,8 +182,5 @@ void App::ExecuteFrame()
 
 	m_SceneManager.Draw();
 
-	if ( m_SceneManager.imguiEnabled )
-		m_SceneManager.DrawControlPanel();
-
 	m_SceneManager.Present();
 }

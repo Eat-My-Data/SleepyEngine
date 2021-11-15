@@ -273,6 +273,7 @@
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
     <ClInclude Include="ResourceManager\Mesh.h" />
     <ClInclude Include="ResourceManager\Surface.h" />
+    <ClInclude Include="ResourceManager\TechniqueProbe.h" />
     <ClInclude Include="ResourceManager\Vertex.h" />
     <ClInclude Include="SceneManager\Camera.h" />
     <ClInclude Include="SceneManager\LightManager.h" />
@@ -280,6 +281,7 @@
     <ClInclude Include="SceneManager\SceneManager.h" />
     <ClInclude Include="Utilities\FrameTimer.h" />
     <ClInclude Include="Utilities\NumericDataTypes.h" />
+    <ClInclude Include="Utilities\PerfLog.h" />
     <ClInclude Include="Utilities\SleepyMath.h" />
     <ClInclude Include="Utilities\SleepyUtil.h" />
     <ClInclude Include="Utilities\SleepyXM.h" />

@@ -89,6 +89,13 @@ namespace Bind
 			}
 			PixelConstantBufferEX::Bind( gfx );
 		}
+		void Accept( TechniqueProbe& probe ) override
+		{
+			if ( probe.VisitBuffer( buf ) )
+			{
+				dirty = true;
+			}
+		}
 	private:
 		bool dirty = false;
 		Dcb::Buffer buf;

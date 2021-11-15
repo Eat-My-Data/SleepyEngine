@@ -4,6 +4,7 @@
 #include "../../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 #include "Job.h"
 #include "Pass.h"
+#include "../../Utilities/PerfLog.h"
 
 class FrameCommander
 {
@@ -28,11 +29,6 @@ public:
 		passes[1].Execute( gfx );
 		// outline drawing pass
 		Stencil::Resolve( gfx, Stencil::Mode::Mask )->Bind( gfx );
-		struct SolidColorBuffer
-		{
-			DirectX::XMFLOAT4 color = { 1.0f,0.4f,0.4f,1.0f };
-		} scb;
-		PixelConstantBuffer<SolidColorBuffer>::Resolve( gfx, scb, 1u )->Bind( gfx );
 		passes[2].Execute( gfx );
 	}
 	void Reset() noexcept

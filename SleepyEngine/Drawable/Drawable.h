@@ -5,6 +5,8 @@
 #include <memory>
 #include "../ResourceManager/Jobber/Technique.h"
 
+class TechniqueProbe;
+
 namespace Bind
 {
 	class IndexBuffer;
@@ -24,6 +26,7 @@ public:
 	//void DrawDepth( GraphicsDeviceInterface& gdi ) const noexcept;
 	void Submit( class FrameCommander& frame ) const noexcept;
 	void Bind( GraphicsDeviceInterface& gfx ) const noexcept;
+	void Accept( TechniqueProbe& probe );
 	UINT GetIndexCount() const noexcept;
 	virtual ~Drawable();
 protected:

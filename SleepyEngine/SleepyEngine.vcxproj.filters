@@ -458,6 +458,12 @@
     <ClInclude Include="Bindable\Bindables\NullPixelShader.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities\PerfLog.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\TechniqueProbe.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
