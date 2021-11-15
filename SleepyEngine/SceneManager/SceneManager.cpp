@@ -184,6 +184,7 @@ void SceneManager::ForwardRender()
 {
 	m_pTestCube->Submit( m_FrameCommander );
 	m_pTestCube2->Submit( m_FrameCommander );
+	m_LightManager.Submit( m_FrameCommander );
 	// depth from light
 	//m_LightManager.PrepareDepthFromLight();
 	//m_vecOfModels[1]->Draw( *m_pGDI, true );

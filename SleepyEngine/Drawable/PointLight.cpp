@@ -105,7 +105,7 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 	//rasterizerDescOutside.DepthClipEnable = false;
 
 	//gdi.GetDevice()->CreateRasterizerState( &rasterizerDescOutside, &rasterizerOutside );
-
+	
 	m_SolidSphere = new SolidSphere( gdi, 0.75f );
 	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }

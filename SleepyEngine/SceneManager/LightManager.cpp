@@ -185,6 +185,14 @@ void LightManager::PrepareDepthFromSpotLight()
 	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV2() );
 }
 
+void LightManager::Submit( FrameCommander& frame )
+{
+	for ( int i = 0; i < m_vecOfPointLights.size(); i++ )
+	{
+		m_vecOfPointLights[i]->Submit( frame );
+	}
+}
+
 void LightManager::SelectPointLight( const u32 index )
 {
 	m_iSelectedPointLight = index;
