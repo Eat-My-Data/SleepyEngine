@@ -172,7 +172,7 @@ void LightManager::RenderPointLightCubeTextures( const Model& model )
 			m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, depthBuffers[i + ( index * 6 )] );
 			const auto lookAt = DirectX::XMVectorAdd( pos, DirectX::XMLoadFloat3( &cameraDirections[i] ) );
 			m_pGDI->SetViewMatrix( DirectX::XMMatrixLookAtLH( pos, lookAt, DirectX::XMLoadFloat3( &cameraUps[i] ) ) );
-			model.Draw( *m_pGDI, true );
+			//model.Submit( *m_pGDI );
 		}
 	}
 }

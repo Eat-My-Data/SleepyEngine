@@ -162,18 +162,7 @@ namespace Dvtx
 		size_t GetElementCount() const noexcept;
 		std::vector<D3D11_INPUT_ELEMENT_DESC> GetD3DLayout() const noexcept;
 		std::string GetCode() const noexcept;
-		template<ElementType Type>
-		bool Has() const noexcept
-		{
-			for ( auto& e : elements )
-			{
-				if ( e.GetType() == Type )
-				{
-					return true;
-				}
-			}
-			return false;
-		}
+		bool Has( ElementType type ) const noexcept;
 	private:
 		std::vector<Element> elements;
 	};
@@ -254,6 +243,7 @@ namespace Dvtx
 	{
 	public:
 		VertexBuffer( VertexLayout layout, size_t size = 0u ) noexcept;
+		VertexBuffer( VertexLayout layout, const aiMesh& mesh );
 		const char* GetData() const noexcept;
 		const VertexLayout& GetLayout() const noexcept;
 		void Resize( size_t newSize ) noexcept;

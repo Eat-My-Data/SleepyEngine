@@ -1,26 +1,27 @@
 #include "Drawable.h"
 #include "../Bindable/BindableCommon.h"
+#include "../ResourceManager/Material.h"
 #include <cassert>
 
 using namespace Bind;
-
-//void Drawable::Draw( GraphicsDeviceInterface& gdi ) const noexcept
-//{
-//	// bindables
-//	for ( auto& b : binds )
-//	{
-//		b->Bind( gdi );
-//	}
-//
-//	// draw
-//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
-//}
 
 void Drawable::Submit( FrameCommander& frame ) const noexcept
 {
 	for ( const auto& tech : techniques )
 	{
 		tech.Submit( frame, *this );
+	}
+}
+
+Drawable::Drawable( GraphicsDeviceInterface& gfx, const Material& mat, const aiMesh& mesh ) noexcept
+{
+	pVertices = mat.MakeVertexBindable( gfx, mesh );
+	pIndices = mat.MakeIndexBindable( gfx, mesh );
+	pTopology = Bind::Topology::Resolve( gfx );
+
+	for ( auto& t : mat.GetTechniques() )
+	{
+		AddTechnique( std::move( t ) );
 	}
 }
 

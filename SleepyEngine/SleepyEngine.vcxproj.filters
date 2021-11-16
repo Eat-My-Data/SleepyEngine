@@ -255,6 +255,9 @@
     <ClCompile Include="Bindable\Bindables\NullPixelShader.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceManager\Material.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -464,7 +467,7 @@
     <ClInclude Include="ResourceManager\TechniqueProbe.h">
       <Filter>Header Files\ResourceManager\Jobber</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager\Material.h.h">
+    <ClInclude Include="ResourceManager\Material.h">
       <Filter>Header Files\ResourceManager</Filter>
     </ClInclude>
   </ItemGroup>

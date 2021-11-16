@@ -11,8 +11,22 @@ namespace Dvtx
 	}
 	VertexLayout& VertexLayout::Append( ElementType type ) noexcept
 	{
-		elements.emplace_back( type, Size() );
+		if ( !Has( type ) )
+		{
+			elements.emplace_back( type, Size() );
+		}
 		return *this;
+	}
+	bool VertexLayout::Has( ElementType type ) const noexcept
+	{
+		for ( auto& e : elements )
+		{
+			if ( e.GetType() == type )
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	size_t VertexLayout::Size() const noexcept
 	{
@@ -140,6 +154,29 @@ namespace Dvtx
 	{
 		return buffer.data();
 	}
+	
+	template<VertexLayout::ElementType type>
+	struct AttributeAiMeshFill
+	{
+		static constexpr void Exec( VertexBuffer* pBuf, const aiMesh& mesh ) noexcept
+		{
+			for ( auto end = mesh.mNumVertices, i = 0u; i < end; i++ )
+			{
+				( *pBuf )[i].Attr<type>() = VertexLayout::Map<type>::Extract( mesh, i );
+			}
+		}
+	};
+	VertexBuffer::VertexBuffer( VertexLayout layout_in, const aiMesh& mesh )
+		:
+		layout( std::move( layout_in ) )
+	{
+		Resize( mesh.mNumVertices );
+		for ( size_t i = 0, end = layout.GetElementCount(); i < end; i++ )
+		{
+			VertexLayout::Bridge<AttributeAiMeshFill>( layout.ResolveByIndex( i ).GetType(), this, mesh );
+		}
+	}
+
 	const VertexLayout& VertexBuffer::GetLayout() const noexcept
 	{
 		return layout;

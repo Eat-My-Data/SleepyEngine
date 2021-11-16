@@ -13,3 +13,4 @@
 #include "./Bindables/Sampler.h"
 #include "./Bindables/Stencil.h"
 #include "./Bindables/NullPixelShader.h"
+#include "./Bindables/Blender.h"

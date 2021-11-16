@@ -207,6 +207,7 @@
     <ClCompile Include="ResourceManager\Jobber\Step.cpp" />
     <ClCompile Include="ResourceManager\Jobber\Technique.cpp" />
     <ClCompile Include="ResourceManager\LayoutCodex.cpp" />
+    <ClCompile Include="ResourceManager\Material.cpp" />
     <ClCompile Include="ResourceManager\Mesh.cpp" />
     <ClCompile Include="ResourceManager\Surface.cpp" />
     <ClCompile Include="ResourceManager\Vertex.cpp" />
@@ -271,7 +272,7 @@
     <ClInclude Include="ResourceManager\Jobber\Step.h" />
     <ClInclude Include="ResourceManager\Jobber\Technique.h" />
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
-    <ClInclude Include="ResourceManager\Material.h.h" />
+    <ClInclude Include="ResourceManager\Material.h" />
     <ClInclude Include="ResourceManager\Mesh.h" />
     <ClInclude Include="ResourceManager\Surface.h" />
     <ClInclude Include="ResourceManager\TechniqueProbe.h" />

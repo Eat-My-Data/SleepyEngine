@@ -26,4 +26,9 @@ namespace Bind
 		static ID3D11DeviceContext* GetContext( GraphicsDeviceInterface& gdi ) noexcept;
 		static ID3D11Device* GetDevice( GraphicsDeviceInterface& gdi ) noexcept;
 	};
+	class CloningBindable : public Bindable
+	{
+	public:
+		virtual std::unique_ptr<CloningBindable> Clone() const noexcept = 0;
+	};
 }

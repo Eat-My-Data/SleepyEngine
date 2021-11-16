@@ -12,32 +12,16 @@
 
 namespace dx = DirectX;
 
-Mesh::Mesh( GraphicsDeviceInterface& gdi, bool isAlpha, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs )
+
+Mesh::Mesh( GraphicsDeviceInterface& gfx, const Material& mat, const aiMesh& mesh ) noexcept
 	:
-	isAlpha( isAlpha )
+	Drawable( gfx, mat, mesh )
+{}
+
+void Mesh::Submit( FrameCommander& frame, dx::FXMMATRIX accumulatedTranform ) const noexcept 
 {
-	/*AddBind( Bind::Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-
-	for ( auto& pb : bindPtrs )
-	{
-		AddBind( std::move( pb ) );
-	}
-
-	AddBind( std::make_shared<Bind::TransformCbuf>( gdi, *this ) );*/
-}
-
-bool Mesh::HasAlpha()
-{
-	return isAlpha;
-}
-
-void Mesh::Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept
-{
-	/*DirectX::XMStoreFloat4x4( &transform, accumulatedTransform );
-	if ( !isDepthPass )
-		Drawable::Draw( gdi );
-	else
-		Drawable::DrawDepth( gdi );*/
+	dx::XMStoreFloat4x4( &transform, accumulatedTranform );
+	Drawable::Submit( frame );
 }
 
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
@@ -58,7 +42,7 @@ Node::Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, std::v
 	dx::XMStoreFloat4x4( &appliedTransform, dx::XMMatrixIdentity() );
 }
 
-void Node::Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTransform, bool isDepthPass ) const noexcept
+void Node::Submit( FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform ) const noexcept
 {
 	const auto built =
 		dx::XMLoadFloat4x4( &appliedTransform ) *
@@ -66,15 +50,11 @@ void Node::Draw( GraphicsDeviceInterface& gdi, DirectX::FXMMATRIX accumulatedTra
 		accumulatedTransform;
 	for ( const auto pm : meshPtrs )
 	{
-		pm->Draw( gdi, built, isDepthPass );
+		pm->Submit( frame, accumulatedTransform );
 	}
 	for ( const auto& pc : childPtrs )
 	{
-		pc->Draw( gdi, built, isDepthPass );
-	}
-	for ( const auto& pa : meshPtrsAlpha )
-	{
-		pa->Draw( gdi, built, isDepthPass );
+		pc->Submit( frame, accumulatedTransform );
 	}
 }
 
@@ -88,26 +68,26 @@ void Node::ShowTree( Node*& pSelectedNode ) const noexcept
 {
 }
 
-const Dcb::Buffer* Node::GetMaterialConstants() const noexcept
-{
-	/*if ( meshPtrs.size() == 0 )
-	{
-		return nullptr;
-	}
-	auto pBindable = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
-	return &pBindable->GetBuffer();*/
-	Dcb::RawLayout lay;
-	lay.Add<Dcb::Bool>( "normalMapEnabled" );
-	const Dcb::Buffer* cbuf = new Dcb::Buffer{ std::move(lay) };
-	return cbuf;
-}
-
-void Node::SetMaterialConstants( const Dcb::Buffer& buf_in ) noexcept
-{
-	/*auto pcb = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
-	assert( pcb != nullptr );
-	pcb->SetBuffer( buf_in );*/
-}
+//const Dcb::Buffer* Node::GetMaterialConstants() const noexcept
+//{
+//	/*if ( meshPtrs.size() == 0 )
+//	{
+//		return nullptr;
+//	}
+//	auto pBindable = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
+//	return &pBindable->GetBuffer();*/
+//	Dcb::RawLayout lay;
+//	lay.Add<Dcb::Bool>( "normalMapEnabled" );
+//	const Dcb::Buffer* cbuf = new Dcb::Buffer{ std::move(lay) };
+//	return cbuf;
+//}
+//
+//void Node::SetMaterialConstants( const Dcb::Buffer& buf_in ) noexcept
+//{
+//	/*auto pcb = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEX>();
+//	assert( pcb != nullptr );
+//	pcb->SetBuffer( buf_in );*/
+//}
 
 void Node::SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept
 {
@@ -134,7 +114,7 @@ public:
 	}
 	void ApplyParameters() noexcept
 	{
-		if ( TransformDirty() )
+		/*if ( TransformDirty() )
 		{
 			pSelectedNode->SetAppliedTransform( GetTransform() );
 			ResetTransformDirty();
@@ -143,7 +123,7 @@ public:
 		{
 			pSelectedNode->SetMaterialConstants( GetMaterial() );
 			ResetMaterialDirty();
-		}
+		}*/
 	}
 private:
 	dx::XMMATRIX GetTransform() const noexcept
@@ -230,14 +210,14 @@ Model::Model( GraphicsDeviceInterface& gdi, const std::string& pathString, bool 
 	pRoot = ParseNode( nextId, *pScene->mRootNode );
 }
 
-void Model::Draw( GraphicsDeviceInterface& gdi, bool isDepthPass ) const noexcept
-{
-	// I'm still not happy about updating parameters (i.e. mutating a bindable GPU state
-	// which is part of a mesh which is part of a node which is part of the model that is
-	// const in this call) Can probably do this elsewhere
-	pWindow->ApplyParameters();
-	pRoot->Draw( gdi, dx::XMMatrixIdentity(), isDepthPass );
-}
+//void Model::Draw( GraphicsDeviceInterface& gdi, bool isDepthPass ) const noexcept
+//{
+//	// I'm still not happy about updating parameters (i.e. mutating a bindable GPU state
+//	// which is part of a mesh which is part of a node which is part of the model that is
+//	// const in this call) Can probably do this elsewhere
+//	//pWindow->ApplyParameters();
+//	//pRoot->Draw( gdi, dx::XMMatrixIdentity(), isDepthPass );
+//}
 
 void Model::ShowWindow( GraphicsDeviceInterface& gdi, const char* windowName ) noexcept
 {
@@ -658,7 +638,8 @@ std::unique_ptr<Mesh> Model::ParseMesh( GraphicsDeviceInterface& gdi, const aiMe
 	bindablePtrs.push_back( Rasterizer::Resolve( gdi, hasAlphaDiffuse ) );
 
 	//bindablePtrs.push_back( Blender::Resolve( gdi, false ) );
-	return std::make_unique<Mesh>( gdi, hasAlphaDiffuse, std::move( bindablePtrs ) );
+	return {};
+	//return std::make_unique<Mesh>( gdi, hasAlphaDiffuse, std::move( bindablePtrs ) );
 }
 
 std::unique_ptr<Node> Model::ParseNode( int& nextId, const aiNode& node ) noexcept
@@ -675,10 +656,10 @@ std::unique_ptr<Node> Model::ParseNode( int& nextId, const aiNode& node ) noexce
 	{
 		const auto meshIdx = node.mMeshes[i];
 		Mesh* pMesh = meshPtrs.at( meshIdx ).get();
-		if ( !pMesh->HasAlpha() )
+		/*if ( !pMesh->HasAlpha() )
 			curMeshPtrs.push_back( pMesh );
 		else
-			curMeshAlphaPtrs.push_back( pMesh );
+			curMeshAlphaPtrs.push_back( pMesh );*/
 	}
 
 	auto pNode = std::make_unique<Node>( nextId++, node.mName.C_Str(), std::move( curMeshPtrs ), std::move( curMeshAlphaPtrs ), transform );
