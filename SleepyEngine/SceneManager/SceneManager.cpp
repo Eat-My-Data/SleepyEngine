@@ -4,6 +4,11 @@
 #include "../Libraries/imgui/backends/imgui_impl_win32.h"
 #include "../Utilities/Testing.h"
 #include "../ResourceManager/Material.h"
+#include "../ResourceManager/Mesh.h"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include "../Bindable/Bindables/DynamicConstant.h"
 
 SceneManager::~SceneManager()
 {
@@ -39,7 +44,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 			aiProcess_CalcTangentSpace
 		);
 		Material mat{ *m_pGDI,*pScene->mMaterials[1],path };
-		pLoaded = std::make_unique<Mesh>( *m_pGDI, mat, *pScene->mMeshes[0] );
+		pLoaded = new Mesh(*m_pGDI, mat, *pScene->mMeshes[0] );
 	}
 }
 
@@ -259,9 +264,10 @@ void SceneManager::ForwardRender()
 	m_LightManager.Submit( m_FrameCommander );
 
 	TestMaterialSystemLoading( *m_pGDI );
-	
-	
 	pLoaded->Submit( m_FrameCommander, DirectX::XMMatrixIdentity() );
+
+	
+	//pLoaded->Submit( m_FrameCommander, DirectX::XMMatrixIdentity() );
 
 	// depth from light
 	//m_LightManager.PrepareDepthFromLight();

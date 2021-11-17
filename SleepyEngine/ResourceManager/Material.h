@@ -1,11 +1,12 @@
 #pragma once
-#include <assimp/scene.h>
+#include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 #include "../Bindable/BindableCommon.h"
 #include <vector>
 #include <filesystem>
 #include "./Jobber/Technique.h"
-#include "../Bindable/Bindables/DynamicConstant.h"
-#include "../Bindable/Bindables/ConstantBuffersEx.h"
+
+struct aiMaterial;
+struct aiMesh;
 
 class Material
 {

@@ -209,6 +209,9 @@
     <ClCompile Include="ResourceManager\LayoutCodex.cpp" />
     <ClCompile Include="ResourceManager\Material.cpp" />
     <ClCompile Include="ResourceManager\Mesh.cpp" />
+    <ClCompile Include="ResourceManager\Model.cpp" />
+    <ClCompile Include="ResourceManager\ModelWindow.cpp" />
+    <ClCompile Include="ResourceManager\Node.cpp" />
     <ClCompile Include="ResourceManager\Surface.cpp" />
     <ClCompile Include="ResourceManager\Vertex.cpp" />
     <ClCompile Include="SceneManager\Camera.cpp" />
@@ -275,6 +278,9 @@
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
     <ClInclude Include="ResourceManager\Material.h" />
     <ClInclude Include="ResourceManager\Mesh.h" />
+    <ClInclude Include="ResourceManager\Model.h" />
+    <ClInclude Include="ResourceManager\ModelWindow.h" />
+    <ClInclude Include="ResourceManager\Node.h" />
     <ClInclude Include="ResourceManager\Surface.h" />
     <ClInclude Include="ResourceManager\TechniqueProbe.h" />
     <ClInclude Include="ResourceManager\Vertex.h" />

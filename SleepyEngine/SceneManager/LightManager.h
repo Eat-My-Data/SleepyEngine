@@ -5,7 +5,7 @@
 #include "../Drawable/PointLight.h"
 #include "../Drawable/SpotLight.h"
 #include "../Bindable/Bindables/StructuredBuffers.h"
-#include "../ResourceManager/Mesh.h"
+#include "../ResourceManager/Model.h"
 
 class LightManager
 {

@@ -1,4 +1,6 @@
 #include "Material.h"
+#include "../Bindable/Bindables/DynamicConstant.h"
+#include "../Bindable/Bindables/ConstantBuffersEx.h"
 
 Material::Material( GraphicsDeviceInterface& gfx, const aiMaterial& material, const std::filesystem::path& path ) noexcept
 	:
