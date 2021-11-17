@@ -258,6 +258,9 @@
     <ClCompile Include="ResourceManager\Material.cpp">
       <Filter>Source Files\ResourceManager</Filter>
     </ClCompile>
+    <ClCompile Include="Utilities\Testing.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -470,6 +473,9 @@
     <ClInclude Include="ResourceManager\Material.h">
       <Filter>Header Files\ResourceManager</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities\Testing.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
@@ -578,6 +584,12 @@
       <Filter>Shaders\Common</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Common\PhongPS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\PhongDifNrmPS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\PhongDifNrmVS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
   </ItemGroup>

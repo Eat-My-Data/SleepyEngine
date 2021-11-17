@@ -2,6 +2,8 @@
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 #include "../Libraries/imgui/backends/imgui_impl_dx11.h"
 #include "../Libraries/imgui/backends/imgui_impl_win32.h"
+#include "../Utilities/Testing.h"
+#include "../ResourceManager/Material.h"
 
 SceneManager::~SceneManager()
 {
@@ -185,6 +187,24 @@ void SceneManager::ForwardRender()
 	m_pTestCube->Submit( m_FrameCommander );
 	m_pTestCube2->Submit( m_FrameCommander );
 	m_LightManager.Submit( m_FrameCommander );
+
+	TestMaterialSystemLoading( *m_pGDI );
+	std::unique_ptr<Mesh> pLoaded;
+	{
+		std::string path = "Models\\brick_wall\\brick_wall.obj";
+		Assimp::Importer imp;
+		const auto pScene = imp.ReadFile( path,
+			aiProcess_Triangulate |
+			aiProcess_JoinIdenticalVertices |
+			aiProcess_ConvertToLeftHanded |
+			aiProcess_GenNormals |
+			aiProcess_CalcTangentSpace
+		);
+		Material mat{ *m_pGDI,*pScene->mMaterials[1],path };
+		pLoaded = std::make_unique<Mesh>( *m_pGDI, mat, *pScene->mMeshes[0] );
+	}
+	pLoaded->Submit( m_FrameCommander, DirectX::XMMatrixIdentity() );
+
 	// depth from light
 	//m_LightManager.PrepareDepthFromLight();
 	//m_vecOfModels[1]->Draw( *m_pGDI, true );

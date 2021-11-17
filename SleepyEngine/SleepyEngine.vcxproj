@@ -216,6 +216,7 @@
     <ClCompile Include="SceneManager\SceneManager.cpp" />
     <ClCompile Include="Utilities\FrameTimer.cpp" />
     <ClCompile Include="Utilities\SleepyUtil.cpp" />
+    <ClCompile Include="Utilities\Testing.cpp" />
     <ClCompile Include="Win32\Keyboard.cpp" />
     <ClCompile Include="Win32\Mouse.cpp" />
     <ClCompile Include="Win32\Win32MessageMap.cpp" />
@@ -287,6 +288,7 @@
     <ClInclude Include="Utilities\SleepyMath.h" />
     <ClInclude Include="Utilities\SleepyUtil.h" />
     <ClInclude Include="Utilities\SleepyXM.h" />
+    <ClInclude Include="Utilities\Testing.h" />
     <ClInclude Include="Win32\Keyboard.h" />
     <ClInclude Include="Win32\Mouse.h" />
     <ClInclude Include="Win32\Win32MessageMap.h" />
@@ -323,6 +325,22 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <FileType>Document</FileType>
     </ClInclude>
+    <FxCompile Include="Shaders\Common\PhongDifNrmPS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\PhongDifNrmVS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
     <FxCompile Include="Shaders\Common\PhongPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
