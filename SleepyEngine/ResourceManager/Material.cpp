@@ -123,7 +123,7 @@ Material::Material( GraphicsDeviceInterface& gfx, const aiMaterial& material, co
 	}
 	// outline technique
 	{
-	Technique outline( "Outline" );
+	Technique outline( "Outline",false );
 	{
 		Step mask( 1 );
 

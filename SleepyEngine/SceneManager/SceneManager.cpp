@@ -24,28 +24,13 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_GraphicsAPI = api;
 	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
 	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
-	m_pTestCube = new Cube( gdi, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f }, 1.0f );
-	m_pTestCube2 = new Cube( gdi, { { 4.2f,0.2f,0.2f }, 0.0f, 0.0f, 0.0f }, 1.0f );
-	gobber = new Model( *m_pGDI, "Models\\gobber\\GoblinX.obj", 6.0f );
+	//gobber = new Model( *m_pGDI, "Models\\gobber\\GoblinX.obj", 6.0f );
+	sponza = new Model( *m_pGDI, "Models\\sponza\\sponza.obj", 1.0f / 20.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.obj", true, 2000.0f );
 	//m_pMonster->SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -250.0f, 0.0f ) * DirectX::XMMatrixRotationY( -PI / 2.0f ) * DirectX::XMMatrixRotationZ( PI / 2.0f ) );
 	m_LightManager.Initialize( *m_pGDI );
 	ImGui_ImplDX11_Init( m_pGDI->GetDevice(), m_pGDI->GetContext() );
-
-	{
-		std::string path = "Models\\brick_wall\\brick_wall.obj";
-		Assimp::Importer imp;
-		const auto pScene = imp.ReadFile( path,
-			aiProcess_Triangulate |
-			aiProcess_JoinIdenticalVertices |
-			aiProcess_ConvertToLeftHanded |
-			aiProcess_GenNormals |
-			aiProcess_CalcTangentSpace
-		);
-		Material mat{ *m_pGDI,*pScene->mMaterials[1],path };
-		pLoaded = new Mesh(*m_pGDI, mat, *pScene->mMeshes[0] );
-	}
 }
 
 bool SceneManager::IsInitialzed() noexcept
@@ -82,8 +67,6 @@ void SceneManager::Draw()
 	if ( imguiEnabled )
 	{
 		DrawControlPanel();
-		m_pTestCube->DrawControlPanel( "Cube #1" );
-		m_pTestCube2->DrawControlPanel( "Cube #2" );
 		// Mesh techniques window
 		class Probe : public TechniqueProbe
 		{
@@ -139,7 +122,6 @@ void SceneManager::Draw()
 				return dirty;
 			}
 		} probe;
-		pLoaded->Accept( probe );
 	}
 
 	// clear shader resources
@@ -259,12 +241,9 @@ void SceneManager::UpdateCameraBuffer()
 
 void SceneManager::ForwardRender()
 {
-	m_pTestCube->Submit( m_FrameCommander );
-	m_pTestCube2->Submit( m_FrameCommander );
 	m_LightManager.Submit( m_FrameCommander );
-	gobber->Submit( m_FrameCommander );
-	TestMaterialSystemLoading( *m_pGDI );
-	pLoaded->Submit( m_FrameCommander, DirectX::XMMatrixIdentity() );
+	sponza->Submit( m_FrameCommander );
+	//gobber->Submit( m_FrameCommander );
 
 	
 	//pLoaded->Submit( m_FrameCommander, DirectX::XMMatrixIdentity() );

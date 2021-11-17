@@ -51,6 +51,7 @@ private:
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 	Mesh* pLoaded;
 	Model* gobber;
+	Model* sponza;
 private:
 	struct CameraData
 	{
