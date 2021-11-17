@@ -559,10 +559,10 @@
     <FxCompile Include="Shaders\Common\DirectionalLight.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\SolidPS.hlsl">
+    <FxCompile Include="Shaders\Common\Solid_PS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\SolidVS.hlsl">
+    <FxCompile Include="Shaders\Common\Solid_VS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Common\SpotLight.hlsl">
@@ -580,17 +580,41 @@
     <FxCompile Include="Shaders\Common\DefaultLightSettings.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\PhongVS.hlsl">
-      <Filter>Shaders\Common</Filter>
+    <FxCompile Include="Shaders\Forward\Phong_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\PhongPS.hlsl">
-      <Filter>Shaders\Common</Filter>
+    <FxCompile Include="Shaders\Forward\Phong_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\PhongDifNrmPS.hlsl">
-      <Filter>Shaders\Common</Filter>
+    <FxCompile Include="Shaders\Forward\PhongDif_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\PhongDifNrmVS.hlsl">
-      <Filter>Shaders\Common</Filter>
+    <FxCompile Include="Shaders\Forward\PhongDif_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpcNrm_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpcNrm_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifNrm_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifNrm_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpc_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpc_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpcNrm_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpcNrm_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

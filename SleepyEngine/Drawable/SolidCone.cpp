@@ -16,11 +16,11 @@ SolidCone::SolidCone( GraphicsDeviceInterface& gdi, f32 scale )
 	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
 	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 
-	auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/SolidVS.cso" );
+	auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );
 	auto pvsbc = pvs->GetBytecode();
 	AddBind( std::move( pvs ) );
 
-	AddBind( PixelShader::Resolve( gdi, "./Shaders/Bin/SolidPS.cso" ) );
+	AddBind( PixelShader::Resolve( gdi, "./Shaders/Bin/Solid_PS.cso" ) );
 
 	AddBind( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 

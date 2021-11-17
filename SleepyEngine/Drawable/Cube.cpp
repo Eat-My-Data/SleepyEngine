@@ -32,11 +32,11 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			only.AddBindable( Texture::Resolve( gdi, "Models\\brick_wall\\brick_wall_diffuse.jpg" ) );
 			only.AddBindable( Sampler::Resolve( gdi ) );
 
-			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/PhongVS.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Phong_VS.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			only.AddBindable( std::move( pvs ) );
 
-			only.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/PhongPS.cso" ) );
+			only.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/Phong_PS.cso" ) );
 
 			Dcb::RawLayout lay;
 			lay.Add<Dcb::Float>( "specularIntensity" );
@@ -60,7 +60,7 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 		{
 			Step mask( 1 );
 
-			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/SolidVS.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			mask.AddBindable( std::move( pvs ) );
 
@@ -76,12 +76,12 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 		{
 			Step draw( 2 );
 
-			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/SolidVS.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			draw.AddBindable( std::move( pvs ) );
 
 			// this can be pass-constant
-			draw.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/SolidPS.cso" ) );
+			draw.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/Solid_PS.cso" ) );
 
 			Dcb::RawLayout lay;
 			lay.Add<Dcb::Float4>( "color" );
