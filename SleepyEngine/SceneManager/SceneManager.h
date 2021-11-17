@@ -50,6 +50,7 @@ private:
 	LightManager m_LightManager;
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 	Mesh* pLoaded;
+	Model* gobber;
 private:
 	struct CameraData
 	{

@@ -5,6 +5,7 @@
 #include "ModelWindow.h"
 #include "Node.h"
 #include "Mesh.h"
+#include "Material.h"
 
 namespace dx = DirectX;
 
@@ -26,9 +27,18 @@ Model::Model( GraphicsDeviceInterface& gfx, const std::string& pathString, const
 		throw std::exception();
 	}
 
+	// parse materials
+	std::vector<Material> materials;
+	materials.reserve( pScene->mNumMaterials );
+	for ( size_t i = 0; i < pScene->mNumMaterials; i++ )
+	{
+		materials.emplace_back( gfx, *pScene->mMaterials[i], pathString );
+	}
+
 	for ( size_t i = 0; i < pScene->mNumMeshes; i++ )
 	{
-		meshPtrs.push_back( ParseMesh( gfx, *pScene->mMeshes[i], pScene->mMaterials, pathString, scale ) );
+		const auto& mesh = *pScene->mMeshes[i];
+		meshPtrs.push_back( std::make_unique<Mesh>( gfx, materials[mesh.mMaterialIndex], mesh ) );
 	}
 
 	int nextId = 0;

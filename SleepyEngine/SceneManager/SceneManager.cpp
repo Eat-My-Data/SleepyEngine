@@ -26,7 +26,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
 	m_pTestCube = new Cube( gdi, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f }, 1.0f );
 	m_pTestCube2 = new Cube( gdi, { { 4.2f,0.2f,0.2f }, 0.0f, 0.0f, 0.0f }, 1.0f );
-
+	gobber = new Model( *m_pGDI, "Models\\gobber\\GoblinX.obj", 6.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.obj", true, 2000.0f );
 	//m_pMonster->SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -250.0f, 0.0f ) * DirectX::XMMatrixRotationY( -PI / 2.0f ) * DirectX::XMMatrixRotationZ( PI / 2.0f ) );
@@ -262,7 +262,7 @@ void SceneManager::ForwardRender()
 	m_pTestCube->Submit( m_FrameCommander );
 	m_pTestCube2->Submit( m_FrameCommander );
 	m_LightManager.Submit( m_FrameCommander );
-
+	gobber->Submit( m_FrameCommander );
 	TestMaterialSystemLoading( *m_pGDI );
 	pLoaded->Submit( m_FrameCommander, DirectX::XMMatrixIdentity() );
 
