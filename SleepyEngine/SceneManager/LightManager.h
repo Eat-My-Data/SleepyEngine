@@ -29,7 +29,7 @@ public:
 	void RotateDirectionalLight( const f32 dx, const f32 dy );
 private:
 	void InitializePointLightShadowResources();
-private:
+public:
 	DirectionalLight* m_pDirectionalLight;
 	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>* m_pDirectionalLightBuffer;
 	SpotLight* m_pSpotLight;

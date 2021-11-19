@@ -45,12 +45,13 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 	//m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 2u );
 	//AddBind( m_pForwardLightMatrices );	
 
-	//m_pSolidCone = new SolidCone( gdi, 1.0f );
-	//m_pSolidCone->SetPos( m_StructuredBufferData.pos );
-	//m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f), m_fYaw );
-	//m_StructuredBufferData.lightDirection.x = GetViewMatrix().r[2].m128_f32[0];
-	//m_StructuredBufferData.lightDirection.y = GetViewMatrix().r[2].m128_f32[1];
-	//m_StructuredBufferData.lightDirection.z = GetViewMatrix().r[2].m128_f32[2];
+	m_pSolidCone = new SolidCone( gdi, 1.0f );
+	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
+	m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f), m_fYaw );
+	DirectX::XMMATRIX tView = DirectX::XMMatrixTranspose( GetViewMatrix() );
+	m_StructuredBufferData.lightDirection.x = tView.r[2].m128_f32[0];
+	m_StructuredBufferData.lightDirection.y = tView.r[2].m128_f32[1];
+	m_StructuredBufferData.lightDirection.z = tView.r[2].m128_f32[2];
 
 	//// CameraIsInside Resources
 	//D3D11_DEPTH_STENCIL_DESC dsDesInsideLight = {};
@@ -120,21 +121,21 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 
 DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixRotationRollPitchYaw( m_fPitch - ( PI / 2.0f ), m_fYaw, 0.0f ) *
-		DirectX::XMMatrixTranslation( m_StructuredBufferData.pos.x, m_StructuredBufferData.pos.y, m_StructuredBufferData.pos.z );
+	return {};//DirectX::XMMatrixRotationRollPitchYaw( m_fPitch + ( PI / 2.0f ), m_fYaw, 0.0f ) *
+		//DirectX::XMMatrixTranslation( m_StructuredBufferData.pos.x, m_StructuredBufferData.pos.y, m_StructuredBufferData.pos.z );
 }
 
-void SpotLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
+void SpotLight::Update( GraphicsDeviceInterface& gdi )
 {
-	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
+	//m_pSolidCone->SetPos( m_StructuredBufferData.pos );
 
 	m_StructuredBufferData.spotViewProjectionMatrix = GetViewMatrix() * GetProjectionMatrix();
 
-	matrixcbuf.lightViewMatrix = GetViewMatrix();
-	matrixcbuf.lightProjMatrix = GetProjectionMatrix();
+	//matrixcbuf.lightViewMatrix = GetViewMatrix();
+	//matrixcbuf.lightProjMatrix = GetProjectionMatrix();
 
-	m_pForwardLightMatrices->Update( gdi, matrixcbuf );
-	m_pForwardLightMatrices->Bind( gdi );
+	//m_pForwardLightMatrices->Update( gdi, matrixcbuf );
+	//m_pForwardLightMatrices->Bind( gdi );
 }
 
 void SpotLight::DrawControlPanel()
@@ -192,6 +193,11 @@ void SpotLight::Draw( GraphicsDeviceInterface& gdi )
 	//	// draw
 	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
 	//}
+}
+
+void SpotLight::Submit( FrameCommander& frame )
+{
+	m_pSolidCone->Submit( frame );
 }
 
 void SpotLight::Translate( DirectX::XMFLOAT3 translation )
