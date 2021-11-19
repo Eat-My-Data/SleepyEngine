@@ -62,7 +62,10 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
 		m_vecOfPointLights[i]->Update();
-		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
+		auto dataCopy = m_vecOfPointLights[i]->m_StructuredBufferData;
+		const auto pos = DirectX::XMLoadFloat3( &m_vecOfPointLights[i]->m_StructuredBufferData.pos );
+		DirectX::XMStoreFloat3( &dataCopy.pos, DirectX::XMVector3Transform( pos, m_pGDI->GetViewMatrix() ) );
+		bufferData[i] = dataCopy;
 	}
 	m_pPointLightBuffer->Update( *m_pGDI, bufferData );
 	m_pPointLightBuffer->Bind( *m_pGDI );

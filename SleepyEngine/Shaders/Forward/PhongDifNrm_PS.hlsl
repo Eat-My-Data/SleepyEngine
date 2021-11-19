@@ -35,10 +35,11 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     pointLightAtt *= pointLightAtt;
 	// diffuse
     const float3 diffuse = Diffuse(pointLightData[0].color, defaultLightIntensity, pointLightAtt, lv.dirToL, viewNormal);
+    // TODO: Figure out why using specularGloss instead of defaultSpecularPower breaks
     // specular
     const float3 specular = Speculate(
         pointLightData[0].color * defaultLightIntensity * specularColor, specularWeight, viewNormal,
-        lv.vToL, viewFragPos, pointLightAtt, specularGloss
+        lv.vToL, viewFragPos, pointLightAtt, defaultSpecularPower
     );
 	// final color
     return float4(saturate((diffuse + defaultAmbientLight) * tex.Sample(splr, tc).rgb + specular), 1.0f);

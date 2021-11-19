@@ -13,7 +13,7 @@ PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
 	//using namespace Bind;
 	//namespace dx = DirectX;
 
-	//m_StructuredBufferData.radius = radius;
+	m_StructuredBufferData.radius = radius;
 
 	//auto model = Sphere::Make();
 	//model.Transform( dx::XMMatrixScaling( radius, radius, radius ) );
@@ -117,7 +117,7 @@ DirectX::XMMATRIX PointLight::GetTransformXM() const noexcept
 
 void PointLight::Update()
 {
-	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
+	//m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }
 
 void PointLight::Draw( GraphicsDeviceInterface& gdi )
@@ -167,7 +167,6 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 
 void PointLight::Submit( FrameCommander& frame ) const noexcept
 {
-	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 	m_SolidSphere->Submit( frame );
 }
 

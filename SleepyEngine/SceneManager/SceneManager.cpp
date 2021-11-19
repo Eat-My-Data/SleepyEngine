@@ -241,12 +241,11 @@ void SceneManager::UpdateCameraBuffer()
 
 void SceneManager::ForwardRender()
 {
+	UpdateCameraBuffer();
+	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_LightManager.Submit( m_FrameCommander );
-	sponza->Submit( m_FrameCommander );
-	//gobber->Submit( m_FrameCommander );
 
-	
-	//pLoaded->Submit( m_FrameCommander, DirectX::XMMatrixIdentity() );
+	sponza->Submit( m_FrameCommander );
 
 	// depth from light
 	//m_LightManager.PrepareDepthFromLight();
@@ -264,8 +263,6 @@ void SceneManager::ForwardRender()
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	//m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
-	UpdateCameraBuffer();
-	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_FrameCommander.Execute( *m_pGDI );
 
 	//m_vecOfModels[0]->Draw( *m_pGDI, false );
