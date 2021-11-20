@@ -25,6 +25,9 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 {		
 	m_pGDI = &gdi;
 	m_GraphicsAPI = api;
+	m_pTestCube = new Cube( *m_pGDI, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
+	m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
+
 	//gobber = new Model( *m_pGDI, "Models\\gobber\\GoblinX.obj", 6.0f );
 	sponza = new Model( *m_pGDI, "Models\\sponza\\sponza.obj", 1.0f / 20.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
@@ -346,7 +349,8 @@ void SceneManager::ForwardRender()
 	UpdateCameraBuffer();
 	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_LightManager.Submit( m_FrameCommander );
-
+	m_pTestCube->Submit( m_FrameCommander );
+	m_pTestCube2->Submit( m_FrameCommander );
 	sponza->Submit( m_FrameCommander );
 
 	// depth from light
