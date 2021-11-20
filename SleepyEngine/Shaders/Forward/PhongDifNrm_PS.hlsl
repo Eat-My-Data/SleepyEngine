@@ -1,5 +1,6 @@
 #include "../Common/ShaderOps.hlsl"
 #include "../Common/LightVectorData.hlsl"
+#include "../Common/DirectionalLight.hlsl"
 #include "../Common/PointLight.hlsl"
 #include "../Common/DefaultLightSettings.hlsl"
 #include "../Common/SpotLight.hlsl"
@@ -30,22 +31,32 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         const float3 mappedNormal = MapNormal(normalize(viewTan), normalize(viewBitan), viewNormal, tc, nmap, splr);
         viewNormal = lerp(viewNormal, mappedNormal, normalMapWeight);
     }
+    
+    // directional light
+    float dirLightShadow = 1.0f; //CalculateDirectionalLightShadow(lightViewPos, splr);
+    float dirLightAtt = directionalLightData[0].att;
+    const float3 directionalDiffuse = Diffuse(directionalLightData[0].color.rgb, defaultLightIntensity,
+        dirLightAtt, -directionalLightData[0].lightDirection, viewNormal) * dirLightShadow;
+    const float3 camToFrag = viewFragPos - camPos.xyz;
+    const float3 directionalSpecular = Speculate(
+        directionalLightData[0].color.rgb, defaultLightIntensity, viewNormal, -directionalLightData[0].lightDirection,
+        camToFrag, dirLightAtt, defaultSpecularPower
+    );
+    
 	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation
     float pointLightAtt = saturate((1 - (lv.distToL / pointLightData[index].radius)));
     pointLightAtt *= pointLightAtt;
 	// diffuse
-    const float3 diffuse = Diffuse(pointLightData[0].color, defaultLightIntensity, pointLightAtt, lv.dirToL, viewNormal);
+    const float3 pointDiffuse = Diffuse(pointLightData[0].color, defaultLightIntensity, pointLightAtt, lv.dirToL, viewNormal);
     // TODO: Figure out why using specularGloss instead of defaultSpecularPower breaks
     // specular
-    const float3 specular = Speculate(
+    const float3 pointSpecular = Speculate(
         pointLightData[0].color * defaultLightIntensity * specularColor, specularWeight, viewNormal,
         lv.vToL, viewFragPos, pointLightAtt, defaultSpecularPower
     );
     
-    const float3 camToFrag = viewFragPos - camPos.xyz;
-
     // spot light
     float3 spotToFrag = spotLightData[0].pos - viewFragPos;
     float att = saturate((1 - (length(spotToFrag) / spotLightData[0].range)));
@@ -66,7 +77,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         ) * spotLightShadow;
     }
     
-    float3 combinedColor = diffuse + spotDiffuse + specular + spotSpecular + defaultAmbientLight;
+    float3 combinedColor = directionalDiffuse + pointDiffuse + spotDiffuse + directionalSpecular + pointSpecular + spotSpecular + defaultAmbientLight;
 	// final color
     return float4((combinedColor * tex.Sample(splr, tc).rgb), 1.0f);
 }

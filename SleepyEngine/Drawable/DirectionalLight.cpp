@@ -37,8 +37,8 @@ void DirectionalLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 c
 	matrixcbuf.lightViewMatrix = GetViewMatrix();
 	matrixcbuf.lightProjMatrix = GetProjectionMatrix();
 
-	m_pForwardLightMatrices->Update( gdi, matrixcbuf );
-	m_pForwardLightMatrices->Bind( gdi );
+	//m_pForwardLightMatrices->Update( gdi, matrixcbuf );
+	//m_pForwardLightMatrices->Bind( gdi );
 }
 
 void DirectionalLight::DrawControlPanel()
