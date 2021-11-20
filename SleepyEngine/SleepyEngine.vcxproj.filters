@@ -270,6 +270,9 @@
     <ClCompile Include="ResourceManager\ModelWindow.cpp">
       <Filter>Source Files\ResourceManager</Filter>
     </ClCompile>
+    <ClCompile Include="Utilities\SleepyXM.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -493,6 +496,9 @@
     </ClInclude>
     <ClInclude Include="ResourceManager\ModelWindow.h">
       <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\ModelProbe.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -219,6 +219,7 @@
     <ClCompile Include="SceneManager\SceneManager.cpp" />
     <ClCompile Include="Utilities\FrameTimer.cpp" />
     <ClCompile Include="Utilities\SleepyUtil.cpp" />
+    <ClCompile Include="Utilities\SleepyXM.cpp" />
     <ClCompile Include="Utilities\Testing.cpp" />
     <ClCompile Include="Win32\Keyboard.cpp" />
     <ClCompile Include="Win32\Mouse.cpp" />
@@ -272,6 +273,7 @@
     <ClInclude Include="ResourceManager\IndexedTriangleList.h" />
     <ClInclude Include="ResourceManager\Jobber\FrameCommander.h" />
     <ClInclude Include="ResourceManager\Jobber\Job.h" />
+    <ClInclude Include="ResourceManager\Jobber\ModelProbe.h" />
     <ClInclude Include="ResourceManager\Jobber\Pass.h" />
     <ClInclude Include="ResourceManager\Jobber\Step.h" />
     <ClInclude Include="ResourceManager\Jobber\Technique.h" />

@@ -6,6 +6,7 @@
 #include "Node.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "../Utilities/SleepyXM.h"
 
 namespace dx = DirectX;
 
@@ -38,11 +39,11 @@ Model::Model( GraphicsDeviceInterface& gfx, const std::string& pathString, const
 	for ( size_t i = 0; i < pScene->mNumMeshes; i++ )
 	{
 		const auto& mesh = *pScene->mMeshes[i];
-		meshPtrs.push_back( std::make_unique<Mesh>( gfx, materials[mesh.mMaterialIndex], mesh ) );
+		meshPtrs.push_back( std::make_unique<Mesh>( gfx, materials[mesh.mMaterialIndex], mesh, scale ) );
 	}
 
 	int nextId = 0;
-	pRoot = ParseNode( nextId, *pScene->mRootNode, dx::XMMatrixScaling( scale, scale, scale ) );
+	pRoot = ParseNode( nextId, *pScene->mRootNode, scale );
 }
 
 void Model::Submit( FrameCommander& frame ) const noexcept
@@ -64,15 +65,20 @@ void Model::SetRootTransform( DirectX::FXMMATRIX tf ) noexcept
 	pRoot->SetAppliedTransform( tf );
 }
 
+void Model::Accept( ModelProbe& probe )
+{
+	pRoot->Accept( probe );
+}
+
 Model::~Model() noexcept
 {}
 
-std::unique_ptr<Node> Model::ParseNode( int& nextId, const aiNode& node, dx::FXMMATRIX additionalTransform ) noexcept
+std::unique_ptr<Node> Model::ParseNode( int& nextId, const aiNode& node, float scale ) noexcept
 {
 	namespace dx = DirectX;
-	const auto transform = additionalTransform * dx::XMMatrixTranspose( dx::XMLoadFloat4x4(
+	const auto transform = ScaleTranslation( dx::XMMatrixTranspose( dx::XMLoadFloat4x4(
 		reinterpret_cast<const dx::XMFLOAT4X4*>( &node.mTransformation )
-	) );
+	) ), scale );
 
 	std::vector<Mesh*> curMeshPtrs;
 	curMeshPtrs.reserve( node.mNumMeshes );
@@ -85,7 +91,7 @@ std::unique_ptr<Node> Model::ParseNode( int& nextId, const aiNode& node, dx::FXM
 	auto pNode = std::make_unique<Node>( nextId++, node.mName.C_Str(), std::move( curMeshPtrs ), transform );
 	for ( size_t i = 0; i < node.mNumChildren; i++ )
 	{
-		pNode->AddChild( ParseNode( nextId, *node.mChildren[i], dx::XMMatrixIdentity() ) );
+		pNode->AddChild( ParseNode( nextId, *node.mChildren[i], scale ) );
 	}
 
 	return pNode;

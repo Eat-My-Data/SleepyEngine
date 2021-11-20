@@ -1,5 +1,6 @@
 #include "Node.h"
 #include "Mesh.h"
+#include "./Jobber/ModelProbe.h"
 #include "../Libraries/imgui/imgui.h"
 
 namespace dx = DirectX;
@@ -63,6 +64,18 @@ void Node::AddChild( std::unique_ptr<Node> pChild ) noexcept
 //		ImGui::TreePop();
 //	}
 //}
+
+void Node::Accept( ModelProbe& probe )
+{
+	if ( probe.PushNode( *this ) )
+	{
+		for ( auto& cp : childPtrs )
+		{
+			cp->Accept( probe );
+		}
+		probe.PopNode( *this );
+	}
+}
 
 void Node::SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept
 {

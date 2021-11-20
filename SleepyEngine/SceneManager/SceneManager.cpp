@@ -5,10 +5,13 @@
 #include "../Utilities/Testing.h"
 #include "../ResourceManager/Material.h"
 #include "../ResourceManager/Mesh.h"
+#include "../Bindable/Bindables/DynamicConstant.h"
+#include "../ResourceManager/Jobber/ModelProbe.h"
+#include "../ResourceManager/Node.h"
+#include "../Utilities/SleepyXM.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
-#include "../Bindable/Bindables/DynamicConstant.h"
 
 SceneManager::~SceneManager()
 {
@@ -22,8 +25,6 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 {		
 	m_pGDI = &gdi;
 	m_GraphicsAPI = api;
-	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
-	//m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
 	//gobber = new Model( *m_pGDI, "Models\\gobber\\GoblinX.obj", 6.0f );
 	sponza = new Model( *m_pGDI, "Models\\sponza\\sponza.obj", 1.0f / 20.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
@@ -68,7 +69,7 @@ void SceneManager::Draw()
 	{
 		DrawControlPanel();
 		// Mesh techniques window
-		class Probe : public TechniqueProbe
+		class TP : public TechniqueProbe
 		{
 		public:
 			void OnSetTechnique() override
@@ -122,6 +123,107 @@ void SceneManager::Draw()
 				return dirty;
 			}
 		} probe;
+		class MP : ModelProbe
+		{
+		public:
+			void SpawnWindow( Model& model )
+			{
+				ImGui::Begin( "Model" );
+				ImGui::Columns( 2, nullptr, true );
+				model.Accept( *this );
+
+				ImGui::NextColumn();
+				if ( pSelectedNode != nullptr )
+				{
+					bool dirty = false;
+					const auto dcheck = [&dirty]( bool changed ) {dirty = dirty || changed; };
+					auto& tf = ResolveTransform();
+					ImGui::TextColored( { 0.4f,1.0f,0.6f,1.0f }, "Translation" );
+					dcheck( ImGui::SliderFloat( "X", &tf.x, -60.f, 60.f ) );
+					dcheck( ImGui::SliderFloat( "Y", &tf.y, -60.f, 60.f ) );
+					dcheck( ImGui::SliderFloat( "Z", &tf.z, -60.f, 60.f ) );
+					ImGui::TextColored( { 0.4f,1.0f,0.6f,1.0f }, "Orientation" );
+					dcheck( ImGui::SliderAngle( "X-rotation", &tf.xRot, -180.0f, 180.0f ) );
+					dcheck( ImGui::SliderAngle( "Y-rotation", &tf.yRot, -180.0f, 180.0f ) );
+					dcheck( ImGui::SliderAngle( "Z-rotation", &tf.zRot, -180.0f, 180.0f ) );
+					if ( dirty )
+					{
+						pSelectedNode->SetAppliedTransform(
+							DirectX::XMMatrixRotationX( tf.xRot ) *
+							DirectX::XMMatrixRotationY( tf.yRot ) *
+							DirectX::XMMatrixRotationZ( tf.zRot ) *
+							DirectX::XMMatrixTranslation( tf.x, tf.y, tf.z )
+						);
+					}
+				}
+				ImGui::End();
+			}
+		protected:
+			bool PushNode( Node& node ) override
+			{
+				// if there is no selected node, set selectedId to an impossible value
+				const int selectedId = ( pSelectedNode == nullptr ) ? -1 : pSelectedNode->GetId();
+				// build up flags for current node
+				const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
+					| ( ( node.GetId() == selectedId ) ? ImGuiTreeNodeFlags_Selected : 0 )
+					| ( node.HasChildren() ? 0 : ImGuiTreeNodeFlags_Leaf );
+				// render this node
+				const auto expanded = ImGui::TreeNodeEx(
+					(void*)(intptr_t)node.GetId(),
+					node_flags, node.GetName().c_str()
+				);
+				// processing for selecting node
+				if ( ImGui::IsItemClicked() )
+				{
+					pSelectedNode = &node;
+				}
+				// signal if children should also be recursed
+				return expanded;
+			}
+			void PopNode( Node& node ) override
+			{
+				ImGui::TreePop();
+			}
+		private:
+			Node* pSelectedNode = nullptr;
+			struct TransformParameters
+			{
+				float xRot = 0.0f;
+				float yRot = 0.0f;
+				float zRot = 0.0f;
+				float x = 0.0f;
+				float y = 0.0f;
+				float z = 0.0f;
+			};
+			std::unordered_map<int, TransformParameters> transformParams;
+		private:
+			TransformParameters& ResolveTransform() noexcept
+			{
+				const auto id = pSelectedNode->GetId();
+				auto i = transformParams.find( id );
+				if ( i == transformParams.end() )
+				{
+					return LoadTransform( id );
+				}
+				return i->second;
+			}
+			TransformParameters& LoadTransform( int id ) noexcept
+			{
+				const auto& applied = pSelectedNode->GetAppliedTransform();
+				const auto angles = ExtractEulerAngles( applied );
+				const auto translation = ExtractTranslation( applied );
+				TransformParameters tp;
+				tp.zRot = angles.z;
+				tp.xRot = angles.x;
+				tp.yRot = angles.y;
+				tp.x = translation.x;
+				tp.y = translation.y;
+				tp.z = translation.z;
+				return transformParams.insert( { id,{ tp } } ).first->second;
+			}
+		};
+		static MP modelProbe;
+		modelProbe.SpawnWindow( *sponza );
 	}
 
 	// clear shader resources
