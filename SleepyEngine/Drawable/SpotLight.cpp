@@ -47,7 +47,7 @@ SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
 
 	m_pSolidCone = new SolidCone( gdi, 1.0f );
 	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
-	m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f), m_fYaw );
+	m_pSolidCone->Rotate( m_fPitch + ( PI / 2.0f ), m_fYaw - ( PI / 2.0f ) );
 	DirectX::XMMATRIX tView = DirectX::XMMatrixTranspose( GetViewMatrix() );
 	m_StructuredBufferData.lightDirection.x = tView.r[2].m128_f32[0];
 	m_StructuredBufferData.lightDirection.y = tView.r[2].m128_f32[1];
@@ -213,7 +213,7 @@ void SpotLight::Rotate( const f32 dx, const f32 dy )
 	// Fix rotation to not roll camera
 	m_fYaw = wrap_angle( m_fYaw + dx * 0.004f );
 	m_fPitch = std::clamp( m_fPitch + dy * 0.004f, 0.995f * -PI, 0.995f * PI );
-	m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f ), m_fYaw );
+	m_pSolidCone->Rotate( m_fPitch - ( PI / 2.0f ), m_fYaw + ( PI / 2.0f ) );
 	DirectX::XMMATRIX tView = DirectX::XMMatrixTranspose( GetViewMatrix() );
 	m_StructuredBufferData.lightDirection.x = tView.r[2].m128_f32[0];
 	m_StructuredBufferData.lightDirection.y = tView.r[2].m128_f32[1];
