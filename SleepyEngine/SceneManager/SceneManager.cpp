@@ -346,8 +346,6 @@ void SceneManager::UpdateCameraBuffer()
 
 void SceneManager::ForwardRender()
 {
-	UpdateCameraBuffer();
-	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
 	m_LightManager.Submit( m_FrameCommander );
 	m_pTestCube->Submit( m_FrameCommander );
 	m_pTestCube2->Submit( m_FrameCommander );
@@ -364,11 +362,15 @@ void SceneManager::ForwardRender()
 	//m_LightManager.PrepareDepthFromSpotLight();
 	//m_vecOfModels[1]->Draw( *m_pGDI, true );
 
+	UpdateCameraBuffer();
+	m_LightManager.UpdateBuffers();
+
 	// update and render
 	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), *m_pGDI->GetDSV() );
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	//m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
+
 	m_FrameCommander.Execute( *m_pGDI );
 
 	//m_vecOfModels[0]->Draw( *m_pGDI, false );

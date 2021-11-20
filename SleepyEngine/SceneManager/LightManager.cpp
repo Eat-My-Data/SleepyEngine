@@ -47,9 +47,9 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	DirectX::XMStoreFloat3( &cameraUps[5], DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
 }
 
-void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
+void LightManager::UpdateBuffers()
 {
-	m_pDirectionalLight->Update( *m_pGDI, camPos );
+	m_pDirectionalLight->Update( *m_pGDI );
 	m_pDirectionalLightBuffer->Update( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData );
 	m_pDirectionalLightBuffer->Bind( *m_pGDI );
 

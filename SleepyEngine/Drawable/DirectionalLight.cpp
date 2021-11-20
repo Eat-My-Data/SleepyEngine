@@ -30,7 +30,7 @@ DirectX::XMMATRIX DirectionalLight::GetTransformXM() const noexcept
 	return DirectX::XMMatrixTranslation( 1.0f, 1.0f, 1.0f );
 }
 
-void DirectionalLight::Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos )
+void DirectionalLight::Update( GraphicsDeviceInterface& gdi )
 {
 	m_StructuredBufferData.lightViewProjectionMatrix = GetViewMatrix() * GetProjectionMatrix();
 

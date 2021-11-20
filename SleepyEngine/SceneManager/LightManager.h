@@ -11,7 +11,7 @@ class LightManager
 {
 public:
 	void Initialize( GraphicsDeviceInterface& gdi );
-	void UpdateBuffers( DirectX::XMFLOAT3 camPos );
+	void UpdateBuffers();
 	void Draw();
 	void RenderLightGeometry();
 	void PrepareDepthFromLight();

@@ -9,7 +9,7 @@ class DirectionalLight : public Drawable
 public:
 	DirectionalLight( GraphicsDeviceInterface& gdi );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	void Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos );
+	void Update( GraphicsDeviceInterface& gdi );
 	void DrawControlPanel();
 	void Draw( GraphicsDeviceInterface& gdi ) const noexcept;
 public:

@@ -19,7 +19,7 @@ Texture2D tex;
 Texture2D nmap : register(t2);
 
 SamplerState splr;
-
+    
 
 float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
@@ -36,10 +36,11 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     float dirLightShadow = 1.0f; //CalculateDirectionalLightShadow(lightViewPos, splr);
     float dirLightAtt = directionalLightData[0].att;
     const float3 directionalDiffuse = Diffuse(directionalLightData[0].color.rgb, defaultLightIntensity,
-        dirLightAtt, -directionalLightData[0].lightDirection, viewNormal) * dirLightShadow;
+        dirLightAtt, -normalize(directionalLightData[0].lightDirection), viewNormal) * dirLightShadow;
     const float3 camToFrag = viewFragPos - camPos.xyz;
+    // TODO: Figure out why using specularGloss instead of defaultSpecularPower breaks
     const float3 directionalSpecular = Speculate(
-        directionalLightData[0].color.rgb, defaultLightIntensity, viewNormal, -directionalLightData[0].lightDirection,
+        directionalLightData[0].color.rgb, defaultLightIntensity, viewNormal, -normalize(directionalLightData[0].lightDirection),
         camToFrag, dirLightAtt, defaultSpecularPower
     );
     
