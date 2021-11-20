@@ -77,6 +77,14 @@ void Node::Accept( ModelProbe& probe )
 	}
 }
 
+void Node::Accept( TechniqueProbe& probe )
+{
+	for ( auto& mp : meshPtrs )
+	{
+		mp->Accept( probe );
+	}
+}
+
 void Node::SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept
 {
 	dx::XMStoreFloat4x4( &appliedTransform, transform );

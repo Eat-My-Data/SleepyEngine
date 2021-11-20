@@ -210,7 +210,6 @@
     <ClCompile Include="ResourceManager\Material.cpp" />
     <ClCompile Include="ResourceManager\Mesh.cpp" />
     <ClCompile Include="ResourceManager\Model.cpp" />
-    <ClCompile Include="ResourceManager\ModelWindow.cpp" />
     <ClCompile Include="ResourceManager\Node.cpp" />
     <ClCompile Include="ResourceManager\Surface.cpp" />
     <ClCompile Include="ResourceManager\Vertex.cpp" />
@@ -277,14 +276,13 @@
     <ClInclude Include="ResourceManager\Jobber\Pass.h" />
     <ClInclude Include="ResourceManager\Jobber\Step.h" />
     <ClInclude Include="ResourceManager\Jobber\Technique.h" />
+    <ClInclude Include="ResourceManager\Jobber\TechniqueProbe.h" />
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
     <ClInclude Include="ResourceManager\Material.h" />
     <ClInclude Include="ResourceManager\Mesh.h" />
     <ClInclude Include="ResourceManager\Model.h" />
-    <ClInclude Include="ResourceManager\ModelWindow.h" />
     <ClInclude Include="ResourceManager\Node.h" />
     <ClInclude Include="ResourceManager\Surface.h" />
-    <ClInclude Include="ResourceManager\TechniqueProbe.h" />
     <ClInclude Include="ResourceManager\Vertex.h" />
     <ClInclude Include="SceneManager\Camera.h" />
     <ClInclude Include="SceneManager\LightManager.h" />
@@ -333,6 +331,12 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <FileType>Document</FileType>
     </ClInclude>
+    <FxCompile Include="Shaders\Common\Offset_VS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shaders\Common\ShaderOps.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

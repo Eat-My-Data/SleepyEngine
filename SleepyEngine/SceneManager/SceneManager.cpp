@@ -115,6 +115,10 @@ void SceneManager::Draw()
 				{
 					dcheck( ImGui::SliderFloat( tag( "Spec. Weight" ), &v, 0.0f, 2.0f ) );
 				}
+				if ( auto v = buf["useSpecularMap"]; v.Exists() )
+				{
+					dcheck( ImGui::Checkbox( tag( "Spec. Map Enable" ), &v ) );
+				}
 				if ( auto v = buf["useNormalMap"]; v.Exists() )
 				{
 					dcheck( ImGui::Checkbox( tag( "Normal Map Enable" ), &v ) );
@@ -125,7 +129,8 @@ void SceneManager::Draw()
 				}
 				return dirty;
 			}
-		} probe;
+		};
+
 		class MP : ModelProbe
 		{
 		public:
@@ -159,6 +164,11 @@ void SceneManager::Draw()
 						);
 					}
 				}
+				if ( pSelectedNode != nullptr )
+				{
+					TP probe;
+					pSelectedNode->Accept( probe );
+				}
 				ImGui::End();
 			}
 		protected:
@@ -178,6 +188,28 @@ void SceneManager::Draw()
 				// processing for selecting node
 				if ( ImGui::IsItemClicked() )
 				{
+					// used to change the highlighted node on selection change
+					struct Probe : public TechniqueProbe
+					{
+						virtual void OnSetTechnique()
+						{
+							if ( pTech->GetName() == "Outline" )
+							{
+								pTech->SetActiveState( highlighted );
+							}
+						}
+						bool highlighted = false;
+					} probe;
+
+					// remove highlight on prev-selected node
+					if ( pSelectedNode != nullptr )
+					{
+						pSelectedNode->Accept( probe );
+					}
+					// add highlight to newly-selected node
+					probe.highlighted = true;
+					node.Accept( probe );
+
 					pSelectedNode = &node;
 				}
 				// signal if children should also be recursed
@@ -228,6 +260,8 @@ void SceneManager::Draw()
 		static MP modelProbe;
 		modelProbe.SpawnWindow( *sponza );
 	}
+
+	m_FrameCommander.Reset();
 
 	// clear shader resources
 	ID3D11ShaderResourceView* null[12] = {};
@@ -372,13 +406,6 @@ void SceneManager::ForwardRender()
 	//m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
 
 	m_FrameCommander.Execute( *m_pGDI );
-
-	//m_vecOfModels[0]->Draw( *m_pGDI, false );
-	//m_pMonster->Draw( *m_pGDI, false );
-	m_FrameCommander.Reset();
-
-	// light cores
-	//m_LightManager.RenderLightGeometry();
 }
 
 //void SceneManager::DeferredRender()

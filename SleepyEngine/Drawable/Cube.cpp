@@ -44,7 +44,7 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			auto buf = Dcb::Buffer( std::move( lay ) );
 			buf["specularIntensity"] = 0.1f;
 			buf["specularPower"] = 20.0f;
-			only.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEX>( gdi, buf, 1u ) );
+			only.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gdi, buf, 1u ) );
 
 			only.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 
@@ -87,7 +87,7 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			lay.Add<Dcb::Float4>( "color" );
 			auto buf = Dcb::Buffer( std::move( lay ) );
 			buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
-			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEX>( gdi, buf, 8u ) );
+			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gdi, buf, 8u ) );
 
 			// TODO: better sub-layout generation tech for future consideration maybe
 			draw.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
