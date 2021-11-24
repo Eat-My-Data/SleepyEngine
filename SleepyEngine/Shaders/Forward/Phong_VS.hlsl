@@ -11,7 +11,7 @@ VSOut main(float3 pos : Position, float3 n : Normal)
 {
     VSOut vso;
     vso.viewPos = (float3) mul(float4(pos, 1.0f), modelView);
-    vso.viewNormal = mul(n, (float3x3) modelView);
+    vso.viewNormal = mul(n, (float3x3) model);
     vso.pos = mul(float4(pos, 1.0f), modelViewProj);
     return vso;
 }

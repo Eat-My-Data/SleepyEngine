@@ -48,18 +48,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         viewNormal = lerp(viewNormal, mappedNormal, normalMapWeight);
     }
     
-    // directional light
-    float dirLightShadow = 1.0f; //CalculateDirectionalLightShadow(lightViewPos, splr);
-    float dirLightAtt = directionalLightData[0].att;
-    const float3 directionalDiffuse = Diffuse(directionalLightData[0].color.rgb, defaultLightIntensity,
-        dirLightAtt, -directionalLightData[0].lightDirection, viewNormal) * dirLightShadow;
-    const float3 camToFrag = viewFragPos - camPos.xyz;
-    const float3 directionalSpecular = Speculate(
-        directionalLightData[0].color.rgb, defaultLightIntensity, viewNormal, -directionalLightData[0].lightDirection,
-        camToFrag, dirLightAtt, defaultSpecularPower
-    );
-    
-	// fragment to light vector data
+    // fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
     // specular parameter determination (mapped or uniform)
     float3 specularReflectionColor;
@@ -78,6 +67,18 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         specularPower = pow(2.0f, specularSample.a * 13.0f);
     }
 
+    
+    // directional light
+    float dirLightShadow = 1.0f; //CalculateDirectionalLightShadow(lightViewPos, splr);
+    float dirLightAtt = directionalLightData[0].att;
+    const float3 directionalDiffuse = Diffuse(directionalLightData[0].color.rgb, defaultLightIntensity,
+        dirLightAtt, -directionalLightData[0].lightDirection, viewNormal) * dirLightShadow;
+    const float3 camToFrag = viewFragPos - camPos.xyz;
+    const float3 directionalSpecular = Speculate(
+        directionalLightData[0].color.rgb, defaultLightIntensity, viewNormal, -normalize(directionalLightData[0].lightDirection),
+        camToFrag, dirLightAtt, defaultSpecularPower
+    );
+    
 	// attenuation
     float pointLightAtt = saturate((1 - (lv.distToL / pointLightData[0].radius)));
     pointLightAtt *= pointLightAtt; 
