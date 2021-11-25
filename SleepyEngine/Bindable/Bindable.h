@@ -1,5 +1,6 @@
 #pragma once
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
+#include "./Bindables/GraphicsResource.h"
 #include <string>
 #include <memory>
 
@@ -8,7 +9,7 @@ class TechniqueProbe;
 
 namespace Bind
 {
-	class Bindable
+	class Bindable : public GraphicsResource
 	{
 	public:
 		virtual void Bind( GraphicsDeviceInterface& gdi ) noexcept = 0;
@@ -22,9 +23,6 @@ namespace Bind
 			return "";
 		}
 		virtual ~Bindable() = default;
-	protected:
-		static ID3D11DeviceContext* GetContext( GraphicsDeviceInterface& gdi ) noexcept;
-		static ID3D11Device* GetDevice( GraphicsDeviceInterface& gdi ) noexcept;
 	};
 	class CloningBindable : public Bindable
 	{

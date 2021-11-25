@@ -1,14 +1,27 @@
 #include "GraphicsDeviceInterface.h"
+#include "../Bindable/Bindables/DepthStencil.h"
 
 GraphicsDeviceInterface::GraphicsDeviceInterface()
 {}
 
 void GraphicsDeviceInterface::InitializeGraphics( HWND& hWnd, GraphicsAPI api, u32 width, u32 height )
 {
+	m_iWidth = width;
+	m_iHeight = height;
 	m_GraphicsAPI = api;
 
 	if ( api == GraphicsAPI::DirectX )
 		m_D3D11Interface.Initialize( hWnd, width, height );
+}
+
+void GraphicsDeviceInterface::BindSwapBuffer() noexcept
+{
+	GetContext()->OMSetRenderTargets( 1u, GetTarget(), nullptr );
+}
+
+void GraphicsDeviceInterface::BindSwapBuffer( const DepthStencil& ds ) noexcept
+{
+	GetContext()->OMSetRenderTargets( 1u, GetTarget(), ds.pDepthStencilView );
 }
 
 void GraphicsDeviceInterface::DrawIndexed( UINT count ) noexcept
@@ -124,4 +137,14 @@ ID3D11DepthStencilView** GraphicsDeviceInterface::GetShadowDSV2() noexcept
 ID3D11ShaderResourceView** GraphicsDeviceInterface::GetShadowResource2() noexcept
 {
 	return m_D3D11Interface.GetShadowResource2();
+}
+
+UINT GraphicsDeviceInterface::GetWidth() const noexcept
+{
+	return m_iWidth;
+}
+
+UINT GraphicsDeviceInterface::GetHeight() const noexcept
+{
+	return m_iHeight;
 }

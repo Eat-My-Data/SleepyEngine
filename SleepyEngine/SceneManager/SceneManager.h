@@ -38,7 +38,7 @@ private:
 	void ForwardRender();
 	//void DeferredRender();
 private:
-	FrameCommander m_FrameCommander;
+	FrameCommander* m_FrameCommander;
 public:
 	bool imguiEnabled = true;
 private:

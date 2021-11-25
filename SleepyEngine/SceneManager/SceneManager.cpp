@@ -27,7 +27,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_GraphicsAPI = api;
 	m_pTestCube = new Cube( *m_pGDI, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
 	m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
-
+	m_FrameCommander = new FrameCommander( gdi );
 	//gobber = new Model( *m_pGDI, "Models\\gobber\\GoblinX.obj", 6.0f );
 	sponza = new Model( *m_pGDI, "Models\\sponza\\sponza.obj", 1.0f / 20.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
@@ -261,7 +261,7 @@ void SceneManager::Draw()
 		modelProbe.SpawnWindow( *sponza );
 	}
 
-	m_FrameCommander.Reset();
+	m_FrameCommander->Reset();
 
 	// clear shader resources
 	ID3D11ShaderResourceView* null[12] = {};
@@ -355,7 +355,6 @@ void SceneManager::PrepareFrame()
 	{
 		m_pGDI->GetContext()->ClearRenderTargetView( m_pGDI->GetGBuffers()[i], color );
 	}
-	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV2(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 }
@@ -380,10 +379,10 @@ void SceneManager::UpdateCameraBuffer()
 
 void SceneManager::ForwardRender()
 {
-	m_LightManager.Submit( m_FrameCommander );
-	m_pTestCube->Submit( m_FrameCommander );
-	m_pTestCube2->Submit( m_FrameCommander );
-	sponza->Submit( m_FrameCommander );
+	m_LightManager.Submit( *m_FrameCommander );
+	m_pTestCube->Submit( *m_FrameCommander );
+	m_pTestCube2->Submit( *m_FrameCommander );
+	sponza->Submit( *m_FrameCommander );
 
 	// depth from light
 	//m_LightManager.PrepareDepthFromLight();
@@ -400,12 +399,12 @@ void SceneManager::ForwardRender()
 	m_LightManager.UpdateBuffers();
 
 	// update and render
-	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), *m_pGDI->GetDSV() );
+	//m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), *m_pGDI->GetDSV() );
 	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
 	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
 	//m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
 
-	m_FrameCommander.Execute( *m_pGDI );
+	m_FrameCommander->Execute( *m_pGDI );
 }
 
 //void SceneManager::DeferredRender()

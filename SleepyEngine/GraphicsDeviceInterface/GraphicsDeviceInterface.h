@@ -2,6 +2,8 @@
 #include "D3D11Interface.h"
 #include "../Utilities/SleepyMath.h"
 
+class DepthStencil;
+
 namespace Bind
 {
 	class Bindable;
@@ -17,13 +19,15 @@ enum class GraphicsAPI
 
 class GraphicsDeviceInterface
 {
-	friend class Bind::Bindable;
+	friend class GraphicsResource;
 public:
 	GraphicsDeviceInterface();
 	~GraphicsDeviceInterface() = default;
 public:
 	void InitializeGraphics( HWND& hWnd, GraphicsAPI api, u32 width, u32 height );
 	bool IsInitialized() noexcept;
+	void BindSwapBuffer() noexcept;
+	void BindSwapBuffer( const DepthStencil& ds ) noexcept;
 	void DrawIndexed( UINT count ) noexcept;
 public:
 	void SetViewMatrix( DirectX::XMMATRIX viewMatrix ) noexcept;
@@ -49,8 +53,11 @@ public:
 	ID3D11DepthStencilView** GetShadowDSV() noexcept;
 	ID3D11DepthStencilView** GetShadowDSV2() noexcept;
 	ID3D11ShaderResourceView** GetShadowResource2() noexcept;
+	UINT GetWidth() const noexcept;
+	UINT GetHeight() const noexcept;
 private:
-	D3D11Interface m_D3D11Interface;
+	UINT m_iWidth;
+	UINT m_iHeight;	D3D11Interface m_D3D11Interface;
 	GraphicsAPI m_GraphicsAPI = GraphicsAPI::Uninitialized;
 	DirectX::XMMATRIX m_ViewMatrix;
 	DirectX::XMMATRIX m_ProjMatrix;

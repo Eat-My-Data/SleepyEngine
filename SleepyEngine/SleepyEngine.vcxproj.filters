@@ -111,9 +111,6 @@
     <ClCompile Include="App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bindable\Bindable.cpp">
-      <Filter>Source Files\Bindable</Filter>
-    </ClCompile>
     <ClCompile Include="Drawable\Drawable.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
@@ -269,6 +266,15 @@
     </ClCompile>
     <ClCompile Include="Utilities\SleepyXM.cpp">
       <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\RenderTarget.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\GraphicsResource.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\DepthStencil.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -493,6 +499,15 @@
     </ClInclude>
     <ClInclude Include="ResourceManager\Jobber\TechniqueProbe.h">
       <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\RenderTarget.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\GraphicsResource.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\DepthStencil.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

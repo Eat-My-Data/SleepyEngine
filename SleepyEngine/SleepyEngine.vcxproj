@@ -172,14 +172,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Bindable\Bindable.cpp" />
     <ClCompile Include="Bindable\Bindables\Blender.cpp" />
+    <ClCompile Include="Bindable\Bindables\DepthStencil.cpp" />
     <ClCompile Include="Bindable\Bindables\DynamicConstant.cpp" />
+    <ClCompile Include="Bindable\Bindables\GraphicsResource.cpp" />
     <ClCompile Include="Bindable\Bindables\IndexBuffer.cpp" />
     <ClCompile Include="Bindable\Bindables\InputLayout.cpp" />
     <ClCompile Include="Bindable\Bindables\NullPixelShader.cpp" />
     <ClCompile Include="Bindable\Bindables\PixelShader.cpp" />
     <ClCompile Include="Bindable\Bindables\Rasterizer.cpp" />
+    <ClCompile Include="Bindable\Bindables\RenderTarget.cpp" />
     <ClCompile Include="Bindable\Bindables\Sampler.cpp" />
     <ClCompile Include="Bindable\Bindables\Texture.cpp" />
     <ClCompile Include="Bindable\Bindables\Topology.cpp" />
@@ -234,12 +236,15 @@
     <ClInclude Include="Bindable\Bindables\Blender.h" />
     <ClInclude Include="Bindable\Bindables\ConstantBuffers.h" />
     <ClInclude Include="Bindable\Bindables\ConstantBuffersEx.h" />
+    <ClInclude Include="Bindable\Bindables\DepthStencil.h" />
     <ClInclude Include="Bindable\Bindables\DynamicConstant.h" />
+    <ClInclude Include="Bindable\Bindables\GraphicsResource.h" />
     <ClInclude Include="Bindable\Bindables\IndexBuffer.h" />
     <ClInclude Include="Bindable\Bindables\InputLayout.h" />
     <ClInclude Include="Bindable\Bindables\NullPixelShader.h" />
     <ClInclude Include="Bindable\Bindables\PixelShader.h" />
     <ClInclude Include="Bindable\Bindables\Rasterizer.h" />
+    <ClInclude Include="Bindable\Bindables\RenderTarget.h" />
     <ClInclude Include="Bindable\Bindables\Sampler.h" />
     <ClInclude Include="Bindable\Bindables\Stencil.h" />
     <ClInclude Include="Bindable\Bindables\StructuredBuffers.h" />
