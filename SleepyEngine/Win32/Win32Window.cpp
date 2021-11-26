@@ -251,7 +251,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			}
 			break;
 		}
-		if ( imio.WantCaptureKeyboard )
+		if ( imio.WantCaptureMouse )
 			break;
 		// in client region -> log move, and log enter + capture mouse ( if not previously stored )
 		if ( pt.x >= 0 && pt.x < (SHORT)m_iWidth && pt.y >= 0 && pt.y < (SHORT)m_iHeight )
@@ -286,7 +286,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			ConfineCursor();
 			HideCursor();
 		}
-		if ( imio.WantCaptureKeyboard )
+		if ( imio.WantCaptureMouse )
 			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		m_Mouse.OnLeftPressed( pt.x, pt.y );
@@ -294,7 +294,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 	}
 	case WM_RBUTTONDOWN:
 	{
-		if ( imio.WantCaptureKeyboard )
+		if ( imio.WantCaptureMouse )
 			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		m_Mouse.OnRightPressed( pt.x, pt.y );
@@ -302,7 +302,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 	}
 	case WM_LBUTTONUP:
 	{
-		if ( imio.WantCaptureKeyboard )
+		if ( imio.WantCaptureMouse )
 			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		m_Mouse.OnLeftReleased( pt.x, pt.y );
@@ -310,7 +310,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 	}
 	case WM_RBUTTONUP:
 	{
-		if ( imio.WantCaptureKeyboard )
+		if ( imio.WantCaptureMouse )
 			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		m_Mouse.OnRightReleased( pt.x, pt.y );
@@ -318,7 +318,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 	}
 	case WM_MOUSEWHEEL:
 	{
-		if ( imio.WantCaptureKeyboard )
+		if ( imio.WantCaptureMouse )
 			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		const int delta = GET_WHEEL_DELTA_WPARAM( wParam );
@@ -361,6 +361,7 @@ LRESULT Win32Window::HandleMsg( HWND m_hWnd, UINT msg, WPARAM wParam, LPARAM lPa
 			m_Mouse.OnRawDelta( ri.data.mouse.lLastX, ri.data.mouse.lLastY );
 		break;
 	}
+	// TODO: Need to add mouse scroll message capture
 	}
 	return DefWindowProc( m_hWnd, msg, wParam, lParam );
 }
