@@ -22,7 +22,8 @@ SceneManager::~SceneManager()
 }
 
 void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
-{		
+{
+	TestDynamicConstant();
 	m_pGDI = &gdi;
 	m_GraphicsAPI = api;
 	m_pTestCube = new Cube( *m_pGDI, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
@@ -71,6 +72,7 @@ void SceneManager::Draw()
 	if ( imguiEnabled )
 	{
 		DrawControlPanel();
+		m_FrameCommander->ShowWindows( *m_pGDI );
 		// Mesh techniques window
 		class TP : public TechniqueProbe
 		{
