@@ -92,41 +92,7 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			// TODO: better sub-layout generation tech for future consideration maybe
 			draw.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 
-			// quick and dirty... nicer solution maybe takes a lamba... we'll see :)
-			class TransformCbufScaling : public TransformCbuf
-			{
-			public:
-				TransformCbufScaling( GraphicsDeviceInterface& gdi, float scale = 1.04 )
-					:
-					TransformCbuf( gdi ),
-					buf( MakeLayout() )
-				{
-					buf["scale"] = scale;
-				}
-				void Accept( TechniqueProbe& probe ) override
-				{
-					probe.VisitBuffer( buf );
-				}				
-				void Bind( GraphicsDeviceInterface& gdi ) noexcept override
-				{
-					const float scale = buf["scale"];
-					const auto scaleMatrix = dx::XMMatrixScaling( scale, scale, scale );
-					auto xf = GetTransforms( gdi );
-					xf.m_ModelViewMatrix = xf.m_ModelViewMatrix * scaleMatrix;
-					xf.m_ModelViewProjMatrix = xf.m_ModelViewProjMatrix * scaleMatrix;
-					UpdateBindImpl( gdi, xf );
-				}
-			private:
-				static Dcb::RawLayout MakeLayout()
-				{
-					Dcb::RawLayout layout;
-					layout.Add<Dcb::Float>( "scale" );
-					return layout;
-				}
-			private:
-				Dcb::Buffer buf;
-			};
-			draw.AddBindable( std::make_shared<TransformCbufScaling>( gdi ) );
+			draw.AddBindable( std::make_shared<TransformCbuf>( gdi ) );
 
 			// TODO: might need to specify rasterizer when doubled-sided models start being used
 

@@ -3,7 +3,6 @@
 
 RenderTarget::RenderTarget( GraphicsDeviceInterface& gfx, UINT width, UINT height )
 {
-
 	// create texture resource
 	D3D11_TEXTURE2D_DESC textureDesc = {};
 	textureDesc.Width = width;
@@ -55,4 +54,14 @@ void RenderTarget::BindAsTarget( GraphicsDeviceInterface& gfx ) const noexcept
 void RenderTarget::BindAsTarget( GraphicsDeviceInterface& gfx, const DepthStencil& depthStencil ) const noexcept
 {
 	GetContext( gfx )->OMSetRenderTargets( 1, &pTargetView, depthStencil.pDepthStencilView );
+}
+
+void RenderTarget::Clear( GraphicsDeviceInterface& gfx, const std::array<float, 4>& color ) const noexcept
+{
+	GetContext( gfx )->ClearRenderTargetView( pTargetView, color.data() );
+}
+
+void RenderTarget::Clear( GraphicsDeviceInterface& gfx ) const noexcept
+{
+	Clear( gfx, { 0.0f,0.0f,0.0f,0.0f } );
 }

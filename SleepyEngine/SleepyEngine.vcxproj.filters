@@ -652,7 +652,7 @@
     <FxCompile Include="Shaders\Common\Offset_VS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\Funk_PS.hlsl">
+    <FxCompile Include="Shaders\Common\Blur_PS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Common\FullScreen_VS.hlsl">

@@ -349,7 +349,7 @@ void SceneManager::RotateSpotLight( const f32 dx, const f32 dy )
 void SceneManager::PrepareFrame()
 {
 	// setup
-	const float color[] = { 0.07f,0.0f,0.12f };
+	const float color[] = { 0.07f,0.0f,0.12f,0.0f };
 	m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetTarget(), color );
 	for ( int i = 0; i < 3; i++ )
 	{
