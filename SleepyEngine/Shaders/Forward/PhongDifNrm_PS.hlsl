@@ -54,10 +54,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     const float3 pointDiffuse = Diffuse(pointLightData[0].color, defaultLightIntensity, pointLightAtt, lv.dirToL, viewNormal);
     // TODO: Figure out why using specularGloss instead of defaultSpecularPower breaks
     // specular
-    const float3 pointSpecular = Speculate(
-        pointLightData[0].color * defaultLightIntensity * specularColor, 1.0f, viewNormal,
-        lv.vToL, viewFragPos, pointLightAtt, defaultSpecularPower
-    );
+    const float3 pointSpecular = Speculate(pointLightData[0].color, 1.0f, viewNormal, lv.vToL, viewFragPos, pointLightAtt, 128.0f);
+
     
     // spot light
     float3 spotToFrag = spotLightData[0].pos - viewFragPos;

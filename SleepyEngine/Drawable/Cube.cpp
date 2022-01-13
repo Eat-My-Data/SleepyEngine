@@ -32,11 +32,11 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			only.AddBindable( Texture::Resolve( gdi, "Models\\brick_wall\\brick_wall_diffuse.jpg" ) );
 			only.AddBindable( Sampler::Resolve( gdi ) );
 
-			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Phong_VS.cso" );
+			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/PhongDif_VS.cso" );
 			auto pvsbc = pvs->GetBytecode();
 			only.AddBindable( std::move( pvs ) );
 
-			only.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/Phong_PS.cso" ) );
+			only.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/PhongDif_PS.cso" ) );
 
 			Dcb::RawLayout lay;
 			lay.Add<Dcb::Float>( "specularIntensity" );

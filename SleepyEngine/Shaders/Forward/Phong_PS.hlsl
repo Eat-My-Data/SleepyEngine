@@ -41,8 +41,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal) : SV_Targ
     const float3 pointDiffuse = Diffuse(pointLightData[0].color, defaultLightIntensity, pointLightAtt, lv.dirToL, viewNormal);
     // specular
     const float3 pointSpecular = Speculate(
-        pointLightData[0].color * defaultLightIntensity * specularColor, specularWeight, viewNormal,
-        lv.vToL, viewFragPos, pointLightAtt, specularGloss
+        pointLightData[0].color, 1.0f, viewNormal,
+        lv.vToL, viewFragPos, pointLightAtt, 128.0f
     );
     
     // spot light
