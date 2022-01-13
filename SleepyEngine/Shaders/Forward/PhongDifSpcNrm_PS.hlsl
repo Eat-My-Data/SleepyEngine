@@ -47,7 +47,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         const float3 mappedNormal = MapNormal(normalize(viewTan), normalize(viewBitan), viewNormal, tc, nmap, splr);
         viewNormal = lerp(viewNormal, mappedNormal, normalMapWeight);
     }
-    
+    viewNormal = normalize(viewNormal);
+
     // fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
     // specular parameter determination (mapped or uniform)

@@ -31,7 +31,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
         const float3 mappedNormal = MapNormal(normalize(viewTan), normalize(viewBitan), viewNormal, tc, nmap, splr);
         viewNormal = lerp(viewNormal, mappedNormal, normalMapWeight);
     }
-    
+    viewNormal = normalize(viewNormal);
+
     // directional light
     float dirLightShadow = 1.0f; //CalculateDirectionalLightShadow(lightViewPos, splr);
     float dirLightAtt = directionalLightData[0].att;
@@ -54,7 +55,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     // TODO: Figure out why using specularGloss instead of defaultSpecularPower breaks
     // specular
     const float3 pointSpecular = Speculate(
-        pointLightData[0].color * defaultLightIntensity * specularColor, specularWeight, viewNormal,
+        pointLightData[0].color * defaultLightIntensity * specularColor, 1.0f, viewNormal,
         lv.vToL, viewFragPos, pointLightAtt, defaultSpecularPower
     );
     

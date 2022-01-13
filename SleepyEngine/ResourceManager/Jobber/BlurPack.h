@@ -6,7 +6,7 @@
 class BlurPack
 {
 public:
-	BlurPack( GraphicsDeviceInterface& gfx, int radius = 5, float sigma = 2.6f )
+	BlurPack( GraphicsDeviceInterface& gfx, int radius = 7, float sigma = 2.6f )
 		:
 		shader( gfx, "./Shaders/Bin/Blur_PS.cso" ),
 		pcb( gfx, 0u ),
@@ -49,9 +49,9 @@ public:
 		Kernel k;
 		k.nTaps = radius * 2 + 1;
 		float sum = 0.0f;
-		for ( int i = 0; i < k.nTaps + 1; i++ )
+		for ( int i = 0; i < k.nTaps; i++ )
 		{
-			const auto x = float( i - ( radius) );
+			const auto x = float( i - radius );
 			const auto g = gauss( x, sigma );
 			sum += g;
 			k.coefficients[i].x = g;

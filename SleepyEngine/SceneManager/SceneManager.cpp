@@ -30,7 +30,7 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
 	m_FrameCommander = new FrameCommander( gdi );
 	//gobber = new Model( *m_pGDI, "Models\\gobber\\GoblinX.obj", 6.0f );
-	sponza = new Model( *m_pGDI, "Models\\sponza\\sponza.obj", 1.0f / 20.0f );
+	sponza = new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", 1.0f / 20.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.obj", true, 2000.0f );
 	//m_pMonster->SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -250.0f, 0.0f ) * DirectX::XMMatrixRotationY( -PI / 2.0f ) * DirectX::XMMatrixRotationZ( PI / 2.0f ) );
