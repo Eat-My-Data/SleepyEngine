@@ -2,6 +2,9 @@
 #include "DepthStencil.h"
 
 RenderTarget::RenderTarget( GraphicsDeviceInterface& gfx, UINT width, UINT height )
+	:
+	width( width ),
+	height( height )
 {
 	// create texture resource
 	D3D11_TEXTURE2D_DESC textureDesc = {};
@@ -49,11 +52,31 @@ void RenderTarget::BindAsTexture( GraphicsDeviceInterface& gfx, UINT slot ) cons
 void RenderTarget::BindAsTarget( GraphicsDeviceInterface& gfx ) const noexcept
 {
 	GetContext( gfx )->OMSetRenderTargets( 1, &pTargetView, nullptr );
+
+	// configure viewport
+	D3D11_VIEWPORT vp;
+	vp.Width = (float)width;
+	vp.Height = (float)height;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0.0f;
+	vp.TopLeftY = 0.0f;
+	GetContext( gfx )->RSSetViewports( 1u, &vp );
 }
 
 void RenderTarget::BindAsTarget( GraphicsDeviceInterface& gfx, const DepthStencil& depthStencil ) const noexcept
 {
 	GetContext( gfx )->OMSetRenderTargets( 1, &pTargetView, depthStencil.pDepthStencilView );
+
+	// configure viewport
+	D3D11_VIEWPORT vp;
+	vp.Width = (float)width;
+	vp.Height = (float)height;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0.0f;
+	vp.TopLeftY = 0.0f;
+	GetContext( gfx )->RSSetViewports( 1u, &vp );
 }
 
 void RenderTarget::Clear( GraphicsDeviceInterface& gfx, const std::array<float, 4>& color ) const noexcept

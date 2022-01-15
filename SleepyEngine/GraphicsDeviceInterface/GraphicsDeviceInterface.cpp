@@ -17,11 +17,31 @@ void GraphicsDeviceInterface::InitializeGraphics( HWND& hWnd, GraphicsAPI api, u
 void GraphicsDeviceInterface::BindSwapBuffer() noexcept
 {
 	GetContext()->OMSetRenderTargets( 1u, GetTarget(), nullptr );
+
+	// configure viewport
+	D3D11_VIEWPORT vp;
+	vp.Width = (float)m_iWidth;
+	vp.Height = (float)m_iHeight;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0.0f;
+	vp.TopLeftY = 0.0f;
+	m_D3D11Interface.GetContext()->RSSetViewports( 1u, &vp );
 }
 
 void GraphicsDeviceInterface::BindSwapBuffer( const DepthStencil& ds ) noexcept
 {
 	GetContext()->OMSetRenderTargets( 1u, GetTarget(), ds.pDepthStencilView );
+
+	// configure viewport
+	D3D11_VIEWPORT vp;
+	vp.Width = (float)m_iWidth;
+	vp.Height = (float)m_iHeight;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0.0f;
+	vp.TopLeftY = 0.0f;
+	m_D3D11Interface.GetContext()->RSSetViewports( 1u, &vp );
 }
 
 void GraphicsDeviceInterface::DrawIndexed( UINT count ) noexcept

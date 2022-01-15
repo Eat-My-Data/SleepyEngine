@@ -30,7 +30,7 @@ public:
 	{
 		ccb.Update( gfx, { FALSE } );
 	}
-	void ShowWindow( GraphicsDeviceInterface& gfx )
+	void RenderWidgets( GraphicsDeviceInterface& gfx )
 	{
 		ImGui::Begin( "Blur" );
 		bool filterChanged = false;

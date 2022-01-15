@@ -15,6 +15,8 @@ public:
 	void Clear( GraphicsDeviceInterface& gfx, const std::array<float, 4>& color ) const noexcept;
 	void Clear( GraphicsDeviceInterface& gfx ) const noexcept;
 private:
+	UINT width;
+	UINT height;
 	ID3D11ShaderResourceView* pTextureView;
 	ID3D11RenderTargetView* pTargetView;
 };

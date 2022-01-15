@@ -203,16 +203,6 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 	{
 		throw std::exception();
 	}
-
-	// viewport
-    D3D11_VIEWPORT vp;
-    vp.Width = (float)width;
-    vp.Height = (float)height;
-    vp.MinDepth = 0.0f;
-    vp.MaxDepth = 1.0f;
-    vp.TopLeftX = 0.0f;
-    vp.TopLeftY = 0.0f;
-    m_pContext->RSSetViewports( 1u, &vp );
 }
 
 IDXGISwapChain* D3D11Interface::GetSwap() noexcept
