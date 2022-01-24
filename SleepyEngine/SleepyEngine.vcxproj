@@ -205,7 +205,9 @@
     <ClCompile Include="Libraries\imgui\imgui_draw.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_tables.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\FrameCommander.cpp" />
     <ClCompile Include="ResourceManager\Jobber\Job.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Pass.cpp" />
     <ClCompile Include="ResourceManager\Jobber\Step.cpp" />
     <ClCompile Include="ResourceManager\Jobber\Technique.cpp" />
     <ClCompile Include="ResourceManager\LayoutCodex.cpp" />

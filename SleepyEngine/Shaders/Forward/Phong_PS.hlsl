@@ -32,6 +32,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal) : SV_Targ
     );
     
     // point light
+    // TODO: Calculate Shadows 
+    
 	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation

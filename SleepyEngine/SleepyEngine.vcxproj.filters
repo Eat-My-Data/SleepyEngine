@@ -106,6 +106,9 @@
     <Filter Include="Source Files\ResourceManager\Jobber">
       <UniqueIdentifier>{707840a8-4d84-4760-9d7d-a186a100c730}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Archive">
+      <UniqueIdentifier>{3879ad9e-ff2e-495d-a7de-620a62bedd43}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -275,6 +278,12 @@
     </ClCompile>
     <ClCompile Include="Bindable\Bindables\DepthStencil.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\FrameCommander.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Pass.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -541,27 +550,6 @@
     <FxCompile Include="Shaders\Deferred\D_PhongPSSpecNormalMap.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormMask.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPS.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMap.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMapObject.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSNotex.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSSpec.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormalMap.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
     <FxCompile Include="Shaders\Deferred\LightVS.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
@@ -582,15 +570,6 @@
     </FxCompile>
     <FxCompile Include="Shaders\Deferred\D_PhongVSNormalMap.hlsl">
       <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongVS.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongVSNormalMap.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongVSNotex.hlsl">
-      <Filter>Shaders\Forward</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Common\DirectionalLight.hlsl">
       <Filter>Shaders\Common</Filter>
@@ -663,6 +642,36 @@
     </FxCompile>
     <FxCompile Include="Shaders\Common\BlurOutline_PS.hlsl">
       <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPS.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMap.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMapObject.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSNotex.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSSpec.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormalMap.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormMask.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongVS.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongVSNormalMap.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongVSNotex.hlsl">
+      <Filter>Shaders\Archive</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

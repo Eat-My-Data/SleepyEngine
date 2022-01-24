@@ -34,6 +34,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         camToFrag, dirLightAtt, defaultSpecularPower
     );
     
+    
+    // TODO: Calculate Shadows 
 	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(pointLightData[0].pos, viewFragPos);
 	// attenuation
