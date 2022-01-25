@@ -16,7 +16,7 @@ class Model
 {
 public:
 	Model( GraphicsDeviceInterface& gfx, const std::string& pathString, float scale = 1.0f );
-	void Submit( FrameCommander& frame ) const noexcept;
+	void Submit() const noexcept;
 	//void ShowWindow( GraphicsDeviceInterface& gfx, const char* windowName = nullptr ) noexcept;
 	void SetRootTransform( DirectX::FXMMATRIX tf ) noexcept;
 	void Accept( class ModelProbe& probe );

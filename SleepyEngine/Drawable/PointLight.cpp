@@ -165,9 +165,14 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 	//}
 }
 
-void PointLight::Submit( FrameCommander& frame ) const noexcept
+void PointLight::Submit() const noexcept
 {
-	m_SolidSphere->Submit( frame );
+	m_SolidSphere->Submit();
+}
+
+void PointLight::LinkTechniques( RenderGraph& rg )
+{
+	m_SolidSphere->LinkTechniques( rg );
 }
 
 void PointLight::DrawControlPanel()

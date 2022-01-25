@@ -1,12 +1,12 @@
 #pragma once
 #include "D3D11Interface.h"
 #include "../Utilities/SleepyMath.h"
-
-class DepthStencil;
+#include <memory>
 
 namespace Bind
 {
 	class Bindable;
+	class RenderTarget;
 }
 
 enum class GraphicsAPI
@@ -26,8 +26,6 @@ public:
 public:
 	void InitializeGraphics( HWND& hWnd, GraphicsAPI api, u32 width, u32 height );
 	bool IsInitialized() noexcept;
-	void BindSwapBuffer() noexcept;
-	void BindSwapBuffer( const DepthStencil& ds ) noexcept;
 	void DrawIndexed( UINT count ) noexcept;
 public:
 	void SetViewMatrix( DirectX::XMMATRIX viewMatrix ) noexcept;
@@ -38,7 +36,7 @@ public:
 	IDXGISwapChain* GetSwap() noexcept;
 	ID3D11Device* GetDevice() noexcept;
 	ID3D11DeviceContext* GetContext() noexcept;
-	ID3D11RenderTargetView** GetTarget() noexcept;
+	ID3D11RenderTargetView** GetTargetDeprecated() noexcept;
 	ID3D11DepthStencilView** GetDSV() noexcept;
 public:
 	ID3D11RenderTargetView** GetGBuffers() noexcept;
@@ -55,6 +53,9 @@ public:
 	ID3D11ShaderResourceView** GetShadowResource2() noexcept;
 	UINT GetWidth() const noexcept;
 	UINT GetHeight() const noexcept;
+	std::shared_ptr<Bind::RenderTarget> GetTarget();
+private:
+	std::shared_ptr<Bind::RenderTarget> pTarget;
 private:
 	UINT m_iWidth;
 	UINT m_iHeight;	D3D11Interface m_D3D11Interface;

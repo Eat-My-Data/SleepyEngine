@@ -13,7 +13,7 @@ public:
 	void Update( GraphicsDeviceInterface& gdi );
 	void DrawControlPanel();
 	void Draw( GraphicsDeviceInterface& gdi );
-	void Submit( FrameCommander& frame );
+	void Submit();
 public:
 	void Translate( DirectX::XMFLOAT3 translation );
 	void Rotate( const f32 dx, const f32 dy );

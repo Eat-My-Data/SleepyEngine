@@ -89,7 +89,7 @@ void LightManager::Draw()
 {
 	const float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
-	m_pGDI->GetContext()->OMSetRenderTargets( 1, m_pGDI->GetTarget(), *m_pGDI->GetDSV_ReadOnly() );
+	m_pGDI->GetContext()->OMSetRenderTargets( 1, m_pGDI->GetTargetDeprecated(), *m_pGDI->GetDSV_ReadOnly() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetLightDSS(), 1u );
 	m_pGDI->GetContext()->PSSetShaderResources( 0, 3, m_pGDI->GetShaderResources() );
 	m_pGDI->GetContext()->PSSetShaderResources( 3, 1, m_pGDI->GetDepthResource() );
@@ -191,13 +191,13 @@ void LightManager::PrepareDepthFromSpotLight()
 	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV2() );
 }
 
-void LightManager::Submit( FrameCommander& frame )
+void LightManager::Submit()
 {
 	for ( int i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
-		m_vecOfPointLights[i]->Submit( frame );
+		m_vecOfPointLights[i]->Submit();
 	}
-	m_pSpotLight->Submit( frame );
+	m_pSpotLight->Submit();
 }
 
 void LightManager::SelectPointLight( const u32 index )

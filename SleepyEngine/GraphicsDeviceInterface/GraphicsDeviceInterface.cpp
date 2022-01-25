@@ -1,5 +1,6 @@
 #include "GraphicsDeviceInterface.h"
 #include "../Bindable/Bindables/DepthStencil.h"
+#include "../Bindable/Bindables/RenderTarget.h"
 
 GraphicsDeviceInterface::GraphicsDeviceInterface()
 {}
@@ -12,36 +13,11 @@ void GraphicsDeviceInterface::InitializeGraphics( HWND& hWnd, GraphicsAPI api, u
 
 	if ( api == GraphicsAPI::DirectX )
 		m_D3D11Interface.Initialize( hWnd, width, height );
-}
 
-void GraphicsDeviceInterface::BindSwapBuffer() noexcept
-{
-	GetContext()->OMSetRenderTargets( 1u, GetTarget(), nullptr );
 
-	// configure viewport
-	D3D11_VIEWPORT vp;
-	vp.Width = (float)m_iWidth;
-	vp.Height = (float)m_iHeight;
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0.0f;
-	vp.TopLeftY = 0.0f;
-	m_D3D11Interface.GetContext()->RSSetViewports( 1u, &vp );
-}
-
-void GraphicsDeviceInterface::BindSwapBuffer( const DepthStencil& ds ) noexcept
-{
-	GetContext()->OMSetRenderTargets( 1u, GetTarget(), ds.pDepthStencilView );
-
-	// configure viewport
-	D3D11_VIEWPORT vp;
-	vp.Width = (float)m_iWidth;
-	vp.Height = (float)m_iHeight;
-	vp.MinDepth = 0.0f;
-	vp.MaxDepth = 1.0f;
-	vp.TopLeftX = 0.0f;
-	vp.TopLeftY = 0.0f;
-	m_D3D11Interface.GetContext()->RSSetViewports( 1u, &vp );
+	ID3D11Texture2D* pBackBuffer;
+	m_D3D11Interface.GetSwap()->GetBuffer( 0, __uuidof( ID3D11Texture2D ), (void**)&pBackBuffer );
+	pTarget = std::shared_ptr<Bind::RenderTarget>{ new Bind::OutputOnlyRenderTarget( *this,pBackBuffer ) };
 }
 
 void GraphicsDeviceInterface::DrawIndexed( UINT count ) noexcept
@@ -89,9 +65,9 @@ ID3D11DeviceContext* GraphicsDeviceInterface::GetContext() noexcept
 	return m_D3D11Interface.GetContext();
 }
 
-ID3D11RenderTargetView** GraphicsDeviceInterface::GetTarget() noexcept
+ID3D11RenderTargetView** GraphicsDeviceInterface::GetTargetDeprecated() noexcept
 {
-	return m_D3D11Interface.GetTarget();
+	return m_D3D11Interface.GetTargetDeprecated();
 }
 
 ID3D11DepthStencilView** GraphicsDeviceInterface::GetDSV() noexcept
@@ -167,4 +143,9 @@ UINT GraphicsDeviceInterface::GetWidth() const noexcept
 UINT GraphicsDeviceInterface::GetHeight() const noexcept
 {
 	return m_iHeight;
+}
+
+std::shared_ptr<Bind::RenderTarget> GraphicsDeviceInterface::GetTarget()
+{
+	return pTarget;
 }

@@ -55,51 +55,51 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 		AddTechnique( std::move( shade ) );
 	}
 
-	{
-		Technique outline( "Outline" );
-		{
-			Step mask( 1 );
+	//{
+	//	Technique outline( "Outline" );
+	//	{
+	//		Step mask( "mask" );
 
-			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );
-			auto pvsbc = pvs->GetBytecode();
-			mask.AddBindable( std::move( pvs ) );
+	//		auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );
+	//		auto pvsbc = pvs->GetBytecode();
+	//		mask.AddBindable( std::move( pvs ) );
 
-			// TODO: better sub-layout generation tech for future consideration maybe
-			mask.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
+	//		// TODO: better sub-layout generation tech for future consideration maybe
+	//		mask.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 
-			mask.AddBindable( std::make_shared<TransformCbuf>( gdi ) );
+	//		mask.AddBindable( std::make_shared<TransformCbuf>( gdi ) );
 
-			// TODO: might need to specify rasterizer when doubled-sided models start being used
+	//		// TODO: might need to specify rasterizer when doubled-sided models start being used
 
-			outline.AddStep( std::move( mask ) );
-		}
-		{
-			Step draw( 2 );
+	//		outline.AddStep( std::move( mask ) );
+	//	}
+	//	{
+	//		Step draw( "draw" );
 
-			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );
-			auto pvsbc = pvs->GetBytecode();
-			draw.AddBindable( std::move( pvs ) );
+	//		auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );
+	//		auto pvsbc = pvs->GetBytecode();
+	//		draw.AddBindable( std::move( pvs ) );
 
-			// this can be pass-constant
-			draw.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/Solid_PS.cso" ) );
+	//		// this can be pass-constant
+	//		draw.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/Solid_PS.cso" ) );
 
-			Dcb::RawLayout lay;
-			lay.Add<Dcb::Float4>( "color" );
-			auto buf = Dcb::Buffer( std::move( lay ) );
-			buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
-			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gdi, buf, 8u ) );
+	//		Dcb::RawLayout lay;
+	//		lay.Add<Dcb::Float4>( "color" );
+	//		auto buf = Dcb::Buffer( std::move( lay ) );
+	//		buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+	//		draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gdi, buf, 8u ) );
 
-			// TODO: better sub-layout generation tech for future consideration maybe
-			draw.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
+	//		// TODO: better sub-layout generation tech for future consideration maybe
+	//		draw.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 
-			draw.AddBindable( std::make_shared<TransformCbuf>( gdi ) );
+	//		draw.AddBindable( std::make_shared<TransformCbuf>( gdi ) );
 
-			// TODO: might need to specify rasterizer when doubled-sided models start being used
+	//		// TODO: might need to specify rasterizer when doubled-sided models start being used
 
-			outline.AddStep( std::move( draw ) );
-		}
-		AddTechnique( std::move( outline ) );
-	}
+	//		outline.AddStep( std::move( draw ) );
+	//	}
+	//	AddTechnique( std::move( outline ) );
+	//}
 }
 
 Cube::Cube( const Cube& cube )

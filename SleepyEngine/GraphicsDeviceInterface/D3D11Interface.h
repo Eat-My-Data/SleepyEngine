@@ -2,7 +2,7 @@
 #include <d3d11.h>
 #include "../Utilities/NumericDataTypes.h"
 #include <DirectXMath.h>
-
+#include <memory>
 
 class D3D11Interface
 {
@@ -16,7 +16,7 @@ public:
 	IDXGISwapChain* GetSwap() noexcept;
 	ID3D11Device* GetDevice() noexcept;
 	ID3D11DeviceContext* GetContext() noexcept;
-	ID3D11RenderTargetView** GetTarget() noexcept;
+	ID3D11RenderTargetView** GetTargetDeprecated() noexcept;
 	ID3D11DepthStencilView** GetDSV() noexcept;
 public:
 	ID3D11RenderTargetView** GetGBuffers() noexcept;
@@ -38,7 +38,7 @@ private:
 	ID3D11RenderTargetView* m_pTarget;
 	ID3D11DepthStencilView* m_pDSV;
 private:
-	ID3D11Resource* pBackBuffer;
+	//ID3D11Resource* pBackBuffer;
 	static const int bufferCount = 3;
 	ID3D11RenderTargetView* m_pGBuffers[bufferCount];
 	ID3D11Texture2D* m_pTextures[bufferCount];

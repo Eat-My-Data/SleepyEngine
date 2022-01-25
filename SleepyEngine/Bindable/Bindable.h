@@ -1,11 +1,11 @@
 #pragma once
-#include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 #include "./Bindables/GraphicsResource.h"
 #include <string>
 #include <memory>
 
 class Drawable;
 class TechniqueProbe;
+class GraphicsDeviceInterface;
 
 namespace Bind
 {

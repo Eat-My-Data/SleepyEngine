@@ -5,7 +5,7 @@
 #include "../ResourceManager/Model.h"
 #include "./LightManager.h"
 #include "./RenderTechnique.h"
-#include "../ResourceManager/Jobber/FrameCommander.h"
+#include "../ResourceManager/Jobber/RenderGraph.h"
 #include "../Drawable/Cube.h"
 
 class SceneManager
@@ -38,7 +38,7 @@ private:
 	void ForwardRender();
 	//void DeferredRender();
 private:
-	FrameCommander* m_FrameCommander;
+	RenderGraph* rg;// { wnd.Gfx() };
 public:
 	bool imguiEnabled = true;
 private:
@@ -51,7 +51,7 @@ private:
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 	Mesh* pLoaded;
 	Model* gobber;
-	Model* sponza;
+	//Model* sponza;
 private:
 	struct CameraData
 	{
