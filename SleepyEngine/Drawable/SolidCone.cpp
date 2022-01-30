@@ -20,7 +20,7 @@ SolidCone::SolidCone( GraphicsDeviceInterface& gdi, f32 scale )
 
 	{
 		Technique solid;
-		Step only( 0 );
+		Step only( "lambertian" );
 
 		auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );
 		auto pvsbc = pvs->GetBytecode();

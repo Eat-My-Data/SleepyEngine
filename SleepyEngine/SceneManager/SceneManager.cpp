@@ -372,15 +372,15 @@ void SceneManager::RotateSpotLight( const f32 dx, const f32 dy )
 
 void SceneManager::PrepareFrame()
 {
-	// setup
-	const float color[] = { 0.07f,0.0f,0.12f,0.0f };
-	m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetTargetDeprecated(), color );
-	for ( int i = 0; i < 3; i++ )
-	{
-		m_pGDI->GetContext()->ClearRenderTargetView( m_pGDI->GetGBuffers()[i], color );
-	}
-	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
-	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV2(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
+	//// setup
+	//const float color[] = { 0.07f,0.0f,0.12f,0.0f };
+	////m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetTargetDeprecated(), color );
+	//for ( int i = 0; i < 3; i++ )
+	//{
+	//	m_pGDI->GetContext()->ClearRenderTargetView( m_pGDI->GetGBuffers()[i], color );
+	//}
+	//m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
+	//m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV2(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 }
 
 void SceneManager::UpdateCameraBuffer()

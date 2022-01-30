@@ -27,7 +27,7 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 	{
 		Technique shade( "Shade" );
 		{
-			Step only( 0 );
+			Step only( "lambertian");
 
 			only.AddBindable( Texture::Resolve( gdi, "Models\\brick_wall\\brick_wall_diffuse.jpg" ) );
 			only.AddBindable( Sampler::Resolve( gdi ) );
