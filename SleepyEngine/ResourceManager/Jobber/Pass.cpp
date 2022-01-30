@@ -4,11 +4,15 @@
 #include "../../Bindable/Bindables/DepthStencil.h"
 #include <sstream>
 #include "../../Utilities/SleepyUtil.h"
-
+#include "PassInput.h"
+#include "PassOutput.h"
 
 Pass::Pass( std::string name ) noexcept
 	:
 	name( std::move( name ) )
+{}
+
+Pass::~Pass()
 {}
 
 void Pass::Reset() noexcept {}
@@ -114,4 +118,5 @@ void Pass::BindBufferResources( GraphicsDeviceInterface& gfx ) const noexcept
 	{
 		depthStencil->BindAsBuffer( gfx );
 	}
+
 }

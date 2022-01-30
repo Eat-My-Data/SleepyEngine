@@ -587,6 +587,12 @@
     <ClInclude Include="ResourceManager\Jobber\StepLinkingProbe.h">
       <Filter>Header Files\ResourceManager\Jobber</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineMaskGenerationPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineDrawingPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsl">

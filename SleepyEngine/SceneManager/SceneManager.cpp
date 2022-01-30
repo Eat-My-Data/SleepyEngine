@@ -15,6 +15,8 @@
 
 #include "../ResourceManager/Jobber/Passlib/BufferClearPass.h"
 #include "../ResourceManager/Jobber/Passlib/LambertianPass.h"
+#include "../ResourceManager/Jobber/Passlib/OutlineDrawingPass.h"
+#include "../ResourceManager/Jobber/Passlib/OutlineMaskGenerationPass.h"
 
 SceneManager::~SceneManager()
 {
@@ -33,19 +35,29 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
 	{
 		{
-			auto bcp = std::make_unique<BufferClearPass>( "clear" );
-			bcp->SetInputSource( "renderTarget", "$.backbuffer" );
-			bcp->SetInputSource( "depthStencil", "$.masterDepth" );
-			rg->AppendPass( std::move( bcp ) );
+			auto pass = std::make_unique<BufferClearPass>( "clear" );
+			pass->SetInputSource( "renderTarget", "$.backbuffer" );
+			pass->SetInputSource( "depthStencil", "$.masterDepth" );
+			rg->AppendPass( std::move( pass ) );
 		}
 		{
-			auto lp = std::make_unique<LambertianPass>( "lambertian" );
-			lp->SetInputSource( "renderTarget", "clear.renderTarget" );
-			lp->SetInputSource( "depthStencil", "clear.depthStencil" );
-			rg->AppendPass( std::move( lp ) );
+			auto pass = std::make_unique<LambertianPass>( *m_pGDI, "lambertian" );
+			pass->SetInputSource( "renderTarget", "clear.renderTarget" );
+			pass->SetInputSource( "depthStencil", "clear.depthStencil" );
+			rg->AppendPass( std::move( pass ) );
 		}
-		rg->SetSinkTarget( "backbuffer", "lambertian.renderTarget" );
-		rg->Finalize();
+		{
+			auto pass = std::make_unique<OutlineMaskGenerationPass>( *m_pGDI, "outlineMask" );
+			pass->SetInputSource( "depthStencil", "lambertian.depthStencil" );
+			rg->AppendPass( std::move( pass ) );
+		}
+		{
+			auto pass = std::make_unique<OutlineDrawingPass>( *m_pGDI, "outlineDraw" );
+			pass->SetInputSource( "renderTarget", "lambertian.renderTarget" );
+			pass->SetInputSource( "depthStencil", "outlineMask.depthStencil" );
+			rg->AppendPass( std::move( pass ) );
+		}
+		rg->SetSinkTarget( "backbuffer", "outlineDraw.renderTarget" );		rg->Finalize();
 
 		m_pTestCube->LinkTechniques( *rg );
 		m_pTestCube2->LinkTechniques( *rg );

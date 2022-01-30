@@ -297,6 +297,8 @@
     <ClInclude Include="ResourceManager\Jobber\Passlib\BufferClearPass.h" />
     <ClInclude Include="ResourceManager\Jobber\Passlib\FullscreenPass.h" />
     <ClInclude Include="ResourceManager\Jobber\Passlib\LambertianPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineDrawingPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineMaskGenerationPass.h" />
     <ClInclude Include="ResourceManager\Jobber\Passlib\RenderQueuePass.h" />
     <ClInclude Include="ResourceManager\Jobber\PassOutput.h" />
     <ClInclude Include="ResourceManager\Jobber\RenderGraph.h" />

@@ -1,5 +1,7 @@
 #pragma once
 #include "../Pass.h"
+#include "../PassInput.h"
+#include "../PassOutput.h"
 
 class BufferClearPass : public Pass
 {

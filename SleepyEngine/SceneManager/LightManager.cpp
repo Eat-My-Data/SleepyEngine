@@ -193,7 +193,7 @@ void LightManager::PrepareDepthFromSpotLight()
 
 void LightManager::Submit()
 {
-	m_vecOfPointLights[0]->Submit();
+	//m_vecOfPointLights[0]->Submit();
 	/*for ( int i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
 		m_vecOfPointLights[i]->Submit();
