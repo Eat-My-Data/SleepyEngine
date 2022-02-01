@@ -10,6 +10,7 @@
 #include "../ResourceManager/Node.h"
 #include "../Utilities/SleepyXM.h"
 #include <assimp/Importer.hpp>
+#include "../ResourceManager/Jobber/TechniqueProbe.h"
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
@@ -33,6 +34,8 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_GraphicsAPI = api;
 	m_pTestCube = new Cube( *m_pGDI, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
 	m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
+	sponza = new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", 1.0f / 20.0f );
+
 	{
 		{
 			auto pass = std::make_unique<BufferClearPass>( "clear" );
@@ -62,12 +65,9 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 		m_pTestCube->LinkTechniques( *rg );
 		m_pTestCube2->LinkTechniques( *rg );
 		//m_LightManager->LinkTechniques( rg );
+		sponza->LinkTechniques( *rg );
 	}
-	//gobber = new Model( *m_pGDI, "Models\\gobber\\GoblinX.obj", 6.0f );
-	//sponza = new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", 1.0f / 20.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
-	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.obj", true, 2000.0f );
-	//m_pMonster->SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -250.0f, 0.0f ) * DirectX::XMMatrixRotationY( -PI / 2.0f ) * DirectX::XMMatrixRotationZ( PI / 2.0f ) );
 	m_LightManager.Initialize( *m_pGDI );
 	ImGui_ImplDX11_Init( m_pGDI->GetDevice(), m_pGDI->GetContext() );
 }
@@ -89,212 +89,196 @@ void SceneManager::ToggleImGuiEngabled() noexcept
 
 void SceneManager::Draw()
 {
-	if ( imguiEnabled )
-	{
-		ImGui_ImplDX11_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		ImGui::NewFrame();
-	}
+	namespace dx = DirectX;
 
 	PrepareFrame();
 
-	if ( m_RenderTechnique == RenderTechnique::Forward )
-		ForwardRender();
-	//else if ( m_RenderTechnique == RenderTechnique::Deferred )
-		//DeferredRender();
+	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
+	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
+
+	m_LightManager.Submit();
+	m_pTestCube->Submit();
+	m_pTestCube2->Submit();
+	sponza->Submit();
+	rg->Execute( *m_pGDI );
+
+
+	//UpdateCameraBuffer();
+	//m_LightManager.UpdateBuffers();
 
 	if ( imguiEnabled )
 	{
-		DrawControlPanel();
-		//m_FrameCommander->ShowWindows( *m_pGDI );
 		// Mesh techniques window
-		//class TP : public TechniqueProbe
-		//{
-		//public:
-		//	void OnSetTechnique() override
-		//	{
-		//		using namespace std::string_literals;
-		//		ImGui::TextColored( { 0.4f,1.0f,0.6f,1.0f }, pTech->GetName().c_str() );
-		//		bool active = pTech->IsActive();
-		//		ImGui::Checkbox( ( "Tech Active##"s + std::to_string( techIdx ) ).c_str(), &active );
-		//		pTech->SetActiveState( active );
-		//	}
-		//	bool OnVisitBuffer( Dcb::Buffer& buf ) override
-		//	{
-		//		namespace dx = DirectX;
-		//		float dirty = false;
-		//		const auto dcheck = [&dirty]( bool changed ) {dirty = dirty || changed; };
-		//		auto tag = [tagScratch = std::string{}, tagString = "##" + std::to_string( bufIdx )]
-		//		( const char* label ) mutable
-		//		{
-		//			tagScratch = label + tagString;
-		//			return tagScratch.c_str();
-		//		};
+		class TP : public TechniqueProbe
+		{
+		public:
+			void OnSetTechnique() override
+			{
+				using namespace std::string_literals;
+				ImGui::TextColored( { 0.4f,1.0f,0.6f,1.0f }, pTech->GetName().c_str() );
+				bool active = pTech->IsActive();
+				ImGui::Checkbox( ( "Tech Active##"s + std::to_string( techIdx ) ).c_str(), &active );
+				pTech->SetActiveState( active );
+			}
+			bool OnVisitBuffer( Dcb::Buffer& buf ) override
+			{
+				namespace dx = DirectX;
+				float dirty = false;
+				const auto dcheck = [&dirty]( bool changed ) {dirty = dirty || changed; };
+				auto tag = [tagScratch = std::string{}, tagString = "##" + std::to_string( bufIdx )]
+				( const char* label ) mutable
+				{
+					tagScratch = label + tagString;
+					return tagScratch.c_str();
+				};
 
-		//		if ( auto v = buf["scale"]; v.Exists() )
-		//		{
-		//			dcheck( ImGui::SliderFloat( tag( "Scale" ), &v, 1.0f, 2.0f, "%.3f" ) );
-		//		}
-		//		if ( auto v = buf["materialColor"]; v.Exists() )
-		//		{
-		//			dcheck( ImGui::ColorPicker3( tag( "Color" ), reinterpret_cast<float*>( &static_cast<dx::XMFLOAT3&>( v ) ) ) );
-		//		}
-		//		if ( auto v = buf["specularColor"]; v.Exists() )
-		//		{
-		//			dcheck( ImGui::ColorPicker3( tag( "Spec. Color" ), reinterpret_cast<float*>( &static_cast<dx::XMFLOAT3&>( v ) ) ) );
-		//		}
-		//		if ( auto v = buf["specularGloss"]; v.Exists() )
-		//		{
-		//			dcheck( ImGui::SliderFloat( tag( "Glossiness" ), &v, 1.0f, 100.0f, "%.1f" ) );
-		//		}
-		//		if ( auto v = buf["specularWeight"]; v.Exists() )
-		//		{
-		//			dcheck( ImGui::SliderFloat( tag( "Spec. Weight" ), &v, 0.0f, 2.0f ) );
-		//		}
-		//		if ( auto v = buf["useSpecularMap"]; v.Exists() )
-		//		{
-		//			dcheck( ImGui::Checkbox( tag( "Spec. Map Enable" ), &v ) );
-		//		}
-		//		if ( auto v = buf["useNormalMap"]; v.Exists() )
-		//		{
-		//			dcheck( ImGui::Checkbox( tag( "Normal Map Enable" ), &v ) );
-		//		}
-		//		if ( auto v = buf["normalMapWeight"]; v.Exists() )
-		//		{
-		//			dcheck( ImGui::SliderFloat( tag( "Normal Map Weight" ), &v, 0.0f, 2.0f ) );
-		//		}
-		//		return dirty;
-		//	}
-		//};
+				if ( auto v = buf["scale"]; v.Exists() )
+				{
+					dcheck( ImGui::SliderFloat( tag( "Scale" ), &v, 1.0f, 2.0f, "%.3f", 3.5f ) );
+				}
+				if ( auto v = buf["offset"]; v.Exists() )
+				{
+					dcheck( ImGui::SliderFloat( tag( "offset" ), &v, 0.0f, 1.0f, "%.3f", 2.5f ) );
+				}
+				if ( auto v = buf["materialColor"]; v.Exists() )
+				{
+					dcheck( ImGui::ColorPicker3( tag( "Color" ), reinterpret_cast<float*>( &static_cast<dx::XMFLOAT3&>( v ) ) ) );
+				}
+				if ( auto v = buf["specularColor"]; v.Exists() )
+				{
+					dcheck( ImGui::ColorPicker3( tag( "Spec. Color" ), reinterpret_cast<float*>( &static_cast<dx::XMFLOAT3&>( v ) ) ) );
+				}
+				if ( auto v = buf["specularGloss"]; v.Exists() )
+				{
+					dcheck( ImGui::SliderFloat( tag( "Glossiness" ), &v, 1.0f, 100.0f, "%.1f", 1.5f ) );
+				}
+				if ( auto v = buf["specularWeight"]; v.Exists() )
+				{
+					dcheck( ImGui::SliderFloat( tag( "Spec. Weight" ), &v, 0.0f, 2.0f ) );
+				}
+				if ( auto v = buf["useSpecularMap"]; v.Exists() )
+				{
+					dcheck( ImGui::Checkbox( tag( "Spec. Map Enable" ), &v ) );
+				}
+				if ( auto v = buf["useNormalMap"]; v.Exists() )
+				{
+					dcheck( ImGui::Checkbox( tag( "Normal Map Enable" ), &v ) );
+				}
+				if ( auto v = buf["normalMapWeight"]; v.Exists() )
+				{
+					dcheck( ImGui::SliderFloat( tag( "Normal Map Weight" ), &v, 0.0f, 2.0f ) );
+				}
+				return dirty;
+			}
+		};
 
-		//class MP : ModelProbe
-		//{
-		//public:
-		//	void SpawnWindow( Model& model )
-		//	{
-		//		ImGui::Begin( "Model" );
-		//		ImGui::Columns( 2, nullptr, true );
-		//		model.Accept( *this );
+		class MP : ModelProbe
+		{
+		public:
+			void SpawnWindow( Model& model )
+			{
+				ImGui::Begin( "Model" );
+				ImGui::Columns( 2, nullptr, true );
+				model.Accept( *this );
 
-		//		ImGui::NextColumn();
-		//		if ( pSelectedNode != nullptr )
-		//		{
-		//			bool dirty = false;
-		//			const auto dcheck = [&dirty]( bool changed ) {dirty = dirty || changed; };
-		//			auto& tf = ResolveTransform();
-		//			ImGui::TextColored( { 0.4f,1.0f,0.6f,1.0f }, "Translation" );
-		//			dcheck( ImGui::SliderFloat( "X", &tf.x, -60.f, 60.f ) );
-		//			dcheck( ImGui::SliderFloat( "Y", &tf.y, -60.f, 60.f ) );
-		//			dcheck( ImGui::SliderFloat( "Z", &tf.z, -60.f, 60.f ) );
-		//			ImGui::TextColored( { 0.4f,1.0f,0.6f,1.0f }, "Orientation" );
-		//			dcheck( ImGui::SliderAngle( "X-rotation", &tf.xRot, -180.0f, 180.0f ) );
-		//			dcheck( ImGui::SliderAngle( "Y-rotation", &tf.yRot, -180.0f, 180.0f ) );
-		//			dcheck( ImGui::SliderAngle( "Z-rotation", &tf.zRot, -180.0f, 180.0f ) );
-		//			if ( dirty )
-		//			{
-		//				pSelectedNode->SetAppliedTransform(
-		//					DirectX::XMMatrixRotationX( tf.xRot ) *
-		//					DirectX::XMMatrixRotationY( tf.yRot ) *
-		//					DirectX::XMMatrixRotationZ( tf.zRot ) *
-		//					DirectX::XMMatrixTranslation( tf.x, tf.y, tf.z )
-		//				);
-		//			}
-		//		}
-		//		if ( pSelectedNode != nullptr )
-		//		{
-		//			TP probe;
-		//			pSelectedNode->Accept( probe );
-		//		}
-		//		ImGui::End();
-		//	}
-		//protected:
-		//	bool PushNode( Node& node ) override
-		//	{
-		//		// if there is no selected node, set selectedId to an impossible value
-		//		const int selectedId = ( pSelectedNode == nullptr ) ? -1 : pSelectedNode->GetId();
-		//		// build up flags for current node
-		//		const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
-		//			| ( ( node.GetId() == selectedId ) ? ImGuiTreeNodeFlags_Selected : 0 )
-		//			| ( node.HasChildren() ? 0 : ImGuiTreeNodeFlags_Leaf );
-		//		// render this node
-		//		const auto expanded = ImGui::TreeNodeEx(
-		//			(void*)(intptr_t)node.GetId(),
-		//			node_flags, node.GetName().c_str()
-		//		);
-		//		// processing for selecting node
-		//		if ( ImGui::IsItemClicked() )
-		//		{
-		//			// used to change the highlighted node on selection change
-		//			struct Probe : public TechniqueProbe
-		//			{
-		//				virtual void OnSetTechnique()
-		//				{
-		//					if ( pTech->GetName() == "Outline" )
-		//					{
-		//						pTech->SetActiveState( highlighted );
-		//					}
-		//				}
-		//				bool highlighted = false;
-		//			} probe;
+				ImGui::NextColumn();
+				if ( pSelectedNode != nullptr )
+				{
+					bool dirty = false;
+					const auto dcheck = [&dirty]( bool changed ) {dirty = dirty || changed; };
+					auto& tf = ResolveTransform();
+					ImGui::TextColored( { 0.4f,1.0f,0.6f,1.0f }, "Translation" );
+					dcheck( ImGui::SliderFloat( "X", &tf.x, -60.f, 60.f ) );
+					dcheck( ImGui::SliderFloat( "Y", &tf.y, -60.f, 60.f ) );
+					dcheck( ImGui::SliderFloat( "Z", &tf.z, -60.f, 60.f ) );
+					ImGui::TextColored( { 0.4f,1.0f,0.6f,1.0f }, "Orientation" );
+					dcheck( ImGui::SliderAngle( "X-rotation", &tf.xRot, -180.0f, 180.0f ) );
+					dcheck( ImGui::SliderAngle( "Y-rotation", &tf.yRot, -180.0f, 180.0f ) );
+					dcheck( ImGui::SliderAngle( "Z-rotation", &tf.zRot, -180.0f, 180.0f ) );
+					if ( dirty )
+					{
+						pSelectedNode->SetAppliedTransform(
+							dx::XMMatrixRotationX( tf.xRot ) *
+							dx::XMMatrixRotationY( tf.yRot ) *
+							dx::XMMatrixRotationZ( tf.zRot ) *
+							dx::XMMatrixTranslation( tf.x, tf.y, tf.z )
+						);
+					}
 
-		//			// remove highlight on prev-selected node
-		//			if ( pSelectedNode != nullptr )
-		//			{
-		//				pSelectedNode->Accept( probe );
-		//			}
-		//			// add highlight to newly-selected node
-		//			probe.highlighted = true;
-		//			node.Accept( probe );
+					TP probe;
+					pSelectedNode->Accept( probe );
+				}
+				ImGui::End();
+			}
+		protected:
+			bool PushNode( Node& node ) override
+			{
+				// if there is no selected node, set selectedId to an impossible value
+				const int selectedId = ( pSelectedNode == nullptr ) ? -1 : pSelectedNode->GetId();
+				// build up flags for current node
+				const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
+					| ( ( node.GetId() == selectedId ) ? ImGuiTreeNodeFlags_Selected : 0 )
+					| ( node.HasChildren() ? 0 : ImGuiTreeNodeFlags_Leaf );
+				// render this node
+				const auto expanded = ImGui::TreeNodeEx(
+					(void*)(intptr_t)node.GetId(),
+					node_flags, node.GetName().c_str()
+				);
+				// processing for selecting node
+				if ( ImGui::IsItemClicked() )
+				{
+					pSelectedNode = &node;
+				}
+				// signal if children should also be recursed
+				return expanded;
+			}
+			void PopNode( Node& node ) override
+			{
+				ImGui::TreePop();
+			}
+		private:
+			Node* pSelectedNode = nullptr;
+			struct TransformParameters
+			{
+				float xRot = 0.0f;
+				float yRot = 0.0f;
+				float zRot = 0.0f;
+				float x = 0.0f;
+				float y = 0.0f;
+				float z = 0.0f;
+			};
+			std::unordered_map<int, TransformParameters> transformParams;
+		private:
+			TransformParameters& ResolveTransform() noexcept
+			{
+				const auto id = pSelectedNode->GetId();
+				auto i = transformParams.find( id );
+				if ( i == transformParams.end() )
+				{
+					return LoadTransform( id );
+				}
+				return i->second;
+			}
+			TransformParameters& LoadTransform( int id ) noexcept
+			{
+				const auto& applied = pSelectedNode->GetAppliedTransform();
+				const auto angles = ExtractEulerAngles( applied );
+				const auto translation = ExtractTranslation( applied );
+				TransformParameters tp;
+				tp.zRot = angles.z;
+				tp.xRot = angles.x;
+				tp.yRot = angles.y;
+				tp.x = translation.x;
+				tp.y = translation.y;
+				tp.z = translation.z;
+				return transformParams.insert( { id,{ tp } } ).first->second;
+			}
+		};
+		static MP modelProbe;
 
-		//			pSelectedNode = &node;
-		//		}
-		//		// signal if children should also be recursed
-		//		return expanded;
-		//	}
-		//	void PopNode( Node& node ) override
-		//	{
-		//		ImGui::TreePop();
-		//	}
-		//private:
-		//	Node* pSelectedNode = nullptr;
-		//	struct TransformParameters
-		//	{
-		//		float xRot = 0.0f;
-		//		float yRot = 0.0f;
-		//		float zRot = 0.0f;
-		//		float x = 0.0f;
-		//		float y = 0.0f;
-		//		float z = 0.0f;
-		//	};
-		//	std::unordered_map<int, TransformParameters> transformParams;
-		//private:
-		//	TransformParameters& ResolveTransform() noexcept
-		//	{
-		//		const auto id = pSelectedNode->GetId();
-		//		auto i = transformParams.find( id );
-		//		if ( i == transformParams.end() )
-		//		{
-		//			return LoadTransform( id );
-		//		}
-		//		return i->second;
-		//	}
-		//	TransformParameters& LoadTransform( int id ) noexcept
-		//	{
-		//		const auto& applied = pSelectedNode->GetAppliedTransform();
-		//		const auto angles = ExtractEulerAngles( applied );
-		//		const auto translation = ExtractTranslation( applied );
-		//		TransformParameters tp;
-		//		tp.zRot = angles.z;
-		//		tp.xRot = angles.x;
-		//		tp.yRot = angles.y;
-		//		tp.x = translation.x;
-		//		tp.y = translation.y;
-		//		tp.z = translation.z;
-		//		return transformParams.insert( { id,{ tp } } ).first->second;
-		//	}
-		//};
-		//static MP modelProbe;
-		//modelProbe.SpawnWindow( *sponza );
+		// imgui windows
+		DrawControlPanel();
+		modelProbe.SpawnWindow( *sponza );
 	}
 
 	rg->Reset();
@@ -384,15 +368,17 @@ void SceneManager::RotateSpotLight( const f32 dx, const f32 dy )
 
 void SceneManager::PrepareFrame()
 {
-	//// setup
-	//const float color[] = { 0.07f,0.0f,0.12f,0.0f };
-	////m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetTargetDeprecated(), color );
-	//for ( int i = 0; i < 3; i++ )
-	//{
-	//	m_pGDI->GetContext()->ClearRenderTargetView( m_pGDI->GetGBuffers()[i], color );
-	//}
-	//m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
-	//m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV2(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
+	// imgui begin frame
+	if ( imguiEnabled )
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
+	// clearing shader inputs to prevent simultaneous in/out bind carried over from prev frame
+	ID3D11ShaderResourceView* const pNullTex = nullptr;
+	m_pGDI->GetContext()->PSSetShaderResources( 0, 1, &pNullTex ); // fullscreen input texture
+	m_pGDI->GetContext()->PSSetShaderResources( 3, 1, &pNullTex ); // shadow map texture
 }
 
 void SceneManager::UpdateCameraBuffer()
@@ -412,64 +398,3 @@ void SceneManager::UpdateCameraBuffer()
 	m_pCameraBuffer->Update( *m_pGDI, m_CameraCBufferaData );
 	m_pCameraBuffer->Bind( *m_pGDI );
 }
-
-void SceneManager::ForwardRender()
-{
-	m_LightManager.Submit();
-	m_pTestCube->Submit();
-	m_pTestCube2->Submit();
-	//sponza->Submit( *m_FrameCommander );
-
-	// depth from light
-	//m_LightManager.PrepareDepthFromLight();
-	//m_vecOfModels[1]->Draw( *m_pGDI, true );
-
-	// point light depth pass
-	//m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
-
-	// spot light depth pass
-	//m_LightManager.PrepareDepthFromSpotLight();
-	//m_vecOfModels[1]->Draw( *m_pGDI, true );
-
-	UpdateCameraBuffer();
-	m_LightManager.UpdateBuffers();
-
-	// update and render
-	//m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), *m_pGDI->GetDSV() );
-	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
-	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
-	//m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
-
-	rg->Execute( *m_pGDI );
-}
-
-//void SceneManager::DeferredRender()
-//{
-//	// depth from light
-//	//m_LightManager.PrepareDepthFromLight();
-//	//m_vecOfModels[1]->Draw( *m_pGDI, true );
-//
-//	// point light depth pass
-//	//m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
-//
-//	// spot light depth pass
-//	//m_LightManager.PrepareDepthFromSpotLight();
-//	//m_vecOfModels[1]->Draw( *m_pGDI, true );
-//
-//	// gbuffers
-//	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
-//	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
-//	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
-//	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
-//	//m_vecOfModels[1]->Draw( *m_pGDI, false );
-//	//m_pMonster->Draw( *m_pGDI, false );
-//
-//	// lights
-//	UpdateCameraBuffer();
-//	//m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
-//	//m_LightManager.Draw();
-//
-//	// light cores
-//	//m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
-//	//m_LightManager.RenderLightGeometry();
-//}

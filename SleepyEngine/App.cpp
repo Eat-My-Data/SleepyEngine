@@ -29,6 +29,8 @@ void App::ExecuteFrame()
 
 	const f32 dt = timer.Mark();
 
+	m_SceneManager.Draw();
+
 	while ( const auto e = m_Win32Window.m_Kbd.ReadKey() )
 	{
 		// free camera / cursor functionality
@@ -180,7 +182,6 @@ void App::ExecuteFrame()
 	//		m_SceneManager.RotateCamera( (f32)delta->GetPosX(), (f32)delta->GetPosY() );
 	//}
 
-	m_SceneManager.Draw();
 
 	m_SceneManager.Present();
 }

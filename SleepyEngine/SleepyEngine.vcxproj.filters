@@ -318,6 +318,9 @@
     <ClCompile Include="ResourceManager\Jobber\StepLinkingProbe.cpp">
       <Filter>Source Files\ResourceManager\Jobber</Filter>
     </ClCompile>
+    <ClCompile Include="Bindable\Bindables\TransformCBufScaling.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -592,6 +595,9 @@
     </ClInclude>
     <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineDrawingPass.h">
       <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\TransformCBufScaling.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

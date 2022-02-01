@@ -35,8 +35,6 @@ public:
 private:
 	void PrepareFrame();
 	void UpdateCameraBuffer();
-	void ForwardRender();
-	//void DeferredRender();
 private:
 	RenderGraph* rg;// { wnd.Gfx() };
 public:
@@ -50,8 +48,7 @@ private:
 	LightManager m_LightManager;
 	RenderTechnique m_RenderTechnique = RenderTechnique::Uninitialized;
 	Mesh* pLoaded;
-	Model* gobber;
-	//Model* sponza;
+	Model* sponza;
 private:
 	struct CameraData
 	{
@@ -63,7 +60,6 @@ private:
 	Bind::PixelConstantBuffer<CameraData>* m_pCameraBuffer;
 private:
 	std::vector<Model*> m_vecOfModels;
-	Model* m_pMonster;
 	// TODO: 
 	// - Resource Manager
 	// - Culling

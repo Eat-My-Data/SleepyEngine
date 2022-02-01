@@ -186,6 +186,7 @@
     <ClCompile Include="Bindable\Bindables\Texture.cpp" />
     <ClCompile Include="Bindable\Bindables\Topology.cpp" />
     <ClCompile Include="Bindable\Bindables\TransformCBuf.cpp" />
+    <ClCompile Include="Bindable\Bindables\TransformCBufScaling.cpp" />
     <ClCompile Include="Bindable\Bindables\VertexBuffer.cpp" />
     <ClCompile Include="Bindable\Bindables\VertexShader.cpp" />
     <ClCompile Include="Drawable\SolidCone.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="Bindable\Bindables\Texture.h" />
     <ClInclude Include="Bindable\Bindables\Topology.h" />
     <ClInclude Include="Bindable\Bindables\TransformCBuf.h" />
+    <ClInclude Include="Bindable\Bindables\TransformCBufScaling.h" />
     <ClInclude Include="Bindable\Bindables\VertexBuffer.h" />
     <ClInclude Include="Bindable\Bindables\VertexShader.h" />
     <ClInclude Include="Drawable\SolidCone.h" />

@@ -26,6 +26,6 @@ public:
 private:
 	size_t targetPass;
 	std::vector<std::shared_ptr<Bind::Bindable>> bindables;
-	RenderQueuePass* pTargetPass;
+	RenderQueuePass* pTargetPass = nullptr;;
 	std::string targetPassName;
 };
