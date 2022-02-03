@@ -22,8 +22,8 @@ D3D11Interface::~D3D11Interface()
     if ( m_pContext != nullptr )
         m_pContext->Release();
 
-    if ( m_pTarget != nullptr )
-        m_pTarget->Release();
+  //  if ( m_pTarget != nullptr )
+    //    m_pTarget->Release();
 }
 
 void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )

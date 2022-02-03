@@ -133,7 +133,7 @@ Material::Material( GraphicsDeviceInterface& gfx, const aiMaterial& material, co
 			Step mask( "outlineMask" );
 
 			// TODO: better sub-layout generation tech for future consideration maybe
-			mask.AddBindable( InputLayout::Resolve( gfx, vtxLayout, VertexShader::Resolve( gfx, "Solid_VS.cso" )->GetBytecode() ) );
+			mask.AddBindable( InputLayout::Resolve( gfx, vtxLayout, VertexShader::Resolve( gfx, "./Shaders/Bin/Solid_VS.cso" )->GetBytecode() ) );
 
 			mask.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
 
@@ -153,7 +153,7 @@ Material::Material( GraphicsDeviceInterface& gfx, const aiMaterial& material, co
 			}
 
 			// TODO: better sub-layout generation tech for future consideration maybe
-			draw.AddBindable( InputLayout::Resolve( gfx, vtxLayout,VertexShader::Resolve( gfx, "Solid_VS.cso" )->GetBytecode() ) );
+			draw.AddBindable( InputLayout::Resolve( gfx, vtxLayout,VertexShader::Resolve( gfx, "./Shaders/Bin/Solid_VS.cso" )->GetBytecode() ) );
 
 			draw.AddBindable( std::make_shared<TransformCbufScaling>( gfx, 1.04f ) );
 

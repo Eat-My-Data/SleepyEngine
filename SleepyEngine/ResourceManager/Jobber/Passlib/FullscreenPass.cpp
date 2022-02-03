@@ -23,7 +23,7 @@ FullscreenPass::FullscreenPass( const std::string name,GraphicsDeviceInterface& 
 		std::vector<unsigned short> indices = { 0,1,2,1,3,2 };
 		indexBuffer = Bind::IndexBuffer::Resolve( gfx,"$Full",std::move( indices ) );
 		// setup fullscreen shaders
-		vertexShader = Bind::VertexShader::Resolve( gfx,"Fullscreen_VS.cso" );
+		vertexShader = Bind::VertexShader::Resolve( gfx,"./Shaders/Bin/Fullscreen_VS.cso" );
 		inputLayout = Bind::InputLayout::Resolve( gfx,lay,vertexShader->GetBytecode() );
 	}
 }
