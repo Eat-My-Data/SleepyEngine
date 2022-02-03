@@ -321,6 +321,9 @@
     <ClCompile Include="Bindable\Bindables\TransformCBufScaling.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\TestRenderGraph.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -600,6 +603,9 @@
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager\Jobber\TestModelProbe.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\TestRenderGraph.h">
       <Filter>Header Files\ResourceManager\Jobber</Filter>
     </ClInclude>
   </ItemGroup>

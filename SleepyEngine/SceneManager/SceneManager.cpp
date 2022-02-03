@@ -5,11 +5,6 @@
 #include "../Utilities/Testing.h"
 #include "../ResourceManager/Material.h"
 
-#include "../ResourceManager/Jobber/Passlib/BufferClearPass.h"
-#include "../ResourceManager/Jobber/Passlib/LambertianPass.h"
-#include "../ResourceManager/Jobber/Passlib/OutlineDrawingPass.h"
-#include "../ResourceManager/Jobber/Passlib/OutlineMaskGenerationPass.h"
-
 #include "../ResourceManager/Jobber/TestModelProbe.h"
 
 SceneManager::~SceneManager()
@@ -23,7 +18,7 @@ SceneManager::~SceneManager()
 void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 {
 	m_pGDI = &gdi;
-	rg = new RenderGraph( *m_pGDI );
+	rg = new TestRenderGraph( *m_pGDI );
 	m_GraphicsAPI = api;
 	m_pTestCube = new Cube( *m_pGDI, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
 	m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
@@ -31,38 +26,11 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	m_LightManager.Initialize( *m_pGDI );
 
-	{
-		{
-			auto pass = std::make_unique<BufferClearPass>( "clear" );
-			pass->SetInputSource( "renderTarget", "$.backbuffer" );
-			pass->SetInputSource( "depthStencil", "$.masterDepth" );
-			rg->AppendPass( std::move( pass ) );
-		}
-		{
-			auto pass = std::make_unique<LambertianPass>( *m_pGDI, "lambertian" );
-			pass->SetInputSource( "renderTarget", "clear.renderTarget" );
-			pass->SetInputSource( "depthStencil", "clear.depthStencil" );
-			rg->AppendPass( std::move( pass ) );
-		}
-		{
-			auto pass = std::make_unique<OutlineMaskGenerationPass>( *m_pGDI, "outlineMask" );
-			pass->SetInputSource( "depthStencil", "lambertian.depthStencil" );
-			rg->AppendPass( std::move( pass ) );
-		}
-		{
-			auto pass = std::make_unique<OutlineDrawingPass>( *m_pGDI, "outlineDraw" );
-			pass->SetInputSource( "renderTarget", "lambertian.renderTarget" );
-			pass->SetInputSource( "depthStencil", "outlineMask.depthStencil" );
-			rg->AppendPass( std::move( pass ) );
-		}
-		rg->SetSinkTarget( "backbuffer", "outlineDraw.renderTarget" );		
-		rg->Finalize();
-
-		m_pTestCube->LinkTechniques( *rg );
-		m_pTestCube2->LinkTechniques( *rg );
-		m_LightManager.LinkTechniques( *rg );
-		sponza->LinkTechniques( *rg );
-	}
+	m_pTestCube->LinkTechniques( *rg );
+	m_pTestCube2->LinkTechniques( *rg );
+	m_LightManager.LinkTechniques( *rg );
+	sponza->LinkTechniques( *rg );
+	
 	
 	ImGui_ImplDX11_Init( m_pGDI->GetDevice(), m_pGDI->GetContext() );
 }

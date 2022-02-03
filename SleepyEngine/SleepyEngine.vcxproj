@@ -220,6 +220,7 @@
     <ClCompile Include="ResourceManager\Jobber\Step.cpp" />
     <ClCompile Include="ResourceManager\Jobber\StepLinkingProbe.cpp" />
     <ClCompile Include="ResourceManager\Jobber\Technique.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\TestRenderGraph.cpp" />
     <ClCompile Include="ResourceManager\LayoutCodex.cpp" />
     <ClCompile Include="ResourceManager\Material.cpp" />
     <ClCompile Include="ResourceManager\Mesh.cpp" />
@@ -310,6 +311,7 @@
     <ClInclude Include="ResourceManager\Jobber\Technique.h" />
     <ClInclude Include="ResourceManager\Jobber\TechniqueProbe.h" />
     <ClInclude Include="ResourceManager\Jobber\TestModelProbe.h" />
+    <ClInclude Include="ResourceManager\Jobber\TestRenderGraph.h" />
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
     <ClInclude Include="ResourceManager\Material.h" />
     <ClInclude Include="ResourceManager\Mesh.h" />

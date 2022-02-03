@@ -5,7 +5,7 @@
 #include "../ResourceManager/Model.h"
 #include "./LightManager.h"
 #include "./RenderTechnique.h"
-#include "../ResourceManager/Jobber/RenderGraph.h"
+#include "../ResourceManager/Jobber/TestRenderGraph.h"
 #include "../Drawable/Cube.h"
 
 class SceneManager
@@ -36,7 +36,7 @@ private:
 	void PrepareFrame();
 	void UpdateCameraBuffer();
 private:
-	RenderGraph* rg;// { wnd.Gfx() };
+	TestRenderGraph* rg;// { wnd.Gfx() };
 public:
 	bool imguiEnabled = true;
 private:
