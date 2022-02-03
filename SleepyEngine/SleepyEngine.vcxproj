@@ -309,6 +309,7 @@
     <ClInclude Include="ResourceManager\Jobber\StepLinkingProbe.h" />
     <ClInclude Include="ResourceManager\Jobber\Technique.h" />
     <ClInclude Include="ResourceManager\Jobber\TechniqueProbe.h" />
+    <ClInclude Include="ResourceManager\Jobber\TestModelProbe.h" />
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
     <ClInclude Include="ResourceManager\Material.h" />
     <ClInclude Include="ResourceManager\Mesh.h" />

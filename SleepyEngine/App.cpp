@@ -13,24 +13,28 @@ u32 App::Launch()
 	{
 		if ( const auto ecode = Win32Window::ProcessMessages() )
 			return *ecode;
-		ExecuteFrame();
+		const auto dt = timer.Mark() * speed_factor;
+		HandleInput( dt );
+		ExecuteFrame( dt );
 	}
 }
 
 App::~App()
 {}
 
-void App::ExecuteFrame()
+void App::ExecuteFrame( float dt )
 {
 	if ( !m_GDI.IsInitialized() )
 		m_Win32Window.InitializeGraphics( m_GDI, GraphicsAPI::DirectX );
 	if ( !m_SceneManager.IsInitialzed() )
 		m_SceneManager.Initialize( m_GDI, GraphicsAPI::DirectX );
 
-	const f32 dt = timer.Mark();
-
 	m_SceneManager.Draw();
+	m_SceneManager.Present();
+}
 
+void App::HandleInput( float dt )
+{
 	while ( const auto e = m_Win32Window.m_Kbd.ReadKey() )
 	{
 		// free camera / cursor functionality
@@ -181,7 +185,4 @@ void App::ExecuteFrame()
 	//	if ( !m_Win32Window.CursorEnabled() )
 	//		m_SceneManager.RotateCamera( (f32)delta->GetPosX(), (f32)delta->GetPosY() );
 	//}
-
-
-	m_SceneManager.Present();
 }

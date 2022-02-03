@@ -162,7 +162,7 @@ Material::Material( GraphicsDeviceInterface& gfx, const aiMaterial& material, co
 			outline.AddStep( std::move( draw ) );
 		}
 		techniques.push_back( std::move( outline ) );
-		}
+	}
 }
 Dvtx::VertexBuffer Material::ExtractVertices( const aiMesh& mesh ) const noexcept
 {

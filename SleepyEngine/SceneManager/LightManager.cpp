@@ -139,6 +139,11 @@ void LightManager::DrawControlPanel()
 	ImGui::End();
 }
 
+void LightManager::LinkTechniques( RenderGraph& rg )
+{
+	m_vecOfPointLights[0]->LinkTechniques( rg );
+}
+
 void LightManager::RenderLightGeometry()
 {
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
