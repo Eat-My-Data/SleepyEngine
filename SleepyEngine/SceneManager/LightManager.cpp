@@ -139,7 +139,7 @@ void LightManager::DrawControlPanel()
 	ImGui::End();
 }
 
-void LightManager::LinkTechniques( RenderGraph& rg )
+void LightManager::LinkTechniques( Rgph::RenderGraph& rg )
 {
 	m_vecOfPointLights[0]->LinkTechniques( rg );
 }

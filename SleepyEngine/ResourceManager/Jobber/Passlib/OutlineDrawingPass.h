@@ -9,21 +9,24 @@
 
 class GraphicsDeviceInterface;
 
-class OutlineDrawingPass : public RenderQueuePass
+namespace Rgph
 {
-public:
-	OutlineDrawingPass( GraphicsDeviceInterface& gfx, std::string name )
-		:
-		RenderQueuePass( std::move( name ) )
+	class OutlineDrawingPass : public RenderQueuePass
 	{
-		using namespace Bind;
-		RegisterInput( BufferInput<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
-		RegisterInput( BufferInput<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
-		RegisterOutput( BufferOutput<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
-		RegisterOutput( BufferOutput<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
-		AddBind( VertexShader::Resolve( gfx, "./Shaders/Bin/Solid_VS.cso" ) );
-		AddBind( PixelShader::Resolve( gfx, "./Shaders/Bin/Solid_PS.cso" ) );
-		AddBind( Stencil::Resolve( gfx, Stencil::Mode::Mask ) );
-		AddBind( Rasterizer::Resolve( gfx, false ) );
-	}
-};
+	public:
+		OutlineDrawingPass( GraphicsDeviceInterface& gfx, std::string name )
+			:
+			RenderQueuePass( std::move( name ) )
+		{
+			using namespace Bind;
+			RegisterInput( BufferInput<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
+			RegisterInput( BufferInput<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
+			RegisterOutput( BufferOutput<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
+			RegisterOutput( BufferOutput<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
+			AddBind( VertexShader::Resolve( gfx, "./Shaders/Bin/Solid_VS.cso" ) );
+			AddBind( PixelShader::Resolve( gfx, "./Shaders/Bin/Solid_PS.cso" ) );
+			AddBind( Stencil::Resolve( gfx, Stencil::Mode::Mask ) );
+			AddBind( Rasterizer::Resolve( gfx, false ) );
+		}
+	};
+}

@@ -10,6 +10,11 @@ class Material;
 class RenderGraph;
 struct aiMesh;
 
+namespace Rgph
+{
+	class RenderGraph;
+}
+
 namespace Bind
 {
 	class IndexBuffer;
@@ -30,7 +35,7 @@ public:
 	void Bind( GraphicsDeviceInterface& gfx ) const noexcept;
 	void Accept( TechniqueProbe& probe );
 	UINT GetIndexCount() const noexcept;
-	void LinkTechniques( RenderGraph& );
+	void LinkTechniques( Rgph::RenderGraph& );
 	virtual ~Drawable();
 protected:
 	std::shared_ptr<Bind::IndexBuffer> pIndices;

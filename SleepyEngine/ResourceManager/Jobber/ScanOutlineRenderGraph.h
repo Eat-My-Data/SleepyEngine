@@ -3,8 +3,11 @@
 
 class GraphicsDeviceInterface;
 
-class ScanOutlineRenderGraph : public RenderGraph
+namespace Rgph
 {
-public:
-	ScanOutlineRenderGraph( GraphicsDeviceInterface& gfx );
-};
+	class ScanOutlineRenderGraph : public RenderGraph
+	{
+	public:
+		ScanOutlineRenderGraph( GraphicsDeviceInterface& gfx );
+	};
+}

@@ -563,9 +563,6 @@
     <ClInclude Include="Bindable\Bindables\DepthStencil.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager\Jobber\BlurPack.h">
-      <Filter>Header Files\ResourceManager\Jobber</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager\Jobber\Passlib\BindingPass.h">
       <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
     </ClInclude>

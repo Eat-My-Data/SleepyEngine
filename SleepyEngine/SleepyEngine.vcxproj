@@ -292,7 +292,6 @@
     <ClInclude Include="ResourceManager\Geometry\Cone.h" />
     <ClInclude Include="ResourceManager\Geometry\Sphere.h" />
     <ClInclude Include="ResourceManager\IndexedTriangleList.h" />
-    <ClInclude Include="ResourceManager\Jobber\BlurPack.h" />
     <ClInclude Include="ResourceManager\Jobber\BufferResource.h" />
     <ClInclude Include="ResourceManager\Jobber\ChiliException.h" />
     <ClInclude Include="ResourceManager\Jobber\Job.h" />

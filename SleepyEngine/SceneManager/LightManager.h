@@ -20,7 +20,7 @@ public:
 	void RenderPointLightCubeTextures( const Model& model );
 	void PrepareDepthFromSpotLight();
 	void DrawControlPanel();
-	void LinkTechniques( RenderGraph& rg );
+	void LinkTechniques( Rgph::RenderGraph& rg );
 public:
 	void Submit();
 	void SelectPointLight( const u32 index );

@@ -18,7 +18,7 @@ SceneManager::~SceneManager()
 void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 {
 	m_pGDI = &gdi;
-	rg = new ScanOutlineRenderGraph( *m_pGDI );
+	rg = new Rgph::BlurOutlineRenderGraph( *m_pGDI );
 	m_GraphicsAPI = api;
 	m_pTestCube = new Cube( *m_pGDI, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
 	m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );

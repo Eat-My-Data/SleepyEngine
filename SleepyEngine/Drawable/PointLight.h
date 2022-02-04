@@ -3,13 +3,18 @@
 #include "../SceneManager/RenderTechnique.h"
 #include "../Drawable/SolidSphere.h"
 
+namespace Rgph
+{
+	class RenderGraph;
+}
+
 class PointLight : public Drawable
 {
 public:
 	PointLight( GraphicsDeviceInterface& gdi, float radius );
 	void Draw( GraphicsDeviceInterface& gdi );
 	void Submit() const noexcept;
-	void LinkTechniques( RenderGraph& );
+	void LinkTechniques( Rgph::RenderGraph& );
 	void DrawControlPanel();
 	void Update();
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;

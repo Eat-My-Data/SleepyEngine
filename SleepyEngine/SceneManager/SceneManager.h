@@ -5,8 +5,8 @@
 #include "../ResourceManager/Model.h"
 #include "./LightManager.h"
 #include "./RenderTechnique.h"
-#include "../ResourceManager/Jobber/ScanOutlineRenderGraph.h"
 #include "../Drawable/Cube.h"
+#include "../ResourceManager/Jobber/BlurOutlineRenderGraph.h"
 
 class SceneManager
 {
@@ -36,7 +36,7 @@ private:
 	void PrepareFrame();
 	void UpdateCameraBuffer();
 private:
-	ScanOutlineRenderGraph* rg;// { wnd.Gfx() };
+	Rgph::BlurOutlineRenderGraph* rg;// { wnd.Gfx() };
 public:
 	bool imguiEnabled = true;
 private:
