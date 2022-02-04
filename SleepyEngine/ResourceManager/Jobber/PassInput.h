@@ -105,7 +105,7 @@ public:
 		}
 		target = std::move( p );
 	}
-	ImmutableInput( std::string registeredName,std::shared_ptr<Bind::Bindable>& target )
+	ImmutableInput( std::string registeredName,std::shared_ptr<T>& target )
 		:
 		PassInput( std::move( registeredName ) ),
 		target( target )

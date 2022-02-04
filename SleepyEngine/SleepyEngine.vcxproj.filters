@@ -321,8 +321,17 @@
     <ClCompile Include="Bindable\Bindables\TransformCBufScaling.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager\Jobber\TestRenderGraph.cpp">
+    <ClCompile Include="ResourceManager\Jobber\ScanOutlineRenderGraph.cpp">
       <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Passlib\HorizontalBlurPass.cpp">
+      <Filter>Source Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\BlurOutlineRenderGraph.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Passlib\VerticalBlurPass.cpp">
+      <Filter>Source Files\ResourceManager\Jobber\Passlib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -605,8 +614,20 @@
     <ClInclude Include="ResourceManager\Jobber\TestModelProbe.h">
       <Filter>Header Files\ResourceManager\Jobber</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager\Jobber\TestRenderGraph.h">
+    <ClInclude Include="ResourceManager\Jobber\ScanOutlineRenderGraph.h">
       <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\HorizontalBlurPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\BlurOutlineRenderGraph.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\VerticalBlurPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\BlurOutlineDrawingPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
