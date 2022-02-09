@@ -62,8 +62,8 @@ void SceneManager::Draw()
 
 	//m_LightManager.Submit();
 	m_LightManager.UpdateBuffers();
-	//m_pTestCube->Submit();
-	//m_pTestCube2->Submit();
+	m_pTestCube->Submit();
+	m_pTestCube2->Submit();
 	sponza->Submit();
 
 	static MP modelProbe;
@@ -73,6 +73,7 @@ void SceneManager::Draw()
 
 	if ( imguiEnabled )
 	{
+		rg->RenderWidgets( *m_pGDI );
 		// imgui windows
 		DrawControlPanel();
 	}

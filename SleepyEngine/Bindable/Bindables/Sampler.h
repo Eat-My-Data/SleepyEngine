@@ -6,14 +6,21 @@ namespace Bind
 	class Sampler : public Bindable
 	{
 	public:
-		Sampler( GraphicsDeviceInterface& gdi, bool anisoEnable, bool reflect );
+		enum class Type
+		{
+			Anisotropic,
+			Bilinear,
+			Point,
+		};
+	public:
+		Sampler( GraphicsDeviceInterface& gdi, Type type, bool reflect );
 		void Bind( GraphicsDeviceInterface& gdi ) noexcept override;
-		static std::shared_ptr<Sampler> Resolve( GraphicsDeviceInterface& gdi, bool anisoEnable = true, bool reflect = false );
-		static std::string GenerateUID( bool anisoEnable, bool reflect );
+		static std::shared_ptr<Sampler> Resolve( GraphicsDeviceInterface& gdi, Type type = Type::Anisotropic, bool reflect = false );
+		static std::string GenerateUID( Type type, bool reflect );
 		std::string GetUID() const noexcept override;
 	protected:
 		ID3D11SamplerState* pSampler;
-		bool anisoEnable;
+		Type type;
 		bool reflect;
 	};
 }

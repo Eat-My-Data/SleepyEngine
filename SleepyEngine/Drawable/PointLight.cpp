@@ -167,7 +167,7 @@ void PointLight::Draw( GraphicsDeviceInterface& gdi )
 
 void PointLight::Submit() const noexcept
 {
-	m_SolidSphere->Submit();
+	//m_SolidSphere->Submit();
 }
 
 void PointLight::LinkTechniques( Rgph::RenderGraph& rg )

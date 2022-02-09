@@ -29,5 +29,10 @@ namespace Rgph
 			AddBind( Blender::Resolve( gfx, false ) );
 			RegisterSource( DirectBindableSource<Bind::RenderTarget>::Make( "scratchOut", renderTarget ) );
 		}
+		void Execute( GraphicsDeviceInterface& gfx ) const noexcept override
+		{
+			renderTarget->Clear( gfx );
+			RenderQueuePass::Execute( gfx );
+		}
 	};
 }

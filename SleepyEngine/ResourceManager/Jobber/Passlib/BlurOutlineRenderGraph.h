@@ -1,31 +1,29 @@
-@@ - 0, 0 + 1, 30 @@
 #pragma once
-#include "RenderQueuePass.h"
-#include "Job.h"
-#include <vector>
-#include "../../Bindable/Bindables/PixelShader.h"
-#include "../../Bindable/Bindables/VertexShader.h"
-#include "Stencil.h"
-#include "../../Bindable/Bindables/Rasterizer.h"
-#include "PassOutput.h"
-#include "../../Bindable/Bindables/RenderTarget.h"
-#include "../../Bindable/Bindables/Blender.h"
+#include "../RenderGraph.h"
+#include <memory>
+#include "../../../Bindable/Bindables/ConstantBuffersEx.h"
 
 class GraphicsDeviceInterface;
-
-class BlurOutlineDrawingPass : public RenderQueuePass
+namespace Bind
 {
-public:
-	BlurOutlineDrawingPass( GraphicsDeviceInterface& gfx, std::string name, unsigned int fullWidth, unsigned int fullHeight )
-		:
-		RenderQueuePass( std::move( name ) )
+	class Bindable;
+	class RenderTarget;
+}
+
+namespace Rgph
+{
+	class BlurOutlineRenderGraph : public RenderGraph
 	{
-		using namespace Bind;
-		renderTarget = std::make_unique<ShaderInputRenderTarget>( gfx, fullWidth / 2, fullHeight / 2, 0 );
-		AddBind( VertexShader::Resolve( gfx, "./Shaders/Bin/Solid_VS.cso" ) );
-		AddBind( PixelShader::Resolve( gfx, "./Shaders/Bin/Solid_PS.cso" ) );
-		AddBind( Stencil::Resolve( gfx, Stencil::Mode::Mask ) );
-		AddBind( Blender::Resolve( gfx, false ) );
-		RegisterOutput( ImmutableOutput<Bind::RenderTarget>::Make( "scratchOut", renderTarget ) );
-	}
-};
+	public:
+		BlurOutlineRenderGraph( GraphicsDeviceInterface& gfx );
+	private:
+		// private functions
+		void SetKernelGauss( int radius, float sigma ) noexcept;
+		// private data
+		static constexpr int maxRadius = 7;
+		static constexpr int radius = 4;
+		static constexpr float sigma = 2.0f;
+		std::shared_ptr<Bind::CachingPixelConstantBufferEx> blurKernel;
+		std::shared_ptr<Bind::CachingPixelConstantBufferEx> blurDirection;
+	};
+}

@@ -4,6 +4,10 @@
 #include "../Sink.h"
 #include "../Source.h"
 #include "../../../Bindable/Bindables/Blender.h"
+#include "../../../Bindable/Bindables/ConstantBuffersEx.h"
+#include "../../../Bindable/Bindables/Sampler.h"
+
+using namespace Bind;
 
 namespace Rgph
 {
@@ -11,16 +15,16 @@ namespace Rgph
 		:
 		FullscreenPass( std::move( name ), gfx )
 	{
-		AddBind( Bind::PixelShader::Resolve( gfx, "./Shaders/Bin/BlurOutline_PS.cso" ) );
-		AddBind( Bind::Blender::Resolve( gfx, false ) );
+		AddBind( PixelShader::Resolve( gfx, "./Shaders/Bin/BlurOutline_PS.cso" ) );
+		AddBind( Blender::Resolve( gfx, false ) );
 
-		RegisterSink( DirectBindableSink<Bind::Bindable>::Make( "control", control ) );
-		RegisterSink( DirectBindableSink<Bind::CachingPixelConstantBufferEx>::Make( "direction", direction ) );
-		RegisterSink( DirectBindableSink<Bind::Bindable>::Make( "scratchIn", blurScratchIn ) );
+		AddBindSink<Bind::RenderTarget>( "scratchIn" );
+		AddBindSink<Bind::CachingPixelConstantBufferEx>( "kernel" );
+		RegisterSink( DirectBindableSink<CachingPixelConstantBufferEx>::Make( "direction", direction ) );
 
 		// the renderTarget is internally sourced and then exported as a Bindable
-		renderTarget = std::make_shared<Bind::ShaderInputRenderTarget>( gfx, fullWidth / 2, fullHeight / 2, 0u );
-		RegisterSource( DirectBindableSource<Bind::RenderTarget>::Make( "scratchOut", renderTarget ) );
+		renderTarget = std::make_shared<ShaderInputRenderTarget>( gfx, fullWidth / 2, fullHeight / 2, 0u );
+		RegisterSource( DirectBindableSource<RenderTarget>::Make( "scratchOut", renderTarget ) );
 	}
 
 	// this override is necessary because we cannot (yet) link input bindables directly into
@@ -31,8 +35,6 @@ namespace Rgph
 		buf["isHorizontal"] = true;
 		direction->SetBuffer( buf );
 
-		blurScratchIn->Bind( gfx );
-		control->Bind( gfx );
 		direction->Bind( gfx );
 		FullscreenPass::Execute( gfx );
 	}

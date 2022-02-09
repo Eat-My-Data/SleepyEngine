@@ -4,6 +4,7 @@
 #include "../../../Bindable/Bindables/PixelShader.h"
 #include "../../../Bindable/Bindables/Blender.h"
 #include "../../../Bindable/Bindables/Stencil.h"
+#include "../../../Bindable/Bindables/Sampler.h"
 
 namespace Rgph
 {
@@ -15,15 +16,16 @@ namespace Rgph
 		AddBind( PixelShader::Resolve( gfx, "./Shaders/Bin/BlurOutline_PS.cso" ) );
 		AddBind( Blender::Resolve( gfx, true ) );
 		AddBind( Stencil::Resolve( gfx, Stencil::Mode::Mask ) );
+		AddBind( Sampler::Resolve( gfx, Sampler::Type::Bilinear, true ) );
 
-		RegisterSink( DirectBindableSink<Bind::Bindable>::Make( "scratchIn", blurScratchIn ) );
-		RegisterSink( DirectBindableSink<Bind::Bindable>::Make( "control", control ) );
-		RegisterSink( DirectBindableSink<Bind::CachingPixelConstantBufferEx>::Make( "direction", direction ) );
-		RegisterSink( DirectBufferSink<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
-		RegisterSink( DirectBufferSink<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
+		AddBindSink<RenderTarget>( "scratchIn" );
+		AddBindSink<CachingPixelConstantBufferEx>( "kernel" );
+		RegisterSink( DirectBindableSink<CachingPixelConstantBufferEx>::Make( "direction", direction ) );
+		RegisterSink( DirectBufferSink<RenderTarget>::Make( "renderTarget", renderTarget ) );
+		RegisterSink( DirectBufferSink<DepthStencil>::Make( "depthStencil", depthStencil ) );
 
-		RegisterSource( DirectBufferSource<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
-		RegisterSource( DirectBufferSource<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
+		RegisterSource( DirectBufferSource<RenderTarget>::Make( "renderTarget", renderTarget ) );
+		RegisterSource( DirectBufferSource<DepthStencil>::Make( "depthStencil", depthStencil ) );
 	}
 
 	// see the note on HorizontalBlurPass::Execute
@@ -33,9 +35,7 @@ namespace Rgph
 		buf["isHorizontal"] = false;
 		direction->SetBuffer( buf );
 
-		control->Bind( gfx );
 		direction->Bind( gfx );
-		blurScratchIn->Bind( gfx );
 		FullscreenPass::Execute( gfx );
 	}
 }

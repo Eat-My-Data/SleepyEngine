@@ -19,11 +19,11 @@ namespace Rgph
 
 	void BindingPass::BindAll( GraphicsDeviceInterface& gfx ) const noexcept
 	{
+		BindBufferResources( gfx );
 		for ( auto& bind : binds )
 		{
 			bind->Bind( gfx );
 		}
-		BindBufferResources( gfx );
 	}
 
 	void BindingPass::Finalize()
@@ -32,6 +32,18 @@ namespace Rgph
 		if ( !renderTarget && !depthStencil )
 		{
 			throw RGC_EXCEPTION( "BindingPass [" + GetName() + "] needs at least one of a renderTarget or depthStencil" );
+		}
+	}
+
+	void BindingPass::BindBufferResources( GraphicsDeviceInterface& gfx ) const noexcept
+	{
+		if ( renderTarget )
+		{
+			renderTarget->BindAsBuffer( gfx, depthStencil.get() );
+		}
+		else
+		{
+			depthStencil->BindAsBuffer( gfx );
 		}
 	}
 }

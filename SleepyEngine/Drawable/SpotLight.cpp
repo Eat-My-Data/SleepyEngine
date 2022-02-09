@@ -197,7 +197,7 @@ void SpotLight::Draw( GraphicsDeviceInterface& gdi )
 
 void SpotLight::Submit()
 {
-	m_pSolidCone->Submit();
+	//m_pSolidCone->Submit();
 }
 
 void SpotLight::Translate( DirectX::XMFLOAT3 translation )
