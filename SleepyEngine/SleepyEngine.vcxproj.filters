@@ -300,12 +300,6 @@
     <ClCompile Include="ResourceManager\Jobber\Passlib\RenderQueuePass.cpp">
       <Filter>Source Files\ResourceManager\Jobber\Passlib</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager\Jobber\PassInput.cpp">
-      <Filter>Source Files\ResourceManager\Jobber</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager\Jobber\PassOutput.cpp">
-      <Filter>Source Files\ResourceManager\Jobber</Filter>
-    </ClCompile>
     <ClCompile Include="ResourceManager\Jobber\RenderGraph.cpp">
       <Filter>Source Files\ResourceManager\Jobber</Filter>
     </ClCompile>
@@ -332,6 +326,12 @@
     </ClCompile>
     <ClCompile Include="ResourceManager\Jobber\Passlib\VerticalBlurPass.cpp">
       <Filter>Source Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Sink.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Source.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -581,12 +581,6 @@
     <ClInclude Include="ResourceManager\Jobber\Passlib\LambertianPass.h">
       <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceManager\Jobber\PassInput.h">
-      <Filter>Header Files\ResourceManager\Jobber</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager\Jobber\PassOutput.h">
-      <Filter>Header Files\ResourceManager\Jobber</Filter>
-    </ClInclude>
     <ClInclude Include="ResourceManager\Jobber\RenderGraph.h">
       <Filter>Header Files\ResourceManager\Jobber</Filter>
     </ClInclude>
@@ -625,6 +619,12 @@
     </ClInclude>
     <ClInclude Include="ResourceManager\Jobber\Passlib\BlurOutlineDrawingPass.h">
       <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Sink.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Source.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

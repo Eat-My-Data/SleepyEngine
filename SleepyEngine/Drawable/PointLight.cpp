@@ -172,7 +172,7 @@ void PointLight::Submit() const noexcept
 
 void PointLight::LinkTechniques( Rgph::RenderGraph& rg )
 {
-	m_SolidSphere->LinkTechniques( rg );
+	//m_SolidSphere->LinkTechniques( rg );
 }
 
 void PointLight::DrawControlPanel()

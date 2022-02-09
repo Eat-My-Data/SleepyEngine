@@ -141,7 +141,7 @@ void LightManager::DrawControlPanel()
 
 void LightManager::LinkTechniques( Rgph::RenderGraph& rg )
 {
-	m_vecOfPointLights[0]->LinkTechniques( rg );
+	//m_vecOfPointLights[0]->LinkTechniques( rg );
 }
 
 void LightManager::RenderLightGeometry()
