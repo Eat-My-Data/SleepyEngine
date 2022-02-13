@@ -20,15 +20,19 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_pGDI = &gdi;
 	rg = new Rgph::BlurOutlineRenderGraph( *m_pGDI );
 	m_GraphicsAPI = api;
-	//m_pTestCube = new Cube( *m_pGDI, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
-	//m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
+	m_pTestCube = new Cube( *m_pGDI, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
+	m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
 	sponza = new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", 1.0f / 20.0f );
+	gobber = new Model( *m_pGDI,"Models\\gobber\\GoblinX.obj",4.0f );
+	nano = new Model( *m_pGDI,"Models\\nano_textured\\nanosuit.obj",2.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	m_LightManager.Initialize( *m_pGDI );
 
-	//m_pTestCube->LinkTechniques( *rg );
-	//m_pTestCube2->LinkTechniques( *rg );
-	//m_LightManager.LinkTechniques( *rg );
+	m_pTestCube->LinkTechniques( *rg );
+	m_pTestCube2->LinkTechniques( *rg );
+	m_LightManager.LinkTechniques( *rg );
+	gobber->LinkTechniques( *rg );
+	nano->LinkTechniques( *rg );
 	sponza->LinkTechniques( *rg );
 	
 	
@@ -64,10 +68,16 @@ void SceneManager::Draw()
 	m_LightManager.UpdateBuffers();
 	m_pTestCube->Submit();
 	m_pTestCube2->Submit();
+	gobber->Submit();
+	nano->Submit();
 	sponza->Submit();
 
-	static MP modelProbe;
-	modelProbe.SpawnWindow( *sponza );
+	static MP sponzeProbe{ "Sponza" };
+	static MP gobberProbe{ "Gobber" };
+	static MP nanoProbe{ "Nano" };
+	sponzeProbe.SpawnWindow( *sponza );
+	gobberProbe.SpawnWindow( *gobber );
+	nanoProbe.SpawnWindow( *nano );
 
 	rg->Execute( *m_pGDI );
 

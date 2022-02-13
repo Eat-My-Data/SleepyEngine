@@ -10,8 +10,6 @@
 namespace dx = DirectX;
 
 Model::Model( GraphicsDeviceInterface& gfx, const std::string& pathString, const float scale )
-	//:
-	//pWindow( std::make_unique<ModelWindow>() )
 {
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile( pathString.c_str(),

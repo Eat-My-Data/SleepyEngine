@@ -4,6 +4,7 @@
 #include <array>
 
 class GraphicsDeviceInterface;
+class Surface;
 
 namespace Bind
 {
@@ -34,6 +35,7 @@ namespace Bind
 	public:
 		ShaderInputRenderTarget( GraphicsDeviceInterface& gfx, UINT width, UINT height, UINT slot );
 		void Bind( GraphicsDeviceInterface& gfx ) noexcept override;
+		Surface ToSurface( GraphicsDeviceInterface& gfx ) const;
 	private:
 		UINT slot;
 		ID3D11ShaderResourceView* pShaderResourceView;

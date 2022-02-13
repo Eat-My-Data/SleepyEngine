@@ -778,5 +778,11 @@
     <FxCompile Include="Shaders\Forward\F_PhongVSNotex.hlsl">
       <Filter>Shaders\Archive</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpc_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpc_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

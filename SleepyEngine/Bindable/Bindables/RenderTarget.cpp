@@ -1,7 +1,8 @@
 #include "RenderTarget.h"
 #include "DepthStencil.h"
+#include "../../ResourceManager/Surface.h"
 #include <array>
-
+#include <wrl.h>
 
 namespace Bind
 {
@@ -138,6 +139,49 @@ namespace Bind
 	{
 		assert( "Cannot bind OuputOnlyRenderTarget as shader input" && false );
 	}
+
+	Surface Bind::ShaderInputRenderTarget::ToSurface( GraphicsDeviceInterface& gfx ) const
+	{
+		namespace wrl = Microsoft::WRL;
+
+		// creating a temp texture compatible with the source, but with CPU read access
+		wrl::ComPtr<ID3D11Resource> pResSource;
+		pShaderResourceView->GetResource( &pResSource );
+		wrl::ComPtr<ID3D11Texture2D> pTexSource;
+		pResSource.As( &pTexSource );
+		D3D11_TEXTURE2D_DESC textureDesc;
+		pTexSource->GetDesc( &textureDesc );
+		textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		textureDesc.Usage = D3D11_USAGE_STAGING;
+		textureDesc.BindFlags = 0;
+		wrl::ComPtr<ID3D11Texture2D> pTexTemp;
+		GetDevice( gfx )->CreateTexture2D(
+			&textureDesc, nullptr, &pTexTemp
+		);
+
+		// copy texture contents
+		GetContext( gfx )->CopyResource( pTexTemp.Get(), pTexSource.Get() );
+
+		// create Surface and copy from temp texture to it
+		const auto width = GetWidth();
+		const auto height = GetHeight();
+		Surface s{ width,height };
+		D3D11_MAPPED_SUBRESOURCE msr = {};
+		GetContext( gfx )->Map( pTexTemp.Get(), 0, D3D11_MAP::D3D11_MAP_READ, 0, &msr );
+		auto pSrcBytes = static_cast<const char*>( msr.pData );
+		for ( unsigned int y = 0; y < height; y++ )
+		{
+			auto pSrcRow = reinterpret_cast<const Surface::Color*>( pSrcBytes + msr.RowPitch * size_t( y ) );
+			for ( unsigned int x = 0; x < width; x++ )
+			{
+				s.PutPixel( x, y, *( pSrcRow + x ) );
+			}
+		}
+		GetContext( gfx )->Unmap( pTexTemp.Get(), 0 );
+
+		return s;
+	}
+
 
 	OutputOnlyRenderTarget::OutputOnlyRenderTarget( GraphicsDeviceInterface& gfx, ID3D11Texture2D* pTexture )
 		:

@@ -7,7 +7,7 @@
 
 SolidCone::SolidCone( GraphicsDeviceInterface& gdi, f32 scale )
 {
-	using namespace Bind;
+	/*using namespace Bind;
 	namespace dx = DirectX;
 
 	auto model = Cone::Make();
@@ -45,7 +45,7 @@ SolidCone::SolidCone( GraphicsDeviceInterface& gdi, f32 scale )
 
 		solid.AddStep( std::move( only ) );
 		AddTechnique( std::move( solid ) );
-	}
+	}*/
 }
 
 void SolidCone::SetPos( DirectX::XMFLOAT3 pos ) noexcept
