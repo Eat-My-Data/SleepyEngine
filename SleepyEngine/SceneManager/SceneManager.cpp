@@ -72,13 +72,6 @@ void SceneManager::Draw()
 	nano->Submit();
 	sponza->Submit();
 
-	static MP sponzeProbe{ "Sponza" };
-	static MP gobberProbe{ "Gobber" };
-	static MP nanoProbe{ "Nano" };
-	//sponzeProbe.SpawnWindow( *sponza );
-	gobberProbe.SpawnWindow( *gobber );
-	//nanoProbe.SpawnWindow( *nano );
-
 	rg->Execute( *m_pGDI );
 
 	if ( imguiEnabled )
@@ -86,6 +79,13 @@ void SceneManager::Draw()
 		rg->RenderWidgets( *m_pGDI );
 		// imgui windows
 		DrawControlPanel();
+
+		static MP sponzeProbe{ "Sponza" };
+		static MP gobberProbe{ "Gobber" };
+		static MP nanoProbe{ "Nano" };
+		sponzeProbe.SpawnWindow( *sponza );
+		gobberProbe.SpawnWindow( *gobber );
+		nanoProbe.SpawnWindow( *nano );
 	}
 
 	rg->Reset();
@@ -113,7 +113,7 @@ void SceneManager::DrawControlPanel()
 	}
 	ImGui::End();
 
-	m_LightManager.DrawControlPanel();
+	//m_LightManager.DrawControlPanel();
 }
 
 void SceneManager::Present()

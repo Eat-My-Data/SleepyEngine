@@ -35,7 +35,7 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			only.AddBindable( Sampler::Resolve( gdi ) );
 
 			auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/PhongDif_VS.cso" );
-			auto pvsbc = pvs->GetBytecode();
+			only.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), *pvs ) );
 			only.AddBindable( std::move( pvs ) );
 
 			only.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/PhongDif_PS.cso" ) );
@@ -49,8 +49,6 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			buf["specularWeight"] = 0.1f;
 			buf["specularGloss"] = 20.0f;
 			only.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gdi, buf, 1u ) );
-
-			only.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 
 			only.AddBindable( Rasterizer::Resolve( gdi, false ) );
 
@@ -67,7 +65,7 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			Step mask( "outlineMask" );
 
 			// TODO: better sub-layout generation tech for future consideration maybe
-			mask.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" )->GetBytecode() ) );
+			mask.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), *VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" ) ) );
 
 			mask.AddBindable( std::move( tcb ) );
 
@@ -85,7 +83,7 @@ Cube::Cube( GraphicsDeviceInterface& gdi, Data data, f32 size )
 			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gdi, buf, 1u ) );
 
 			// TODO: better sub-layout generation tech for future consideration maybe
-			draw.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" )->GetBytecode() ) );
+			draw.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), *VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" ) ) );
 
 			draw.AddBindable( std::make_shared<TransformCbuf>( gdi ) );
 
