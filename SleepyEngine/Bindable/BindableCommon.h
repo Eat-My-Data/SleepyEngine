@@ -10,3 +10,7 @@
 #include "./Bindables/TransformCBuf.h"
 #include "./Bindables/Rasterizer.h"
 #include "./Bindables/Texture.h"
+#include "./Bindables/Sampler.h"
+#include "./Bindables/Stencil.h"
+#include "./Bindables/NullPixelShader.h"
+#include "./Bindables/Blender.h"

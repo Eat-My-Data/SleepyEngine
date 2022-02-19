@@ -80,13 +80,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include;</IncludePath>
-    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(ProjectDir)Libraries\assimp\bin\$(Platform)\$(Configuration);$(LibraryPath);</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include\;</IncludePath>
+    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(ProjectDir)Libraries\assimp\lib\$(Configuration);$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include;</IncludePath>
-    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(ProjectDir)Libraries\assimp\bin\$(Platform)\$(Configuration);$(LibraryPath);</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include\;</IncludePath>
+    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(ProjectDir)Libraries\assimp\lib\$(Configuration);$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -126,7 +126,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level2</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NOMINMAX;_MBCS;%(PreprocessorDefinitions);_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
@@ -147,7 +147,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level2</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -172,17 +172,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="Bindable\Bindable.cpp" />
     <ClCompile Include="Bindable\Bindables\Blender.cpp" />
+    <ClCompile Include="Bindable\Bindables\DepthStencil.cpp" />
     <ClCompile Include="Bindable\Bindables\DynamicConstant.cpp" />
+    <ClCompile Include="Bindable\Bindables\GraphicsResource.cpp" />
     <ClCompile Include="Bindable\Bindables\IndexBuffer.cpp" />
     <ClCompile Include="Bindable\Bindables\InputLayout.cpp" />
+    <ClCompile Include="Bindable\Bindables\NullPixelShader.cpp" />
     <ClCompile Include="Bindable\Bindables\PixelShader.cpp" />
     <ClCompile Include="Bindable\Bindables\Rasterizer.cpp" />
+    <ClCompile Include="Bindable\Bindables\RenderTarget.cpp" />
     <ClCompile Include="Bindable\Bindables\Sampler.cpp" />
     <ClCompile Include="Bindable\Bindables\Texture.cpp" />
     <ClCompile Include="Bindable\Bindables\Topology.cpp" />
     <ClCompile Include="Bindable\Bindables\TransformCBuf.cpp" />
+    <ClCompile Include="Bindable\Bindables\TransformCBufScaling.cpp" />
     <ClCompile Include="Bindable\Bindables\VertexBuffer.cpp" />
     <ClCompile Include="Bindable\Bindables\VertexShader.cpp" />
     <ClCompile Include="Drawable\SolidCone.cpp" />
@@ -202,8 +206,29 @@
     <ClCompile Include="Libraries\imgui\imgui_draw.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_tables.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\BlurOutlineRenderGraph.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\ChiliException.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Job.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Pass.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Passlib\BindingPass.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Passlib\BufferClearPass.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Passlib\FullscreenPass.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Passlib\HorizontalBlurPass.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Passlib\RenderQueuePass.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Passlib\VerticalBlurPass.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\RenderGraph.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\RenderGraphCompileException.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Sink.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Source.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Step.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\StepLinkingProbe.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\Technique.cpp" />
+    <ClCompile Include="ResourceManager\Jobber\ScanOutlineRenderGraph.cpp" />
     <ClCompile Include="ResourceManager\LayoutCodex.cpp" />
+    <ClCompile Include="ResourceManager\Material.cpp" />
     <ClCompile Include="ResourceManager\Mesh.cpp" />
+    <ClCompile Include="ResourceManager\Model.cpp" />
+    <ClCompile Include="ResourceManager\Node.cpp" />
     <ClCompile Include="ResourceManager\Surface.cpp" />
     <ClCompile Include="ResourceManager\Vertex.cpp" />
     <ClCompile Include="SceneManager\Camera.cpp" />
@@ -211,6 +236,8 @@
     <ClCompile Include="SceneManager\SceneManager.cpp" />
     <ClCompile Include="Utilities\FrameTimer.cpp" />
     <ClCompile Include="Utilities\SleepyUtil.cpp" />
+    <ClCompile Include="Utilities\SleepyXM.cpp" />
+    <ClCompile Include="Utilities\Testing.cpp" />
     <ClCompile Include="Win32\Keyboard.cpp" />
     <ClCompile Include="Win32\Mouse.cpp" />
     <ClCompile Include="Win32\Win32MessageMap.cpp" />
@@ -225,16 +252,22 @@
     <ClInclude Include="Bindable\Bindables\Blender.h" />
     <ClInclude Include="Bindable\Bindables\ConstantBuffers.h" />
     <ClInclude Include="Bindable\Bindables\ConstantBuffersEx.h" />
+    <ClInclude Include="Bindable\Bindables\DepthStencil.h" />
     <ClInclude Include="Bindable\Bindables\DynamicConstant.h" />
+    <ClInclude Include="Bindable\Bindables\GraphicsResource.h" />
     <ClInclude Include="Bindable\Bindables\IndexBuffer.h" />
     <ClInclude Include="Bindable\Bindables\InputLayout.h" />
+    <ClInclude Include="Bindable\Bindables\NullPixelShader.h" />
     <ClInclude Include="Bindable\Bindables\PixelShader.h" />
     <ClInclude Include="Bindable\Bindables\Rasterizer.h" />
+    <ClInclude Include="Bindable\Bindables\RenderTarget.h" />
     <ClInclude Include="Bindable\Bindables\Sampler.h" />
+    <ClInclude Include="Bindable\Bindables\Stencil.h" />
     <ClInclude Include="Bindable\Bindables\StructuredBuffers.h" />
     <ClInclude Include="Bindable\Bindables\Texture.h" />
     <ClInclude Include="Bindable\Bindables\Topology.h" />
     <ClInclude Include="Bindable\Bindables\TransformCBuf.h" />
+    <ClInclude Include="Bindable\Bindables\TransformCBufScaling.h" />
     <ClInclude Include="Bindable\Bindables\VertexBuffer.h" />
     <ClInclude Include="Bindable\Bindables\VertexShader.h" />
     <ClInclude Include="Drawable\SolidCone.h" />
@@ -259,8 +292,37 @@
     <ClInclude Include="ResourceManager\Geometry\Cone.h" />
     <ClInclude Include="ResourceManager\Geometry\Sphere.h" />
     <ClInclude Include="ResourceManager\IndexedTriangleList.h" />
+    <ClInclude Include="ResourceManager\Jobber\BufferResource.h" />
+    <ClInclude Include="ResourceManager\Jobber\ChiliException.h" />
+    <ClInclude Include="ResourceManager\Jobber\Job.h" />
+    <ClInclude Include="ResourceManager\Jobber\ModelProbe.h" />
+    <ClInclude Include="ResourceManager\Jobber\Pass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\BindingPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\BlurOutlineDrawingPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\BlurOutlineRenderGraph.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\BufferClearPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\FullscreenPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\HorizontalBlurPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\LambertianPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineDrawingPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineMaskGenerationPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\RenderQueuePass.h" />
+    <ClInclude Include="ResourceManager\Jobber\Passlib\VerticalBlurPass.h" />
+    <ClInclude Include="ResourceManager\Jobber\RenderGraph.h" />
+    <ClInclude Include="ResourceManager\Jobber\RenderGraphCompileException.h" />
+    <ClInclude Include="ResourceManager\Jobber\Sink.h" />
+    <ClInclude Include="ResourceManager\Jobber\Source.h" />
+    <ClInclude Include="ResourceManager\Jobber\Step.h" />
+    <ClInclude Include="ResourceManager\Jobber\StepLinkingProbe.h" />
+    <ClInclude Include="ResourceManager\Jobber\Technique.h" />
+    <ClInclude Include="ResourceManager\Jobber\TechniqueProbe.h" />
+    <ClInclude Include="ResourceManager\Jobber\TestModelProbe.h" />
+    <ClInclude Include="ResourceManager\Jobber\ScanOutlineRenderGraph.h" />
     <ClInclude Include="ResourceManager\LayoutCodex.h" />
+    <ClInclude Include="ResourceManager\Material.h" />
     <ClInclude Include="ResourceManager\Mesh.h" />
+    <ClInclude Include="ResourceManager\Model.h" />
+    <ClInclude Include="ResourceManager\Node.h" />
     <ClInclude Include="ResourceManager\Surface.h" />
     <ClInclude Include="ResourceManager\Vertex.h" />
     <ClInclude Include="SceneManager\Camera.h" />
@@ -269,9 +331,11 @@
     <ClInclude Include="SceneManager\SceneManager.h" />
     <ClInclude Include="Utilities\FrameTimer.h" />
     <ClInclude Include="Utilities\NumericDataTypes.h" />
+    <ClInclude Include="Utilities\PerfLog.h" />
     <ClInclude Include="Utilities\SleepyMath.h" />
     <ClInclude Include="Utilities\SleepyUtil.h" />
     <ClInclude Include="Utilities\SleepyXM.h" />
+    <ClInclude Include="Utilities\Testing.h" />
     <ClInclude Include="Win32\Keyboard.h" />
     <ClInclude Include="Win32\Mouse.h" />
     <ClInclude Include="Win32\Win32MessageMap.h" />
@@ -279,6 +343,14 @@
     <ClInclude Include="Win32\WinDefines.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="Shaders\Common\BlurOutline_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="Shaders\Common\CameraData.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -292,6 +364,22 @@
     <FxCompile Include="Shaders\Common\DirectionalLight.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.1</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\FullScreen_VS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\Blur_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shaders\Common\LightVectorData.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -308,6 +396,12 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <FileType>Document</FileType>
     </ClInclude>
+    <FxCompile Include="Shaders\Common\Offset_VS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
     <FxCompile Include="Shaders\Common\ShaderOps.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -316,7 +410,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\SolidPS.hlsl">
+    <FxCompile Include="Shaders\Common\Solid_PS.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -324,7 +418,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\SolidVS.hlsl">
+    <FxCompile Include="Shaders\Common\Solid_VS.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
@@ -531,6 +625,118 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpcNrm_PS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpcNrm_VS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpc_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpc_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifNrm_PS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifNrm_VS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpcNrm_PS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpcNrm_VS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpc_PS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpc_VS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDif_PS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDif_VS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\Phong_PS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\Phong_VS.hlsl">
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

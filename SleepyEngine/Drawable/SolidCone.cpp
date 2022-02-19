@@ -7,30 +7,45 @@
 
 SolidCone::SolidCone( GraphicsDeviceInterface& gdi, f32 scale )
 {
-	using namespace Bind;
+	/*using namespace Bind;
 	namespace dx = DirectX;
 
 	auto model = Cone::Make();
 	model.Transform( dx::XMMatrixScaling( scale, scale, scale ) );
 	const auto geometryTag = "cone." + std::to_string( scale );
-	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
-	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 
-	auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/SolidVS.cso" );
-	auto pvsbc = pvs->GetBytecode();
-	AddBind( std::move( pvs ) );
+	pVertices = VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices );
+	pIndices = IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices );
+	pTopology = Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
-	AddBind( PixelShader::Resolve( gdi, "./Shaders/Bin/SolidPS.cso" ) );
+	{
+		Technique solid;
+		Step only( "lambertian" );
 
-	AddBind( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
+		auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );
+		auto pvsbc = pvs->GetBytecode();
+		only.AddBindable( std::move( pvs ) );
 
-	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+		only.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/Solid_PS.cso" ) );
 
-	AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );
+		struct PSColorConstant
+		{
+			dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
+			float padding;
+		} colorConst;
+		only.AddBindable( PixelConstantBuffer<PSColorConstant>::Resolve( gdi, colorConst, 8u ) );
 
-	AddBind( Blender::Resolve( gdi, false ) );
+		only.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
 
-	AddBind( Rasterizer::Resolve( gdi, false ) );
+		only.AddBindable( std::make_shared<TransformCbuf>( gdi ) );
+
+		only.AddBindable( Blender::Resolve( gdi, false ) );
+
+		only.AddBindable( Rasterizer::Resolve( gdi, false ) );
+
+		solid.AddStep( std::move( only ) );
+		AddTechnique( std::move( solid ) );
+	}*/
 }
 
 void SolidCone::SetPos( DirectX::XMFLOAT3 pos ) noexcept

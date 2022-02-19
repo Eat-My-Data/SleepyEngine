@@ -100,13 +100,25 @@
     <Filter Include="Source Files\Libraries\imgui\backends">
       <UniqueIdentifier>{0574383d-e34f-4e24-93f1-9998ead04e46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ResourceManager\Jobber">
+      <UniqueIdentifier>{df62f758-07af-4e54-8fa5-5f351498fba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ResourceManager\Jobber">
+      <UniqueIdentifier>{707840a8-4d84-4760-9d7d-a186a100c730}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Archive">
+      <UniqueIdentifier>{3879ad9e-ff2e-495d-a7de-620a62bedd43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ResourceManager\Jobber\Passlib">
+      <UniqueIdentifier>{f5808d9c-db38-4202-88e9-a69bfb7c8caa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ResourceManager\Jobber\Passlib">
+      <UniqueIdentifier>{ba104412-ffe6-46af-9f92-ce6785063f99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bindable\Bindable.cpp">
-      <Filter>Source Files\Bindable</Filter>
     </ClCompile>
     <ClCompile Include="Drawable\Drawable.cpp">
       <Filter>Source Files\Drawable</Filter>
@@ -236,6 +248,90 @@
     </ClCompile>
     <ClCompile Include="Drawable\SolidCone.cpp">
       <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Job.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Step.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Technique.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\NullPixelShader.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Material.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\Testing.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Node.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Model.cpp">
+      <Filter>Source Files\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\SleepyXM.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\RenderTarget.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\GraphicsResource.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\DepthStencil.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Pass.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Passlib\BindingPass.cpp">
+      <Filter>Source Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Passlib\BufferClearPass.cpp">
+      <Filter>Source Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Passlib\FullscreenPass.cpp">
+      <Filter>Source Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Passlib\RenderQueuePass.cpp">
+      <Filter>Source Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\RenderGraph.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\RenderGraphCompileException.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\ChiliException.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\StepLinkingProbe.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\TransformCBufScaling.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\ScanOutlineRenderGraph.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Passlib\HorizontalBlurPass.cpp">
+      <Filter>Source Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\BlurOutlineRenderGraph.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Passlib\VerticalBlurPass.cpp">
+      <Filter>Source Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Sink.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager\Jobber\Source.cpp">
+      <Filter>Source Files\ResourceManager\Jobber</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -419,6 +515,117 @@
     <ClInclude Include="ResourceManager\Geometry\Cone.h">
       <Filter>Header Files\ResourceManager\Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Job.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Step.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Technique.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Pass.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\Stencil.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\NullPixelShader.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\PerfLog.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Material.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities\Testing.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Model.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Node.h">
+      <Filter>Header Files\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\ModelProbe.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\TechniqueProbe.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\RenderTarget.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\GraphicsResource.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\DepthStencil.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\BindingPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\BufferClearPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\FullscreenPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\RenderQueuePass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\BufferResource.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\LambertianPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\RenderGraph.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\RenderGraphCompileException.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\ChiliException.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\StepLinkingProbe.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineMaskGenerationPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineDrawingPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\TransformCBufScaling.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\TestModelProbe.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\ScanOutlineRenderGraph.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\HorizontalBlurPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\BlurOutlineRenderGraph.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\VerticalBlurPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Passlib\BlurOutlineDrawingPass.h">
+      <Filter>Header Files\ResourceManager\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Sink.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager\Jobber\Source.h">
+      <Filter>Header Files\ResourceManager\Jobber</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
@@ -448,27 +655,6 @@
     <FxCompile Include="Shaders\Deferred\D_PhongPSSpecNormalMap.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormMask.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPS.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMap.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMapObject.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSNotex.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSSpec.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormalMap.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
     <FxCompile Include="Shaders\Deferred\LightVS.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
@@ -490,22 +676,13 @@
     <FxCompile Include="Shaders\Deferred\D_PhongVSNormalMap.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongVS.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongVSNormalMap.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongVSNotex.hlsl">
-      <Filter>Shaders\Forward</Filter>
-    </FxCompile>
     <FxCompile Include="Shaders\Common\DirectionalLight.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\SolidPS.hlsl">
+    <FxCompile Include="Shaders\Common\Solid_PS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\SolidVS.hlsl">
+    <FxCompile Include="Shaders\Common\Solid_VS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Common\SpotLight.hlsl">
@@ -522,6 +699,90 @@
     </FxCompile>
     <FxCompile Include="Shaders\Common\DefaultLightSettings.hlsl">
       <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\Phong_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\Phong_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDif_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDif_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpcNrm_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpcNrm_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifNrm_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifNrm_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpc_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpc_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpcNrm_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifSpcNrm_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\Offset_VS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\Blur_PS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\FullScreen_VS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\BlurOutline_PS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPS.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMap.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMapObject.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSNotex.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSSpec.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormalMap.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormMask.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongVS.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongVSNormalMap.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\F_PhongVSNotex.hlsl">
+      <Filter>Shaders\Archive</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpc_PS.hlsl">
+      <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Forward\PhongDifMskSpc_VS.hlsl">
+      <Filter>Shaders\Forward</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

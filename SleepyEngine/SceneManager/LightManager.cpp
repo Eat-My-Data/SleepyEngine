@@ -47,14 +47,17 @@ void LightManager::Initialize( GraphicsDeviceInterface& gdi )
 	DirectX::XMStoreFloat3( &cameraUps[5], DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
 }
 
-void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
+void LightManager::UpdateBuffers()
 {
-	m_pDirectionalLight->Update( *m_pGDI, camPos );
+	m_pDirectionalLight->Update( *m_pGDI );
 	m_pDirectionalLightBuffer->Update( *m_pGDI, m_pDirectionalLight->m_StructuredBufferData );
 	m_pDirectionalLightBuffer->Bind( *m_pGDI );
 
-	m_pSpotLight->Update( *m_pGDI, camPos );
-	m_pSpotLightBuffer->Update( *m_pGDI, m_pSpotLight->m_StructuredBufferData );
+	m_pSpotLight->Update( *m_pGDI );
+	auto dataCopy = m_pSpotLight->m_StructuredBufferData;
+	const auto pos = DirectX::XMLoadFloat3( &m_pSpotLight->m_StructuredBufferData.pos );
+	DirectX::XMStoreFloat3( &dataCopy.pos, DirectX::XMVector3Transform( pos, m_pGDI->GetViewMatrix() ) );
+	m_pSpotLightBuffer->Update( *m_pGDI, dataCopy );
 	m_pSpotLightBuffer->Bind( *m_pGDI );
 
 	// TODO: Currently limited to two lights = BAD
@@ -62,7 +65,10 @@ void LightManager::UpdateBuffers( DirectX::XMFLOAT3 camPos )
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
 	{
 		m_vecOfPointLights[i]->Update();
-		bufferData[i] = m_vecOfPointLights[i]->m_StructuredBufferData;
+		auto dataCopy = m_vecOfPointLights[i]->m_StructuredBufferData;
+		const auto pos = DirectX::XMLoadFloat3( &m_vecOfPointLights[i]->m_StructuredBufferData.pos );
+		DirectX::XMStoreFloat3( &dataCopy.pos, DirectX::XMVector3Transform( pos, m_pGDI->GetViewMatrix() ) );
+		bufferData[i] = dataCopy;
 	}
 	m_pPointLightBuffer->Update( *m_pGDI, bufferData );
 	m_pPointLightBuffer->Bind( *m_pGDI );
@@ -83,7 +89,7 @@ void LightManager::Draw()
 {
 	const float blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	m_pGDI->GetContext()->OMSetBlendState( m_pGDI->GetBlendState(), blendFactor, 0xffffffff );
-	m_pGDI->GetContext()->OMSetRenderTargets( 1, m_pGDI->GetTarget(), *m_pGDI->GetDSV_ReadOnly() );
+	m_pGDI->GetContext()->OMSetRenderTargets( 1, m_pGDI->GetTargetDeprecated(), *m_pGDI->GetDSV_ReadOnly() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetLightDSS(), 1u );
 	m_pGDI->GetContext()->PSSetShaderResources( 0, 3, m_pGDI->GetShaderResources() );
 	m_pGDI->GetContext()->PSSetShaderResources( 3, 1, m_pGDI->GetDepthResource() );
@@ -133,6 +139,11 @@ void LightManager::DrawControlPanel()
 	ImGui::End();
 }
 
+void LightManager::LinkTechniques( Rgph::RenderGraph& rg )
+{
+	//m_vecOfPointLights[0]->LinkTechniques( rg );
+}
+
 void LightManager::RenderLightGeometry()
 {
 	for ( u32 i = 0; i < m_vecOfPointLights.size(); i++ )
@@ -143,12 +154,12 @@ void LightManager::RenderLightGeometry()
 		m_SolidGeometryColor.color = m_vecOfPointLights[i]->m_StructuredBufferData.color;
 		m_pSolidGeometryColorBuffer->Update( *m_pGDI, m_SolidGeometryColor );
 		m_pSolidGeometryColorBuffer->Bind( *m_pGDI );
-		m_vecOfPointLights[i]->m_SolidSphere->Draw( *m_pGDI );
+		//m_vecOfPointLights[i]->m_SolidSphere->Submit( *m_pGDI );
 	}
 	m_SolidGeometryColor.color = m_pSpotLight->m_StructuredBufferData.color;
 	m_pSolidGeometryColorBuffer->Update( *m_pGDI, m_SolidGeometryColor );
 	m_pSolidGeometryColorBuffer->Bind( *m_pGDI );
-	m_pSpotLight->m_pSolidCone->Draw( *m_pGDI );
+	//m_pSpotLight->m_pSolidCone->Submit( m_Fr );
 }
 
 void LightManager::PrepareDepthFromLight()
@@ -172,7 +183,7 @@ void LightManager::RenderPointLightCubeTextures( const Model& model )
 			m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, depthBuffers[i + ( index * 6 )] );
 			const auto lookAt = DirectX::XMVectorAdd( pos, DirectX::XMLoadFloat3( &cameraDirections[i] ) );
 			m_pGDI->SetViewMatrix( DirectX::XMMatrixLookAtLH( pos, lookAt, DirectX::XMLoadFloat3( &cameraUps[i] ) ) );
-			model.Draw( *m_pGDI, true );
+			//model.Submit( *m_pGDI );
 		}
 	}
 }
@@ -183,6 +194,16 @@ void LightManager::PrepareDepthFromSpotLight()
 	m_pGDI->SetProjMatrix( m_pSpotLight->GetProjectionMatrix() );
 	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS2(), 1u );
 	m_pGDI->GetContext()->OMSetRenderTargets( 0, nullptr, *m_pGDI->GetShadowDSV2() );
+}
+
+void LightManager::Submit()
+{
+	//m_vecOfPointLights[0]->Submit();
+	/*for ( int i = 0; i < m_vecOfPointLights.size(); i++ )
+	{
+		m_vecOfPointLights[i]->Submit();
+	}
+	m_pSpotLight->Submit();*/
 }
 
 void LightManager::SelectPointLight( const u32 index )

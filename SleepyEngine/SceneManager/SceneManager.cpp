@@ -2,6 +2,10 @@
 #include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 #include "../Libraries/imgui/backends/imgui_impl_dx11.h"
 #include "../Libraries/imgui/backends/imgui_impl_win32.h"
+#include "../Utilities/Testing.h"
+#include "../ResourceManager/Material.h"
+
+#include "../ResourceManager/Jobber/TestModelProbe.h"
 
 SceneManager::~SceneManager()
 {
@@ -12,15 +16,26 @@ SceneManager::~SceneManager()
 }
 
 void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
-{		
+{
 	m_pGDI = &gdi;
+	rg = new Rgph::BlurOutlineRenderGraph( *m_pGDI );
 	m_GraphicsAPI = api;
-	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", true, 1.0f / 20.0f ) );
-	m_vecOfModels.push_back( new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", false, 1.0f / 20.0f ) );
+	m_pTestCube = new Cube( *m_pGDI, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
+	m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
+	sponza = new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", 1.0f / 20.0f );
+	gobber = new Model( *m_pGDI,"Models\\gobber\\GoblinX.obj",4.0f );
+	nano = new Model( *m_pGDI,"Models\\nano_textured\\nanosuit.obj",2.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
-	//m_pMonster = new Model( *m_pGDI, "Models\\character_01\\character_01.obj", true, 2000.0f );
-	//m_pMonster->SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -250.0f, 0.0f ) * DirectX::XMMatrixRotationY( -PI / 2.0f ) * DirectX::XMMatrixRotationZ( PI / 2.0f ) );
 	m_LightManager.Initialize( *m_pGDI );
+
+	m_pTestCube->LinkTechniques( *rg );
+	m_pTestCube2->LinkTechniques( *rg );
+	m_LightManager.LinkTechniques( *rg );
+	gobber->LinkTechniques( *rg );
+	nano->LinkTechniques( *rg );
+	sponza->LinkTechniques( *rg );
+	
+	
 	ImGui_ImplDX11_Init( m_pGDI->GetDevice(), m_pGDI->GetContext() );
 }
 
@@ -41,19 +56,39 @@ void SceneManager::ToggleImGuiEngabled() noexcept
 
 void SceneManager::Draw()
 {
-	if ( imguiEnabled )
-	{
-		ImGui_ImplDX11_NewFrame();
-		ImGui_ImplWin32_NewFrame();
-		ImGui::NewFrame();
-	}
+	namespace dx = DirectX;
 
 	PrepareFrame();
 
-	if ( m_RenderTechnique == RenderTechnique::Forward )
-		ForwardRender();
-	else if ( m_RenderTechnique == RenderTechnique::Deferred )
-		DeferredRender();
+	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
+	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
+	UpdateCameraBuffer();
+
+	//m_LightManager.Submit();
+	m_LightManager.UpdateBuffers();
+	m_pTestCube->Submit();
+	m_pTestCube2->Submit();
+	gobber->Submit();
+	nano->Submit();
+	sponza->Submit();
+
+	rg->Execute( *m_pGDI );
+
+	if ( imguiEnabled )
+	{
+		rg->RenderWidgets( *m_pGDI );
+		// imgui windows
+		DrawControlPanel();
+
+		static MP sponzeProbe{ "Sponza" };
+		static MP gobberProbe{ "Gobber" };
+		static MP nanoProbe{ "Nano" };
+		sponzeProbe.SpawnWindow( *sponza );
+		gobberProbe.SpawnWindow( *gobber );
+		nanoProbe.SpawnWindow( *nano );
+	}
+
+	rg->Reset();
 
 	// clear shader resources
 	ID3D11ShaderResourceView* null[12] = {};
@@ -78,7 +113,7 @@ void SceneManager::DrawControlPanel()
 	}
 	ImGui::End();
 
-	m_LightManager.DrawControlPanel();
+	//m_LightManager.DrawControlPanel();
 }
 
 void SceneManager::Present()
@@ -140,16 +175,17 @@ void SceneManager::RotateSpotLight( const f32 dx, const f32 dy )
 
 void SceneManager::PrepareFrame()
 {
-	// setup
-	const float color[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	m_pGDI->GetContext()->ClearRenderTargetView( *m_pGDI->GetTarget(), color );
-	for ( int i = 0; i < 3; i++ )
+	// imgui begin frame
+	if ( imguiEnabled )
 	{
-		m_pGDI->GetContext()->ClearRenderTargetView( m_pGDI->GetGBuffers()[i], color );
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
 	}
-	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
-	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
-	m_pGDI->GetContext()->ClearDepthStencilView( *m_pGDI->GetShadowDSV2(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
+	//// clearing shader inputs to prevent simultaneous in/out bind carried over from prev frame
+	//ID3D11ShaderResourceView* const pNullTex = nullptr;
+	//m_pGDI->GetContext()->PSSetShaderResources( 0, 1, &pNullTex ); // fullscreen input texture
+	//m_pGDI->GetContext()->PSSetShaderResources( 3, 1, &pNullTex ); // shadow map texture
 }
 
 void SceneManager::UpdateCameraBuffer()
@@ -168,62 +204,4 @@ void SceneManager::UpdateCameraBuffer()
 
 	m_pCameraBuffer->Update( *m_pGDI, m_CameraCBufferaData );
 	m_pCameraBuffer->Bind( *m_pGDI );
-}
-
-void SceneManager::ForwardRender()
-{
-	// depth from light
-	m_LightManager.PrepareDepthFromLight();
-	m_vecOfModels[1]->Draw( *m_pGDI, true );
-
-	// point light depth pass
-	m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
-
-	// spot light depth pass
-	m_LightManager.PrepareDepthFromSpotLight();
-	m_vecOfModels[1]->Draw( *m_pGDI, true );
-
-	// update and render
-	m_pGDI->GetContext()->OMSetRenderTargets( 1u, m_pGDI->GetTarget(), *m_pGDI->GetDSV() );
-	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
-	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
-	m_pGDI->GetContext()->PSSetShaderResources( 5u, 1, m_pGDI->GetShadowResource() );
-	UpdateCameraBuffer();
-	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
-	m_vecOfModels[0]->Draw( *m_pGDI, false );
-	//m_pMonster->Draw( *m_pGDI, false );
-
-	// light cores
-	m_LightManager.RenderLightGeometry();
-}
-
-void SceneManager::DeferredRender()
-{
-	// depth from light
-	m_LightManager.PrepareDepthFromLight();
-	m_vecOfModels[1]->Draw( *m_pGDI, true );
-
-	// point light depth pass
-	m_LightManager.RenderPointLightCubeTextures( *m_vecOfModels[1] );
-
-	// spot light depth pass
-	m_LightManager.PrepareDepthFromSpotLight();
-	m_vecOfModels[1]->Draw( *m_pGDI, true );
-
-	// gbuffers
-	m_pGDI->SetViewMatrix( m_Camera.GetViewMatrix() );
-	m_pGDI->SetProjMatrix( m_Camera.GetProjectionMatrix() );
-	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
-	m_pGDI->GetContext()->OMSetRenderTargets( 3, m_pGDI->GetGBuffers(), *m_pGDI->GetDSV() );
-	m_vecOfModels[1]->Draw( *m_pGDI, false );
-	//m_pMonster->Draw( *m_pGDI, false );
-
-	// lights
-	UpdateCameraBuffer();
-	m_LightManager.UpdateBuffers( m_Camera.GetPosition() );
-	m_LightManager.Draw();
-
-	// light cores
-	m_pGDI->GetContext()->OMSetDepthStencilState( m_pGDI->GetBufferDSS(), 1u );
-	m_LightManager.RenderLightGeometry();
 }

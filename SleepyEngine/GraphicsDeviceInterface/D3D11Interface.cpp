@@ -22,8 +22,8 @@ D3D11Interface::~D3D11Interface()
     if ( m_pContext != nullptr )
         m_pContext->Release();
 
-    if ( m_pTarget != nullptr )
-        m_pTarget->Release();
+  //  if ( m_pTarget != nullptr )
+    //    m_pTarget->Release();
 }
 
 void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
@@ -95,8 +95,18 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 	renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 	renderTargetViewDesc.Texture2D.MipSlice = 0;
 
-	m_pSwap->GetBuffer( 0, __uuidof( ID3D11Resource ), (void**)&pBackBuffer );
-	m_pDevice->CreateRenderTargetView( pBackBuffer, nullptr, &m_pTarget );
+	//m_pSwap->GetBuffer( 0, __uuidof( ID3D11Resource ), (void**)&pBackBuffer );
+	//m_pDevice->CreateRenderTargetView( pBackBuffer, nullptr, &m_pTarget );
+
+	// viewport always fullscreen (for now)
+	D3D11_VIEWPORT vp;
+	vp.Width = (float)width;
+	vp.Height = (float)height;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0.0f;
+	vp.TopLeftY = 0.0f;
+	m_pContext->RSSetViewports( 1u, &vp );
 
 	for ( int i = 0; i < bufferCount; i++ )
 	{
@@ -203,16 +213,6 @@ void D3D11Interface::Initialize( HWND& hWnd, u32 width, u32 height )
 	{
 		throw std::exception();
 	}
-
-	// viewport
-    D3D11_VIEWPORT vp;
-    vp.Width = (float)width;
-    vp.Height = (float)height;
-    vp.MinDepth = 0.0f;
-    vp.MaxDepth = 1.0f;
-    vp.TopLeftX = 0.0f;
-    vp.TopLeftY = 0.0f;
-    m_pContext->RSSetViewports( 1u, &vp );
 }
 
 IDXGISwapChain* D3D11Interface::GetSwap() noexcept
@@ -230,7 +230,7 @@ ID3D11DeviceContext* D3D11Interface::GetContext() noexcept
     return m_pContext;
 }
 
-ID3D11RenderTargetView** D3D11Interface::GetTarget() noexcept
+ID3D11RenderTargetView** D3D11Interface::GetTargetDeprecated() noexcept
 {
     return &m_pTarget;
 }

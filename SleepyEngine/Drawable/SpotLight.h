@@ -10,9 +10,10 @@ class SpotLight : public Drawable
 public:
 	SpotLight( GraphicsDeviceInterface& gdi, f32 scale );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	void Update( GraphicsDeviceInterface& gdi, DirectX::XMFLOAT3 camPos );
+	void Update( GraphicsDeviceInterface& gdi );
 	void DrawControlPanel();
 	void Draw( GraphicsDeviceInterface& gdi );
+	void Submit();
 public:
 	void Translate( DirectX::XMFLOAT3 translation );
 	void Rotate( const f32 dx, const f32 dy );

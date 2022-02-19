@@ -1,30 +1,46 @@
+#define DVTX_SOURCE_FILE
 #include "Vertex.h"
+#include <cassert>
 
 namespace Dvtx
 {
 	// VertexLayout
 	const VertexLayout::Element& VertexLayout::ResolveByIndex( size_t i ) const noexcept
 	{
-		return m_vecOfElements[i];
+		return elements[i];
 	}
 	VertexLayout& VertexLayout::Append( ElementType type ) noexcept
 	{
-		m_vecOfElements.emplace_back( type, Size() );
+		if ( !Has( type ) )
+		{
+			elements.emplace_back( type, Size() );
+		}
 		return *this;
+	}
+	bool VertexLayout::Has( ElementType type ) const noexcept
+	{
+		for ( auto& e : elements )
+		{
+			if ( e.GetType() == type )
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	size_t VertexLayout::Size() const noexcept
 	{
-		return m_vecOfElements.empty() ? 0u : m_vecOfElements.back().GetOffsetAfter();
+		return elements.empty() ? 0u : elements.back().GetOffsetAfter();
 	}
 	size_t VertexLayout::GetElementCount() const noexcept
 	{
-		return m_vecOfElements.size();
+		return elements.size();
 	}
 	std::vector<D3D11_INPUT_ELEMENT_DESC> VertexLayout::GetD3DLayout() const noexcept
 	{
 		std::vector<D3D11_INPUT_ELEMENT_DESC> desc;
 		desc.reserve( GetElementCount() );
-		for ( const auto& e : m_vecOfElements )
+		for ( const auto& e : elements )
 		{
 			desc.push_back( e.GetDesc() );
 		}
@@ -33,7 +49,7 @@ namespace Dvtx
 	std::string VertexLayout::GetCode() const noexcept
 	{
 		std::string code;
-		for ( const auto& e : m_vecOfElements )
+		for ( const auto& e : elements )
 		{
 			code += e.GetCode();
 		}
@@ -44,112 +60,74 @@ namespace Dvtx
 	// VertexLayout::Element
 	VertexLayout::Element::Element( ElementType type, size_t offset )
 		:
-		m_ElementType( type ),
-		m_iOffset( offset )
+		type( type ),
+		offset( offset )
 	{}
 	size_t VertexLayout::Element::GetOffsetAfter() const noexcept
 	{
-		return m_iOffset + Size();
+		return offset + Size();
 	}
 	size_t VertexLayout::Element::GetOffset() const
 	{
-		return m_iOffset;
+		return offset;
 	}
 	size_t VertexLayout::Element::Size() const noexcept
 	{
-		return SizeOf( m_ElementType );
-	}
-	constexpr size_t VertexLayout::Element::SizeOf( ElementType type ) noexcept
-	{
-		switch ( type )
-		{
-		case Position2D:
-			return sizeof( Map<Position2D>::SysType );
-		case Position3D:
-			return sizeof( Map<Position3D>::SysType );
-		case Texture2D:
-			return sizeof( Map<Texture2D>::SysType );
-		case Normal:
-			return sizeof( Map<Normal>::SysType );
-		case Tangent:
-			return sizeof( Map<Tangent>::SysType );
-		case Bitangent:
-			return sizeof( Map<Bitangent>::SysType );
-		case Float3Color:
-			return sizeof( Map<Float3Color>::SysType );
-		case Float4Color:
-			return sizeof( Map<Float4Color>::SysType );
-		case BGRAColor:
-			return sizeof( Map<BGRAColor>::SysType );
-		}
-		assert( "Invalid element type" && false );
-		return 0u;
+		return SizeOf( type );
 	}
 	VertexLayout::ElementType VertexLayout::Element::GetType() const noexcept
 	{
-		return m_ElementType;
+		return type;
 	}
+
+	template<VertexLayout::ElementType type>
+	struct SysSizeLookup
+	{
+		static constexpr auto Exec() noexcept
+		{
+			return sizeof( VertexLayout::Map<type>::SysType );
+		}
+	};
+	constexpr size_t VertexLayout::Element::SizeOf( ElementType type ) noexcept
+	{
+		return Bridge<SysSizeLookup>( type );
+	}
+
+	template<VertexLayout::ElementType type>
+	struct CodeLookup
+	{
+		static constexpr auto Exec() noexcept
+		{
+			return VertexLayout::Map<type>::code;
+		}
+	};
 	const char* Dvtx::VertexLayout::Element::GetCode() const noexcept
 	{
-		switch ( m_ElementType )
-		{
-		case Position2D:
-			return Map<Position2D>::code;
-		case Position3D:
-			return Map<Position3D>::code;
-		case Texture2D:
-			return Map<Texture2D>::code;
-		case Normal:
-			return Map<Normal>::code;
-		case Tangent:
-			return Map<Tangent>::code;
-		case Bitangent:
-			return Map<Bitangent>::code;
-		case Float3Color:
-			return Map<Float3Color>::code;
-		case Float4Color:
-			return Map<Float4Color>::code;
-		case BGRAColor:
-			return Map<BGRAColor>::code;
-		}
-		assert( "Invalid element type" && false );
-		return "Invalid";
+		return Bridge<CodeLookup>( type );
 	}
+
+	template<VertexLayout::ElementType type> struct DescGenerate {
+		static constexpr D3D11_INPUT_ELEMENT_DESC Exec( size_t offset ) noexcept {
+			return {
+				VertexLayout::Map<type>::semantic,0,
+				VertexLayout::Map<type>::dxgiFormat,
+				0,(UINT)offset,D3D11_INPUT_PER_VERTEX_DATA,0
+			};
+		}
+	};
 	D3D11_INPUT_ELEMENT_DESC VertexLayout::Element::GetDesc() const noexcept
 	{
-		switch ( m_ElementType )
-		{
-		case Position2D:
-			return GenerateDesc<Position2D>( GetOffset() );
-		case Position3D:
-			return GenerateDesc<Position3D>( GetOffset() );
-		case Texture2D:
-			return GenerateDesc<Texture2D>( GetOffset() );
-		case Normal:
-			return GenerateDesc<Normal>( GetOffset() );
-		case Tangent:
-			return GenerateDesc<Tangent>( GetOffset() );
-		case Bitangent:
-			return GenerateDesc<Bitangent>( GetOffset() );
-		case Float3Color:
-			return GenerateDesc<Float3Color>( GetOffset() );
-		case Float4Color:
-			return GenerateDesc<Float4Color>( GetOffset() );
-		case BGRAColor:
-			return GenerateDesc<BGRAColor>( GetOffset() );
-		}
-		assert( "Invalid element type" && false );
-		return { "INVALID",0,DXGI_FORMAT_UNKNOWN,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 };
+		return Bridge<DescGenerate>( type, GetOffset() );
 	}
 
 
 	// Vertex
 	Vertex::Vertex( char* pData, const VertexLayout& layout ) noexcept
 		:
-		m_pData( pData ),
-		m_VertexLayout( layout )
+	pData( pData ),
+		layout( layout )
 	{
-		assert( m_pData != nullptr );
+		assert( pData != nullptr );
 	}
 	ConstVertex::ConstVertex( const Vertex& v ) noexcept
 		:
@@ -160,7 +138,7 @@ namespace Dvtx
 	// VertexBuffer
 	VertexBuffer::VertexBuffer( VertexLayout layout, size_t size ) noexcept
 		:
-		m_VertexLayout( std::move( layout ) )
+	layout( std::move( layout ) )
 	{
 		Resize( size );
 	}
@@ -169,39 +147,62 @@ namespace Dvtx
 		const auto size = Size();
 		if ( size < newSize )
 		{
-			m_vecOfChar.resize( m_vecOfChar.size() + m_VertexLayout.Size() * ( newSize - size ) );
+			buffer.resize( buffer.size() + layout.Size() * ( newSize - size ) );
 		}
 	}
 	const char* VertexBuffer::GetData() const noexcept
 	{
-		return m_vecOfChar.data();
+		return buffer.data();
 	}
+	
+	template<VertexLayout::ElementType type>
+	struct AttributeAiMeshFill
+	{
+		static constexpr void Exec( VertexBuffer* pBuf, const aiMesh& mesh ) noexcept
+		{
+			for ( auto end = mesh.mNumVertices, i = 0u; i < end; i++ )
+			{
+				( *pBuf )[i].Attr<type>() = VertexLayout::Map<type>::Extract( mesh, i );
+			}
+		}
+	};
+	VertexBuffer::VertexBuffer( VertexLayout layout_in, const aiMesh& mesh )
+		:
+		layout( std::move( layout_in ) )
+	{
+		Resize( mesh.mNumVertices );
+		for ( size_t i = 0, end = layout.GetElementCount(); i < end; i++ )
+		{
+			VertexLayout::Bridge<AttributeAiMeshFill>( layout.ResolveByIndex( i ).GetType(), this, mesh );
+		}
+	}
+
 	const VertexLayout& VertexBuffer::GetLayout() const noexcept
 	{
-		return m_VertexLayout;
+		return layout;
 	}
 	size_t VertexBuffer::Size() const noexcept
 	{
-		return m_vecOfChar.size() /m_VertexLayout.Size();
+		return buffer.size() / layout.Size();
 	}
 	size_t VertexBuffer::SizeBytes() const noexcept
 	{
-		return m_vecOfChar.size();
+		return buffer.size();
 	}
 	Vertex VertexBuffer::Back() noexcept
 	{
-		assert( m_vecOfChar.size() != 0u );
-		return Vertex{ m_vecOfChar.data() + m_vecOfChar.size() - m_VertexLayout.Size(), m_VertexLayout };
+		assert( buffer.size() != 0u );
+		return Vertex{ buffer.data() + buffer.size() - layout.Size(),layout };
 	}
 	Vertex VertexBuffer::Front() noexcept
 	{
-		assert( m_vecOfChar.size() != 0u );
-		return Vertex{ m_vecOfChar.data(), m_VertexLayout };
+		assert( buffer.size() != 0u );
+		return Vertex{ buffer.data(),layout };
 	}
 	Vertex VertexBuffer::operator[]( size_t i ) noexcept
 	{
 		assert( i < Size() );
-		return Vertex{ m_vecOfChar.data() + m_VertexLayout.Size() * i,m_VertexLayout };
+		return Vertex{ buffer.data() + layout.Size() * i,layout };
 	}
 	ConstVertex VertexBuffer::Back() const noexcept
 	{

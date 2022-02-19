@@ -1,10 +1,12 @@
 #pragma once
 #include "D3D11Interface.h"
 #include "../Utilities/SleepyMath.h"
+#include <memory>
 
 namespace Bind
 {
 	class Bindable;
+	class RenderTarget;
 }
 
 enum class GraphicsAPI
@@ -17,7 +19,7 @@ enum class GraphicsAPI
 
 class GraphicsDeviceInterface
 {
-	friend class Bind::Bindable;
+	friend class GraphicsResource;
 public:
 	GraphicsDeviceInterface();
 	~GraphicsDeviceInterface() = default;
@@ -34,7 +36,7 @@ public:
 	IDXGISwapChain* GetSwap() noexcept;
 	ID3D11Device* GetDevice() noexcept;
 	ID3D11DeviceContext* GetContext() noexcept;
-	ID3D11RenderTargetView** GetTarget() noexcept;
+	ID3D11RenderTargetView** GetTargetDeprecated() noexcept;
 	ID3D11DepthStencilView** GetDSV() noexcept;
 public:
 	ID3D11RenderTargetView** GetGBuffers() noexcept;
@@ -49,8 +51,14 @@ public:
 	ID3D11DepthStencilView** GetShadowDSV() noexcept;
 	ID3D11DepthStencilView** GetShadowDSV2() noexcept;
 	ID3D11ShaderResourceView** GetShadowResource2() noexcept;
+	UINT GetWidth() const noexcept;
+	UINT GetHeight() const noexcept;
+	std::shared_ptr<Bind::RenderTarget> GetTarget();
 private:
-	D3D11Interface m_D3D11Interface;
+	std::shared_ptr<Bind::RenderTarget> pTarget;
+private:
+	UINT m_iWidth;
+	UINT m_iHeight;	D3D11Interface m_D3D11Interface;
 	GraphicsAPI m_GraphicsAPI = GraphicsAPI::Uninitialized;
 	DirectX::XMMATRIX m_ViewMatrix;
 	DirectX::XMMATRIX m_ProjMatrix;

@@ -10,7 +10,8 @@ namespace Bind
 	VertexBuffer::VertexBuffer( GraphicsDeviceInterface& gdi, const std::string& tag, const Dvtx::VertexBuffer& vbuf )
 		:
 		m_iStride( (UINT)vbuf.GetLayout().Size() ),
-		m_sTag( tag )
+		m_sTag( tag ),
+		layout( vbuf.GetLayout() )
 	{
 		D3D11_BUFFER_DESC bd = {};
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -27,6 +28,10 @@ namespace Bind
 	{
 		const UINT offset = 0u;
 		GetContext( gdi )->IASetVertexBuffers( 0u, 1u, &m_pVertexBuffer, &m_iStride, &offset );
+	}
+	const Dvtx::VertexLayout& VertexBuffer::GetLayout() const noexcept
+	{
+		return layout;
 	}
 	std::shared_ptr<VertexBuffer> VertexBuffer::Resolve( GraphicsDeviceInterface& gdi, const std::string& tag,
 		const Dvtx::VertexBuffer& vbuf )

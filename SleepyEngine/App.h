@@ -12,8 +12,10 @@ public:
 	u32 Launch();
 	~App();
 private:
-	void ExecuteFrame();
+	void ExecuteFrame( float dt );
+	void HandleInput( float dt );
 private:
+	float speed_factor = 1.0f;
 	ImguiManager imgui;
 	Win32Window m_Win32Window;
 	GraphicsDeviceInterface m_GDI;

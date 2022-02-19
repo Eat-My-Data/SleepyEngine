@@ -1,14 +1,23 @@
 #include "GraphicsDeviceInterface.h"
+#include "../Bindable/Bindables/DepthStencil.h"
+#include "../Bindable/Bindables/RenderTarget.h"
 
 GraphicsDeviceInterface::GraphicsDeviceInterface()
 {}
 
 void GraphicsDeviceInterface::InitializeGraphics( HWND& hWnd, GraphicsAPI api, u32 width, u32 height )
 {
+	m_iWidth = width;
+	m_iHeight = height;
 	m_GraphicsAPI = api;
 
 	if ( api == GraphicsAPI::DirectX )
 		m_D3D11Interface.Initialize( hWnd, width, height );
+
+
+	ID3D11Texture2D* pBackBuffer;
+	m_D3D11Interface.GetSwap()->GetBuffer( 0, __uuidof( ID3D11Texture2D ), (void**)&pBackBuffer );
+	pTarget = std::shared_ptr<Bind::RenderTarget>{ new Bind::OutputOnlyRenderTarget( *this,pBackBuffer ) };
 }
 
 void GraphicsDeviceInterface::DrawIndexed( UINT count ) noexcept
@@ -56,9 +65,9 @@ ID3D11DeviceContext* GraphicsDeviceInterface::GetContext() noexcept
 	return m_D3D11Interface.GetContext();
 }
 
-ID3D11RenderTargetView** GraphicsDeviceInterface::GetTarget() noexcept
+ID3D11RenderTargetView** GraphicsDeviceInterface::GetTargetDeprecated() noexcept
 {
-	return m_D3D11Interface.GetTarget();
+	return m_D3D11Interface.GetTargetDeprecated();
 }
 
 ID3D11DepthStencilView** GraphicsDeviceInterface::GetDSV() noexcept
@@ -124,4 +133,19 @@ ID3D11DepthStencilView** GraphicsDeviceInterface::GetShadowDSV2() noexcept
 ID3D11ShaderResourceView** GraphicsDeviceInterface::GetShadowResource2() noexcept
 {
 	return m_D3D11Interface.GetShadowResource2();
+}
+
+UINT GraphicsDeviceInterface::GetWidth() const noexcept
+{
+	return m_iWidth;
+}
+
+UINT GraphicsDeviceInterface::GetHeight() const noexcept
+{
+	return m_iHeight;
+}
+
+std::shared_ptr<Bind::RenderTarget> GraphicsDeviceInterface::GetTarget()
+{
+	return pTarget;
 }

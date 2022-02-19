@@ -5,20 +5,24 @@
 #include "../Drawable/PointLight.h"
 #include "../Drawable/SpotLight.h"
 #include "../Bindable/Bindables/StructuredBuffers.h"
-#include "../ResourceManager/Mesh.h"
+#include "../ResourceManager/Model.h"
+
+class RenderGraph;
 
 class LightManager
 {
 public:
 	void Initialize( GraphicsDeviceInterface& gdi );
-	void UpdateBuffers( DirectX::XMFLOAT3 camPos );
+	void UpdateBuffers();
 	void Draw();
 	void RenderLightGeometry();
 	void PrepareDepthFromLight();
 	void RenderPointLightCubeTextures( const Model& model );
 	void PrepareDepthFromSpotLight();
 	void DrawControlPanel();
+	void LinkTechniques( Rgph::RenderGraph& rg );
 public:
+	void Submit();
 	void SelectPointLight( const u32 index );
 	void TranslatePointLight( DirectX::XMFLOAT3 translation );
 	void SelectSpotLight( const u32 index );
@@ -28,7 +32,7 @@ public:
 	void RotateDirectionalLight( const f32 dx, const f32 dy );
 private:
 	void InitializePointLightShadowResources();
-private:
+public:
 	DirectionalLight* m_pDirectionalLight;
 	Bind::PixelStructuredBuffer<DirectionalLight::DirectionalLightData>* m_pDirectionalLightBuffer;
 	SpotLight* m_pSpotLight;

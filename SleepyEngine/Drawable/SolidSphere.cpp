@@ -3,7 +3,10 @@
 #include "../Bindable/Bindables/Blender.h"
 #include "../ResourceManager/Vertex.h"
 #include "../ResourceManager/Geometry/Sphere.h"
-
+#include "../Bindable/Bindables/ConstantBuffers.h"
+#include "../Bindable/Bindables/DynamicConstant.h"
+#include "../Bindable/Bindables/ConstantBuffersEx.h"
+#include "../ResourceManager/Jobber/TechniqueProbe.h"
 
 SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
 {
@@ -13,24 +16,35 @@ SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
 	auto model = Sphere::Make();
 	model.Transform( dx::XMMatrixScaling( radius, radius, radius ) );
 	const auto geometryTag = "$sphere." + std::to_string( radius );
-	AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
-	AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
 
-	auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/SolidVS.cso" );
-	auto pvsbc = pvs->GetBytecode();
-	AddBind( std::move( pvs ) );
+	pVertices = VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices );
+	pIndices = IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices );
+	pTopology = Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
-	AddBind( PixelShader::Resolve( gdi, "./Shaders/Bin/SolidPS.cso" ) );
+	{
+		Technique solid;
+		Step only( "lambertian" );
 
-	AddBind( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), pvsbc ) );
+		auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );
+		only.AddBindable( InputLayout::Resolve( gdi,model.m_VBVertices.GetLayout(),*pvs ) );
+		only.AddBindable( std::move( pvs ) );
 
-	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+		only.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/Solid_PS.cso" ) );
 
-	AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );
+		struct PSColorConstant
+		{
+			dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
+			float padding;
+		} colorConst;
+		only.AddBindable( PixelConstantBuffer<PSColorConstant>::Resolve( gdi, colorConst, 8u ) );
 
-	AddBind( Blender::Resolve( gdi, false ) );
+		only.AddBindable( std::make_shared<TransformCbuf>( gdi ) );
 
-	AddBind( Rasterizer::Resolve( gdi, false ) );
+		only.AddBindable( Rasterizer::Resolve( gdi, false ) );
+
+		solid.AddStep( std::move( only ) );
+		AddTechnique( std::move( solid ) );
+	}
 }
 
 void SolidSphere::SetPos( DirectX::XMFLOAT3 pos ) noexcept
