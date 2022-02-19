@@ -21,7 +21,7 @@ Drawable::Drawable( GraphicsDeviceInterface& gfx, const Material& mat, const aiM
 
 	for ( auto& t : mat.GetTechniques() )
 	{
-		AddTechnique( std::move( t ) );
+		AddTechnique(  t  );
 	}
 }
 

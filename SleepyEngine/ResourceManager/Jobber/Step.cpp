@@ -24,7 +24,7 @@ Step::Step( std::string targetPassName )
 
 Step::Step( const Step& src ) noexcept
 	:
-	targetPass( src.targetPass )
+	targetPassName( src.targetPassName )
 {
 	bindables.reserve( src.bindables.size() );
 	for ( auto& pb : src.bindables )
