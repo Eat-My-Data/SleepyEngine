@@ -22,9 +22,9 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_GraphicsAPI = api;
 	m_pTestCube = new Cube( *m_pGDI, { { 4.0f,0.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
 	m_pTestCube2 = new Cube( *m_pGDI, { { 0.0f,4.0f,0.0f }, 0.0f, 0.0f, 0.0f } );
-//	sponza = new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", 1.0f / 20.0f );
+	sponza = new Model( *m_pGDI, "Models\\Sponza\\sponza.obj", 1.0f / 20.0f );
 	gobber = new Model( *m_pGDI,"Models\\gobber\\GoblinX.obj",4.0f );
-//	nano = new Model( *m_pGDI,"Models\\nano_textured\\nanosuit.obj",2.0f );
+	nano = new Model( *m_pGDI,"Models\\nano_textured\\nanosuit.obj",2.0f );
 	m_pCameraBuffer = new Bind::PixelConstantBuffer<CameraData>{ gdi, 6u };
 	m_LightManager.Initialize( *m_pGDI );
 
@@ -32,8 +32,8 @@ void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
 	m_pTestCube2->LinkTechniques( *rg );
 	m_LightManager.LinkTechniques( *rg );
 	gobber->LinkTechniques( *rg );
-//	nano->LinkTechniques( *rg );
-//	sponza->LinkTechniques( *rg );
+	nano->LinkTechniques( *rg );
+	sponza->LinkTechniques( *rg );
 	
 	
 	ImGui_ImplDX11_Init( m_pGDI->GetDevice(), m_pGDI->GetContext() );
@@ -69,8 +69,8 @@ void SceneManager::Draw()
 	m_pTestCube->Submit();
 	m_pTestCube2->Submit();
 	gobber->Submit();
-	//nano->Submit();
-	//sponza->Submit();
+	nano->Submit();
+	sponza->Submit();
 
 	static MP sponzeProbe{ "Sponza" };
 	static MP gobberProbe{ "Gobber" };
