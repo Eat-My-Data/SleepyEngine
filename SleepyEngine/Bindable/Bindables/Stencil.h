@@ -13,7 +13,7 @@ namespace Bind
 			Write,
 			Mask
 		};
-		Stencil( GraphicsDeviceInterface& gfx, Mode mode )
+		Stencil( Graphics& gfx, Mode mode )
 			:
 			mode( mode )
 		{
@@ -40,11 +40,11 @@ namespace Bind
 
 			GetDevice( gfx )->CreateDepthStencilState( &dsDesc, &pStencil );
 		}
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override
+		void Bind( Graphics& gfx ) noexcept override
 		{
 			GetContext( gfx )->OMSetDepthStencilState( pStencil, 0xFF );
 		}
-		static std::shared_ptr<Stencil> Resolve( GraphicsDeviceInterface& gfx, Mode mode )
+		static std::shared_ptr<Stencil> Resolve( Graphics& gfx, Mode mode )
 		{
 			return Codex::Resolve<Stencil>( gfx, mode );
 		}

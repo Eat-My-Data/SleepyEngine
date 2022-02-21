@@ -1,12 +1,12 @@
 #include "RenderTarget.h"
 #include "DepthStencil.h"
-#include "../../ResourceManager/Surface.h"
+#include "../../Renderer/Surface.h"
 #include <array>
 #include <wrl.h>
 
 namespace Bind
 {
-	RenderTarget::RenderTarget( GraphicsDeviceInterface& gfx, UINT width, UINT height )
+	RenderTarget::RenderTarget( Graphics& gfx, UINT width, UINT height )
 		:
 		width( width ),
 		height( height )
@@ -39,7 +39,7 @@ namespace Bind
 		);
 	}
 
-	RenderTarget::RenderTarget( GraphicsDeviceInterface& gfx, ID3D11Texture2D* pTexture )
+	RenderTarget::RenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture )
 	{
 		// get information from texture about dimensions
 		D3D11_TEXTURE2D_DESC textureDesc;
@@ -57,24 +57,24 @@ namespace Bind
 		);
 	}
 
-	void RenderTarget::BindAsBuffer( GraphicsDeviceInterface& gfx ) noexcept
+	void RenderTarget::BindAsBuffer( Graphics& gfx ) noexcept
 	{
 		ID3D11DepthStencilView* const null = nullptr;
 		BindAsBuffer( gfx, null );
 	}
 
-	void RenderTarget::BindAsBuffer( GraphicsDeviceInterface& gfx, BufferResource* depthStencil ) noexcept
+	void RenderTarget::BindAsBuffer( Graphics& gfx, BufferResource* depthStencil ) noexcept
 	{
 		assert( dynamic_cast<DepthStencil*>( depthStencil ) != nullptr );
 		BindAsBuffer( gfx, static_cast<DepthStencil*>( depthStencil ) );
 	}
 
-	void RenderTarget::BindAsBuffer( GraphicsDeviceInterface& gfx, DepthStencil* depthStencil ) noexcept
+	void RenderTarget::BindAsBuffer( Graphics& gfx, DepthStencil* depthStencil ) noexcept
 	{
 		BindAsBuffer( gfx, depthStencil ? depthStencil->pDepthStencilView : nullptr );
 	}
 
-	void RenderTarget::BindAsBuffer( GraphicsDeviceInterface& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept
+	void RenderTarget::BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept
 	{
 		GetContext( gfx )->OMSetRenderTargets( 1, &pTargetView, pDepthStencilView );
 
@@ -89,12 +89,12 @@ namespace Bind
 		GetContext( gfx )->RSSetViewports( 1u, &vp );
 	}
 
-	void RenderTarget::Clear( GraphicsDeviceInterface& gfx, const std::array<float, 4>& color ) noexcept
+	void RenderTarget::Clear( Graphics& gfx, const std::array<float, 4>& color ) noexcept
 	{
 		GetContext( gfx )->ClearRenderTargetView( pTargetView, color.data() );
 	}
 
-	void RenderTarget::Clear( GraphicsDeviceInterface& gfx ) noexcept
+	void RenderTarget::Clear( Graphics& gfx ) noexcept
 	{
 		Clear( gfx, { 0.0f,0.0f,0.0f,0.0f } );
 	}
@@ -110,7 +110,7 @@ namespace Bind
 	}
 
 
-	ShaderInputRenderTarget::ShaderInputRenderTarget( GraphicsDeviceInterface& gfx, UINT width, UINT height, UINT slot )
+	ShaderInputRenderTarget::ShaderInputRenderTarget( Graphics& gfx, UINT width, UINT height, UINT slot )
 		:
 		RenderTarget( gfx, width, height ),
 		slot( slot )
@@ -129,18 +129,18 @@ namespace Bind
 		);
 	}
 
-	void ShaderInputRenderTarget::Bind( GraphicsDeviceInterface& gfx ) noexcept
+	void ShaderInputRenderTarget::Bind( Graphics& gfx ) noexcept
 	{
 		GetContext( gfx )->PSSetShaderResources( slot, 1, &pShaderResourceView );
 	}
 
 
-	void OutputOnlyRenderTarget::Bind( GraphicsDeviceInterface& gfx ) noexcept
+	void OutputOnlyRenderTarget::Bind( Graphics& gfx ) noexcept
 	{
 		assert( "Cannot bind OuputOnlyRenderTarget as shader input" && false );
 	}
 
-	Surface Bind::ShaderInputRenderTarget::ToSurface( GraphicsDeviceInterface& gfx ) const
+	Surface Bind::ShaderInputRenderTarget::ToSurface( Graphics& gfx ) const
 	{
 		namespace wrl = Microsoft::WRL;
 
@@ -183,7 +183,7 @@ namespace Bind
 	}
 
 
-	OutputOnlyRenderTarget::OutputOnlyRenderTarget( GraphicsDeviceInterface& gfx, ID3D11Texture2D* pTexture )
+	OutputOnlyRenderTarget::OutputOnlyRenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture )
 		:
 		RenderTarget( gfx, pTexture )
 	{}

@@ -5,7 +5,7 @@
 
 namespace Bind
 {
-	InputLayout::InputLayout( GraphicsDeviceInterface& gdi,
+	InputLayout::InputLayout( Graphics& gdi,
 		Dvtx::VertexLayout layout_in,
 		const VertexShader& vs )
 		:
@@ -22,7 +22,7 @@ namespace Bind
 		);
 	}
 
-	void InputLayout::Bind( GraphicsDeviceInterface& gdi ) noexcept
+	void InputLayout::Bind( Graphics& gdi ) noexcept
 	{
 		GetContext( gdi )->IASetInputLayout( m_pInputLayout );
 	}
@@ -30,7 +30,7 @@ namespace Bind
 	{
 		return m_VertexLayout;
 	}
-	std::shared_ptr<InputLayout> InputLayout::Resolve( GraphicsDeviceInterface& gdi,
+	std::shared_ptr<InputLayout> InputLayout::Resolve( Graphics& gdi,
 		const Dvtx::VertexLayout& layout, const VertexShader& vs )
 	{
 		return Codex::Resolve<InputLayout>( gdi, layout, vs );

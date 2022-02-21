@@ -7,7 +7,7 @@
 #include "../Libraries/imgui/backends/imgui_impl_dx11.h"
 #include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
-DirectionalLight::DirectionalLight( GraphicsDeviceInterface& gdi )
+DirectionalLight::DirectionalLight( Graphics& gdi )
 {
 	/*using namespace Bind;
 	namespace dx = DirectX;
@@ -30,7 +30,7 @@ DirectX::XMMATRIX DirectionalLight::GetTransformXM() const noexcept
 	return DirectX::XMMatrixTranslation( 1.0f, 1.0f, 1.0f );
 }
 
-void DirectionalLight::Update( GraphicsDeviceInterface& gdi )
+void DirectionalLight::Update( Graphics& gdi )
 {
 	m_StructuredBufferData.lightViewProjectionMatrix = GetViewMatrix() * GetProjectionMatrix();
 
@@ -49,7 +49,7 @@ void DirectionalLight::DrawControlPanel()
 	ImGui::SliderAngle( "Yaw", &m_fYaw, -180.0f, 180.0f );
 }
 
-void DirectionalLight::Draw( GraphicsDeviceInterface& gdi ) const noexcept
+void DirectionalLight::Draw( Graphics& gdi ) const noexcept
 {
 	// bindables
 	//for ( auto& b : binds )

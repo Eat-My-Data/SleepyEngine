@@ -1,5 +1,5 @@
 #pragma once
-#include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
+#include "../Graphics/Graphics.h"
 #include "Camera.h"
 #include "../Drawable/DirectionalLight.h"
 #include "../Drawable/PointLight.h"
@@ -12,7 +12,7 @@ class RenderGraph;
 class LightManager
 {
 public:
-	void Initialize( GraphicsDeviceInterface& gdi );
+	void Initialize( Graphics& gdi );
 	void UpdateBuffers();
 	void Draw();
 	void RenderLightGeometry();
@@ -42,7 +42,7 @@ public:
 private:
 	int m_iSelectedPointLight = 0;
 	int m_iSelectedSpotLight = 0;
-	GraphicsDeviceInterface* m_pGDI = nullptr;
+	Graphics* m_pGDI = nullptr;
 private:
 	std::vector<ID3D11ShaderResourceView*> pTextureView;
 	ID3D11ShaderResourceView* pTextureView2;

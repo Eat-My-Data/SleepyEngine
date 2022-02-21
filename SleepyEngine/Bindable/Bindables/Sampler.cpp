@@ -3,7 +3,7 @@
 
 namespace Bind
 {
-	Sampler::Sampler( GraphicsDeviceInterface& gdi, Type type, bool reflect )
+	Sampler::Sampler( Graphics& gdi, Type type, bool reflect )
 		:
 		type( type ),
 		reflect( reflect ) 
@@ -23,11 +23,11 @@ namespace Bind
 		samplerDesc.MaxAnisotropy = D3D11_REQ_MAXANISOTROPY;
 		GetDevice( gdi )->CreateSamplerState( &samplerDesc, &pSampler );
 	}
-	void Sampler::Bind( GraphicsDeviceInterface& gdi ) noexcept
+	void Sampler::Bind( Graphics& gdi ) noexcept
 	{
 		GetContext( gdi )->PSSetSamplers( 0, 1, &pSampler );
 	}
-	std::shared_ptr<Sampler> Sampler::Resolve( GraphicsDeviceInterface& gdi, Type type, bool reflect )
+	std::shared_ptr<Sampler> Sampler::Resolve( Graphics& gdi, Type type, bool reflect )
 	{
 		return Codex::Resolve<Sampler>( gdi, type, reflect );
 	}

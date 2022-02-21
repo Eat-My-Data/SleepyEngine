@@ -1,11 +1,11 @@
 #include "PixelShader.h"
 #include "../BindableCodex.h"
 #include <d3dcompiler.h>
-#include "../../Utilities/SleepyUtil.h"
+#include "../../Utilities/ChiliUtil.h"
 
 namespace Bind
 {
-	PixelShader::PixelShader( GraphicsDeviceInterface& gdi, const std::string& path )
+	PixelShader::PixelShader( Graphics& gdi, const std::string& path )
 		:
 		m_sPath( path )
 	{
@@ -14,11 +14,11 @@ namespace Bind
 		D3DReadFileToBlob( ToWide( path ).c_str(), &pBlob );
 		GetDevice( gdi )->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &m_pPixelShader );
 	}
-	void PixelShader::Bind( GraphicsDeviceInterface& gdi ) noexcept
+	void PixelShader::Bind( Graphics& gdi ) noexcept
 	{
 		GetContext( gdi )->PSSetShader( m_pPixelShader, nullptr, 0u );
 	}
-	std::shared_ptr<PixelShader> PixelShader::Resolve( GraphicsDeviceInterface& gdi, const std::string& path )
+	std::shared_ptr<PixelShader> PixelShader::Resolve( Graphics& gdi, const std::string& path )
 	{
 		return Codex::Resolve<PixelShader>( gdi, path );
 	}

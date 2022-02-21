@@ -1,14 +1,14 @@
 #pragma once
 #include "../Bindable.h"
 #include "./DynamicConstant.h"
-#include "../../ResourceManager/Jobber/TechniqueProbe.h"
+#include "../../Renderer/Jobber/TechniqueProbe.h"
 
 namespace Bind
 {
 	class ConstantBufferEx : public Bindable
 	{
 	public:
-		void Update( GraphicsDeviceInterface& gfx, const Dcb::Buffer& buf )
+		void Update( Graphics& gfx, const Dcb::Buffer& buf )
 		{
 			assert( &buf.GetRootLayoutElement() == &GetRootLayoutElement() );
 
@@ -25,7 +25,7 @@ namespace Bind
 		// reason why it's not getbuffer is becasue nocache doesn't store buffer
 		virtual const Dcb::LayoutElement& GetRootLayoutElement() const noexcept = 0;
 	protected:
-		ConstantBufferEx( GraphicsDeviceInterface& gfx, const Dcb::LayoutElement& layoutRoot, UINT slot, const Dcb::Buffer* pBuf )
+		ConstantBufferEx( Graphics& gfx, const Dcb::LayoutElement& layoutRoot, UINT slot, const Dcb::Buffer* pBuf )
 			:
 			slot( slot )
 		{
@@ -57,7 +57,7 @@ namespace Bind
 	{
 	public:
 		using ConstantBufferEx::ConstantBufferEx;
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override
+		void Bind( Graphics& gfx ) noexcept override
 		{
 			GetContext( gfx )->PSSetConstantBuffers( slot, 1u, &pConstantBuffer );
 		}
@@ -67,7 +67,7 @@ namespace Bind
 	{
 	public:
 		using ConstantBufferEx::ConstantBufferEx;
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override
+		void Bind( Graphics& gfx ) noexcept override
 		{
 			GetContext( gfx )->VSSetConstantBuffers( slot, 1u, &pConstantBuffer );
 		}
@@ -77,12 +77,12 @@ namespace Bind
 	class CachingConstantBufferEx : public T
 	{
 	public:
-		CachingConstantBufferEx( GraphicsDeviceInterface& gfx, const Dcb::CookedLayout& layout, UINT slot )
+		CachingConstantBufferEx( Graphics& gfx, const Dcb::CookedLayout& layout, UINT slot )
 			:
 			T( gfx, *layout.ShareRoot(), slot, nullptr ),
 			buf( Dcb::Buffer( layout ) )
 		{}
-		CachingConstantBufferEx( GraphicsDeviceInterface& gfx, const Dcb::Buffer& buf, UINT slot )
+		CachingConstantBufferEx( Graphics& gfx, const Dcb::Buffer& buf, UINT slot )
 			:
 			T( gfx, buf.GetRootLayoutElement(), slot, &buf ),
 			buf( buf )
@@ -100,7 +100,7 @@ namespace Bind
 			buf.CopyFrom( buf_in );
 			dirty = true;
 		}
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override
+		void Bind( Graphics& gfx ) noexcept override
 		{
 			if ( dirty )
 			{
@@ -127,12 +127,12 @@ namespace Bind
 	//class NocachePixelConstantBufferEx : public PixelConstantBufferEx
 	//{
 	//public:
-	//	NocachePixelConstantBufferEx( GraphicsDeviceInterface& gfx,const Dcb::CookedLayout& layout,UINT slot )
+	//	NocachePixelConstantBufferEx( Graphics& gfx,const Dcb::CookedLayout& layout,UINT slot )
 	//		:
 	//		PixelConstantBufferEx( gfx,*layout.ShareRoot(),slot,nullptr ),
 	//		pLayoutRoot( layout.ShareRoot() )
 	//	{}
-	//	NocachePixelConstantBufferEx( GraphicsDeviceInterface& gfx,const Dcb::Buffer& buf,UINT slot )
+	//	NocachePixelConstantBufferEx( Graphics& gfx,const Dcb::Buffer& buf,UINT slot )
 	//		:
 	//		PixelConstantBufferEx( gfx,buf.GetRootLayoutElement(),slot,&buf ),
 	//		pLayoutRoot( buf.ShareLayoutRoot() )

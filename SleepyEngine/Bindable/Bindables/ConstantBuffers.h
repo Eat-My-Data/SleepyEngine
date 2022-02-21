@@ -8,7 +8,7 @@ namespace Bind
 	class ConstantBuffer : public Bindable
 	{
 	public:
-		void Update( GraphicsDeviceInterface& gdi, const C& consts )
+		void Update( Graphics& gdi, const C& consts )
 		{
 			D3D11_MAPPED_SUBRESOURCE msr;
 			GetContext( gdi )->Map(
@@ -19,7 +19,7 @@ namespace Bind
 			memcpy( msr.pData, &consts, sizeof( consts ) );
 			GetContext( gdi )->Unmap( m_pConstantBuffer, 0u );
 		}
-		ConstantBuffer( GraphicsDeviceInterface& gdi, const C& consts, UINT slot = 0u )
+		ConstantBuffer( Graphics& gdi, const C& consts, UINT slot = 0u )
 			:
 			m_iSlot( slot )
 		{
@@ -35,7 +35,7 @@ namespace Bind
 			csd.pSysMem = &consts;
 			GetDevice( gdi )->CreateBuffer( &cbd, &csd, &m_pConstantBuffer );
 		}
-		ConstantBuffer( GraphicsDeviceInterface& gdi, UINT slot = 0u )
+		ConstantBuffer( Graphics& gdi, UINT slot = 0u )
 			:
 			m_iSlot( slot )
 		{
@@ -61,15 +61,15 @@ namespace Bind
 		using Bindable::GetContext;
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
-		void Bind( GraphicsDeviceInterface& gdi ) noexcept override
+		void Bind( Graphics& gdi ) noexcept override
 		{
 			GetContext( gdi )->VSSetConstantBuffers( m_iSlot, 1u, &m_pConstantBuffer );
 		}
-		static std::shared_ptr<VertexConstantBuffer> Resolve( GraphicsDeviceInterface& gdi, const C& consts, UINT slot = 0 )
+		static std::shared_ptr<VertexConstantBuffer> Resolve( Graphics& gdi, const C& consts, UINT slot = 0 )
 		{
 			return Codex::Resolve<VertexConstantBuffer>( gdi, consts, slot );
 		}
-		static std::shared_ptr<VertexConstantBuffer> Resolve( GraphicsDeviceInterface& gdi, UINT slot = 0 )
+		static std::shared_ptr<VertexConstantBuffer> Resolve( Graphics& gdi, UINT slot = 0 )
 		{
 			return Codex::Resolve<VertexConstantBuffer>( gdi, slot );
 		}
@@ -96,15 +96,15 @@ namespace Bind
 		using Bindable::GetContext;
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
-		void Bind( GraphicsDeviceInterface& gdi ) noexcept override
+		void Bind( Graphics& gdi ) noexcept override
 		{
 			GetContext( gdi )->PSSetConstantBuffers( m_iSlot, 1u, &m_pConstantBuffer );
 		}
-		static std::shared_ptr<PixelConstantBuffer> Resolve( GraphicsDeviceInterface& gdi, const C& consts, UINT slot = 0 )
+		static std::shared_ptr<PixelConstantBuffer> Resolve( Graphics& gdi, const C& consts, UINT slot = 0 )
 		{
 			return Codex::Resolve<PixelConstantBuffer>( gdi, consts, slot );
 		}
-		static std::shared_ptr<PixelConstantBuffer> Resolve( GraphicsDeviceInterface& gdi, UINT slot = 0 )
+		static std::shared_ptr<PixelConstantBuffer> Resolve( Graphics& gdi, UINT slot = 0 )
 		{
 			return Codex::Resolve<PixelConstantBuffer>( gdi, slot );
 		}

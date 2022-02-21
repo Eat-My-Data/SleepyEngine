@@ -1,9 +1,9 @@
 #pragma once
-#include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
+#include "../Graphics/Graphics.h"
 #include <DirectXMath.h>
 #include <vector>
 #include <memory>
-#include "../ResourceManager/Jobber/Technique.h"
+#include "../Renderer/Jobber/Technique.h"
 
 class TechniqueProbe;
 class Material;
@@ -27,12 +27,12 @@ class Drawable
 {
 public:
 	Drawable() = default;
-	Drawable( GraphicsDeviceInterface& gfx, const Material& mat, const aiMesh& mesh, float scale = 1.0f ) noexcept;
+	Drawable( Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale = 1.0f ) noexcept;
 	Drawable( const Drawable& ) = delete;
 	void AddTechnique( Technique tech_in ) noexcept;
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	void Submit() const noexcept;
-	void Bind( GraphicsDeviceInterface& gfx ) const noexcept;
+	void Bind( Graphics& gfx ) const noexcept;
 	void Accept( TechniqueProbe& probe );
 	UINT GetIndexCount() const noexcept;
 	void LinkTechniques( Rgph::RenderGraph& );

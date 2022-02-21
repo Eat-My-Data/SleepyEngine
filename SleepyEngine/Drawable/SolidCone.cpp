@@ -1,11 +1,11 @@
 #include "SolidCone.h"
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/Blender.h"
-#include "../ResourceManager/Vertex.h"
-#include "../ResourceManager/Geometry/Cone.h"
+#include "../Renderer/Model/Vertex.h"
+#include "../Renderer/Model/Geometry/Cone.h"
 
 
-SolidCone::SolidCone( GraphicsDeviceInterface& gdi, f32 scale )
+SolidCone::SolidCone( Graphics& gdi, f32 scale )
 {
 	/*using namespace Bind;
 	namespace dx = DirectX;

@@ -2,11 +2,11 @@
 
 namespace Bind
 {
-	IndexBuffer::IndexBuffer( GraphicsDeviceInterface& gdi, const std::vector<unsigned short>& indices )
+	IndexBuffer::IndexBuffer( Graphics& gdi, const std::vector<unsigned short>& indices )
 		:
 		IndexBuffer( gdi, "?", indices )
 	{}
-	IndexBuffer::IndexBuffer( GraphicsDeviceInterface& gdi, std::string tag, const std::vector<unsigned short>& indices )
+	IndexBuffer::IndexBuffer( Graphics& gdi, std::string tag, const std::vector<unsigned short>& indices )
 		:
 		m_sTag( tag ),
 		m_iCount( (UINT)indices.size() )
@@ -22,7 +22,7 @@ namespace Bind
 		isd.pSysMem = indices.data();
 		GetDevice( gdi )->CreateBuffer( &ibd, &isd, &m_pIndexBuffer );
 	}
-	void IndexBuffer::Bind( GraphicsDeviceInterface& gdi ) noexcept
+	void IndexBuffer::Bind( Graphics& gdi ) noexcept
 	{
 		GetContext( gdi )->IASetIndexBuffer( m_pIndexBuffer, DXGI_FORMAT_R16_UINT, 0u );
 	}
@@ -30,7 +30,7 @@ namespace Bind
 	{
 		return m_iCount;
 	}
-	std::shared_ptr<IndexBuffer> IndexBuffer::Resolve( GraphicsDeviceInterface& gdi, const std::string& tag,
+	std::shared_ptr<IndexBuffer> IndexBuffer::Resolve( Graphics& gdi, const std::string& tag,
 		const std::vector<unsigned short>& indices )
 	{
 		assert( tag != "?" );

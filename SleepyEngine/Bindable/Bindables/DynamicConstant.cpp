@@ -3,7 +3,7 @@
 #include <string>
 #include <algorithm>
 #include <cctype>
-#include "../../ResourceManager/LayoutCodex.h"
+#include "../../Renderer/Model/LayoutCodex.h"
 
 
 namespace Dcb

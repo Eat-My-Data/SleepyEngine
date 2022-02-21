@@ -128,7 +128,7 @@
     <ClCompile>
       <WarningLevel>Level2</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NOMINMAX;_MBCS;%(PreprocessorDefinitions);_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;_MBCS;%(PreprocessorDefinitions);_DEBUG;_CONSOLE;%(PreprocessorDefinitions); IS_DEBUG=true</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
@@ -151,7 +151,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NOMINMAX;_MBCS;%(PreprocessorDefinitions);NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;_MBCS;%(PreprocessorDefinitions);NDEBUG;_CONSOLE;%(PreprocessorDefinitions);IS_DEBUG=false</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
@@ -175,7 +175,6 @@
     <ClCompile Include="Bindable\Bindables\Blender.cpp" />
     <ClCompile Include="Bindable\Bindables\DepthStencil.cpp" />
     <ClCompile Include="Bindable\Bindables\DynamicConstant.cpp" />
-    <ClCompile Include="Bindable\Bindables\GraphicsResource.cpp" />
     <ClCompile Include="Bindable\Bindables\IndexBuffer.cpp" />
     <ClCompile Include="Bindable\Bindables\InputLayout.cpp" />
     <ClCompile Include="Bindable\Bindables\NullPixelShader.cpp" />
@@ -189,6 +188,7 @@
     <ClCompile Include="Bindable\Bindables\TransformCBufScaling.cpp" />
     <ClCompile Include="Bindable\Bindables\VertexBuffer.cpp" />
     <ClCompile Include="Bindable\Bindables\VertexShader.cpp" />
+    <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Drawable\SolidCone.cpp" />
     <ClCompile Include="Drawable\Cube.cpp" />
     <ClCompile Include="Drawable\DirectionalLight.cpp" />
@@ -196,8 +196,11 @@
     <ClCompile Include="Drawable\PointLight.cpp" />
     <ClCompile Include="Drawable\SolidSphere.cpp" />
     <ClCompile Include="Drawable\SpotLight.cpp" />
-    <ClCompile Include="GraphicsDeviceInterface\D3D11Interface.cpp" />
-    <ClCompile Include="GraphicsDeviceInterface\GraphicsDeviceInterface.cpp" />
+    <ClCompile Include="Drawable\TestCube.cpp" />
+    <ClCompile Include="Graphics\dxerr.cpp" />
+    <ClCompile Include="Graphics\DxgiInfoManager.cpp" />
+    <ClCompile Include="Graphics\Graphics.cpp" />
+    <ClCompile Include="Graphics\GraphicsResource.cpp" />
     <ClCompile Include="GUI\ImguiManager.cpp" />
     <ClCompile Include="Libraries\imgui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Libraries\imgui\backends\imgui_impl_win32.cpp" />
@@ -206,42 +209,42 @@
     <ClCompile Include="Libraries\imgui\imgui_draw.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_tables.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_widgets.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\BlurOutlineRenderGraph.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\ChiliException.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Job.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Pass.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Passlib\BindingPass.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Passlib\BufferClearPass.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Passlib\FullscreenPass.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Passlib\HorizontalBlurPass.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Passlib\RenderQueuePass.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Passlib\VerticalBlurPass.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\RenderGraph.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\RenderGraphCompileException.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Sink.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Source.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Step.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\StepLinkingProbe.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\Technique.cpp" />
-    <ClCompile Include="ResourceManager\Jobber\ScanOutlineRenderGraph.cpp" />
-    <ClCompile Include="ResourceManager\LayoutCodex.cpp" />
-    <ClCompile Include="ResourceManager\Material.cpp" />
-    <ClCompile Include="ResourceManager\Mesh.cpp" />
-    <ClCompile Include="ResourceManager\Model.cpp" />
-    <ClCompile Include="ResourceManager\Node.cpp" />
-    <ClCompile Include="ResourceManager\Surface.cpp" />
-    <ClCompile Include="ResourceManager\Vertex.cpp" />
-    <ClCompile Include="SceneManager\Camera.cpp" />
+    <ClCompile Include="Renderer\Jobber\BlurOutlineRenderGraph.cpp" />
+    <ClCompile Include="Renderer\Jobber\Job.cpp" />
+    <ClCompile Include="Renderer\Jobber\Pass.cpp" />
+    <ClCompile Include="Renderer\Jobber\Passlib\BindingPass.cpp" />
+    <ClCompile Include="Renderer\Jobber\Passlib\BufferClearPass.cpp" />
+    <ClCompile Include="Renderer\Jobber\Passlib\FullscreenPass.cpp" />
+    <ClCompile Include="Renderer\Jobber\Passlib\HorizontalBlurPass.cpp" />
+    <ClCompile Include="Renderer\Jobber\Passlib\RenderQueuePass.cpp" />
+    <ClCompile Include="Renderer\Jobber\Passlib\VerticalBlurPass.cpp" />
+    <ClCompile Include="Renderer\Jobber\RenderGraph.cpp" />
+    <ClCompile Include="Renderer\Jobber\RenderGraphCompileException.cpp" />
+    <ClCompile Include="Renderer\Jobber\ScanOutlineRenderGraph.cpp" />
+    <ClCompile Include="Renderer\Jobber\Sink.cpp" />
+    <ClCompile Include="Renderer\Jobber\Source.cpp" />
+    <ClCompile Include="Renderer\Jobber\Step.cpp" />
+    <ClCompile Include="Renderer\Jobber\StepLinkingProbe.cpp" />
+    <ClCompile Include="Renderer\Jobber\Technique.cpp" />
+    <ClCompile Include="Renderer\Model\LayoutCodex.cpp" />
+    <ClCompile Include="Renderer\Model\Material.cpp" />
+    <ClCompile Include="Renderer\Model\Mesh.cpp" />
+    <ClCompile Include="Renderer\Model\Model.cpp" />
+    <ClCompile Include="Renderer\Model\Node.cpp" />
+    <ClCompile Include="Renderer\Model\Vertex.cpp" />
+    <ClCompile Include="Renderer\Surface.cpp" />
     <ClCompile Include="SceneManager\LightManager.cpp" />
     <ClCompile Include="SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Utilities\ChiliException.cpp" />
     <ClCompile Include="Utilities\FrameTimer.cpp" />
-    <ClCompile Include="Utilities\SleepyUtil.cpp" />
-    <ClCompile Include="Utilities\SleepyXM.cpp" />
+    <ClCompile Include="Utilities\ScriptCommander.cpp" />
+    <ClCompile Include="Utilities\ChiliUtil.cpp" />
+    <ClCompile Include="Utilities\ChiliXM.cpp" />
     <ClCompile Include="Utilities\Testing.cpp" />
     <ClCompile Include="Win32\Keyboard.cpp" />
     <ClCompile Include="Win32\Mouse.cpp" />
     <ClCompile Include="Win32\Win32MessageMap.cpp" />
-    <ClCompile Include="Win32\Win32Window.cpp" />
+    <ClCompile Include="Win32\Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +253,7 @@
     <ClInclude Include="Bindable\BindableCodex.h" />
     <ClInclude Include="Bindable\BindableCommon.h" />
     <ClInclude Include="Bindable\Bindables\Blender.h" />
+    <ClInclude Include="Bindable\Bindables\BufferResource.h" />
     <ClInclude Include="Bindable\Bindables\ConstantBuffers.h" />
     <ClInclude Include="Bindable\Bindables\ConstantBuffersEx.h" />
     <ClInclude Include="Bindable\Bindables\DepthStencil.h" />
@@ -270,15 +274,22 @@
     <ClInclude Include="Bindable\Bindables\TransformCBufScaling.h" />
     <ClInclude Include="Bindable\Bindables\VertexBuffer.h" />
     <ClInclude Include="Bindable\Bindables\VertexShader.h" />
+    <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Drawable\SolidCone.h" />
-    <ClInclude Include="Drawable\Cube.h" />
     <ClInclude Include="Drawable\DirectionalLight.h" />
     <ClInclude Include="Drawable\Drawable.h" />
     <ClInclude Include="Drawable\PointLight.h" />
     <ClInclude Include="Drawable\SolidSphere.h" />
     <ClInclude Include="Drawable\SpotLight.h" />
-    <ClInclude Include="GraphicsDeviceInterface\D3D11Interface.h" />
-    <ClInclude Include="GraphicsDeviceInterface\GraphicsDeviceInterface.h" />
+    <ClInclude Include="Drawable\TestCube.h" />
+    <ClInclude Include="Geometry\Cone.h" />
+    <ClInclude Include="Geometry\Cube.h" />
+    <ClInclude Include="Geometry\Sphere.h" />
+    <ClInclude Include="Graphics\ChiliWRL.h" />
+    <ClInclude Include="Graphics\dxerr.h" />
+    <ClInclude Include="Graphics\DxgiInfoManager.h" />
+    <ClInclude Include="Graphics\Graphics.h" />
+    <ClInclude Include="Graphics\GraphicsResource.h" />
     <ClInclude Include="GUI\ImguiManager.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="Libraries\imgui\backends\imgui_impl_win32.h" />
@@ -288,58 +299,58 @@
     <ClInclude Include="Libraries\imgui\imstb_rectpack.h" />
     <ClInclude Include="Libraries\imgui\imstb_textedit.h" />
     <ClInclude Include="Libraries\imgui\imstb_truetype.h" />
-    <ClInclude Include="ResourceManager\Color.h" />
-    <ClInclude Include="ResourceManager\Geometry\Cone.h" />
-    <ClInclude Include="ResourceManager\Geometry\Sphere.h" />
-    <ClInclude Include="ResourceManager\IndexedTriangleList.h" />
-    <ClInclude Include="ResourceManager\Jobber\BufferResource.h" />
-    <ClInclude Include="ResourceManager\Jobber\ChiliException.h" />
-    <ClInclude Include="ResourceManager\Jobber\Job.h" />
-    <ClInclude Include="ResourceManager\Jobber\ModelProbe.h" />
-    <ClInclude Include="ResourceManager\Jobber\Pass.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\BindingPass.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\BlurOutlineDrawingPass.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\BlurOutlineRenderGraph.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\BufferClearPass.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\FullscreenPass.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\HorizontalBlurPass.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\LambertianPass.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineDrawingPass.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\OutlineMaskGenerationPass.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\RenderQueuePass.h" />
-    <ClInclude Include="ResourceManager\Jobber\Passlib\VerticalBlurPass.h" />
-    <ClInclude Include="ResourceManager\Jobber\RenderGraph.h" />
-    <ClInclude Include="ResourceManager\Jobber\RenderGraphCompileException.h" />
-    <ClInclude Include="ResourceManager\Jobber\Sink.h" />
-    <ClInclude Include="ResourceManager\Jobber\Source.h" />
-    <ClInclude Include="ResourceManager\Jobber\Step.h" />
-    <ClInclude Include="ResourceManager\Jobber\StepLinkingProbe.h" />
-    <ClInclude Include="ResourceManager\Jobber\Technique.h" />
-    <ClInclude Include="ResourceManager\Jobber\TechniqueProbe.h" />
-    <ClInclude Include="ResourceManager\Jobber\TestModelProbe.h" />
-    <ClInclude Include="ResourceManager\Jobber\ScanOutlineRenderGraph.h" />
-    <ClInclude Include="ResourceManager\LayoutCodex.h" />
-    <ClInclude Include="ResourceManager\Material.h" />
-    <ClInclude Include="ResourceManager\Mesh.h" />
-    <ClInclude Include="ResourceManager\Model.h" />
-    <ClInclude Include="ResourceManager\Node.h" />
-    <ClInclude Include="ResourceManager\Surface.h" />
-    <ClInclude Include="ResourceManager\Vertex.h" />
-    <ClInclude Include="SceneManager\Camera.h" />
+    <ClInclude Include="Macros\ConditionalNoexcept.h" />
+    <ClInclude Include="Macros\GraphicsThrowMacros.h" />
+    <ClInclude Include="Macros\WindowsThrowMacros.h" />
+    <ClInclude Include="Renderer\Jobber\BlurOutlineRenderGraph.h" />
+    <ClInclude Include="Renderer\Jobber\Job.h" />
+    <ClInclude Include="Renderer\Jobber\ModelProbe.h" />
+    <ClInclude Include="Renderer\Jobber\Pass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\BindingPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\BlurOutlineDrawingPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\BufferClearPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\FullscreenPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\HorizontalBlurPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\LambertianPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\OutlineDrawingPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\OutlineMaskGenerationPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\RenderQueuePass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\VerticalBlurPass.h" />
+    <ClInclude Include="Renderer\Jobber\RenderGraph.h" />
+    <ClInclude Include="Renderer\Jobber\RenderGraphCompileException.h" />
+    <ClInclude Include="Renderer\Jobber\ScanOutlineRenderGraph.h" />
+    <ClInclude Include="Renderer\Jobber\Sink.h" />
+    <ClInclude Include="Renderer\Jobber\Source.h" />
+    <ClInclude Include="Renderer\Jobber\Step.h" />
+    <ClInclude Include="Renderer\Jobber\StepLinkingProbe.h" />
+    <ClInclude Include="Renderer\Jobber\Technique.h" />
+    <ClInclude Include="Renderer\Jobber\TechniqueProbe.h" />
+    <ClInclude Include="Renderer\Jobber\TestModelProbe.h" />
+    <ClInclude Include="Renderer\Model\Color.h" />
+    <ClInclude Include="Renderer\Model\IndexedTriangleList.h" />
+    <ClInclude Include="Renderer\Model\LayoutCodex.h" />
+    <ClInclude Include="Renderer\Model\Material.h" />
+    <ClInclude Include="Renderer\Model\Mesh.h" />
+    <ClInclude Include="Renderer\Model\Model.h" />
+    <ClInclude Include="Renderer\Model\Node.h" />
+    <ClInclude Include="Renderer\Model\Vertex.h" />
+    <ClInclude Include="Renderer\Surface.h" />
     <ClInclude Include="SceneManager\LightManager.h" />
     <ClInclude Include="SceneManager\RenderTechnique.h" />
     <ClInclude Include="SceneManager\SceneManager.h" />
+    <ClInclude Include="Utilities\ChiliException.h" />
     <ClInclude Include="Utilities\FrameTimer.h" />
     <ClInclude Include="Utilities\NumericDataTypes.h" />
     <ClInclude Include="Utilities\PerfLog.h" />
-    <ClInclude Include="Utilities\SleepyMath.h" />
-    <ClInclude Include="Utilities\SleepyUtil.h" />
-    <ClInclude Include="Utilities\SleepyXM.h" />
+    <ClInclude Include="Utilities\ScriptCommander.h" />
+    <ClInclude Include="Utilities\ChiliMath.h" />
+    <ClInclude Include="Utilities\ChiliUtil.h" />
+    <ClInclude Include="Utilities\ChiliXM.h" />
     <ClInclude Include="Utilities\Testing.h" />
     <ClInclude Include="Win32\Keyboard.h" />
     <ClInclude Include="Win32\Mouse.h" />
     <ClInclude Include="Win32\Win32MessageMap.h" />
-    <ClInclude Include="Win32\Win32Window.h" />
+    <ClInclude Include="Win32\Window.h" />
     <ClInclude Include="Win32\WinDefines.h" />
   </ItemGroup>
   <ItemGroup>
@@ -738,6 +749,9 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.1</ShaderModel>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

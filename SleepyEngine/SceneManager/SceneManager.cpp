@@ -1,5 +1,5 @@
 #include "SceneManager.h"
-#include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
+#include "../Graphics/Graphics.h"
 #include "../Libraries/imgui/backends/imgui_impl_dx11.h"
 #include "../Libraries/imgui/backends/imgui_impl_win32.h"
 #include "../Utilities/Testing.h"
@@ -15,7 +15,7 @@ SceneManager::~SceneManager()
 	}
 }
 
-void SceneManager::Initialize( GraphicsDeviceInterface& gdi, GraphicsAPI api )
+void SceneManager::Initialize( Graphics& gdi, GraphicsAPI api )
 {
 	m_pGDI = &gdi;
 	rg = new Rgph::BlurOutlineRenderGraph( *m_pGDI );

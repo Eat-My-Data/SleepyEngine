@@ -1,18 +1,18 @@
 #pragma once
-#include "./Bindables/GraphicsResource.h"
+#include "../Graphics/GraphicsResource.h"
 #include <string>
 #include <memory>
 
 class Drawable;
 class TechniqueProbe;
-class GraphicsDeviceInterface;
+class Graphics;
 
 namespace Bind
 {
 	class Bindable : public GraphicsResource
 	{
 	public:
-		virtual void Bind( GraphicsDeviceInterface& gdi ) noexcept = 0;
+		virtual void Bind( Graphics& gdi ) noexcept = 0;
 		virtual void InitializeParentReference( const Drawable& ) noexcept
 		{}
 		virtual void Accept( TechniqueProbe& )

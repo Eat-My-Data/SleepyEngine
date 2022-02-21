@@ -8,7 +8,7 @@ namespace Bind
 	class StructuredBuffers : public Bindable
 	{
 	public:
-		void Update( GraphicsDeviceInterface& gdi, const C& consts )
+		void Update( Graphics& gdi, const C& consts )
 		{
 			D3D11_MAPPED_SUBRESOURCE msr;
 			GetContext( gdi )->Map(
@@ -19,7 +19,7 @@ namespace Bind
 			memcpy( msr.pData, &consts, sizeof( consts ) );
 			GetContext( gdi )->Unmap( m_pStructuredBuffer, 0u );
 		}
-		StructuredBuffers( GraphicsDeviceInterface& gdi, const C& consts, UINT slot = 0u )
+		StructuredBuffers( Graphics& gdi, const C& consts, UINT slot = 0u )
 			:
 			m_iSlot( slot )
 		{
@@ -35,7 +35,7 @@ namespace Bind
 			csd.pSysMem = &consts;
 			GetDevice( gdi )->CreateBuffer( &cbd, &csd, &m_pStructuredBuffer );
 		}
-		StructuredBuffers( GraphicsDeviceInterface& gdi, UINT slot = 0u )
+		StructuredBuffers( Graphics& gdi, UINT slot = 0u )
 			:
 			m_iSlot( slot )
 		{
@@ -60,7 +60,7 @@ namespace Bind
 		using Bindable::GetContext;
 	public:
 		using StructuredBuffers<C>::StructuredBuffers;
-		void Bind( GraphicsDeviceInterface& gdi ) noexcept override
+		void Bind( Graphics& gdi ) noexcept override
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 			srvDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -72,11 +72,11 @@ namespace Bind
 			gdi.GetDevice()->CreateShaderResourceView( m_pStructuredBuffer, &srvDesc, &pStructBufSRV );
 			GetContext( gdi )->PSSetShaderResources( m_iSlot, 1u, &pStructBufSRV );
 		}
-		static std::shared_ptr<PixelStructuredBuffer> Resolve( GraphicsDeviceInterface& gdi, const C& consts, UINT slot = 0 )
+		static std::shared_ptr<PixelStructuredBuffer> Resolve( Graphics& gdi, const C& consts, UINT slot = 0 )
 		{
 			return Codex::Resolve<PixelStructuredBuffer>( gdi, consts, slot );
 		}
-		static std::shared_ptr<PixelStructuredBuffer> Resolve( GraphicsDeviceInterface& gdi, UINT slot = 0 )
+		static std::shared_ptr<PixelStructuredBuffer> Resolve( Graphics& gdi, UINT slot = 0 )
 		{
 			return Codex::Resolve<PixelStructuredBuffer>( gdi, slot );
 		}
@@ -99,7 +99,7 @@ namespace Bind
 	{
 		using Bindable::GetContext;
 	public:
-		void Update( GraphicsDeviceInterface& gdi, const C* consts )
+		void Update( Graphics& gdi, const C* consts )
 		{
 			D3D11_MAPPED_SUBRESOURCE msr;
 			GetContext( gdi )->Map(
@@ -110,7 +110,7 @@ namespace Bind
 			memcpy( msr.pData, consts, sizeof( C ) * 2 );
 			GetContext( gdi )->Unmap( m_pStructuredBuffer, 0u );
 		}
-		PixelArrStructuredBuffer( GraphicsDeviceInterface& gdi, const C* consts, UINT slot = 0u )
+		PixelArrStructuredBuffer( Graphics& gdi, const C* consts, UINT slot = 0u )
 			:
 			m_iSlot( slot )
 		{
@@ -126,7 +126,7 @@ namespace Bind
 			csd.pSysMem = consts;
 			GetDevice( gdi )->CreateBuffer( &cbd, &csd, &m_pStructuredBuffer );
 		}
-		PixelArrStructuredBuffer( GraphicsDeviceInterface& gdi, UINT slot = 0u )
+		PixelArrStructuredBuffer( Graphics& gdi, UINT slot = 0u )
 			:
 			m_iSlot( slot )
 		{
@@ -139,7 +139,7 @@ namespace Bind
 			cbd.StructureByteStride = sizeof( C );
 			GetDevice( gdi )->CreateBuffer( &cbd, nullptr, &m_pStructuredBuffer );
 		}
-		void Bind( GraphicsDeviceInterface& gdi ) noexcept override
+		void Bind( Graphics& gdi ) noexcept override
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 			srvDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -151,11 +151,11 @@ namespace Bind
 			gdi.GetDevice()->CreateShaderResourceView( m_pStructuredBuffer, &srvDesc, &pStructBufSRV );
 			GetContext( gdi )->PSSetShaderResources( m_iSlot, 1u, &pStructBufSRV );
 		}
-		static std::shared_ptr<PixelArrStructuredBuffer> Resolve( GraphicsDeviceInterface& gdi, const C* consts, UINT slot = 0 )
+		static std::shared_ptr<PixelArrStructuredBuffer> Resolve( Graphics& gdi, const C* consts, UINT slot = 0 )
 		{
 			return Codex::Resolve<PixelArrStructuredBuffer>( gdi, consts, slot );
 		}
-		static std::shared_ptr<PixelArrStructuredBuffer> Resolve( GraphicsDeviceInterface& gdi, UINT slot = 0 )
+		static std::shared_ptr<PixelArrStructuredBuffer> Resolve( Graphics& gdi, UINT slot = 0 )
 		{
 			return Codex::Resolve<PixelArrStructuredBuffer>( gdi, slot );
 		}

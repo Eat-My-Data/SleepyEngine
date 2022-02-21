@@ -1,3 +1,22 @@
+/******************************************************************************************
+*	Chili Direct3D Engine																  *
+*	Copyright 2018 PlanetChili <http://www.planetchili.net>								  *
+*																						  *
+*	This file is part of Chili Direct3D Engine.											  *
+*																						  *
+*	Chili Direct3D Engine is free software: you can redistribute it and/or modify		  *
+*	it under the terms of the GNU General Public License as published by				  *
+*	the Free Software Foundation, either version 3 of the License, or					  *
+*	(at your option) any later version.													  *
+*																						  *
+*	The Chili Direct3D Engine is distributed in the hope that it will be useful,		  *
+*	but WITHOUT ANY WARRANTY; without even the implied warranty of						  *
+*	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  *
+*	GNU General Public License for more details.										  *
+*																						  *
+*	You should have received a copy of the GNU General Public License					  *
+*	along with The Chili Direct3D Engine.  If not, see <http://www.gnu.org/licenses/>.    *
+******************************************************************************************/
 #pragma once
 #include <queue>
 #include <bitset>
@@ -5,7 +24,7 @@
 
 class Keyboard
 {
-	friend class Win32Window;
+	friend class Window;
 public:
 	class Event
 	{
@@ -19,7 +38,7 @@ public:
 		Type type;
 		unsigned char code;
 	public:
-		Event( Type type, unsigned char code ) noexcept
+		Event( Type type,unsigned char code ) noexcept
 			:
 			type( type ),
 			code( code )
@@ -63,10 +82,10 @@ private:
 	template<typename T>
 	static void TrimBuffer( std::queue<T>& buffer ) noexcept;
 private:
-	static constexpr unsigned int m_iNumKeys = 256u;
-	static constexpr unsigned int m_iBufferSize = 16u;
-	bool m_bAutorepeatEnabled = false;
-	std::bitset<m_iNumKeys> m_KeyStates;
-	std::queue<Event> m_qKeyBuffer;
-	std::queue<char> m_qCharBuffer;
+	static constexpr unsigned int nKeys = 256u;
+	static constexpr unsigned int bufferSize = 16u;
+	bool autorepeatEnabled = false;
+	std::bitset<nKeys> keystates;
+	std::queue<Event> keybuffer;
+	std::queue<char> charbuffer;
 };

@@ -1,14 +1,14 @@
 #include "SolidSphere.h"
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/Blender.h"
-#include "../ResourceManager/Vertex.h"
-#include "../ResourceManager/Geometry/Sphere.h"
+#include "../Renderer/Model/Vertex.h"
+#include "../Geometry/Sphere.h"
 #include "../Bindable/Bindables/ConstantBuffers.h"
 #include "../Bindable/Bindables/DynamicConstant.h"
 #include "../Bindable/Bindables/ConstantBuffersEx.h"
-#include "../ResourceManager/Jobber/TechniqueProbe.h"
+#include "../Renderer/Jobber/TechniqueProbe.h"
 
-SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
+SolidSphere::SolidSphere( Graphics& gdi, float radius )
 {
 	using namespace Bind;
 	namespace dx = DirectX;

@@ -13,9 +13,9 @@ namespace Bind
 			Point,
 		};
 	public:
-		Sampler( GraphicsDeviceInterface& gdi, Type type, bool reflect );
-		void Bind( GraphicsDeviceInterface& gdi ) noexcept override;
-		static std::shared_ptr<Sampler> Resolve( GraphicsDeviceInterface& gdi, Type type = Type::Anisotropic, bool reflect = false );
+		Sampler( Graphics& gdi, Type type, bool reflect );
+		void Bind( Graphics& gdi ) noexcept override;
+		static std::shared_ptr<Sampler> Resolve( Graphics& gdi, Type type = Type::Anisotropic, bool reflect = false );
 		static std::string GenerateUID( Type type, bool reflect );
 		std::string GetUID() const noexcept override;
 	protected:

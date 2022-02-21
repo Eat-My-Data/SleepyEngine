@@ -2,7 +2,7 @@
 #include "../Bindable.h"
 #include "BufferResource.h"
 
-class GraphicsDeviceInterface;
+class Graphics;
 
 namespace Bind
 {
@@ -12,21 +12,21 @@ namespace Bind
 	{
 		friend RenderTarget;
 	public:
-		void BindAsBuffer( GraphicsDeviceInterface& gfx ) noexcept override;
-		void BindAsBuffer( GraphicsDeviceInterface& gfx, BufferResource* renderTarget ) noexcept override;
-		void BindAsBuffer( GraphicsDeviceInterface& gfx, RenderTarget* rt ) noexcept;
-		void Clear( GraphicsDeviceInterface& gfx ) noexcept override;
+		void BindAsBuffer( Graphics& gfx ) noexcept override;
+		void BindAsBuffer( Graphics& gfx, BufferResource* renderTarget ) noexcept override;
+		void BindAsBuffer( Graphics& gfx, RenderTarget* rt ) noexcept;
+		void Clear( Graphics& gfx ) noexcept override;
 	protected:
-		DepthStencil( GraphicsDeviceInterface& gfx, UINT width, UINT height, bool canBindShaderInput );
+		DepthStencil( Graphics& gfx, UINT width, UINT height, bool canBindShaderInput );
 		ID3D11DepthStencilView* pDepthStencilView;
 	};
 
 	class ShaderInputDepthStencil : public DepthStencil
 	{
 	public:
-		ShaderInputDepthStencil( GraphicsDeviceInterface& gfx, UINT slot );
-		ShaderInputDepthStencil( GraphicsDeviceInterface& gfx, UINT width, UINT height, UINT slot );
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override;
+		ShaderInputDepthStencil( Graphics& gfx, UINT slot );
+		ShaderInputDepthStencil( Graphics& gfx, UINT width, UINT height, UINT slot );
+		void Bind( Graphics& gfx ) noexcept override;
 	private:
 		UINT slot;
 		ID3D11ShaderResourceView* pShaderResourceView;
@@ -35,8 +35,8 @@ namespace Bind
 	class OutputOnlyDepthStencil : public DepthStencil
 	{
 	public:
-		OutputOnlyDepthStencil( GraphicsDeviceInterface& gfx );
-		OutputOnlyDepthStencil( GraphicsDeviceInterface& gfx, UINT width, UINT height );
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override;
+		OutputOnlyDepthStencil( Graphics& gfx );
+		OutputOnlyDepthStencil( Graphics& gfx, UINT width, UINT height );
+		void Bind( Graphics& gfx ) noexcept override;
 	};
 }

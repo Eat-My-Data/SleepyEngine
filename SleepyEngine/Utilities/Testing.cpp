@@ -7,7 +7,7 @@
 #include <assimp/postprocess.h>
 #include "../ResourceManager/Material.h"
 #include "../ResourceManager/Mesh.h"
-#include "SleepyXM.h"
+#include "ChiliXM.h"
 #include <algorithm>
 #include <array>
 
@@ -43,7 +43,7 @@ void TestDynamicMeshLoading()
 	}
 }
 
-void TestMaterialSystemLoading( GraphicsDeviceInterface& gfx )
+void TestMaterialSystemLoading( Graphics& gfx )
 {
 	std::string path = "Models\\brick_wall\\brick_wall.obj";
 	Assimp::Importer imp;

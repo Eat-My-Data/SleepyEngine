@@ -3,7 +3,7 @@
 
 namespace Bind
 {
-	Rasterizer::Rasterizer( GraphicsDeviceInterface& gdi, bool twoSided )
+	Rasterizer::Rasterizer( Graphics& gdi, bool twoSided )
 		:
 		m_bTwoSided( twoSided )
 	{
@@ -13,12 +13,12 @@ namespace Bind
 		GetDevice( gdi )->CreateRasterizerState( &rasterDesc, &m_pRasterizer );
 	}
 
-	void Rasterizer::Bind( GraphicsDeviceInterface& gdi ) noexcept
+	void Rasterizer::Bind( Graphics& gdi ) noexcept
 	{
 		GetContext( gdi )->RSSetState( m_pRasterizer );
 	}
 
-	std::shared_ptr<Rasterizer> Rasterizer::Resolve( GraphicsDeviceInterface& gdi, bool twoSided )
+	std::shared_ptr<Rasterizer> Rasterizer::Resolve( Graphics& gdi, bool twoSided )
 	{
 		return Codex::Resolve<Rasterizer>( gdi, twoSided );
 	}

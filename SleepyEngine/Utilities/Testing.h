@@ -1,10 +1,10 @@
 #pragma once
-#include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
+#include "../Graphics/Graphics.h"
 
 void TestDynamicConstant();
 
 void TestDynamicMeshLoading();
 
-void TestMaterialSystemLoading( GraphicsDeviceInterface& gfx );
+void TestMaterialSystemLoading( Graphics& gfx );
 
 void TestScaleMatrixTranslation();

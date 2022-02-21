@@ -1,10 +1,10 @@
 #include "DepthStencil.h"
 #include "RenderTarget.h"
-#include "../../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
+#include "../../Graphics/Graphics.h"
 
 namespace Bind
 {
-	DepthStencil::DepthStencil( GraphicsDeviceInterface& gfx, UINT width, UINT height, bool canBindShaderInput )
+	DepthStencil::DepthStencil( Graphics& gfx, UINT width, UINT height, bool canBindShaderInput )
 	{
 		// create depth stensil texture
 		ID3D11Texture2D* pDepthStencil;
@@ -26,34 +26,34 @@ namespace Bind
 		);
 	}
 
-	void DepthStencil::BindAsBuffer( GraphicsDeviceInterface& gfx ) noexcept
+	void DepthStencil::BindAsBuffer( Graphics& gfx ) noexcept
 	{
 		GetContext( gfx )->OMSetRenderTargets( 0, nullptr, pDepthStencilView );
 	}
 
-	void DepthStencil::BindAsBuffer( GraphicsDeviceInterface& gfx, BufferResource* renderTarget ) noexcept
+	void DepthStencil::BindAsBuffer( Graphics& gfx, BufferResource* renderTarget ) noexcept
 	{
 		assert( dynamic_cast<RenderTarget*>( renderTarget ) != nullptr );
 		BindAsBuffer( gfx, static_cast<RenderTarget*>( renderTarget ) );
 	}
 
-	void DepthStencil::BindAsBuffer( GraphicsDeviceInterface& gfx, RenderTarget* rt ) noexcept
+	void DepthStencil::BindAsBuffer( Graphics& gfx, RenderTarget* rt ) noexcept
 	{
 		rt->BindAsBuffer( gfx, this );
 	}
 
-	void DepthStencil::Clear( GraphicsDeviceInterface& gfx ) noexcept
+	void DepthStencil::Clear( Graphics& gfx ) noexcept
 	{
 		GetContext( gfx )->ClearDepthStencilView( pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 	}
 
 
-	ShaderInputDepthStencil::ShaderInputDepthStencil( GraphicsDeviceInterface& gfx, UINT slot )
+	ShaderInputDepthStencil::ShaderInputDepthStencil( Graphics& gfx, UINT slot )
 		:
 		ShaderInputDepthStencil( gfx, gfx.GetWidth(), gfx.GetHeight(), slot )
 	{}
 
-	ShaderInputDepthStencil::ShaderInputDepthStencil( GraphicsDeviceInterface& gfx, UINT width, UINT height, UINT slot )
+	ShaderInputDepthStencil::ShaderInputDepthStencil( Graphics& gfx, UINT width, UINT height, UINT slot )
 		:
 		DepthStencil( gfx, width, height, true ),
 		slot( slot )
@@ -71,23 +71,23 @@ namespace Bind
 		);
 	}
 
-	void ShaderInputDepthStencil::Bind( GraphicsDeviceInterface& gfx ) noexcept
+	void ShaderInputDepthStencil::Bind( Graphics& gfx ) noexcept
 	{
 		GetContext( gfx )->PSSetShaderResources( slot, 1u, &pShaderResourceView );
 	}
 
 
-	OutputOnlyDepthStencil::OutputOnlyDepthStencil( GraphicsDeviceInterface& gfx )
+	OutputOnlyDepthStencil::OutputOnlyDepthStencil( Graphics& gfx )
 		:
 		OutputOnlyDepthStencil( gfx, gfx.GetWidth(), gfx.GetHeight() )
 	{}
 
-	OutputOnlyDepthStencil::OutputOnlyDepthStencil( GraphicsDeviceInterface& gfx, UINT width, UINT height )
+	OutputOnlyDepthStencil::OutputOnlyDepthStencil( Graphics& gfx, UINT width, UINT height )
 		:
 		DepthStencil( gfx, width, height, false )
 	{}
 
-	void OutputOnlyDepthStencil::Bind( GraphicsDeviceInterface& gfx ) noexcept
+	void OutputOnlyDepthStencil::Bind( Graphics& gfx ) noexcept
 	{
 		assert( "OutputOnlyDepthStencil cannot be bound as shader input" && false );
 	}

@@ -1,6 +1,6 @@
 #pragma once
 
-class GraphicsDeviceInterface;
+class Graphics;
 
 namespace Bind
 {
@@ -8,8 +8,8 @@ namespace Bind
 	{
 	public:
 		virtual ~BufferResource() = default;
-		virtual void BindAsBuffer( GraphicsDeviceInterface& ) noexcept = 0;
-		virtual void BindAsBuffer( GraphicsDeviceInterface&,BufferResource* ) noexcept = 0;
-		virtual void Clear( GraphicsDeviceInterface& ) noexcept = 0;
+		virtual void BindAsBuffer( Graphics& ) noexcept = 0;
+		virtual void BindAsBuffer( Graphics&,BufferResource* ) noexcept = 0;
+		virtual void Clear( Graphics& ) noexcept = 0;
 	};
 }

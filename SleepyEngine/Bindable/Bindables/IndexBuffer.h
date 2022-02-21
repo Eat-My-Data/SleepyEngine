@@ -7,11 +7,11 @@ namespace Bind
 	class IndexBuffer : public Bindable
 	{
 	public:
-		IndexBuffer( GraphicsDeviceInterface& gdi, const std::vector<unsigned short>& indices );
-		IndexBuffer( GraphicsDeviceInterface& gdi, std::string tag, const std::vector<unsigned short>& indices );
-		void Bind( GraphicsDeviceInterface& gdi ) noexcept override;
+		IndexBuffer( Graphics& gdi, const std::vector<unsigned short>& indices );
+		IndexBuffer( Graphics& gdi, std::string tag, const std::vector<unsigned short>& indices );
+		void Bind( Graphics& gdi ) noexcept override;
 		UINT GetCount() const noexcept;
-		static std::shared_ptr<IndexBuffer> Resolve( GraphicsDeviceInterface& gdi, const std::string& tag,
+		static std::shared_ptr<IndexBuffer> Resolve( Graphics& gdi, const std::string& tag,
 			const std::vector<unsigned short>& indices );
 		template<typename...Ignore>
 		static std::string GenerateUID( const std::string& tag, Ignore&&...ignore )

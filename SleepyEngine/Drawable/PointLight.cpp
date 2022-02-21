@@ -2,13 +2,13 @@
 #include "PointLight.h"
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/Sampler.h"
-#include "../ResourceManager/Vertex.h"
-#include "../ResourceManager/Geometry/Sphere.h"
+#include "../Renderer/Model/Vertex.h"
+#include "../Geometry/Sphere.h"
 #include <d3dcompiler.h>
 #include "../Libraries/imgui/backends/imgui_impl_dx11.h"
 #include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
-PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
+PointLight::PointLight( Graphics& gdi, float radius )
 {
 	//using namespace Bind;
 	//namespace dx = DirectX;
@@ -120,7 +120,7 @@ void PointLight::Update()
 	//m_SolidSphere->SetPos( m_StructuredBufferData.pos );
 }
 
-void PointLight::Draw( GraphicsDeviceInterface& gdi )
+void PointLight::Draw( Graphics& gdi )
 {
 	// bindables
 	//for ( auto& b : binds )

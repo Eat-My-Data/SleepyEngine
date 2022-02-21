@@ -12,14 +12,14 @@ namespace Bind
 	{
 	public:
 		template<class T, typename...Params>
-		static std::shared_ptr<T> Resolve( GraphicsDeviceInterface& gdi, Params&&...p ) noexcept
+		static std::shared_ptr<T> Resolve( Graphics& gdi, Params&&...p ) noexcept
 		{
 			static_assert( std::is_base_of<Bindable, T>::value, "Can only resolve classes derived from Bindable" );
 			return Get().Resolve_<T>( gdi, std::forward<Params>( p )... );
 		}
 	private:
 		template<class T, typename...Params>
-		std::shared_ptr<T> Resolve_( GraphicsDeviceInterface& gdi, Params&&...p ) noexcept
+		std::shared_ptr<T> Resolve_( Graphics& gdi, Params&&...p ) noexcept
 		{
 			const auto key = T::GenerateUID( std::forward<Params>( p )... );
 			const auto i = m_mapOfBinds.find( key );

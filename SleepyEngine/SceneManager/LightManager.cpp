@@ -2,7 +2,7 @@
 #include "../Libraries/imgui/backends/imgui_impl_dx11.h"
 #include "../Libraries/imgui/backends/imgui_impl_win32.h"
 
-void LightManager::Initialize( GraphicsDeviceInterface& gdi )
+void LightManager::Initialize( Graphics& gdi )
 {
 	m_pGDI = &gdi;
 	m_pDirectionalLight = new DirectionalLight( gdi );

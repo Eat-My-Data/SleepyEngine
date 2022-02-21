@@ -1,6 +1,6 @@
 #pragma once
 #include "../Bindable.h"
-#include "../../ResourceManager/Vertex.h"
+#include "../../Renderer/Model/Vertex.h"
 #include <memory>
 
 namespace Bind
@@ -8,11 +8,11 @@ namespace Bind
 	class VertexBuffer : public Bindable
 	{
 	public:
-		VertexBuffer( GraphicsDeviceInterface& gdi, const std::string& tag, const Dvtx::VertexBuffer& vbuf );
-		VertexBuffer( GraphicsDeviceInterface& gdi, const Dvtx::VertexBuffer& vbuf );
-		void Bind( GraphicsDeviceInterface& gdi ) noexcept override;
+		VertexBuffer( Graphics& gdi, const std::string& tag, const Dvtx::VertexBuffer& vbuf );
+		VertexBuffer( Graphics& gdi, const Dvtx::VertexBuffer& vbuf );
+		void Bind( Graphics& gdi ) noexcept override;
 		const Dvtx::VertexLayout& GetLayout() const noexcept;
-		static std::shared_ptr<VertexBuffer> Resolve( GraphicsDeviceInterface& gdi, const std::string& tag,
+		static std::shared_ptr<VertexBuffer> Resolve( Graphics& gdi, const std::string& tag,
 			const Dvtx::VertexBuffer& vbuf );
 		template<typename...Ignore>
 		static std::string GenerateUID( const std::string& tag, Ignore&&...ignore )

@@ -11,8 +11,8 @@ namespace Rgph
 class PointLight : public Drawable
 {
 public:
-	PointLight( GraphicsDeviceInterface& gdi, float radius );
-	void Draw( GraphicsDeviceInterface& gdi );
+	PointLight( Graphics& gdi, float radius );
+	void Draw( Graphics& gdi );
 	void Submit() const noexcept;
 	void LinkTechniques( Rgph::RenderGraph& );
 	void DrawControlPanel();

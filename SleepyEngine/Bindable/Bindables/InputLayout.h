@@ -1,7 +1,7 @@
 #pragma once
 #include "../Bindable.h"
 #include "../BindableCodex.h"
-#include "../../ResourceManager/Vertex.h"
+#include "../../Renderer/Model/Vertex.h"
 
 namespace Bind
 {
@@ -10,12 +10,12 @@ namespace Bind
 	class InputLayout : public Bindable
 	{
 	public:
-		InputLayout( GraphicsDeviceInterface& gdi,
+		InputLayout( Graphics& gdi,
 			Dvtx::VertexLayout layout,
 			const VertexShader& vs );
-		void Bind( GraphicsDeviceInterface& gdi ) noexcept override;
+		void Bind( Graphics& gdi ) noexcept override;
 		const Dvtx::VertexLayout GetLayout() const noexcept;
-		static std::shared_ptr<InputLayout> Resolve( GraphicsDeviceInterface& gdi,
+		static std::shared_ptr<InputLayout> Resolve( Graphics& gdi,
 			const Dvtx::VertexLayout& layout, const VertexShader& vs );
 		static std::string GenerateUID( const Dvtx::VertexLayout& layout, const VertexShader& vs );
 		std::string GetUID() const noexcept override;

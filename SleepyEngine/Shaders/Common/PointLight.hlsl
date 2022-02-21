@@ -39,7 +39,7 @@ float CalculatePointLightShadow(float3 viewFragPos, float3 lightPos, SamplerStat
     float3 fragToLight = viewFragPos - lightPos;
     
     // use the light to fragment vector to sample from the depth map    
-    float closestDepth = pointLightShadowTexture[lightNum].Sample(splr, normalize(fragToLight)).r;
+    float closestDepth = pointLightShadowTexture[0].Sample(splr, normalize(fragToLight)).r;
 
     // it is currently in linear range between [0,1]. Re-transform back to original value
     //closestDepth *= farPlane;

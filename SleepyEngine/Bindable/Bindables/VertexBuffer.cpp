@@ -3,11 +3,11 @@
 
 namespace Bind
 {
-	VertexBuffer::VertexBuffer( GraphicsDeviceInterface& gdi, const Dvtx::VertexBuffer& vbuf )
+	VertexBuffer::VertexBuffer( Graphics& gdi, const Dvtx::VertexBuffer& vbuf )
 		:
 		VertexBuffer( gdi, "?", vbuf )
 	{}
-	VertexBuffer::VertexBuffer( GraphicsDeviceInterface& gdi, const std::string& tag, const Dvtx::VertexBuffer& vbuf )
+	VertexBuffer::VertexBuffer( Graphics& gdi, const std::string& tag, const Dvtx::VertexBuffer& vbuf )
 		:
 		m_iStride( (UINT)vbuf.GetLayout().Size() ),
 		m_sTag( tag ),
@@ -24,7 +24,7 @@ namespace Bind
 		sd.pSysMem = vbuf.GetData();
 		gdi.GetDevice()->CreateBuffer( &bd, &sd, &m_pVertexBuffer );
 	}
-	void VertexBuffer::Bind( GraphicsDeviceInterface& gdi ) noexcept
+	void VertexBuffer::Bind( Graphics& gdi ) noexcept
 	{
 		const UINT offset = 0u;
 		GetContext( gdi )->IASetVertexBuffers( 0u, 1u, &m_pVertexBuffer, &m_iStride, &offset );
@@ -33,7 +33,7 @@ namespace Bind
 	{
 		return layout;
 	}
-	std::shared_ptr<VertexBuffer> VertexBuffer::Resolve( GraphicsDeviceInterface& gdi, const std::string& tag,
+	std::shared_ptr<VertexBuffer> VertexBuffer::Resolve( Graphics& gdi, const std::string& tag,
 		const Dvtx::VertexBuffer& vbuf )
 	{
 		assert( tag != "?" );
