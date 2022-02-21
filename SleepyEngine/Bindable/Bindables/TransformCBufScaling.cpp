@@ -21,8 +21,8 @@ void Bind::TransformCbufScaling::Bind( Graphics& gfx ) noexcept
 	const float scale = buf["scale"];
 	const auto scaleMatrix = dx::XMMatrixScaling( scale, scale, scale );
 	auto xf = GetTransforms( gfx );
-	xf.m_ModelViewMatrix = xf.m_ModelViewMatrix * scaleMatrix;
-	xf.m_ModelViewProjMatrix = xf.m_ModelViewProjMatrix * scaleMatrix;
+	xf.modelView = xf.modelView * scaleMatrix;
+	xf.modelViewProj = xf.modelViewProj * scaleMatrix;
 	UpdateBindImpl( gfx, xf );
 }
 

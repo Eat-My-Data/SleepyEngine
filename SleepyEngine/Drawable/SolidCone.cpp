@@ -2,7 +2,7 @@
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/Blender.h"
 #include "../Renderer/Model/Vertex.h"
-#include "../Renderer/Model/Geometry/Cone.h"
+#include "../Geometry/Cone.h"
 
 
 SolidCone::SolidCone( Graphics& gdi, f32 scale )

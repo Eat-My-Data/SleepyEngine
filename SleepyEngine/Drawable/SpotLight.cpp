@@ -1,9 +1,8 @@
 #include "SpotLight.h"
-#include "Cube.h"
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/Sampler.h"
 #include "../Bindable/Bindables/Blender.h"
-#include "../ResourceManager/Geometry/Cone.h"
+#include "../Geometry/Cone.h"
 #include <algorithm>
 #include <d3dcompiler.h>
 #include <math.h>

@@ -18,34 +18,34 @@ public:
 
 		constexpr float side = 1.0f / 2.0f;
 
-		VertexBuffer vertices( std::move( layout ),24u );
-		vertices[0].Attr<Type::Position3D>() = { -side,-side,-side };// 0 near side
-		vertices[1].Attr<Type::Position3D>() = { side,-side,-side };// 1
-		vertices[2].Attr<Type::Position3D>() = { -side,side,-side };// 2
-		vertices[3].Attr<Type::Position3D>() = { side,side,-side };// 3
-		vertices[4].Attr<Type::Position3D>() = { -side,-side,side };// 4 far side
-		vertices[5].Attr<Type::Position3D>() = { side,-side,side };// 5
-		vertices[6].Attr<Type::Position3D>() = { -side,side,side };// 6
-		vertices[7].Attr<Type::Position3D>() = { side,side,side };// 7
-		vertices[8].Attr<Type::Position3D>() = { -side,-side,-side };// 8 left side
-		vertices[9].Attr<Type::Position3D>() = { -side,side,-side };// 9
-		vertices[10].Attr<Type::Position3D>() = { -side,-side,side };// 10
-		vertices[11].Attr<Type::Position3D>() = { -side,side,side };// 11
-		vertices[12].Attr<Type::Position3D>() = { side,-side,-side };// 12 right side
-		vertices[13].Attr<Type::Position3D>() = { side,side,-side };// 13
-		vertices[14].Attr<Type::Position3D>() = { side,-side,side };// 14
-		vertices[15].Attr<Type::Position3D>() = { side,side,side };// 15
-		vertices[16].Attr<Type::Position3D>() = { -side,-side,-side };// 16 bottom side
-		vertices[17].Attr<Type::Position3D>() = { side,-side,-side };// 17
-		vertices[18].Attr<Type::Position3D>() = { -side,-side,side };// 18
-		vertices[19].Attr<Type::Position3D>() = { side,-side,side };// 19
-		vertices[20].Attr<Type::Position3D>() = { -side,side,-side };// 20 top side
-		vertices[21].Attr<Type::Position3D>() = { side,side,-side };// 21
-		vertices[22].Attr<Type::Position3D>() = { -side,side,side };// 22
-		vertices[23].Attr<Type::Position3D>() = { side,side,side };// 23
+		VertexBuffer m_VBVertices( std::move( layout ),24u );
+		m_VBVertices[0].Attr<Type::Position3D>() = { -side,-side,-side };// 0 near side
+		m_VBVertices[1].Attr<Type::Position3D>() = { side,-side,-side };// 1
+		m_VBVertices[2].Attr<Type::Position3D>() = { -side,side,-side };// 2
+		m_VBVertices[3].Attr<Type::Position3D>() = { side,side,-side };// 3
+		m_VBVertices[4].Attr<Type::Position3D>() = { -side,-side,side };// 4 far side
+		m_VBVertices[5].Attr<Type::Position3D>() = { side,-side,side };// 5
+		m_VBVertices[6].Attr<Type::Position3D>() = { -side,side,side };// 6
+		m_VBVertices[7].Attr<Type::Position3D>() = { side,side,side };// 7
+		m_VBVertices[8].Attr<Type::Position3D>() = { -side,-side,-side };// 8 left side
+		m_VBVertices[9].Attr<Type::Position3D>() = { -side,side,-side };// 9
+		m_VBVertices[10].Attr<Type::Position3D>() = { -side,-side,side };// 10
+		m_VBVertices[11].Attr<Type::Position3D>() = { -side,side,side };// 11
+		m_VBVertices[12].Attr<Type::Position3D>() = { side,-side,-side };// 12 right side
+		m_VBVertices[13].Attr<Type::Position3D>() = { side,side,-side };// 13
+		m_VBVertices[14].Attr<Type::Position3D>() = { side,-side,side };// 14
+		m_VBVertices[15].Attr<Type::Position3D>() = { side,side,side };// 15
+		m_VBVertices[16].Attr<Type::Position3D>() = { -side,-side,-side };// 16 bottom side
+		m_VBVertices[17].Attr<Type::Position3D>() = { side,-side,-side };// 17
+		m_VBVertices[18].Attr<Type::Position3D>() = { -side,-side,side };// 18
+		m_VBVertices[19].Attr<Type::Position3D>() = { side,-side,side };// 19
+		m_VBVertices[20].Attr<Type::Position3D>() = { -side,side,-side };// 20 top side
+		m_VBVertices[21].Attr<Type::Position3D>() = { side,side,-side };// 21
+		m_VBVertices[22].Attr<Type::Position3D>() = { -side,side,side };// 22
+		m_VBVertices[23].Attr<Type::Position3D>() = { side,side,side };// 23
 
 		return{
-			std::move( vertices ),{
+			std::move( m_VBVertices ),{
 				0,2, 1,    2,3,1,
 				4,5, 7,    4,7,6,
 				8,10, 9,  10,11,9,
@@ -66,30 +66,30 @@ public:
 			.Append( Type::Texture2D )
 		) );
 
-		itl.vertices[0].Attr<Type::Texture2D>() = { 0.0f,0.0f };
-		itl.vertices[1].Attr<Type::Texture2D>() = { 1.0f,0.0f };
-		itl.vertices[2].Attr<Type::Texture2D>() = { 0.0f,1.0f };
-		itl.vertices[3].Attr<Type::Texture2D>() = { 1.0f,1.0f };
-		itl.vertices[4].Attr<Type::Texture2D>() = { 0.0f,0.0f };
-		itl.vertices[5].Attr<Type::Texture2D>() = { 1.0f,0.0f };
-		itl.vertices[6].Attr<Type::Texture2D>() = { 0.0f,1.0f };
-		itl.vertices[7].Attr<Type::Texture2D>() = { 1.0f,1.0f };
-		itl.vertices[8].Attr<Type::Texture2D>() = { 0.0f,0.0f };
-		itl.vertices[9].Attr<Type::Texture2D>() = { 1.0f,0.0f };
-		itl.vertices[10].Attr<Type::Texture2D>() = { 0.0f,1.0f };
-		itl.vertices[11].Attr<Type::Texture2D>() = { 1.0f,1.0f };
-		itl.vertices[12].Attr<Type::Texture2D>() = { 0.0f,0.0f };
-		itl.vertices[13].Attr<Type::Texture2D>() = { 1.0f,0.0f };
-		itl.vertices[14].Attr<Type::Texture2D>() = { 0.0f,1.0f };
-		itl.vertices[15].Attr<Type::Texture2D>() = { 1.0f,1.0f };
-		itl.vertices[16].Attr<Type::Texture2D>() = { 0.0f,0.0f };
-		itl.vertices[17].Attr<Type::Texture2D>() = { 1.0f,0.0f };
-		itl.vertices[18].Attr<Type::Texture2D>() = { 0.0f,1.0f };
-		itl.vertices[19].Attr<Type::Texture2D>() = { 1.0f,1.0f };
-		itl.vertices[20].Attr<Type::Texture2D>() = { 0.0f,0.0f };
-		itl.vertices[21].Attr<Type::Texture2D>() = { 1.0f,0.0f };
-		itl.vertices[22].Attr<Type::Texture2D>() = { 0.0f,1.0f };
-		itl.vertices[23].Attr<Type::Texture2D>() = { 1.0f,1.0f };
+		itl.m_VBVertices[0].Attr<Type::Texture2D>() = { 0.0f,0.0f };
+		itl.m_VBVertices[1].Attr<Type::Texture2D>() = { 1.0f,0.0f };
+		itl.m_VBVertices[2].Attr<Type::Texture2D>() = { 0.0f,1.0f };
+		itl.m_VBVertices[3].Attr<Type::Texture2D>() = { 1.0f,1.0f };
+		itl.m_VBVertices[4].Attr<Type::Texture2D>() = { 0.0f,0.0f };
+		itl.m_VBVertices[5].Attr<Type::Texture2D>() = { 1.0f,0.0f };
+		itl.m_VBVertices[6].Attr<Type::Texture2D>() = { 0.0f,1.0f };
+		itl.m_VBVertices[7].Attr<Type::Texture2D>() = { 1.0f,1.0f };
+		itl.m_VBVertices[8].Attr<Type::Texture2D>() = { 0.0f,0.0f };
+		itl.m_VBVertices[9].Attr<Type::Texture2D>() = { 1.0f,0.0f };
+		itl.m_VBVertices[10].Attr<Type::Texture2D>() = { 0.0f,1.0f };
+		itl.m_VBVertices[11].Attr<Type::Texture2D>() = { 1.0f,1.0f };
+		itl.m_VBVertices[12].Attr<Type::Texture2D>() = { 0.0f,0.0f };
+		itl.m_VBVertices[13].Attr<Type::Texture2D>() = { 1.0f,0.0f };
+		itl.m_VBVertices[14].Attr<Type::Texture2D>() = { 0.0f,1.0f };
+		itl.m_VBVertices[15].Attr<Type::Texture2D>() = { 1.0f,1.0f };
+		itl.m_VBVertices[16].Attr<Type::Texture2D>() = { 0.0f,0.0f };
+		itl.m_VBVertices[17].Attr<Type::Texture2D>() = { 1.0f,0.0f };
+		itl.m_VBVertices[18].Attr<Type::Texture2D>() = { 0.0f,1.0f };
+		itl.m_VBVertices[19].Attr<Type::Texture2D>() = { 1.0f,1.0f };
+		itl.m_VBVertices[20].Attr<Type::Texture2D>() = { 0.0f,0.0f };
+		itl.m_VBVertices[21].Attr<Type::Texture2D>() = { 1.0f,0.0f };
+		itl.m_VBVertices[22].Attr<Type::Texture2D>() = { 0.0f,1.0f };
+		itl.m_VBVertices[23].Attr<Type::Texture2D>() = { 1.0f,1.0f };
 
 		return itl;
 	}

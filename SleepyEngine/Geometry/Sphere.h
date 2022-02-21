@@ -1,9 +1,9 @@
 #pragma once
 #include <optional>
-#include "../Vertex.h"
-#include "../IndexedTriangleList.h"
+#include "../Renderer/Model/Vertex.h"
+#include "../Renderer/Model/IndexedTriangleList.h"
 #include <DirectXMath.h>
-#include "../../Utilities/SleepyMath.h"
+#include "../Utilities/ChiliMath.h"
 
 class Sphere
 {

@@ -5,7 +5,7 @@
 #include "Node.h"
 #include "Mesh.h"
 #include "Material.h"
-#include "../Utilities/ChiliXM.h"
+#include "../../Utilities/ChiliXM.h"
 
 namespace dx = DirectX;
 

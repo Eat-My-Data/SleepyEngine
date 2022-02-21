@@ -1,10 +1,10 @@
 #include "DxgiInfoManager.h"
-#include "../Win32/Win32Window.h"
+#include "../Win32/Window.h"
 #include "Graphics.h"
 #include <dxgidebug.h>
 #include <memory>
-#include "GraphicsThrowMacros.h"
-#include "../Win32/WindowsThrowMacros.h"
+#include "../Macros/GraphicsThrowMacros.h"
+#include "../Macros/WindowsThrowMacros.h"
 
 #pragma comment(lib, "dxguid.lib")
 
@@ -15,7 +15,7 @@ DxgiInfoManager::DxgiInfoManager()
 	typedef HRESULT (WINAPI* DXGIGetDebugInterface)(REFIID,void **);
 
 	// load the dll that contains the function DXGIGetDebugInterface
-	const auto hModDxgiDebug = LoadLibraryEx( "dxgidebug.dll",nullptr,LOAD_LIBRARY_SEARCH_SYSTEM32 );
+	const auto hModDxgiDebug = LoadLibraryEx( (LPWSTR)"dxgidebug.dll",nullptr,LOAD_LIBRARY_SEARCH_SYSTEM32 );
 	if( hModDxgiDebug == nullptr )
 	{
 		throw CHWND_LAST_EXCEPT();

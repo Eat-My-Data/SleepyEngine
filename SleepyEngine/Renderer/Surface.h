@@ -1,5 +1,5 @@
 #pragma once
-#include "../Win32/Win32Window.h"
+#include "../Win32/Window.h"
 #include <string>
 #include <optional>
 #include <dxtex/DirectXTex.h>

@@ -1,5 +1,5 @@
 #pragma once
-#include "../Graphics/Graphics.h"
+#include "../../Graphics/Graphics.h"
 #include <vector>
 #include "../Jobber/Technique.h"
 #include "Vertex.h"

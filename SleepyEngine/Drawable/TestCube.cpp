@@ -16,8 +16,8 @@ TestCube::TestCube( Graphics& gfx,float size )
 	model.Transform( dx::XMMatrixScaling( size,size,size ) );
 	model.SetNormalsIndependentFlat();
 	const auto geometryTag = "$cube." + std::to_string( size );
-	pVertices = VertexBuffer::Resolve( gfx,geometryTag,model.vertices );
-	pIndices = IndexBuffer::Resolve( gfx,geometryTag,model.indices );
+	pVertices = VertexBuffer::Resolve( gfx,geometryTag,model.m_VBVertices );
+	pIndices = IndexBuffer::Resolve( gfx,geometryTag,model.m_vecOfIndices );
 	pTopology = Topology::Resolve( gfx,D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 	
 	auto tcb = std::make_shared<TransformCbuf>( gfx );
@@ -31,7 +31,7 @@ TestCube::TestCube( Graphics& gfx,float size )
 			only.AddBindable( Sampler::Resolve( gfx ) );
 
 			auto pvs = VertexShader::Resolve( gfx,"PhongDif_VS.cso" );
-			only.AddBindable( InputLayout::Resolve( gfx,model.vertices.GetLayout(),*pvs ) );
+			only.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*pvs ) );
 			only.AddBindable( std::move( pvs ) );
 
 			only.AddBindable( PixelShader::Resolve( gfx,"PhongDif_PS.cso" ) );
@@ -62,7 +62,7 @@ TestCube::TestCube( Graphics& gfx,float size )
 			Step mask( "outlineMask" );
 
 			// TODO: better sub-layout generation tech for future consideration maybe
-			mask.AddBindable( InputLayout::Resolve( gfx,model.vertices.GetLayout(),*VertexShader::Resolve( gfx,"Solid_VS.cso" ) ) );
+			mask.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*VertexShader::Resolve( gfx,"Solid_VS.cso" ) ) );
 
 			mask.AddBindable( std::move( tcb ) );
 
@@ -80,7 +80,7 @@ TestCube::TestCube( Graphics& gfx,float size )
 			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx,buf,1u ) );
 
 			// TODO: better sub-layout generation tech for future consideration maybe
-			draw.AddBindable( InputLayout::Resolve( gfx,model.vertices.GetLayout(),*VertexShader::Resolve( gfx,"Solid_VS.cso" ) ) );
+			draw.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*VertexShader::Resolve( gfx,"Solid_VS.cso" ) ) );
 			
 			draw.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
 

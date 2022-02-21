@@ -80,13 +80,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include\;</IncludePath>
-    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(ProjectDir)Libraries\assimp\lib\$(Configuration);$(LibraryPath);</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include</IncludePath>
+    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin;$(ProjectDir)Libraries\assimp\bin\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include\;</IncludePath>
-    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin\$(Configuration);$(ProjectDir)Libraries\assimp\lib\$(Configuration);$(LibraryPath);</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Libraries\dxtex\include;$(ProjectDir)Libraries\assimp\include</IncludePath>
+    <LibraryPath>$(ProjectDir)Libraries\dxtex\bin;$(ProjectDir)Libraries\assimp\bin\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -128,7 +128,7 @@
     <ClCompile>
       <WarningLevel>Level2</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NOMINMAX;_MBCS;%(PreprocessorDefinitions);_DEBUG;_CONSOLE;%(PreprocessorDefinitions); IS_DEBUG=true</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions); IS_DEBUG=true</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
@@ -151,7 +151,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NOMINMAX;_MBCS;%(PreprocessorDefinitions);NDEBUG;_CONSOLE;%(PreprocessorDefinitions);IS_DEBUG=false</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_MBCS;%(PreprocessorDefinitions);IS_DEBUG=false</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>Default</LanguageStandard_C>
@@ -190,7 +190,6 @@
     <ClCompile Include="Bindable\Bindables\VertexShader.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Drawable\SolidCone.cpp" />
-    <ClCompile Include="Drawable\Cube.cpp" />
     <ClCompile Include="Drawable\DirectionalLight.cpp" />
     <ClCompile Include="Drawable\Drawable.cpp" />
     <ClCompile Include="Drawable\PointLight.cpp" />
@@ -230,6 +229,7 @@
     <ClCompile Include="Renderer\Model\Material.cpp" />
     <ClCompile Include="Renderer\Model\Mesh.cpp" />
     <ClCompile Include="Renderer\Model\Model.cpp" />
+    <ClCompile Include="Renderer\Model\ModelException.cpp" />
     <ClCompile Include="Renderer\Model\Node.cpp" />
     <ClCompile Include="Renderer\Model\Vertex.cpp" />
     <ClCompile Include="Renderer\Surface.cpp" />
@@ -241,6 +241,7 @@
     <ClCompile Include="Utilities\ChiliUtil.cpp" />
     <ClCompile Include="Utilities\ChiliXM.cpp" />
     <ClCompile Include="Utilities\Testing.cpp" />
+    <ClCompile Include="Utilities\TexturePreprocessor.cpp" />
     <ClCompile Include="Win32\Keyboard.cpp" />
     <ClCompile Include="Win32\Mouse.cpp" />
     <ClCompile Include="Win32\Win32MessageMap.cpp" />
@@ -332,6 +333,7 @@
     <ClInclude Include="Renderer\Model\Material.h" />
     <ClInclude Include="Renderer\Model\Mesh.h" />
     <ClInclude Include="Renderer\Model\Model.h" />
+    <ClInclude Include="Renderer\Model\ModelException.h" />
     <ClInclude Include="Renderer\Model\Node.h" />
     <ClInclude Include="Renderer\Model\Vertex.h" />
     <ClInclude Include="Renderer\Surface.h" />
@@ -347,6 +349,7 @@
     <ClInclude Include="Utilities\ChiliUtil.h" />
     <ClInclude Include="Utilities\ChiliXM.h" />
     <ClInclude Include="Utilities\Testing.h" />
+    <ClInclude Include="Utilities\TexturePreprocessor.h" />
     <ClInclude Include="Win32\Keyboard.h" />
     <ClInclude Include="Win32\Mouse.h" />
     <ClInclude Include="Win32\Win32MessageMap.h" />
@@ -752,6 +755,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="Graphics\DXGetErrorDescription.inl" />
+    <None Include="Graphics\DXGetErrorString.inl" />
+    <None Include="Graphics\DXTrace.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

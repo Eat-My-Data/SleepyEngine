@@ -1,3 +1,4 @@
+#include "GraphicsResource.h"
 #include <stdexcept>
 
 

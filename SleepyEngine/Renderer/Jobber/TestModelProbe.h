@@ -4,8 +4,8 @@
 #include "../../Libraries/imgui/imgui.h"
 #include "Technique.h"
 #include "../../Bindable/Bindables/DynamicConstant.h"
-#include "../../ResourceManager/Model.h"
-#include "../../ResourceManager/Node.h"
+#include "../../Renderer/Model/Model.h"
+#include "../../Renderer/Model//Node.h"
 #include <DirectXMath.h>
 #include <string>
 #include <unordered_map>

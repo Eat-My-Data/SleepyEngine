@@ -138,9 +138,6 @@
     <ClCompile Include="Drawable\Drawable.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="Drawable\Cube.cpp">
-      <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager\SceneManager.cpp">
       <Filter>Source Files\SceneManager</Filter>
     </ClCompile>
@@ -356,6 +353,12 @@
     </ClCompile>
     <ClCompile Include="Win32\Keyboard.cpp">
       <Filter>Source Files\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities\TexturePreprocessor.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Model\ModelException.cpp">
+      <Filter>Source Files\Renderer\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -674,6 +677,12 @@
     <ClInclude Include="Win32\Keyboard.h">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities\TexturePreprocessor.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Model\ModelException.h">
+      <Filter>Header Files\Renderer\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
@@ -835,5 +844,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="Graphics\DXGetErrorDescription.inl">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="Graphics\DXGetErrorString.inl">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="Graphics\DXTrace.inl">
+      <Filter>Header Files\Graphics</Filter>
+    </None>
   </ItemGroup>
 </Project>

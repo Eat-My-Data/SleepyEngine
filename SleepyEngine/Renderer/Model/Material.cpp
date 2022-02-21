@@ -1,9 +1,9 @@
 #include "Material.h"
-#include "../Bindable/BindableCommon.h"
-#include "../Bindable/Bindables/DynamicConstant.h"
-#include "../Bindable/Bindables/ConstantBuffersEx.h"
-#include "../Bindable/Bindables/TransformCbufScaling.h"
-#include "../Bindable/Bindables/Stencil.h"
+#include "../../Bindable/BindableCommon.h"
+#include "../../Bindable/Bindables/DynamicConstant.h"
+#include "../../Bindable/Bindables/ConstantBuffersEx.h"
+#include "../../Bindable/Bindables/TransformCbufScaling.h"
+#include "../../Bindable/Bindables/Stencil.h"
 #include <filesystem>
 
 Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path ) noexcept

@@ -1,5 +1,5 @@
 #include "Surface.h"
-#include "../Win32/Win32Window.h"
+#include "../Win32/Window.h"
 #include <algorithm>
 #include <cassert>
 #include <sstream>

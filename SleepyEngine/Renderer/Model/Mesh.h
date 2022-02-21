@@ -1,6 +1,6 @@
 #pragma once
-#include "../Graphics/Graphics.h"
-#include "../Drawable/Drawable.h"
+#include "../../Graphics/Graphics.h"
+#include "../../Drawable/Drawable.h"
 
 class Material;
 class FrameCommander;

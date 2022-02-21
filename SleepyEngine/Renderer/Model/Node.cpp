@@ -1,7 +1,7 @@
 #include "Node.h"
 #include "Mesh.h"
-#include "./Jobber/ModelProbe.h"
-#include "../Libraries/imgui/imgui.h"
+#include "../Jobber/ModelProbe.h"
+#include "../../Libraries/imgui/imgui.h"
 
 namespace dx = DirectX;
 

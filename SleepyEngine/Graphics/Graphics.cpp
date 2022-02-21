@@ -229,13 +229,14 @@ HRESULT Graphics::HrException::GetErrorCode() const noexcept
 
 std::string Graphics::HrException::GetErrorString() const noexcept
 {
-	return DXGetErrorString( hr );
+	return {};
+	//return DXGetErrorString( hr );
 }
 
 std::string Graphics::HrException::GetErrorDescription() const noexcept
 {
 	char buf[512];
-	DXGetErrorDescription( hr,buf,sizeof( buf ) );
+	//DXGetErrorDescription( hr,buf,sizeof( buf ) );
 	return buf;
 }
 
