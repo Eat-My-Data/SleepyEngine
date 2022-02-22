@@ -14,7 +14,7 @@
 class App
 {
 public:
-	App();
+	App( const std::string& commandLine = "" );
 	u32 Launch();
 	~App();
 private:

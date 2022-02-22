@@ -7,7 +7,7 @@
 #include "./Utilities/PerfLog.h"
 #include "./Renderer/Jobber/TestModelProbe.h"
 
-App::App()
+App::App( const std::string& commandLine )
 	:
 	commandLine( commandLine ),
 	wnd( 1280, 720, "Sleepy Engine" ),

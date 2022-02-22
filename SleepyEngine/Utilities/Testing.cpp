@@ -361,9 +361,9 @@ void D3DTestScratchPad( Window& wnd )
 		const std::vector<unsigned short> idx = { 0,1,2 };
 		const auto biidx = Bind::IndexBuffer::Resolve( gfx, "##?", idx );
 
-		const auto bips = Bind::PixelShader::Resolve( gfx, "Test_PS.cso" );
+		const auto bips = Bind::PixelShader::Resolve( gfx, "./Shaders/Bin/Test_PS.cso" );
 
-		const auto bivs = Bind::VertexShader::Resolve( gfx, vsName );
+		const auto bivs = Bind::VertexShader::Resolve( gfx, "./Shaders/Bin/" + vsName);
 		const auto bilay = Bind::InputLayout::Resolve( gfx, layout, *bivs );
 
 		auto rt = Bind::ShaderInputRenderTarget{ gfx,1280,720,0 };

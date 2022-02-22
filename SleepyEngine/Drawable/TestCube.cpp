@@ -27,14 +27,14 @@ TestCube::TestCube( Graphics& gfx,float size )
 		{
 			Step only( "lambertian" );
 
-			only.AddBindable( Texture::Resolve( gfx,"Images\\brickwall.jpg" ) );
+			only.AddBindable( Texture::Resolve( gfx,"Models\\brick_wall\\brick_wall_diffuse.jpg" ) );
 			only.AddBindable( Sampler::Resolve( gfx ) );
 
-			auto pvs = VertexShader::Resolve( gfx,"PhongDif_VS.cso" );
+			auto pvs = VertexShader::Resolve( gfx,"./Shaders/Bin/PhongDif_VS.cso" );
 			only.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*pvs ) );
 			only.AddBindable( std::move( pvs ) );
 
-			only.AddBindable( PixelShader::Resolve( gfx,"PhongDif_PS.cso" ) );
+			only.AddBindable( PixelShader::Resolve( gfx,"./Shaders/Bin/PhongDif_PS.cso" ) );
 			
 			Dcb::RawLayout lay;
 			lay.Add<Dcb::Float3>( "specularColor" );
@@ -62,7 +62,7 @@ TestCube::TestCube( Graphics& gfx,float size )
 			Step mask( "outlineMask" );
 
 			// TODO: better sub-layout generation tech for future consideration maybe
-			mask.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*VertexShader::Resolve( gfx,"Solid_VS.cso" ) ) );
+			mask.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*VertexShader::Resolve( gfx,"./Shaders/Bin/Solid_VS.cso" ) ) );
 
 			mask.AddBindable( std::move( tcb ) );
 
@@ -80,7 +80,7 @@ TestCube::TestCube( Graphics& gfx,float size )
 			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx,buf,1u ) );
 
 			// TODO: better sub-layout generation tech for future consideration maybe
-			draw.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*VertexShader::Resolve( gfx,"Solid_VS.cso" ) ) );
+			draw.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*VertexShader::Resolve( gfx,"./Shaders/Bin/Solid_VS.cso" ) ) );
 			
 			draw.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
 

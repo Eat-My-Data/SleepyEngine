@@ -121,6 +121,9 @@
     <Filter Include="Header Files\Geometry">
       <UniqueIdentifier>{8c970e15-4c66-4eb5-8105-bcf693851f29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Test">
+      <UniqueIdentifier>{77b54587-de92-4558-8ec3-db7fdca2c27b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -288,9 +291,6 @@
     <ClCompile Include="Renderer\Jobber\StepLinkingProbe.cpp">
       <Filter>Source Files\Renderer\Jobber</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Surface.cpp">
-      <Filter>Source Files\Renderer\Jobber</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\Jobber\Technique.cpp">
       <Filter>Source Files\Renderer\Jobber</Filter>
     </ClCompile>
@@ -347,6 +347,9 @@
     </ClCompile>
     <ClCompile Include="Libraries\imgui\imgui_impl_win32.cpp">
       <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Surface.cpp">
+      <Filter>Source Files\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -569,9 +572,6 @@
     <ClInclude Include="Renderer\Jobber\StepLinkingProbe.h">
       <Filter>Header Files\Renderer\Jobber</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Surface.h">
-      <Filter>Header Files\Renderer\Jobber</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\Jobber\Technique.h">
       <Filter>Header Files\Renderer\Jobber</Filter>
     </ClInclude>
@@ -670,6 +670,9 @@
     </ClInclude>
     <ClInclude Include="Libraries\imgui\imstb_textedit.h">
       <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Surface.h">
+      <Filter>Header Files\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -798,6 +801,15 @@
     </FxCompile>
     <FxCompile Include="Shaders\Forward\PhongDifMskSpc_VS.hlsl">
       <Filter>Shaders\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Test\Test2_VS.hlsl">
+      <Filter>Shaders\Test</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Test\Test_PS.hlsl">
+      <Filter>Shaders\Test</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Test\Test1_VS.hlsl">
+      <Filter>Shaders\Test</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
