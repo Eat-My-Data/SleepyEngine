@@ -39,6 +39,7 @@ namespace Bind
 		assert( pParent != nullptr );
 		const auto modelView = pParent->GetTransformXM() * gfx.GetCamera();
 		return {
+			pParent->GetTransformXM(),
 			DirectX::XMMatrixTranspose( modelView ),
 			DirectX::XMMatrixTranspose(
 				modelView *

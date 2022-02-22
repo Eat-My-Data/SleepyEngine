@@ -106,9 +106,9 @@ void App::ExecuteFrame( float dt )
 {
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
 	wnd.Gfx().SetCamera( cam.GetMatrix() );
-	//light.Bind( wnd.Gfx(), cam.GetMatrix() );
+	light.Bind( wnd.Gfx(), cam.GetMatrix() );
 
-	//light.Submit();
+	light.Submit();
 	cube.Submit();
 	sponza.Submit();
 	cube2.Submit();
@@ -125,7 +125,7 @@ void App::ExecuteFrame( float dt )
 	gobberProbe.SpawnWindow( gobber );
 	nanoProbe.SpawnWindow( nano );
 	cam.SpawnControlWindow();
-	//light.SpawnControlWindow();
+	light.SpawnControlWindow();
 	cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 	cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 
