@@ -6,8 +6,8 @@
 #include <DirectXMath.h>
 #include <array>
 #include "../Macros/GraphicsThrowMacros.h"
-#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
-#include "../Libraries/imgui/backends/imgui_impl_win32.h"
+#include "../Libraries/imgui/imgui_impl_dx11.h"
+#include "../Libraries/imgui/imgui_impl_win32.h"
 #include "../Bindable/Bindables/DepthStencil.h"
 #include "../Bindable/Bindables/RenderTarget.h"
 

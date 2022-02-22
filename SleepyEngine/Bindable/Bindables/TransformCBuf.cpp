@@ -1,4 +1,5 @@
 #include "TransformCbuf.h"
+#include "../../Macros/GraphicsThrowMacros.h"
 
 namespace Bind
 {

@@ -6,8 +6,7 @@
 #include <algorithm>
 #include <d3dcompiler.h>
 #include <math.h>
-#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
-#include "../Libraries/imgui/backends/imgui_impl_win32.h"
+#include "../Libraries/imgui/imgui.h"
 
 SpotLight::SpotLight( Graphics& gdi, f32 scale )
 {

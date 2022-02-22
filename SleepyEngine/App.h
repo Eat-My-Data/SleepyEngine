@@ -1,4 +1,5 @@
 #pragma once
+#include "./Win32/WinDefines.h"
 #include "./Win32/Window.h"
 #include "./Utilities/FrameTimer.h"
 #include "./GUI/ImguiManager.h"

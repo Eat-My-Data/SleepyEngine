@@ -1,14 +1,14 @@
 #include "Mesh.h"
-#include "../Libraries/imgui/imgui.h"
-#include "Surface.h"
+#include "../../Libraries/imgui/imgui.h"
+#include "../Surface.h"
 #include <unordered_map>
 #include <sstream>
 #include <filesystem>
-#include "../Utilities/ChiliXM.h"
-#include "../Bindable/Bindables/DynamicConstant.h"
-#include "../Bindable/Bindables/ConstantBuffersEx.h"
-#include "../ResourceManager/LayoutCodex.h"
-#include "../Bindable/Bindables/Stencil.h"
+#include "../../Utilities/ChiliXM.h"
+#include "../../Bindable/Bindables/DynamicConstant.h"
+#include "../../Bindable/Bindables/ConstantBuffersEx.h"
+#include "../../Renderer/Model/LayoutCodex.h"
+#include "../../Bindable/Bindables/Stencil.h"
 
 namespace dx = DirectX;
 

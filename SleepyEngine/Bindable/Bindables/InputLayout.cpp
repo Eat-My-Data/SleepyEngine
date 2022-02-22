@@ -1,4 +1,5 @@
 #include "InputLayout.h"
+#include "../../Macros/GraphicsThrowMacros.h"
 #include "../BindableCodex.h"
 #include "../../Renderer/Model/Vertex.h"
 #include "VertexShader.h"

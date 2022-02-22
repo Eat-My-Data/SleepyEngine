@@ -76,17 +76,8 @@
     <Filter Include="Header Files\Libraries\imgui">
       <UniqueIdentifier>{bca348e6-cf96-4938-9889-1f652f134254}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Libraries\imgui\backends">
-      <UniqueIdentifier>{d33ece29-a234-4549-addc-ea70bba5de2d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Libraries\imgui">
       <UniqueIdentifier>{2db283c1-705c-4485-abd3-72be7ba8c19c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Libraries\imgui\backends">
-      <UniqueIdentifier>{0574383d-e34f-4e24-93f1-9998ead04e46}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Shaders\Archive">
-      <UniqueIdentifier>{3879ad9e-ff2e-495d-a7de-620a62bedd43}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{47d7d1cd-f10c-4417-b3c1-c63114b27d78}</UniqueIdentifier>
@@ -206,27 +197,6 @@
     </ClCompile>
     <ClCompile Include="GUI\ImguiManager.cpp">
       <Filter>Source Files\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\imgui_widgets.cpp">
-      <Filter>Source Files\Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\imgui.cpp">
-      <Filter>Source Files\Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\imgui_demo.cpp">
-      <Filter>Source Files\Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\imgui_draw.cpp">
-      <Filter>Source Files\Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\imgui_tables.cpp">
-      <Filter>Source Files\Libraries\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\backends\imgui_impl_win32.cpp">
-      <Filter>Source Files\Libraries\imgui\backends</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\imgui\backends\imgui_impl_dx11.cpp">
-      <Filter>Source Files\Libraries\imgui\backends</Filter>
     </ClCompile>
     <ClCompile Include="Drawable\SpotLight.cpp">
       <Filter>Source Files\Drawable</Filter>
@@ -360,6 +330,24 @@
     <ClCompile Include="Renderer\Model\ModelException.cpp">
       <Filter>Source Files\Renderer\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui_widgets.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui_demo.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui_draw.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui_impl_dx11.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\imgui\imgui_impl_win32.cpp">
+      <Filter>Source Files\Libraries\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bindable\Bindable.h">
@@ -466,30 +454,6 @@
     </ClInclude>
     <ClInclude Include="GUI\ImguiManager.h">
       <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\imgui.h">
-      <Filter>Header Files\Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\imgui_internal.h">
-      <Filter>Header Files\Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\imconfig.h">
-      <Filter>Header Files\Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\imstb_truetype.h">
-      <Filter>Header Files\Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\imstb_rectpack.h">
-      <Filter>Header Files\Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\imstb_textedit.h">
-      <Filter>Header Files\Libraries\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\backends\imgui_impl_win32.h">
-      <Filter>Header Files\Libraries\imgui\backends</Filter>
-    </ClInclude>
-    <ClInclude Include="Libraries\imgui\backends\imgui_impl_dx11.h">
-      <Filter>Header Files\Libraries\imgui\backends</Filter>
     </ClInclude>
     <ClInclude Include="Drawable\SpotLight.h">
       <Filter>Header Files\Drawable</Filter>
@@ -683,6 +647,30 @@
     <ClInclude Include="Renderer\Model\ModelException.h">
       <Filter>Header Files\Renderer\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\imgui\imstb_truetype.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imconfig.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imgui.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imgui_impl_dx11.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imgui_impl_win32.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imgui_internal.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imstb_rectpack.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\imgui\imstb_textedit.h">
+      <Filter>Header Files\Libraries\imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsl">
@@ -804,36 +792,6 @@
     </FxCompile>
     <FxCompile Include="Shaders\Common\BlurOutline_PS.hlsl">
       <Filter>Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPS.hlsl">
-      <Filter>Shaders\Archive</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMap.hlsl">
-      <Filter>Shaders\Archive</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSNormalMapObject.hlsl">
-      <Filter>Shaders\Archive</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSNotex.hlsl">
-      <Filter>Shaders\Archive</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSSpec.hlsl">
-      <Filter>Shaders\Archive</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormalMap.hlsl">
-      <Filter>Shaders\Archive</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongPSSpecNormMask.hlsl">
-      <Filter>Shaders\Archive</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongVS.hlsl">
-      <Filter>Shaders\Archive</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongVSNormalMap.hlsl">
-      <Filter>Shaders\Archive</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Forward\F_PhongVSNotex.hlsl">
-      <Filter>Shaders\Archive</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Forward\PhongDifMskSpc_PS.hlsl">
       <Filter>Shaders\Forward</Filter>

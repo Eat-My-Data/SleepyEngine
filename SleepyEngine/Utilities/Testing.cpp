@@ -2,6 +2,7 @@
 #include "../Renderer/Model/LayoutCodex.h"
 #include "../Renderer/Model/Vertex.h"
 #include "../Graphics/Graphics.h"
+#include "../Win32/WinDefines.h"
 #include "../Win32/Window.h"
 #include <cstring>
 #include <assimp/Importer.hpp>

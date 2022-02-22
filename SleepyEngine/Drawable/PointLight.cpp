@@ -5,8 +5,7 @@
 #include "../Renderer/Model/Vertex.h"
 #include "../Geometry/Sphere.h"
 #include <d3dcompiler.h>
-#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
-#include "../Libraries/imgui/backends/imgui_impl_win32.h"
+#include "../Libraries/imgui/imgui.h"
 
 PointLight::PointLight( Graphics& gdi, float radius )
 {
