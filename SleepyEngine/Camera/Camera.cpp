@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include "../Libraries/imgui/imgui.h"
 #include "../Utilities/ChiliMath.h"
+#include "../Graphics/Graphics.h"
 
 namespace dx = DirectX;
 
@@ -9,9 +10,16 @@ Camera::Camera( std::string name, DirectX::XMFLOAT3 homePos, float homePitch, fl
 	name( std::move( name ) ),
 	homePos( homePos ),
 	homePitch( homePitch ),
-	homeYaw( homeYaw )
+	homeYaw( homeYaw ),
+	proj( 1.0f, 9.0f / 16.0f, 0.5f, 400.0f )
 {
 	Reset();
+}
+
+void Camera::BindToGraphics( Graphics& gfx ) const
+{
+	gfx.SetCamera( GetMatrix() );
+	gfx.SetProjection( proj.GetMatrix() );
 }
 
 DirectX::XMMATRIX Camera::GetMatrix() const noexcept
@@ -42,6 +50,7 @@ void Camera::SpawnControlWidgets() noexcept
 	ImGui::SliderAngle( "Yaw", &yaw, -180.0f, 180.0f );
 	if ( ImGui::Button( "Reset" ) )
 			Reset();
+	proj.RenderWidgets();
 }
 
 void Camera::Reset() noexcept

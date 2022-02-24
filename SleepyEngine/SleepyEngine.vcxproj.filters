@@ -354,6 +354,9 @@
     <ClCompile Include="Camera\CameraContainer.cpp">
       <Filter>Source Files\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Camera\Projection.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bindable\Bindable.h">
@@ -678,6 +681,9 @@
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Camera\CameraContainer.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\Projection.h">
       <Filter>Header Files\Camera</Filter>
     </ClInclude>
   </ItemGroup>
