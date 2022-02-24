@@ -7,6 +7,7 @@
 #include "../Bindable/Bindables/DynamicConstant.h"
 #include "../Bindable/Bindables/ConstantBuffersEx.h"
 #include "../Renderer/Jobber/TechniqueProbe.h"
+#include "../Renderer/Channels.h"
 
 SolidSphere::SolidSphere( Graphics& gdi, float radius )
 {
@@ -22,7 +23,7 @@ SolidSphere::SolidSphere( Graphics& gdi, float radius )
 	pTopology = Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
 	{
-		Technique solid;
+		Technique solid{ Chan::main };
 		Step only( "lambertian" );
 
 		auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );

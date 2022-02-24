@@ -6,6 +6,7 @@
 #include "../Libraries/imgui/imgui.h"
 #include "../Bindable/Bindables/DynamicConstant.h"
 #include "../Renderer/Jobber/TechniqueProbe.h"
+#include "../Renderer/Channels.h"
 
 TestCube::TestCube( Graphics& gfx,float size )
 {
@@ -23,7 +24,7 @@ TestCube::TestCube( Graphics& gfx,float size )
 	auto tcb = std::make_shared<TransformCbuf>( gfx );
 
 	{
-		Technique shade("Shade");
+		Technique shade("Shade", Chan::main );
 		{
 			Step only( "lambertian" );
 
@@ -57,7 +58,7 @@ TestCube::TestCube( Graphics& gfx,float size )
 	}
 
 	{
-		Technique outline("Outline");
+		Technique outline("Outline", Chan::main );
 		{
 			Step mask( "outlineMask" );
 

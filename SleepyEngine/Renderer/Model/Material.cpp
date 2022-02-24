@@ -5,6 +5,7 @@
 #include "../../Bindable/Bindables/TransformCbufScaling.h"
 #include "../../Bindable/Bindables/Stencil.h"
 #include <filesystem>
+#include "../Channels.h"
 
 Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path ) noexcept
 	:
@@ -19,7 +20,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 	}
 	// phong technique
 	{
-		Technique phong{ "Phong" };
+		Technique phong{ "Phong",Chan::main };
 		Step step( "lambertian" );
 		std::string shaderCode = "./Shaders/Bin/Phong";
 		aiString texFileName;
@@ -127,7 +128,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 	}
 	// outline technique
 	{
-		Technique outline( "Outline", false );
+		Technique outline( "Outline", Chan::main, false );
 		{
 			Step mask( "outlineMask" );
 

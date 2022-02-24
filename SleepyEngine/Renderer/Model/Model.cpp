@@ -43,9 +43,9 @@ Model::Model( Graphics& gfx, const std::string& pathString, const float scale )
 	pRoot = ParseNode( nextId, *pScene->mRootNode, scale );
 }
 
-void Model::Submit() const noexcept
+void Model::Submit( size_t channels ) const noexcept
 {
-	pRoot->Submit( dx::XMMatrixIdentity() );
+	pRoot->Submit( channels, dx::XMMatrixIdentity() );
 }
 
 

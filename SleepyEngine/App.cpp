@@ -7,6 +7,7 @@
 #include "./Utilities/PerfLog.h"
 #include "./Renderer/Jobber/TestModelProbe.h"
 #include "./Camera/Camera.h"
+#include "./Renderer/Channels.h"
 
 App::App( const std::string& commandLine )
 	:
@@ -65,6 +66,9 @@ void App::HandleInput( float dt )
 		case VK_F1:
 			showDemoWindow = true;
 			break;
+		case VK_RETURN:
+			savingDepth = true;
+			break;
 		}
 	}
 
@@ -111,13 +115,13 @@ void App::ExecuteFrame( float dt )
 	cameras->BindToGraphics( wnd.Gfx() );
 	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
 
-	light.Submit();
-	cube.Submit();
-	sponza.Submit();
-	cube2.Submit();
-	gobber.Submit();
-	nano.Submit();
-	cameras.Submit();
+	light.Submit( Chan::main );
+	cube.Submit( Chan::main );
+	sponza.Submit( Chan::main );
+	cube2.Submit( Chan::main );
+	gobber.Submit( Chan::main );
+	nano.Submit( Chan::main );
+	cameras.Submit( Chan::main );
 
 	rg.Execute( wnd.Gfx() );
 
@@ -138,6 +142,12 @@ void App::ExecuteFrame( float dt )
 	// present
 	wnd.Gfx().EndFrame();
 	rg.Reset();
+
+	if ( savingDepth )
+	{
+		rg.StoreDepth( wnd.Gfx(), "depth.png" );
+		savingDepth = false;
+	}
 }
 
 App::~App()

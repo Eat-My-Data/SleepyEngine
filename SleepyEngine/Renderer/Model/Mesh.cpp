@@ -19,10 +19,10 @@ Mesh::Mesh( Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale 
 	Drawable( gfx, mat, mesh, scale )
 {}
 
-void Mesh::Submit( dx::FXMMATRIX accumulatedTranform ) const noexcept
+void Mesh::Submit( size_t channels, dx::FXMMATRIX accumulatedTranform ) const noexcept
 {
 	dx::XMStoreFloat4x4( &transform, accumulatedTranform );
-	Drawable::Submit();
+	Drawable::Submit( channels );
 }
 
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept

@@ -311,6 +311,7 @@
     <ClInclude Include="Macros\ConditionalNoexcept.h" />
     <ClInclude Include="Macros\GraphicsThrowMacros.h" />
     <ClInclude Include="Macros\WindowsThrowMacros.h" />
+    <ClInclude Include="Renderer\Channels.h" />
     <ClInclude Include="Renderer\Jobber\BlurOutlineRenderGraph.h" />
     <ClInclude Include="Renderer\Jobber\Job.h" />
     <ClInclude Include="Renderer\Jobber\ModelProbe.h" />

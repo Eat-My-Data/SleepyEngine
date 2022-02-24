@@ -3,6 +3,7 @@
 #include "../Macros/GraphicsThrowMacros.h"
 #include "../Renderer/Model/Vertex.h"
 #include "../Bindable/Bindables/Stencil.h"
+#include "../Renderer/Channels.h"
 
 namespace dx = DirectX;
 
@@ -60,7 +61,7 @@ CameraIndicator::CameraIndicator( Graphics& gfx )
 	pTopology = Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_LINELIST );
 
 	{
-		Technique line;
+		Technique line{ Chan::main };
 		Step only( "lambertian" );
 
 		auto pvs = VertexShader::Resolve( gfx, "./Shaders/Bin/Solid_VS.cso" );
