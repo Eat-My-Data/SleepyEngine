@@ -70,27 +70,27 @@ void App::HandleInput( float dt )
 	{
 		if ( wnd.kbd.KeyIsPressed( 'W' ) )
 		{
-			cameras.GetCamera().Translate( { 0.0f,0.0f,dt } );
+			cameras->Translate( { 0.0f,0.0f,dt } );
 		}
 		if ( wnd.kbd.KeyIsPressed( 'A' ) )
 		{
-			cameras.GetCamera().Translate( { -dt,0.0f,0.0f } );
+			cameras->Translate( { -dt,0.0f,0.0f } );
 		}
 		if ( wnd.kbd.KeyIsPressed( 'S' ) )
 		{
-			cameras.GetCamera().Translate( { 0.0f,0.0f,-dt } );
+			cameras->Translate( { 0.0f,0.0f,-dt } );
 		}
 		if ( wnd.kbd.KeyIsPressed( 'D' ) )
 		{
-			cameras.GetCamera().Translate( { dt,0.0f,0.0f } );
+			cameras->Translate( { dt,0.0f,0.0f } );
 		}
 		if ( wnd.kbd.KeyIsPressed( 'R' ) )
 		{
-			cameras.GetCamera().Translate( { 0.0f,dt,0.0f } );
+			cameras->Translate( { 0.0f,dt,0.0f } );
 		}
 		if ( wnd.kbd.KeyIsPressed( 'F' ) )
 		{
-			cameras.GetCamera().Translate( { 0.0f,-dt,0.0f } );
+			cameras->Translate( { 0.0f,-dt,0.0f } );
 		}
 	}
 
@@ -98,16 +98,16 @@ void App::HandleInput( float dt )
 	{
 		if ( !wnd.CursorEnabled() )
 		{
-			cameras.GetCamera().Rotate( (float)delta->x, (float)delta->y );
+			cameras->Rotate( (float)delta->x, (float)delta->y );
 		}
 	}
 }
 
 void App::ExecuteFrame( float dt )
 {
-	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
-	cameras.GetCamera().BindToGraphics( wnd.Gfx() );
-	light.Bind( wnd.Gfx(), cameras.GetCamera().GetMatrix() );
+	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );	
+	cameras->BindToGraphics( wnd.Gfx() );
+	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
 
 	light.Submit();
 	cube.Submit();
