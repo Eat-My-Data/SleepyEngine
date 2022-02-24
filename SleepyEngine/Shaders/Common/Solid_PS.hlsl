@@ -1,4 +1,4 @@
-#include "./PointLight.hlsl"
+#include "./PointLight.hlsli"
 
 cbuffer SolidGeometryColor : register(b8)
 {

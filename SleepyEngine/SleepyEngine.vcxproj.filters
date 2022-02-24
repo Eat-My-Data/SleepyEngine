@@ -55,9 +55,6 @@
     <Filter Include="Shaders\Common">
       <UniqueIdentifier>{26c16b0e-c054-4ee3-b3d2-998df90a86e6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders\Deferred">
-      <UniqueIdentifier>{babc56cd-bbcd-4da6-83f5-99bc02353bcf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shaders\Forward">
       <UniqueIdentifier>{7ff7ccf7-ce9a-4997-800d-91cc3a7ba04f}</UniqueIdentifier>
     </Filter>
@@ -363,6 +360,12 @@
     <ClCompile Include="Drawable\Frustum.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
+    <ClCompile Include="Bindable\Bindables\ShadowCameraCBuf.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\ShadowSampler.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bindable\Bindable.h">
@@ -434,7 +437,7 @@
     <ClInclude Include="Bindable\Bindables\Blender.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
-    <ClInclude Include="Shaders\Common\PointLight.hlsl">
+    <ClInclude Include="Shaders\Common\PointLight.hlsli">
       <Filter>Shaders\Common</Filter>
     </ClInclude>
     <ClInclude Include="Win32\WinDefines.h">
@@ -698,84 +701,36 @@
     <ClInclude Include="Drawable\Frustum.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Jobber\Passlib\WireframePass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer\Channels.h">
       <Filter>Header Files\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="Renderer\Jobber\Passlib\ShadowMappingPass.h">
+      <Filter>Header Files\Renderer\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Jobber\Passlib\WireframePass.h">
+      <Filter>Header Files\Renderer\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\ShadowCameraCBuf.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\ShadowSampler.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shaders\Common\Transform.hlsl">
+    <FxCompile Include="Shaders\Common\Transform.hlsli">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\LightVectorData.hlsl">
+    <FxCompile Include="Shaders\Common\LightVectorData.hlsli">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Common\ShaderOps.hlsl">
-      <Filter>Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\D_PhongPSSpecNormMask.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\D_PhongPS.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\D_PhongPSNormalMap.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\D_PhongPSNotex.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\D_PhongPSSpec.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\D_PhongPSSpecNormalMap.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\LightVS.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\LightPS.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\PointLightVS.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\PointLightPS.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\D_PhongVSNotex.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\D_PhongVS.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\D_PhongVSNormalMap.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Common\DirectionalLight.hlsl">
+    <FxCompile Include="Shaders\Common\ShaderOps.hlsli">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Common\Solid_PS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Common\Solid_VS.hlsl">
-      <Filter>Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Common\SpotLight.hlsl">
-      <Filter>Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\SpotLightPS.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Deferred\SpotLightVS.hlsl">
-      <Filter>Shaders\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Common\CameraData.hlsl">
-      <Filter>Shaders\Common</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Common\DefaultLightSettings.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Forward\Phong_PS.hlsl">
@@ -832,13 +787,10 @@
     <FxCompile Include="Shaders\Forward\PhongDifMskSpc_VS.hlsl">
       <Filter>Shaders\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Test\Test2_VS.hlsl">
+    <FxCompile Include="Shaders\Test\ShadowTest_VS.hlsl">
       <Filter>Shaders\Test</Filter>
     </FxCompile>
-    <FxCompile Include="Shaders\Test\Test_PS.hlsl">
-      <Filter>Shaders\Test</Filter>
-    </FxCompile>
-    <FxCompile Include="Shaders\Test\Test1_VS.hlsl">
+    <FxCompile Include="Shaders\Test\ShadowTest_PS.hlsl">
       <Filter>Shaders\Test</Filter>
     </FxCompile>
   </ItemGroup>
@@ -852,6 +804,12 @@
     </None>
     <None Include="Graphics\DXTrace.inl">
       <Filter>Header Files\Graphics</Filter>
+    </None>
+    <None Include="Shaders\Common\VShadow.hlsli">
+      <Filter>Shaders\Common</Filter>
+    </None>
+    <None Include="Shaders\Common\PShadow.hlsli">
+      <Filter>Shaders\Common</Filter>
     </None>
   </ItemGroup>
 </Project>

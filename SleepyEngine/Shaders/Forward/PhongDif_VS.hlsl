@@ -1,4 +1,4 @@
-#include "../Common/Transform.hlsl"
+#include "../Common/Transform.hlsli"
 
 struct VSOut
 {

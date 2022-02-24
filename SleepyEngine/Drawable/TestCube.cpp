@@ -31,11 +31,11 @@ TestCube::TestCube( Graphics& gfx,float size )
 			only.AddBindable( Texture::Resolve( gfx,"Models\\brick_wall\\brick_wall_diffuse.jpg" ) );
 			only.AddBindable( Sampler::Resolve( gfx ) );
 
-			auto pvs = VertexShader::Resolve( gfx,"./Shaders/Bin/PhongDif_VS.cso" );
+			auto pvs = VertexShader::Resolve( gfx,"./Shaders/Bin/ShadowTest_VS.cso" );
 			only.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*pvs ) );
 			only.AddBindable( std::move( pvs ) );
 
-			only.AddBindable( PixelShader::Resolve( gfx,"./Shaders/Bin/PhongDif_PS.cso" ) );
+			only.AddBindable( PixelShader::Resolve( gfx,"./Shaders/Bin/ShadowTest_VS.cso" ) );
 			
 			Dcb::RawLayout lay;
 			lay.Add<Dcb::Float3>( "specularColor" );
@@ -56,7 +56,6 @@ TestCube::TestCube( Graphics& gfx,float size )
 		}
 		AddTechnique( std::move( shade ) );
 	}
-
 	{
 		Technique outline("Outline", Chan::main );
 		{
@@ -90,6 +89,23 @@ TestCube::TestCube( Graphics& gfx,float size )
 			outline.AddStep( std::move( draw ) );
 		}
 		AddTechnique( std::move( outline ) );
+	}
+	// shadow map technique
+	{
+		Technique map{ "ShadowMap",Chan::shadow,true };
+		{
+			Step draw( "shadowMap" );
+
+			// TODO: better sub-layout generation tech for future consideration maybe
+			draw.AddBindable( InputLayout::Resolve( gfx, model.m_VBVertices.GetLayout(), *VertexShader::Resolve( gfx, "./Shaders/Bin/Solid_VS.cso" ) ) );
+
+			draw.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
+
+			// TODO: might need to specify rasterizer when doubled-sided models start being used
+
+			map.AddStep( std::move( draw ) );
+		}
+		AddTechnique( std::move( map ) );
 	}
 }
 

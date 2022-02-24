@@ -1,10 +1,6 @@
-#include "../Common/ShaderOps.hlsl"
-#include "../Common/LightVectorData.hlsl"
-#include "../Common/DirectionalLight.hlsl"
-#include "../Common/PointLight.hlsl"
-#include "../Common/DefaultLightSettings.hlsl"
-#include "../Common/SpotLight.hlsl"
-#include "../Common/CameraData.hlsl"
+#include "../Common/ShaderOps.hlsli"
+#include "../Common/LightVectorData.hlsli"
+#include "../Common/PointLight.hlsli"
 
 cbuffer ObjectCBuf
 {
