@@ -192,6 +192,8 @@
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Camera\CameraContainer.cpp" />
     <ClCompile Include="Camera\Projection.cpp" />
+    <ClCompile Include="Drawable\CameraIndicator.cpp" />
+    <ClCompile Include="Drawable\Frustum.cpp" />
     <ClCompile Include="Drawable\SolidCone.cpp" />
     <ClCompile Include="Drawable\DirectionalLight.cpp" />
     <ClCompile Include="Drawable\Drawable.cpp" />
@@ -280,6 +282,8 @@
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Camera\CameraContainer.h" />
     <ClInclude Include="Camera\Projection.h" />
+    <ClInclude Include="Drawable\CameraIndicator.h" />
+    <ClInclude Include="Drawable\Frustum.h" />
     <ClInclude Include="Drawable\SolidCone.h" />
     <ClInclude Include="Drawable\DirectionalLight.h" />
     <ClInclude Include="Drawable\Drawable.h" />

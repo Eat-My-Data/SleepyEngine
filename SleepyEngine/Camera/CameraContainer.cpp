@@ -2,8 +2,9 @@
 #include "../Libraries/imgui/imgui.h"
 #include "Camera.h"
 #include "../Graphics/Graphics.h"
+#include "../Renderer/Jobber/RenderGraph.h"
 
-void CameraContainer::SpawnWindow()
+void CameraContainer::SpawnWindow( Graphics& gfx )
 {
 	if ( ImGui::Begin( "Cameras" ) )
 	{
@@ -20,7 +21,7 @@ void CameraContainer::SpawnWindow()
 			ImGui::EndCombo();
 		}
 
-		GetCamera().SpawnControlWidgets();
+		GetCamera().SpawnControlWidgets( gfx );
 	}
 	ImGui::End();
 }
@@ -42,3 +43,22 @@ Camera& CameraContainer::GetCamera()
 
 CameraContainer::~CameraContainer()
 {}
+
+void CameraContainer::LinkTechniques( Rgph::RenderGraph& rg )
+{
+	for ( auto& pcam : cameras )
+	{
+		pcam->LinkTechniques( rg );
+	}
+}
+
+void CameraContainer::Submit() const
+{
+	for ( size_t i = 0; i < cameras.size(); i++ )
+	{
+		if ( i != selected )
+		{
+			cameras[i]->Submit();
+		}
+	}
+}
