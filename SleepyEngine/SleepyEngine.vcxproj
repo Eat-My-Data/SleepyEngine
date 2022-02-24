@@ -325,6 +325,7 @@
     <ClInclude Include="Renderer\Jobber\Passlib\OutlineMaskGenerationPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\RenderQueuePass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\VerticalBlurPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\WireframePass.h" />
     <ClInclude Include="Renderer\Jobber\RenderGraph.h" />
     <ClInclude Include="Renderer\Jobber\RenderGraphCompileException.h" />
     <ClInclude Include="Renderer\Jobber\ScanOutlineRenderGraph.h" />

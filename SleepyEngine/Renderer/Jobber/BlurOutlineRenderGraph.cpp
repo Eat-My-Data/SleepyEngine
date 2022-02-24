@@ -7,6 +7,7 @@
 #include "./Passlib/HorizontalBlurPass.h"
 #include "./Passlib/VerticalBlurPass.h"
 #include "./Passlib/BlurOutlineDrawingPass.h"
+#include "./Passlib/WireframePass.h"
 #include "../../Bindable/Bindables/RenderTarget.h"
 #include "../../Bindable/Bindables/DynamicConstant.h"
 #include "../../Libraries/imgui/imgui.h"
@@ -81,7 +82,13 @@ namespace Rgph
 			pass->SetSinkLinkage( "direction", "$.blurDirection" );
 			AppendPass( std::move( pass ) );
 		}
-		SetSinkTarget( "backbuffer", "vertical.renderTarget" );
+		{
+			auto pass = std::make_unique<WireframePass>( gfx, "wireframe" );
+			pass->SetSinkLinkage( "renderTarget", "vertical.renderTarget" );
+			pass->SetSinkLinkage( "depthStencil", "vertical.depthStencil" );
+			AppendPass( std::move( pass ) );
+		}
+		SetSinkTarget( "backbuffer", "wireframe.renderTarget" );
 
 		Finalize();
 	}
