@@ -366,6 +366,9 @@
     <ClCompile Include="Bindable\Bindables\ShadowSampler.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
     </ClCompile>
+    <ClCompile Include="Bindable\Bindables\ShadowRasterizer.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bindable\Bindable.h">
@@ -716,6 +719,9 @@
     <ClInclude Include="Bindable\Bindables\ShadowSampler.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="Bindable\Bindables\ShadowRasterizer.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsli">
@@ -809,6 +815,12 @@
       <Filter>Shaders\Common</Filter>
     </None>
     <None Include="Shaders\Common\PShadow.hlsli">
+      <Filter>Shaders\Common</Filter>
+    </None>
+    <None Include="Shaders\Common\_PShadow_Static.hlsli">
+      <Filter>Shaders\Common</Filter>
+    </None>
+    <None Include="Shaders\Common\_PShadow_Dynamic_.hlsli">
       <Filter>Shaders\Common</Filter>
     </None>
   </ItemGroup>

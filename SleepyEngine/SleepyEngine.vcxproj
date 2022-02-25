@@ -184,6 +184,7 @@
     <ClCompile Include="Bindable\Bindables\RenderTarget.cpp" />
     <ClCompile Include="Bindable\Bindables\Sampler.cpp" />
     <ClCompile Include="Bindable\Bindables\ShadowCameraCBuf.cpp" />
+    <ClCompile Include="Bindable\Bindables\ShadowRasterizer.cpp" />
     <ClCompile Include="Bindable\Bindables\ShadowSampler.cpp" />
     <ClCompile Include="Bindable\Bindables\Texture.cpp" />
     <ClCompile Include="Bindable\Bindables\Topology.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="Bindable\Bindables\RenderTarget.h" />
     <ClInclude Include="Bindable\Bindables\Sampler.h" />
     <ClInclude Include="Bindable\Bindables\ShadowCameraCBuf.h" />
+    <ClInclude Include="Bindable\Bindables\ShadowRasterizer.h" />
     <ClInclude Include="Bindable\Bindables\ShadowSampler.h" />
     <ClInclude Include="Bindable\Bindables\Stencil.h" />
     <ClInclude Include="Bindable\Bindables\StructuredBuffers.h" />
@@ -575,6 +577,8 @@
     <None Include="Graphics\DXTrace.inl" />
     <None Include="Shaders\Common\PShadow.hlsli" />
     <None Include="Shaders\Common\VShadow.hlsli" />
+    <None Include="Shaders\Common\_PShadow_Dynamic_.hlsli" />
+    <None Include="Shaders\Common\_PShadow_Static.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

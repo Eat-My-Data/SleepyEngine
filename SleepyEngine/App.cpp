@@ -152,7 +152,7 @@ void App::ExecuteFrame( float dt )
 	cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 	cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 
-	rg.RenderWidgets( wnd.Gfx() );
+	rg.RenderWindows( wnd.Gfx() );
 
 	// present
 	wnd.Gfx().EndFrame();

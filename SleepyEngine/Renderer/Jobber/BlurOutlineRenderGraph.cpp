@@ -35,6 +35,7 @@ namespace Rgph
 			auto pass = std::make_unique<ShadowMappingPass>( gfx, "shadowMap" );
 			AppendPass( std::move( pass ) );
 		}
+
 		{
 			auto pass = std::make_unique<LambertianPass>( gfx, "lambertian" );
 			pass->SetSinkLinkage( "shadowMap", "shadowMap.map" );
@@ -100,7 +101,7 @@ namespace Rgph
 		Finalize();
 	}
 
-	void BlurOutlineRenderGraph::SetKernelGauss( int radius, float sigma ) noexcept
+	void BlurOutlineRenderGraph::SetKernelGauss( int radius, float sigma ) noxnd
 	{
 		assert( radius <= maxRadius );
 		auto k = blurKernel->GetBuffer();
@@ -120,7 +121,8 @@ namespace Rgph
 		}
 		blurKernel->SetBuffer( k );
 	}
-	void BlurOutlineRenderGraph::SetKernelBox( int radius ) noexcept
+
+	void BlurOutlineRenderGraph::SetKernelBox( int radius ) noxnd
 	{
 		assert( radius <= maxRadius );
 		auto k = blurKernel->GetBuffer();
@@ -134,7 +136,12 @@ namespace Rgph
 		blurKernel->SetBuffer( k );
 	}
 
-	void BlurOutlineRenderGraph::RenderWidgets( Graphics& gfx )
+	void BlurOutlineRenderGraph::RenderWindows( Graphics& gfx )
+	{
+		RenderKernelWindow( gfx );
+	}
+
+	void BlurOutlineRenderGraph::RenderKernelWindow( Graphics& gfx )
 	{
 		if ( ImGui::Begin( "Kernel" ) )
 		{
