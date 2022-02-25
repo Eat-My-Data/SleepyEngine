@@ -1,4 +1,5 @@
 #pragma once
+#include "../../Macros/ConditionalNoexcept.h"
 #include <memory>
 #include <string>
 #include <vector>
@@ -22,7 +23,7 @@ namespace Rgph
 	{
 	public:
 		Pass( std::string name ) noexcept;
-		virtual void Execute( Graphics& gfx ) const noexcept = 0;
+		virtual void Execute( Graphics& gfx ) const noxnd = 0;
 		virtual void Reset() noexcept;
 		const std::string& GetName() const noexcept;
 		const std::vector<std::unique_ptr<Sink>>& GetSinks() const;

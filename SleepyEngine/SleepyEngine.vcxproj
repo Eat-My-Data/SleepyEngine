@@ -174,6 +174,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Bindable\Bindables\Blender.cpp" />
+    <ClCompile Include="Bindable\Bindables\CubeTexture.cpp" />
     <ClCompile Include="Bindable\Bindables\DepthStencil.cpp" />
     <ClCompile Include="Bindable\Bindables\DynamicConstant.cpp" />
     <ClCompile Include="Bindable\Bindables\IndexBuffer.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="Bindable\Bindables\ShadowCameraCBuf.cpp" />
     <ClCompile Include="Bindable\Bindables\ShadowRasterizer.cpp" />
     <ClCompile Include="Bindable\Bindables\ShadowSampler.cpp" />
+    <ClCompile Include="Bindable\Bindables\SkyboxTransformCbuf.cpp" />
     <ClCompile Include="Bindable\Bindables\Texture.cpp" />
     <ClCompile Include="Bindable\Bindables\Topology.cpp" />
     <ClCompile Include="Bindable\Bindables\TransformCBuf.cpp" />
@@ -264,6 +266,7 @@
     <ClInclude Include="Bindable\Bindables\BufferResource.h" />
     <ClInclude Include="Bindable\Bindables\ConstantBuffers.h" />
     <ClInclude Include="Bindable\Bindables\ConstantBuffersEx.h" />
+    <ClInclude Include="Bindable\Bindables\CubeTexture.h" />
     <ClInclude Include="Bindable\Bindables\DepthStencil.h" />
     <ClInclude Include="Bindable\Bindables\DynamicConstant.h" />
     <ClInclude Include="Bindable\Bindables\GraphicsResource.h" />
@@ -277,6 +280,7 @@
     <ClInclude Include="Bindable\Bindables\ShadowCameraCBuf.h" />
     <ClInclude Include="Bindable\Bindables\ShadowRasterizer.h" />
     <ClInclude Include="Bindable\Bindables\ShadowSampler.h" />
+    <ClInclude Include="Bindable\Bindables\SkyboxTransformCbuf.h" />
     <ClInclude Include="Bindable\Bindables\Stencil.h" />
     <ClInclude Include="Bindable\Bindables\StructuredBuffers.h" />
     <ClInclude Include="Bindable\Bindables\Texture.h" />
@@ -332,6 +336,7 @@
     <ClInclude Include="Renderer\Jobber\Passlib\OutlineMaskGenerationPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\RenderQueuePass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\ShadowMappingPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\SkyboxPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\VerticalBlurPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\WireframePass.h" />
     <ClInclude Include="Renderer\Jobber\RenderGraph.h" />
@@ -424,6 +429,14 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\Skybox_PS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\Skybox_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="Shaders\Common\Solid_PS.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>

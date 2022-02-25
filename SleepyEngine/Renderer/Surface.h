@@ -1,7 +1,29 @@
+/******************************************************************************************
+*	Chili DirectX Framework Version 16.10.01											  *
+*	Surface.h																			  *
+*	Copyright 2016 PlanetChili <http://www.planetchili.net>								  *
+*																						  *
+*	This file is part of The Chili DirectX Framework.									  *
+*																						  *
+*	The Chili DirectX Framework is free software: you can redistribute it and/or modify	  *
+*	it under the terms of the GNU General Public License as published by				  *
+*	the Free Software Foundation, either version 3 of the License, or					  *
+*	(at your option) any later version.													  *
+*																						  *
+*	The Chili DirectX Framework is distributed in the hope that it will be useful,		  *
+*	but WITHOUT ANY WARRANTY; without even the implied warranty of						  *
+*	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  *
+*	GNU General Public License for more details.										  *
+*																						  *
+*	You should have received a copy of the GNU General Public License					  *
+*	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
+******************************************************************************************/
 #pragma once
-#include "../Win32/Window.h"
+#include "../Win32/WinDefines.h"
+#include "../Utilities//ChiliException.h"
 #include <string>
 #include <optional>
+#include "../Macros/ConditionalNoexcept.h"
 #include <dxtex/DirectXTex.h>
 
 
@@ -82,6 +104,19 @@ public:
 		}
 	};
 public:
+	class Exception : public ChiliException
+	{
+	public:
+		Exception( int line, const char* file, std::string note, std::optional<HRESULT> hr = {} ) noexcept;
+		Exception( int line, const char* file, std::string filename, std::string note, std::optional<HRESULT> hr = {} ) noexcept;
+		const char* what() const noexcept override;
+		const char* GetType() const noexcept override;
+		const std::string& GetNote() const noexcept;
+	private:
+		std::optional<HRESULT> hr;
+		std::string note;
+	};
+public:
 	Surface( unsigned int width, unsigned int height );
 	Surface( Surface&& source ) noexcept = default;
 	Surface( Surface& ) = delete;
@@ -89,10 +124,11 @@ public:
 	Surface& operator=( const Surface& ) = delete;
 	~Surface() = default;
 	void Clear( Color fillValue ) noexcept;
-	void PutPixel( unsigned int x, unsigned int y, Color c ) noexcept;
-	Color GetPixel( unsigned int x, unsigned int y ) const noexcept;
+	void PutPixel( unsigned int x, unsigned int y, Color c ) noxnd;
+	Color GetPixel( unsigned int x, unsigned int y ) const noxnd;
 	unsigned int GetWidth() const noexcept;
 	unsigned int GetHeight() const noexcept;
+	unsigned int GetBytePitch() const noexcept;
 	Color* GetBufferPtr() noexcept;
 	const Color* GetBufferPtr() const noexcept;
 	const Color* GetBufferPtrConst() const noexcept;

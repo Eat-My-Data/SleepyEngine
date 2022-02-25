@@ -369,6 +369,12 @@
     <ClCompile Include="Bindable\Bindables\ShadowRasterizer.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
     </ClCompile>
+    <ClCompile Include="Bindable\Bindables\SkyboxTransformCbuf.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable\Bindables\CubeTexture.cpp">
+      <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bindable\Bindable.h">
@@ -722,6 +728,15 @@
     <ClInclude Include="Bindable\Bindables\ShadowRasterizer.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="Bindable\Bindables\SkyboxTransformCbuf.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Jobber\Passlib\SkyboxPass.h">
+      <Filter>Header Files\Renderer\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable\Bindables\CubeTexture.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsli">
@@ -798,6 +813,12 @@
     </FxCompile>
     <FxCompile Include="Shaders\Test\ShadowTest_PS.hlsl">
       <Filter>Shaders\Test</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\Skybox_VS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\Skybox_PS.hlsl">
+      <Filter>Shaders\Common</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

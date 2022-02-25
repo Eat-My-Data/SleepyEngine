@@ -1,3 +1,24 @@
+/******************************************************************************************
+*	Chili DirectX Framework Version 16.10.01											  *
+*	Surface.cpp																			  *
+*	Copyright 2016 PlanetChili <http://www.planetchili.net>								  *
+*																						  *
+*	This file is part of The Chili DirectX Framework.									  *
+*																						  *
+*	The Chili DirectX Framework is free software: you can redistribute it and/or modify	  *
+*	it under the terms of the GNU General Public License as published by				  *
+*	the Free Software Foundation, either version 3 of the License, or					  *
+*	(at your option) any later version.													  *
+*																						  *
+*	The Chili DirectX Framework is distributed in the hope that it will be useful,		  *
+*	but WITHOUT ANY WARRANTY; without even the implied warranty of						  *
+*	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  *
+*	GNU General Public License for more details.										  *
+*																						  *
+*	You should have received a copy of the GNU General Public License					  *
+*	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
+******************************************************************************************/
+
 #include "Surface.h"
 #include "../Win32/Window.h"
 #include <algorithm>
@@ -15,7 +36,7 @@ Surface::Surface( unsigned int width, unsigned int height )
 	);
 	if ( FAILED( hr ) )
 	{
-		throw std::exception();
+		throw Surface::Exception( __LINE__, __FILE__, "Failed to initialize ScratchImage", hr );
 	}
 }
 
@@ -31,7 +52,7 @@ void Surface::Clear( Color fillValue ) noexcept
 	}
 }
 
-void Surface::PutPixel( unsigned int x, unsigned int y, Color c ) noexcept
+void Surface::PutPixel( unsigned int x, unsigned int y, Color c ) noxnd
 {
 	assert( x >= 0 );
 	assert( y >= 0 );
@@ -41,7 +62,7 @@ void Surface::PutPixel( unsigned int x, unsigned int y, Color c ) noexcept
 	reinterpret_cast<Color*>( &imgData.pixels[y * imgData.rowPitch] )[x] = c;
 }
 
-Surface::Color Surface::GetPixel( unsigned int x, unsigned int y ) const noexcept
+Surface::Color Surface::GetPixel( unsigned int x, unsigned int y ) const noxnd
 {
 	assert( x >= 0 );
 	assert( y >= 0 );
@@ -59,6 +80,11 @@ unsigned int Surface::GetWidth() const noexcept
 unsigned int Surface::GetHeight() const noexcept
 {
 	return (unsigned int)scratch.GetMetadata().height;
+}
+
+unsigned int Surface::GetBytePitch() const noexcept
+{
+	return (unsigned int)scratch.GetImage( 0, 0, 0 )->rowPitch;
 }
 
 Surface::Color* Surface::GetBufferPtr() noexcept
@@ -83,7 +109,7 @@ Surface Surface::FromFile( const std::string& name )
 
 	if ( FAILED( hr ) )
 	{
-		throw std::exception();
+		throw Surface::Exception( __LINE__, __FILE__, name, "Failed to load image", hr );
 	}
 
 	if ( scratch.GetImage( 0, 0, 0 )->format != format )
@@ -99,7 +125,7 @@ Surface Surface::FromFile( const std::string& name )
 
 		if ( FAILED( hr ) )
 		{
-			throw std::exception();
+			throw Surface::Exception( __LINE__, __FILE__, name, "Failed to convert image", hr );
 		}
 
 		return Surface( std::move( converted ) );
@@ -125,7 +151,7 @@ void Surface::Save( const std::string& filename ) const
 		{
 			return DirectX::WIC_CODEC_BMP;
 		}
-		throw std::exception();
+		throw Exception( __LINE__, __FILE__, filename, "Image format not supported" );
 	};
 
 	HRESULT hr = DirectX::SaveToWICFile(
@@ -136,7 +162,7 @@ void Surface::Save( const std::string& filename ) const
 	);
 	if ( FAILED( hr ) )
 	{
-		throw std::exception();
+		throw Surface::Exception( __LINE__, __FILE__, filename, "Failed to save image", hr );
 	}
 }
 
@@ -149,3 +175,47 @@ Surface::Surface( DirectX::ScratchImage scratch ) noexcept
 	:
 	scratch( std::move( scratch ) )
 {}
+
+
+// surface exception stuff
+Surface::Exception::Exception( int line, const char* file, std::string note, std::optional<HRESULT> hr ) noexcept
+	:
+	ChiliException( line, file ),
+	note( "[Note] " + note )
+{
+	if ( hr )
+	{
+		note = "[Error String] " + Window::Exception::TranslateErrorCode( *hr ) + "\n" + note;
+	}
+}
+
+Surface::Exception::Exception( int line, const char* file, std::string filename, std::string note_in, std::optional<HRESULT> hr ) noexcept
+	:
+	ChiliException( line, file )
+{
+	using namespace std::string_literals;
+	note = "[File] "s + filename + "\n"s + "[Note] "s + note_in;
+
+	if ( hr )
+	{
+		note = "[Error String] " + Window::Exception::TranslateErrorCode( *hr ) + note;
+	}
+}
+
+const char* Surface::Exception::what() const noexcept
+{
+	std::ostringstream oss;
+	oss << ChiliException::what() << std::endl << GetNote();
+	whatBuffer = oss.str();
+	return whatBuffer.c_str();
+}
+
+const char* Surface::Exception::GetType() const noexcept
+{
+	return "Chili Surface Exception";
+}
+
+const std::string& Surface::Exception::GetNote() const noexcept
+{
+	return note;
+}
