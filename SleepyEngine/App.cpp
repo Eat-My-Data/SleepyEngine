@@ -125,7 +125,7 @@ void App::ExecuteFrame( float dt )
 	nano.Submit( Chan::main );
 	cameras.Submit( Chan::main );
 
-	sponza.Submit( Chan::shadow );
+	//sponza.Submit( Chan::shadow );
 	cube.Submit( Chan::shadow );
 	sponza.Submit( Chan::shadow );
 	cube2.Submit( Chan::shadow );

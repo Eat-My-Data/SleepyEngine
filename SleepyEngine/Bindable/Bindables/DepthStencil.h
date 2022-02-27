@@ -19,17 +19,20 @@ namespace Bind
 			ShadowDepth,
 		};
 	public:
-		void BindAsBuffer( Graphics& gfx ) noexcept override;
-		void BindAsBuffer( Graphics& gfx, BufferResource* renderTarget ) noexcept override;
-		void BindAsBuffer( Graphics& gfx, RenderTarget* rt ) noexcept;
-		void Clear( Graphics& gfx ) noexcept override;
+		void BindAsBuffer( Graphics& gfx ) noxnd  override;
+		void BindAsBuffer( Graphics& gfx, BufferResource* renderTarget ) noxnd  override;
+		void BindAsBuffer( Graphics& gfx, RenderTarget* rt ) noxnd;
+		void Clear( Graphics& gfx ) noxnd  override;
 		Surface ToSurface( Graphics& gfx, bool linearlize = true ) const;
+		void Dumpy( Graphics& gfx, const std::string& path ) const;
 		unsigned int GetWidth() const;
 		unsigned int GetHeight() const;
+	private:
+		std::pair<Microsoft::WRL::ComPtr<ID3D11Texture2D>, D3D11_TEXTURE2D_DESC> MakeStaging( Graphics& gfx ) const;
 	protected:
 		DepthStencil( Graphics& gfx, Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture, UINT face );
 		DepthStencil( Graphics& gfx, UINT width, UINT height, bool canBindShaderInput, Usage usage );
-		ID3D11DepthStencilView* pDepthStencilView;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDepthStencilView;
 		unsigned int width;
 		unsigned int height;
 	};
@@ -39,10 +42,10 @@ namespace Bind
 	public:
 		ShaderInputDepthStencil( Graphics& gfx, UINT slot, Usage usage = Usage::DepthStencil );
 		ShaderInputDepthStencil( Graphics& gfx, UINT width, UINT height, UINT slot, Usage usage = Usage::DepthStencil );
-		void Bind( Graphics& gfx ) noexcept override;
+		void Bind( Graphics& gfx ) noxnd  override;
 	private:
 		UINT slot;
-		ID3D11ShaderResourceView* pShaderResourceView;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResourceView;
 	};
 
 	class OutputOnlyDepthStencil : public DepthStencil
@@ -51,6 +54,6 @@ namespace Bind
 		OutputOnlyDepthStencil( Graphics& gfx, Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture, UINT face );
 		OutputOnlyDepthStencil( Graphics& gfx );
 		OutputOnlyDepthStencil( Graphics& gfx, UINT width, UINT height );
-		void Bind( Graphics& gfx ) noexcept override;
+		void Bind( Graphics& gfx ) noxnd  override;
 	};
 }

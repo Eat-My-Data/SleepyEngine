@@ -32,7 +32,7 @@ namespace Rgph
 			:
 			RenderQueuePass( std::move( name ) )
 		{
-			using namespace Bind;
+			using namespace Bind; 
 			pDepthCube = std::make_shared<DepthCubeTexture>( gfx, size, 3 );
 			AddBind( VertexShader::Resolve( gfx, "./Shaders/Bin/Shadow_VS.cso" ) );
 			AddBind( NullPixelShader::Resolve( gfx ) );
@@ -40,7 +40,7 @@ namespace Rgph
 			AddBind( Blender::Resolve( gfx, false ) );
 			AddBind( std::make_shared<Viewport>( gfx, (float)size, (float)size ) );
 			AddBind( std::make_shared<Bind::ShadowRasterizer>( gfx, 50, 2.0f, 0.1f ) );
-			RegisterSource( DirectBindableSource<Bind::DepthCubeTexture>::Make( "map", pDepthCube ) );
+			RegisterSource( DirectBindableSource<Bind::DepthCubeTexture>::Make( "map", pDepthCube ) );;
 
 			DirectX::XMStoreFloat4x4(
 				&projection,
@@ -64,7 +64,7 @@ namespace Rgph
 			// -z
 			DirectX::XMStoreFloat3( &cameraDirections[5], DirectX::XMVectorSet( 0.0f, 0.0f, -1.0f, 0.0f ) );
 			DirectX::XMStoreFloat3( &cameraUps[5], DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
-
+		
 			// set the depth buffer to *something* so that the rg validation doesn't scream
 			SetDepthBuffer( pDepthCube->GetDepthBuffer( 0 ) );
 		}
@@ -79,7 +79,7 @@ namespace Rgph
 			for ( size_t i = 0; i < 6; i++ )
 			{
 				auto d = pDepthCube->GetDepthBuffer( i );
-				d->Clear( gfx );	
+				d->Clear( gfx );
 				SetDepthBuffer( std::move( d ) );
 				const auto lookAt = pos + XMLoadFloat3( &cameraDirections[i] );
 				gfx.SetCamera( XMMatrixLookAtLH( pos, lookAt, XMLoadFloat3( &cameraUps[i] ) ) );

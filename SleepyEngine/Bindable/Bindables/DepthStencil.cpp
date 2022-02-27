@@ -4,6 +4,7 @@
 #include "../../Macros/GraphicsThrowMacros.h"
 #include <stdexcept>
 #include "../../Renderer/Surface.h"
+#include "../../Libraries/cnpy/cnpy.h"
 
 namespace wrl = Microsoft::WRL;
 
@@ -48,10 +49,12 @@ namespace Bind
 	DepthStencil::DepthStencil( Graphics& gfx, UINT width, UINT height, bool canBindShaderInput, Usage usage )
 		:
 		width( width ),
-		height( height ) 
+		height( height )
 	{
+		INFOMAN( gfx );
+
 		// create depth stensil texture
-		ID3D11Texture2D* pDepthStencil;
+		wrl::ComPtr<ID3D11Texture2D> pDepthStencil;
 		D3D11_TEXTURE2D_DESC descDepth = {};
 		descDepth.Width = width;
 		descDepth.Height = height;
@@ -62,7 +65,7 @@ namespace Bind
 		descDepth.SampleDesc.Quality = 0u;
 		descDepth.Usage = D3D11_USAGE_DEFAULT;
 		descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL | ( canBindShaderInput ? D3D11_BIND_SHADER_RESOURCE : 0 );
-		GetDevice( gfx )->CreateTexture2D( &descDepth, nullptr, &pDepthStencil );
+		GFX_THROW_INFO( GetDevice( gfx )->CreateTexture2D( &descDepth, nullptr, &pDepthStencil ) );
 
 		// create target view of depth stensil texture
 		D3D11_DEPTH_STENCIL_VIEW_DESC descView = {};
@@ -70,9 +73,9 @@ namespace Bind
 		descView.Flags = 0;
 		descView.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 		descView.Texture2D.MipSlice = 0;
-		GetDevice( gfx )->CreateDepthStencilView(
-			pDepthStencil, &descView, &pDepthStencilView
-		);
+		GFX_THROW_INFO( GetDevice( gfx )->CreateDepthStencilView(
+			pDepthStencil.Get(), &descView, &pDepthStencilView
+		) );
 	}
 
 	DepthStencil::DepthStencil( Graphics& gfx, wrl::ComPtr<ID3D11Texture2D> pTexture, UINT face )
@@ -97,31 +100,31 @@ namespace Bind
 		) );
 	}
 
-	void DepthStencil::BindAsBuffer( Graphics& gfx ) noexcept
+	void DepthStencil::BindAsBuffer( Graphics& gfx ) noxnd
 	{
-		GetContext( gfx )->OMSetRenderTargets( 0, nullptr, pDepthStencilView );
+		INFOMAN_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( GetContext( gfx )->OMSetRenderTargets( 0, nullptr, pDepthStencilView.Get() ) );
 	}
 
-	void DepthStencil::BindAsBuffer( Graphics& gfx, BufferResource* renderTarget ) noexcept
+	void DepthStencil::BindAsBuffer( Graphics& gfx, BufferResource* renderTarget ) noxnd
 	{
 		assert( dynamic_cast<RenderTarget*>( renderTarget ) != nullptr );
 		BindAsBuffer( gfx, static_cast<RenderTarget*>( renderTarget ) );
 	}
 
-	void DepthStencil::BindAsBuffer( Graphics& gfx, RenderTarget* rt ) noexcept
+	void DepthStencil::BindAsBuffer( Graphics& gfx, RenderTarget* rt ) noxnd
 	{
 		rt->BindAsBuffer( gfx, this );
 	}
 
-	void DepthStencil::Clear( Graphics& gfx ) noexcept
+	void DepthStencil::Clear( Graphics& gfx ) noxnd
 	{
-		GetContext( gfx )->ClearDepthStencilView( pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
+		GetContext( gfx )->ClearDepthStencilView( pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u );
 	}
 
-	Surface Bind::DepthStencil::ToSurface( Graphics& gfx, bool linearlize ) const
+	std::pair<Microsoft::WRL::ComPtr<ID3D11Texture2D>, D3D11_TEXTURE2D_DESC> DepthStencil::MakeStaging( Graphics& gfx ) const
 	{
 		INFOMAN( gfx );
-		namespace wrl = Microsoft::WRL;
 
 		// get info about the stencil view
 		D3D11_DEPTH_STENCIL_VIEW_DESC srcViewDesc{};
@@ -154,6 +157,16 @@ namespace Bind
 		{
 			GFX_THROW_INFO_ONLY( GetContext( gfx )->CopyResource( pTexTemp.Get(), pTexSource.Get() ) );
 		}
+
+		return { std::move( pTexTemp ),srcTextureDesc };
+	}
+
+	Surface Bind::DepthStencil::ToSurface( Graphics& gfx, bool linearlize ) const
+	{
+		INFOMAN( gfx );
+		// copy from resource to staging
+		auto [pTexTemp, srcTextureDesc] = MakeStaging( gfx );
+
 		// create Surface and copy from temp texture to it
 		const auto width = GetWidth();
 		const auto height = GetHeight();
@@ -212,6 +225,41 @@ namespace Bind
 		return s;
 	}
 
+	void Bind::DepthStencil::Dumpy( Graphics& gfx, const std::string& path ) const
+	{
+		INFOMAN( gfx );
+		// copy from resource to staging
+		auto [pTexTemp, srcTextureDesc] = MakeStaging( gfx );
+
+		// create Surface and copy from temp texture to it
+		const auto width = GetWidth();
+		const auto height = GetHeight();
+		std::vector<float> arr;
+		arr.reserve( width * height );
+		D3D11_MAPPED_SUBRESOURCE msr = {};
+		GFX_THROW_INFO( GetContext( gfx )->Map( pTexTemp.Get(), 0, D3D11_MAP::D3D11_MAP_READ, 0, &msr ) );
+		auto pSrcBytes = static_cast<const char*>( msr.pData );
+
+		if ( srcTextureDesc.Format != DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS )
+		{
+			throw std::runtime_error{ "Bad format in Depth Stencil for dumpy" };
+		}
+
+		// flatten texture elements
+		for ( unsigned int y = 0; y < height; y++ )
+		{
+			auto pSrcRow = reinterpret_cast<const float*>( pSrcBytes + msr.RowPitch * size_t( y ) );
+			for ( unsigned int x = 0; x < width; x++ )
+			{
+				arr.push_back( pSrcRow[x] );
+			}
+		}
+		GFX_THROW_INFO_ONLY( GetContext( gfx )->Unmap( pTexTemp.Get(), 0 ) );
+
+		// dump to numpy array
+		cnpy::npy_save( path, arr.data(), { height,width } );
+	}
+
 	unsigned int Bind::DepthStencil::GetWidth() const
 	{
 		return width;
@@ -222,8 +270,9 @@ namespace Bind
 		return height;
 	}
 
-	ShaderInputDepthStencil::ShaderInputDepthStencil( Graphics& gfx, UINT slot, Usage usage ) :
-		ShaderInputDepthStencil( gfx, gfx.GetWidth(), gfx.GetHeight(), slot, usage ) 
+	ShaderInputDepthStencil::ShaderInputDepthStencil( Graphics& gfx, UINT slot, Usage usage )
+		:
+		ShaderInputDepthStencil( gfx, gfx.GetWidth(), gfx.GetHeight(), slot, usage )
 	{}
 
 	ShaderInputDepthStencil::ShaderInputDepthStencil( Graphics& gfx, UINT width, UINT height, UINT slot, Usage usage )
@@ -231,7 +280,9 @@ namespace Bind
 		DepthStencil( gfx, width, height, true, usage ),
 		slot( slot )
 	{
-		ID3D11Resource* pRes;
+		INFOMAN( gfx );
+
+		wrl::ComPtr<ID3D11Resource> pRes;
 		pDepthStencilView->GetResource( &pRes );
 
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
@@ -239,14 +290,15 @@ namespace Bind
 		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MostDetailedMip = 0;
 		srvDesc.Texture2D.MipLevels = 1;
-		GetDevice( gfx )->CreateShaderResourceView(
-			pRes, &srvDesc, &pShaderResourceView
-		);
+		GFX_THROW_INFO( GetDevice( gfx )->CreateShaderResourceView(
+			pRes.Get(), &srvDesc, &pShaderResourceView
+		) );
 	}
 
-	void ShaderInputDepthStencil::Bind( Graphics& gfx ) noexcept
+	void ShaderInputDepthStencil::Bind( Graphics& gfx ) noxnd
 	{
-		GetContext( gfx )->PSSetShaderResources( slot, 1u, &pShaderResourceView );
+		INFOMAN_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSSetShaderResources( slot, 1u, pShaderResourceView.GetAddressOf() ) );
 	}
 
 	OutputOnlyDepthStencil::OutputOnlyDepthStencil( Graphics& gfx, wrl::ComPtr<ID3D11Texture2D> pTexture, UINT face )
@@ -264,7 +316,7 @@ namespace Bind
 		DepthStencil( gfx, width, height, false, Usage::DepthStencil )
 	{}
 
-	void OutputOnlyDepthStencil::Bind( Graphics& gfx ) noexcept
+	void OutputOnlyDepthStencil::Bind( Graphics& gfx ) noxnd
 	{
 		assert( "OutputOnlyDepthStencil cannot be bound as shader input" && false );
 	}

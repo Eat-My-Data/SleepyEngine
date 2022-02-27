@@ -2,6 +2,7 @@
 #include "../Bindable.h"
 #include "BufferResource.h"
 #include <array>
+#include <optional>
 
 class Graphics;
 class Surface;
@@ -20,10 +21,13 @@ namespace Bind
 		void Clear( Graphics& gfx, const std::array<float, 4>& color ) noexcept;
 		UINT GetWidth() const noexcept;
 		UINT GetHeight() const noexcept;
+		Surface ToSurface( Graphics& gfx ) const;
+		void Dumpy( Graphics& gfx, const std::string& path ) const;
 	private:
+		std::pair<Microsoft::WRL::ComPtr<ID3D11Texture2D>, D3D11_TEXTURE2D_DESC> MakeStaging( Graphics& gfx ) const;
 		void BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept;
 	protected:
-		RenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture );
+		RenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT> face );
 		RenderTarget( Graphics& gfx, UINT width, UINT height );
 		UINT width;
 		UINT height;
@@ -35,19 +39,15 @@ namespace Bind
 	public:
 		ShaderInputRenderTarget( Graphics& gfx, UINT width, UINT height, UINT slot );
 		void Bind( Graphics& gfx ) noexcept override;
-		Surface ToSurface( Graphics& gfx ) const;
 	private:
 		UINT slot;
 		ID3D11ShaderResourceView* pShaderResourceView;
 	};
 
-	// RT for Graphics to create RenderTarget for the back buffer
 	class OutputOnlyRenderTarget : public RenderTarget
 	{
-		friend Graphics;
 	public:
 		void Bind( Graphics& gfx ) noexcept override;
-	private:
-		OutputOnlyRenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture );
+		OutputOnlyRenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT> face = {} );
 	};
 }

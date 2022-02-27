@@ -121,6 +121,12 @@
     <Filter Include="Shaders\Test">
       <UniqueIdentifier>{77b54587-de92-4558-8ec3-db7fdca2c27b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Libraries\cnpy">
+      <UniqueIdentifier>{306ed668-acfc-4470-9ea1-fd77b654b124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Libraries\cnpy">
+      <UniqueIdentifier>{807b41b4-820b-4134-b4de-babe2545ef29}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -374,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="Bindable\Bindables\CubeTexture.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="Libraries\cnpy\cnpy.cpp">
+      <Filter>Source Files\Libraries\cnpy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -740,6 +749,9 @@
     <ClInclude Include="Bindable\Bindables\Viewport.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="Libraries\cnpy\cnpy.h">
+      <Filter>Header Files\Libraries\cnpy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsli">
@@ -826,6 +838,9 @@
     <FxCompile Include="Shaders\Common\Shadow_VS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Common\Shadow_PS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -849,6 +864,12 @@
     </None>
     <None Include="Shaders\Common\_PShadow_Dynamic_.hlsli">
       <Filter>Shaders\Common</Filter>
+    </None>
+    <None Include="Utilities\process.json">
+      <Filter>Header Files\Utilities</Filter>
+    </None>
+    <None Include="Utilities\hw3d.args.json.json">
+      <Filter>Header Files\Utilities</Filter>
     </None>
   </ItemGroup>
 </Project>
