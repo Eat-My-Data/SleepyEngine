@@ -10,7 +10,7 @@ namespace Rgph
 	public:
 		using BindingPass::BindingPass;
 		void Accept( Job job ) noexcept;
-		void Execute( Graphics& gfx ) const noexcept override;
+		void Execute( Graphics& gfx ) const noxnd override;
 		void Reset() noexcept override;
 	private:
 		std::vector<Job> jobs;

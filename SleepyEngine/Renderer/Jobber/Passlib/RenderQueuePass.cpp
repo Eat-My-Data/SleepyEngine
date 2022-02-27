@@ -8,7 +8,7 @@ namespace Rgph
 		jobs.push_back( job );
 	}
 
-	void RenderQueuePass::Execute( Graphics& gfx ) const noexcept
+	void RenderQueuePass::Execute( Graphics& gfx ) const noxnd
 	{
 		BindAll( gfx );
 

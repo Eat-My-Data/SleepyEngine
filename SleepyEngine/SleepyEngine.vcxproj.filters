@@ -737,6 +737,9 @@
     <ClInclude Include="Bindable\Bindables\CubeTexture.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="Bindable\Bindables\Viewport.h">
+      <Filter>Header Files\Bindable\Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shaders\Common\Transform.hlsli">
@@ -818,6 +821,9 @@
       <Filter>Shaders\Common</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Common\Skybox_PS.hlsl">
+      <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Common\Shadow_VS.hlsl">
       <Filter>Shaders\Common</Filter>
     </FxCompile>
   </ItemGroup>
