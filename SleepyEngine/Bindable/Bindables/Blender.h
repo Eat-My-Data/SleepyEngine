@@ -8,11 +8,11 @@ namespace Bind
 	class Blender : public Bindable
 	{
 	public:
-		Blender( GraphicsDeviceInterface& gdi, bool blending, std::optional<float> factor = {} );
-		void Bind( GraphicsDeviceInterface& gdi ) noexcept override;
+		Blender( Graphics& gdi, bool blending, std::optional<float> factor = {} );
+		void Bind( Graphics& gdi ) noexcept override;
 		void SetFactor( float factor ) noexcept;
 		float GetFactor() const noexcept;
-		static std::shared_ptr<Blender> Resolve( GraphicsDeviceInterface& gdi, bool blending, std::optional<float> factor = {} );
+		static std::shared_ptr<Blender> Resolve( Graphics& gdi, bool blending, std::optional<float> factor = {} );
 		static std::string GenerateUID( bool blending, std::optional<float> factor );
 		std::string GetUID() const noexcept override;
 	protected:

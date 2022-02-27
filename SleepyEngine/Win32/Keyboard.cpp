@@ -1,16 +1,35 @@
+/******************************************************************************************
+*	Chili Direct3D Engine																  *
+*	Copyright 2018 PlanetChili <http://www.planetchili.net>								  *
+*																						  *
+*	This file is part of Chili Direct3D Engine.											  *
+*																						  *
+*	Chili Direct3D Engine is free software: you can redistribute it and/or modify		  *
+*	it under the terms of the GNU General Public License as published by				  *
+*	the Free Software Foundation, either version 3 of the License, or					  *
+*	(at your option) any later version.													  *
+*																						  *
+*	The Chili Direct3D Engine is distributed in the hope that it will be useful,		  *
+*	but WITHOUT ANY WARRANTY; without even the implied warranty of						  *
+*	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  *
+*	GNU General Public License for more details.										  *
+*																						  *
+*	You should have received a copy of the GNU General Public License					  *
+*	along with The Chili Direct3D Engine.  If not, see <http://www.gnu.org/licenses/>.    *
+******************************************************************************************/
 #include "Keyboard.h"
 
 bool Keyboard::KeyIsPressed( unsigned char keycode ) const noexcept
 {
-	return m_KeyStates[keycode];
+	return keystates[keycode];
 }
 
 std::optional<Keyboard::Event> Keyboard::ReadKey() noexcept
 {
-	if ( m_qKeyBuffer.size() > 0u )
+	if( keybuffer.size() > 0u )
 	{
-		Keyboard::Event e = m_qKeyBuffer.front();
-		m_qKeyBuffer.pop();
+		Keyboard::Event e = keybuffer.front();
+		keybuffer.pop();
 		return e;
 	}
 	return {};
@@ -18,15 +37,15 @@ std::optional<Keyboard::Event> Keyboard::ReadKey() noexcept
 
 bool Keyboard::KeyIsEmpty() const noexcept
 {
-	return m_qKeyBuffer.empty();
+	return keybuffer.empty();
 }
 
 std::optional<char> Keyboard::ReadChar() noexcept
 {
-	if ( m_qCharBuffer.size() > 0u )
+	if( charbuffer.size() > 0u )
 	{
-		unsigned char charcode = m_qCharBuffer.front();
-		m_qCharBuffer.pop();
+		unsigned char charcode = charbuffer.front();
+		charbuffer.pop();
 		return charcode;
 	}
 	return {};
@@ -34,17 +53,17 @@ std::optional<char> Keyboard::ReadChar() noexcept
 
 bool Keyboard::CharIsEmpty() const noexcept
 {
-	return m_qCharBuffer.empty();
+	return charbuffer.empty();
 }
 
 void Keyboard::FlushKey() noexcept
 {
-	m_qKeyBuffer = std::queue<Event>();
+	keybuffer = std::queue<Event>();
 }
 
 void Keyboard::FlushChar() noexcept
 {
-	m_qCharBuffer = std::queue<char>();
+	charbuffer = std::queue<char>();
 }
 
 void Keyboard::Flush() noexcept
@@ -55,49 +74,50 @@ void Keyboard::Flush() noexcept
 
 void Keyboard::EnableAutorepeat() noexcept
 {
-	m_bAutorepeatEnabled = true;
+	autorepeatEnabled = true;
 }
 
 void Keyboard::DisableAutorepeat() noexcept
 {
-	m_bAutorepeatEnabled = false;
+	autorepeatEnabled = false;
 }
 
 bool Keyboard::AutorepeatIsEnabled() const noexcept
 {
-	return m_bAutorepeatEnabled;
+	return autorepeatEnabled;
 }
 
 void Keyboard::OnKeyPressed( unsigned char keycode ) noexcept
 {
-	m_KeyStates[keycode] = true;
-	m_qKeyBuffer.push( Keyboard::Event( Keyboard::Event::Type::Press, keycode ) );
-	TrimBuffer( m_qKeyBuffer );
+	keystates[keycode] = true;
+	keybuffer.push( Keyboard::Event( Keyboard::Event::Type::Press,keycode ) );
+	TrimBuffer( keybuffer );
 }
 
 void Keyboard::OnKeyReleased( unsigned char keycode ) noexcept
 {
-	m_KeyStates[keycode] = false;
-	m_qKeyBuffer.push( Keyboard::Event( Keyboard::Event::Type::Release, keycode ) );
-	TrimBuffer( m_qKeyBuffer );
+	keystates[keycode] = false;
+	keybuffer.push( Keyboard::Event( Keyboard::Event::Type::Release,keycode ) );
+	TrimBuffer( keybuffer );
 }
 
 void Keyboard::OnChar( char character ) noexcept
 {
-	m_qCharBuffer.push( character );
-	TrimBuffer( m_qCharBuffer );
+	charbuffer.push( character );
+	TrimBuffer( charbuffer );
 }
 
 void Keyboard::ClearState() noexcept
 {
-	m_KeyStates.reset();
+	keystates.reset();
 }
 
 template<typename T>
 void Keyboard::TrimBuffer( std::queue<T>& buffer ) noexcept
 {
-	while ( buffer.size() > m_iBufferSize )
+	while( buffer.size() > bufferSize )
 	{
 		buffer.pop();
 	}
 }
+

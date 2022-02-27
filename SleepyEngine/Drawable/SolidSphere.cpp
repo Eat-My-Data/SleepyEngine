@@ -1,14 +1,15 @@
 #include "SolidSphere.h"
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/Blender.h"
-#include "../ResourceManager/Vertex.h"
-#include "../ResourceManager/Geometry/Sphere.h"
+#include "../Renderer/Model/Vertex.h"
+#include "../Geometry/Sphere.h"
 #include "../Bindable/Bindables/ConstantBuffers.h"
 #include "../Bindable/Bindables/DynamicConstant.h"
 #include "../Bindable/Bindables/ConstantBuffersEx.h"
-#include "../ResourceManager/Jobber/TechniqueProbe.h"
+#include "../Renderer/Jobber/TechniqueProbe.h"
+#include "../Renderer/Channels.h"
 
-SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
+SolidSphere::SolidSphere( Graphics& gdi, float radius )
 {
 	using namespace Bind;
 	namespace dx = DirectX;
@@ -22,7 +23,7 @@ SolidSphere::SolidSphere( GraphicsDeviceInterface& gdi, float radius )
 	pTopology = Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
 	{
-		Technique solid;
+		Technique solid{ Chan::main };
 		Step only( "lambertian" );
 
 		auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/Solid_VS.cso" );

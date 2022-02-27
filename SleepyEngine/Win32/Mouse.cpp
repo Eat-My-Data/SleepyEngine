@@ -1,63 +1,74 @@
+/****************************************************************************************** 
+ *	Chili DirectX Framework Version 16.07.20											  *	
+ *	Mouse.cpp																			  *
+ *	Copyright 2016 PlanetChili <http://www.planetchili.net>								  *
+ *																						  *
+ *	This file is part of The Chili DirectX Framework.									  *
+ *																						  *
+ *	The Chili DirectX Framework is free software: you can redistribute it and/or modify	  *
+ *	it under the terms of the GNU General Public License as published by				  *
+ *	the Free Software Foundation, either version 3 of the License, or					  *
+ *	(at your option) any later version.													  *
+ *																						  *
+ *	The Chili DirectX Framework is distributed in the hope that it will be useful,		  *
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of						  *
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the						  *
+ *	GNU General Public License for more details.										  *
+ *																						  *
+ *	You should have received a copy of the GNU General Public License					  *
+ *	along with The Chili DirectX Framework.  If not, see <http://www.gnu.org/licenses/>.  *
+ ******************************************************************************************/
+#include "WinDefines.h"
 #include "Mouse.h"
-#include <Windows.h>
 
-std::pair<u32, u32> Mouse::GetPos() const noexcept
+
+std::pair<int,int> Mouse::GetPos() const noexcept
 {
-	return { m_iX,m_iY };
+	return { x,y };
 }
 
 std::optional<Mouse::RawDelta> Mouse::ReadRawDelta() noexcept
 {
-	if ( m_qRawDeltaBuffer.empty() )
+	if( rawDeltaBuffer.empty() )
 	{
 		return std::nullopt;
 	}
-	const RawDelta d = m_qRawDeltaBuffer.front();
-	m_qRawDeltaBuffer.pop();
+	const RawDelta d = rawDeltaBuffer.front();
+	rawDeltaBuffer.pop();
 	return d;
 }
 
-u32 Mouse::GetPosX() const noexcept
+int Mouse::GetPosX() const noexcept
 {
-	return m_iX;
+	return x;
 }
 
-u32 Mouse::GetPosY() const noexcept
+int Mouse::GetPosY() const noexcept
 {
-	return m_iY;
+	return y;
 }
 
 bool Mouse::IsInWindow() const noexcept
 {
-	return m_bIsInWindow;
-}
-
-bool Mouse::LeftIsReleased() const noexcept
-{
-	for ( auto& mouseEvent : m_qBuffer )
-	{
-		if ( mouseEvent.GetType() == Event::Type::LRelease )
-			return true;
-	}
-	return false;
+	return isInWindow;
 }
 
 bool Mouse::LeftIsPressed() const noexcept
 {
-	return m_bLeftIsPressed;
+	return leftIsPressed;
 }
 
 bool Mouse::RightIsPressed() const noexcept
 {
-	return m_bRightIsPressed;
+	return rightIsPressed;
 }
 
 std::optional<Mouse::Event> Mouse::Read() noexcept
 {
-	if ( m_qBuffer.size() > 0u )
+	if( buffer.size() > 0u )
 	{
-		Mouse::Event e = m_qBuffer.front();
-		m_qBuffer.pop_front();
+		Mouse::Event e = buffer.front();
+		buffer.pop();
 		return e;
 	}
 	return {};
@@ -65,125 +76,125 @@ std::optional<Mouse::Event> Mouse::Read() noexcept
 
 void Mouse::Flush() noexcept
 {
-	m_qBuffer = std::deque<Event>();
+	buffer = std::queue<Event>();
 }
 
 void Mouse::EnableRaw() noexcept
 {
-	m_bRawEnabled = true;
+	rawEnabled = true;
 }
 
 void Mouse::DisableRaw() noexcept
 {
-	m_bRawEnabled = false;
+	rawEnabled = false;
 }
 
 bool Mouse::RawEnabled() const noexcept
 {
-	return m_bRawEnabled;
+	return rawEnabled;
 }
 
-void Mouse::OnMouseMove( u32 newx, u32 newy ) noexcept
+void Mouse::OnMouseMove( int newx,int newy ) noexcept
 {
-	m_iX = newx;
-	m_iY = newy;
+	x = newx;
+	y = newy;
 
-	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::Move, *this ) );
+	buffer.push( Mouse::Event( Mouse::Event::Type::Move,*this ) );
 	TrimBuffer();
 }
 
 void Mouse::OnMouseLeave() noexcept
 {
-	m_bIsInWindow = false;
-	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::Leave, *this ) );
+	isInWindow = false;
+	buffer.push( Mouse::Event( Mouse::Event::Type::Leave,*this ) );
 	TrimBuffer();
 }
 
 void Mouse::OnMouseEnter() noexcept
 {
-	m_bIsInWindow = true;
-	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::Enter, *this ) );
+	isInWindow = true;
+	buffer.push( Mouse::Event( Mouse::Event::Type::Enter,*this ) );
 	TrimBuffer();
 }
 
-void Mouse::OnRawDelta( u32 dx, u32 dy ) noexcept
+void Mouse::OnRawDelta( int dx,int dy ) noexcept
 {
-	m_qRawDeltaBuffer.push( { dx,dy } );
+	rawDeltaBuffer.push( { dx,dy } );
 	TrimBuffer();
 }
 
-void Mouse::OnLeftPressed( u32 m_iX, u32 m_iY ) noexcept
+void Mouse::OnLeftPressed( int x,int y ) noexcept
 {
-	m_bLeftIsPressed = true;
+	leftIsPressed = true;
 
-	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::LPress, *this ) );
+	buffer.push( Mouse::Event( Mouse::Event::Type::LPress,*this ) );
 	TrimBuffer();
 }
 
-void Mouse::OnLeftReleased( u32 m_iX, u32 m_iY ) noexcept
+void Mouse::OnLeftReleased( int x,int y ) noexcept
 {
-	m_bLeftIsPressed = false;
+	leftIsPressed = false;
 
-	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::LRelease, *this ) );
+	buffer.push( Mouse::Event( Mouse::Event::Type::LRelease,*this ) );
 	TrimBuffer();
 }
 
-void Mouse::OnRightPressed( u32 m_iX, u32 m_iY ) noexcept
+void Mouse::OnRightPressed( int x,int y ) noexcept
 {
-	m_bRightIsPressed = true;
+	rightIsPressed = true;
 
-	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::RPress, *this ) );
+	buffer.push( Mouse::Event( Mouse::Event::Type::RPress,*this ) );
 	TrimBuffer();
 }
 
-void Mouse::OnRightReleased( u32 m_iX, u32 m_iY ) noexcept
+void Mouse::OnRightReleased( int x,int y ) noexcept
 {
-	m_bRightIsPressed = false;
+	rightIsPressed = false;
 
-	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::RRelease, *this ) );
+	buffer.push( Mouse::Event( Mouse::Event::Type::RRelease,*this ) );
 	TrimBuffer();
 }
 
-void Mouse::OnWheelUp( u32 m_iX, u32 m_iY ) noexcept
+void Mouse::OnWheelUp( int x,int y ) noexcept
 {
-	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::WheelUp, *this ) );
+	buffer.push( Mouse::Event( Mouse::Event::Type::WheelUp,*this ) );
 	TrimBuffer();
 }
 
-void Mouse::OnWheelDown( u32 m_iX, u32 m_iY ) noexcept
+void Mouse::OnWheelDown( int x,int y ) noexcept
 {
-	m_qBuffer.push_back( Mouse::Event( Mouse::Event::Type::WheelDown, *this ) );
+	buffer.push( Mouse::Event( Mouse::Event::Type::WheelDown,*this ) );
 	TrimBuffer();
 }
 
 void Mouse::TrimBuffer() noexcept
 {
-	while ( m_qBuffer.size() > m_iBufferSize )
+	while( buffer.size() > bufferSize )
 	{
-		m_qBuffer.pop_back();
+		buffer.pop();
 	}
 }
 
 void Mouse::TrimRawInputBuffer() noexcept
 {
-	while ( m_qRawDeltaBuffer.size() > m_iBufferSize )
+	while( rawDeltaBuffer.size() > bufferSize )
 	{
-		m_qRawDeltaBuffer.pop();
+		rawDeltaBuffer.pop();
 	}
 }
 
-void Mouse::OnWheelDelta( u32 m_iX, u32 m_iY, u32 delta ) noexcept
+void Mouse::OnWheelDelta( int x,int y,int delta ) noexcept
 {
-	m_iWheelDeltaCarry += delta;
+	wheelDeltaCarry += delta;
 	// generate events for every 120 
-	while ( m_iWheelDeltaCarry >= WHEEL_DELTA )
+	while( wheelDeltaCarry >= WHEEL_DELTA )
 	{
-		m_iWheelDeltaCarry -= WHEEL_DELTA;
-		OnWheelUp( m_iX, m_iY );
+		wheelDeltaCarry -= WHEEL_DELTA;
+		OnWheelUp( x,y );
 	}
-	while ( m_iWheelDeltaCarry <= -WHEEL_DELTA )
+	while( wheelDeltaCarry <= -WHEEL_DELTA )
 	{
-		m_iWheelDeltaCarry += WHEEL_DELTA;
-		OnWheelDown( m_iX, m_iY );
+		wheelDeltaCarry += WHEEL_DELTA;
+		OnWheelDown( x,y );
 	}
 }

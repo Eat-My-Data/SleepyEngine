@@ -2,8 +2,9 @@
 #include "../Bindable.h"
 #include "BufferResource.h"
 #include <array>
+#include <optional>
 
-class GraphicsDeviceInterface;
+class Graphics;
 class Surface;
 
 namespace Bind
@@ -13,18 +14,21 @@ namespace Bind
 	class RenderTarget : public Bindable, public BufferResource
 	{
 	public:
-		void BindAsBuffer( GraphicsDeviceInterface& gfx ) noexcept override;
-		void BindAsBuffer( GraphicsDeviceInterface& gfx, BufferResource* depthStencil ) noexcept override;
-		void BindAsBuffer( GraphicsDeviceInterface& gfx, DepthStencil* depthStencil ) noexcept;
-		void Clear( GraphicsDeviceInterface& gfx ) noexcept override;
-		void Clear( GraphicsDeviceInterface& gfx, const std::array<float, 4>& color ) noexcept;
+		void BindAsBuffer( Graphics& gfx ) noexcept override;
+		void BindAsBuffer( Graphics& gfx, BufferResource* depthStencil ) noexcept override;
+		void BindAsBuffer( Graphics& gfx, DepthStencil* depthStencil ) noexcept;
+		void Clear( Graphics& gfx ) noexcept override;
+		void Clear( Graphics& gfx, const std::array<float, 4>& color ) noexcept;
 		UINT GetWidth() const noexcept;
 		UINT GetHeight() const noexcept;
+		Surface ToSurface( Graphics& gfx ) const;
+		void Dumpy( Graphics& gfx, const std::string& path ) const;
 	private:
-		void BindAsBuffer( GraphicsDeviceInterface& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept;
+		std::pair<Microsoft::WRL::ComPtr<ID3D11Texture2D>, D3D11_TEXTURE2D_DESC> MakeStaging( Graphics& gfx ) const;
+		void BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept;
 	protected:
-		RenderTarget( GraphicsDeviceInterface& gfx, ID3D11Texture2D* pTexture );
-		RenderTarget( GraphicsDeviceInterface& gfx, UINT width, UINT height );
+		RenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT> face );
+		RenderTarget( Graphics& gfx, UINT width, UINT height );
 		UINT width;
 		UINT height;
 		ID3D11RenderTargetView* pTargetView;
@@ -33,21 +37,17 @@ namespace Bind
 	class ShaderInputRenderTarget : public RenderTarget
 	{
 	public:
-		ShaderInputRenderTarget( GraphicsDeviceInterface& gfx, UINT width, UINT height, UINT slot );
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override;
-		Surface ToSurface( GraphicsDeviceInterface& gfx ) const;
+		ShaderInputRenderTarget( Graphics& gfx, UINT width, UINT height, UINT slot );
+		void Bind( Graphics& gfx ) noexcept override;
 	private:
 		UINT slot;
 		ID3D11ShaderResourceView* pShaderResourceView;
 	};
 
-	// RT for Graphics to create RenderTarget for the back buffer
 	class OutputOnlyRenderTarget : public RenderTarget
 	{
-		friend GraphicsDeviceInterface;
 	public:
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override;
-	private:
-		OutputOnlyRenderTarget( GraphicsDeviceInterface& gfx, ID3D11Texture2D* pTexture );
+		void Bind( Graphics& gfx ) noexcept override;
+		OutputOnlyRenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT> face = {} );
 	};
 }

@@ -1,10 +1,11 @@
 #pragma once
 #include "../Drawable/Drawable.h"
+#include "../Utilities/NumericDataTypes.h"
 
 class SolidCone : public Drawable
 {
 public:
-	SolidCone( GraphicsDeviceInterface& gdi, f32 scale );
+	SolidCone( Graphics& gdi, f32 scale );
 	void SetPos( DirectX::XMFLOAT3 pos ) noexcept;
 	void Rotate( f32 dx, f32 dy ) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;

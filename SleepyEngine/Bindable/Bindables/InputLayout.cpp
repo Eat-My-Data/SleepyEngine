@@ -1,39 +1,43 @@
 #include "InputLayout.h"
+#include "../../Macros/GraphicsThrowMacros.h"
 #include "../BindableCodex.h"
-#include "../../ResourceManager/Vertex.h"
+#include "../../Renderer/Model/Vertex.h"
 #include "VertexShader.h"
 
 namespace Bind
 {
-	InputLayout::InputLayout( GraphicsDeviceInterface& gdi,
+	InputLayout::InputLayout( Graphics& gfx,
 		Dvtx::VertexLayout layout_in,
 		const VertexShader& vs )
 		:
-		m_VertexLayout( std::move( layout_in ) )
+		layout( std::move( layout_in ) )
 	{
-		const auto d3dLayout = m_VertexLayout.GetD3DLayout();
+		INFOMAN( gfx );
+
+		const auto d3dLayout = layout.GetD3DLayout();
 		const auto pBytecode = vs.GetBytecode();
 
-		GetDevice( gdi )->CreateInputLayout(
+		GFX_THROW_INFO( GetDevice( gfx )->CreateInputLayout(
 			d3dLayout.data(), (UINT)d3dLayout.size(),
 			pBytecode->GetBufferPointer(),
 			pBytecode->GetBufferSize(),
-			&m_pInputLayout
-		);
-	}
-
-	void InputLayout::Bind( GraphicsDeviceInterface& gdi ) noexcept
-	{
-		GetContext( gdi )->IASetInputLayout( m_pInputLayout );
+			&pInputLayout
+		) );
 	}
 	const Dvtx::VertexLayout InputLayout::GetLayout() const noexcept
 	{
-		return m_VertexLayout;
+		return layout;
 	}
-	std::shared_ptr<InputLayout> InputLayout::Resolve( GraphicsDeviceInterface& gdi,
+
+	void InputLayout::Bind( Graphics& gfx ) noxnd
+	{
+		INFOMAN_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( GetContext( gfx )->IASetInputLayout( pInputLayout.Get() ) );
+	}
+	std::shared_ptr<InputLayout> InputLayout::Resolve( Graphics& gfx,
 		const Dvtx::VertexLayout& layout, const VertexShader& vs )
 	{
-		return Codex::Resolve<InputLayout>( gdi, layout, vs );
+		return Codex::Resolve<InputLayout>( gfx, layout, vs );
 	}
 	std::string InputLayout::GenerateUID( const Dvtx::VertexLayout& layout, const VertexShader& vs )
 	{
@@ -43,6 +47,6 @@ namespace Bind
 	std::string InputLayout::GetUID() const noexcept
 	{
 		using namespace std::string_literals;
-		return typeid( InputLayout ).name() + "#"s + m_VertexLayout.GetCode() + "#"s + vertexShaderUID;
+		return typeid( InputLayout ).name() + "#"s + layout.GetCode() + "#"s + vertexShaderUID;
 	}
 }

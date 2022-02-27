@@ -1,10 +1,13 @@
 #pragma once
-#include "../GraphicsDeviceInterface/GraphicsDeviceInterface.h"
 
 void TestDynamicConstant();
 
 void TestDynamicMeshLoading();
 
-void TestMaterialSystemLoading( GraphicsDeviceInterface& gfx );
+void TestMaterialSystemLoading( class Graphics& gfx );
 
 void TestScaleMatrixTranslation();
+
+void D3DTestScratchPad( class Window& wnd );
+
+void TestNumpy();

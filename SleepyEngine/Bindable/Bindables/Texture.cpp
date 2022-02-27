@@ -1,10 +1,10 @@
 #include "Texture.h"
-#include "../../ResourceManager/Surface.h"
+#include "../../Renderer/Surface.h"
 #include "../BindableCodex.h"
 
 namespace Bind
 {
-	Texture::Texture( GraphicsDeviceInterface& gdi, const std::string& path, UINT slot )
+	Texture::Texture( Graphics& gdi, const std::string& path, UINT slot )
 		:
 		slot( slot )
 	{
@@ -49,11 +49,11 @@ namespace Bind
 		// generate the mip chain using the gpu rendering pipeline
 		GetContext( gdi )->GenerateMips( pTextureView );
 	}
-	void Texture::Bind( GraphicsDeviceInterface& gdi ) noexcept
+	void Texture::Bind( Graphics& gdi ) noexcept
 	{
 		GetContext( gdi )->PSSetShaderResources( slot, 1u, &pTextureView );
 	}
-	std::shared_ptr<Texture> Texture::Resolve( GraphicsDeviceInterface& gdi, const std::string& path, UINT slot )
+	std::shared_ptr<Texture> Texture::Resolve( Graphics& gdi, const std::string& path, UINT slot )
 	{
 		return Codex::Resolve<Texture>( gdi, path, slot );
 	}

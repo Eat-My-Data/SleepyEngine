@@ -1,11 +1,11 @@
 #include "VertexShader.h"
 #include "../BindableCodex.h"
 #include <d3dcompiler.h>
-#include "../../Utilities/SleepyUtil.h"
+#include "../../Utilities/ChiliUtil.h"
 
 namespace Bind
 {
-	VertexShader::VertexShader( GraphicsDeviceInterface& gdi,const std::string& path )
+	VertexShader::VertexShader( Graphics& gdi,const std::string& path )
 		:
 		m_sPath( path )
 	{
@@ -17,7 +17,7 @@ namespace Bind
 			&m_pVertexShader
 		);
 	}
-	void VertexShader::Bind( GraphicsDeviceInterface& gdi ) noexcept
+	void VertexShader::Bind( Graphics& gdi ) noexcept
 	{
 		GetContext( gdi )->VSSetShader( m_pVertexShader, nullptr, 0u );
 	}
@@ -25,7 +25,7 @@ namespace Bind
 	{
 		return m_pBytecodeBlob;
 	}
-	std::shared_ptr<VertexShader> VertexShader::Resolve( GraphicsDeviceInterface& gdi, const std::string& path)
+	std::shared_ptr<VertexShader> VertexShader::Resolve( Graphics& gdi, const std::string& path)
 	{
 		return Codex::Resolve<VertexShader>( gdi,path );
 	}

@@ -7,7 +7,11 @@ int CALLBACK WinMain(
 	int		  nCmdShow ){
 	try
 	{
-		return App{}.Launch();
+		return App{ lpCmdLine }.Launch();
+	}
+	catch ( const ChiliException& e )
+	{
+		MessageBox( nullptr, (LPCWSTR)e.what(), (LPCWSTR)e.GetType(), MB_OK | MB_ICONEXCLAMATION );
 	}
 	catch ( std::exception& e )
 	{

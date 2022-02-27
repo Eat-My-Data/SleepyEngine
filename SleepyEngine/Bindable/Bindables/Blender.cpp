@@ -3,7 +3,7 @@
 
 namespace Bind
 {
-	Blender::Blender( GraphicsDeviceInterface& gdi, bool blending, std::optional<float> factors_in )
+	Blender::Blender( Graphics& gdi, bool blending, std::optional<float> factors_in )
 		:
 		blending( blending )
 	{
@@ -33,7 +33,7 @@ namespace Bind
 		GetDevice( gdi )->CreateBlendState( &blendDesc, &pBlender );
 	}
 
-	void Blender::Bind( GraphicsDeviceInterface& gdi ) noexcept
+	void Blender::Bind( Graphics& gdi ) noexcept
 	{
 		const float* data = factors ? factors->data() : nullptr;
 		GetContext( gdi )->OMSetBlendState( pBlender, data, 0xFFFFFFFFu );
@@ -51,7 +51,7 @@ namespace Bind
 		return factors->front();
 	}
 
-	std::shared_ptr<Blender> Blender::Resolve( GraphicsDeviceInterface& gdi, bool blending, std::optional<float> factor )
+	std::shared_ptr<Blender> Blender::Resolve( Graphics& gdi, bool blending, std::optional<float> factor )
 	{
 		return Codex::Resolve<Blender>( gdi, blending, factor );
 	}

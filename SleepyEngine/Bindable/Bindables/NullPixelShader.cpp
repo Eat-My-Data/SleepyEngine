@@ -3,14 +3,14 @@
 
 namespace Bind
 {
-	NullPixelShader::NullPixelShader( GraphicsDeviceInterface& gfx )
+	NullPixelShader::NullPixelShader( Graphics& gfx )
 	{
 	}
-	void NullPixelShader::Bind( GraphicsDeviceInterface& gfx ) noexcept
+	void NullPixelShader::Bind( Graphics& gfx ) noexcept
 	{
 		GetContext( gfx )->PSSetShader( nullptr, nullptr, 0u );
 	}
-	std::shared_ptr<NullPixelShader> NullPixelShader::Resolve( GraphicsDeviceInterface& gfx )
+	std::shared_ptr<NullPixelShader> NullPixelShader::Resolve( Graphics& gfx )
 	{
 		return Codex::Resolve<NullPixelShader>( gfx );
 	}

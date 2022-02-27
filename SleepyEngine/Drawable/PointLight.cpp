@@ -1,209 +1,88 @@
-
 #include "PointLight.h"
-#include "../Bindable/BindableCommon.h"
-#include "../Bindable/Bindables/Sampler.h"
-#include "../ResourceManager/Vertex.h"
-#include "../ResourceManager/Geometry/Sphere.h"
-#include <d3dcompiler.h>
-#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
-#include "../Libraries/imgui/backends/imgui_impl_win32.h"
+#include "../Libraries/imgui/imgui.h"
+#include "../Camera/Camera.h"
+#include "../Utilities/ChiliMath.h"
 
-PointLight::PointLight( GraphicsDeviceInterface& gdi, float radius )
+PointLight::PointLight( Graphics& gfx, DirectX::XMFLOAT3 pos, float radius )
+	:
+	mesh( gfx, radius ),
+	cbuf( gfx )
 {
-	//using namespace Bind;
-	//namespace dx = DirectX;
+	home = {
+		pos,
+		{ 0.05f,0.05f,0.05f },
+		{ 1.0f,1.0f,1.0f },
+		1.0f,
+		1.0f,		
+		0.025f,
+		0.0030f,
+	};
 
-	m_StructuredBufferData.radius = radius;
-
-	//auto model = Sphere::Make();
-	//model.Transform( dx::XMMatrixScaling( radius, radius, radius ) );
-	//const auto geometryTag = "$sphere." + std::to_string( radius );
-	//AddBind( VertexBuffer::Resolve( gdi, geometryTag, model.m_VBVertices ) );
-	//AddBind( IndexBuffer::Resolve( gdi, geometryTag, model.m_vecOfIndices ) );
-
-	//auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/PointLightVS.cso" );
-	//auto pvsbc = pvs->GetBytecode();
-	//AddBind( std::move( pvs ) );
-
-	//ID3DBlob* pBlob;
-	//D3DReadFileToBlob( L"./Shaders/Bin/PointLightPS.cso", &pBlob );
-	//gdi.GetDevice()->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader );
-
-	//AddBind( Sampler::Resolve( gdi ) );
-
-	//Dvtx::VertexBuffer vbuf( std::move(
-	//	Dvtx::VertexLayout{}
-	//	.Append( Dvtx::VertexLayout::Position3D )
-	//) );
-	//AddBind( InputLayout::Resolve( gdi, vbuf.GetLayout(), pvsbc ) );
-
-	//AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-
-	//AddBind( std::make_shared<TransformCbuf>( gdi, *this ) );
-
-
-	//D3D11_DEPTH_STENCIL_DESC dsDesInsideLight = {};
-	//dsDesInsideLight.DepthEnable = TRUE;
-	//dsDesInsideLight.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	//dsDesInsideLight.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
-	//HRESULT hr = gdi.GetDevice()->CreateDepthStencilState( &dsDesInsideLight, &pDSStateInsideLighting );
-	//if ( FAILED( hr ) )
-	//{
-	//	throw std::exception();
-	//}
-
-	//D3D11_DEPTH_STENCIL_DESC dsDescInfrontBackFace = {};
-	//dsDescInfrontBackFace.DepthEnable = TRUE;
-	//dsDescInfrontBackFace.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	//dsDescInfrontBackFace.DepthFunc = D3D11_COMPARISON_GREATER_EQUAL;
-	//dsDescInfrontBackFace.StencilEnable = TRUE;
-	//dsDescInfrontBackFace.StencilReadMask = 0xFF;
-	//dsDescInfrontBackFace.StencilWriteMask = 0xFF;
-	//dsDescInfrontBackFace.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	//dsDescInfrontBackFace.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-	//dsDescInfrontBackFace.FrontFace.StencilFunc = D3D11_COMPARISON_GREATER;
-	//dsDescInfrontBackFace.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
-	//dsDescInfrontBackFace.BackFace = dsDescInfrontBackFace.FrontFace;
-	//hr = gdi.GetDevice()->CreateDepthStencilState( &dsDescInfrontBackFace, &pDSStateInfrontBackFaceOfLight );
-	//if ( FAILED( hr ) )
-	//{
-	//	throw std::exception();
-	//}
-
-	//D3D11_DEPTH_STENCIL_DESC dsDescBehindFrontFace = {};
-	//dsDescBehindFrontFace.DepthEnable = TRUE;
-	//dsDescBehindFrontFace.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	//dsDescBehindFrontFace.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
-	//dsDescBehindFrontFace.StencilEnable = TRUE;
-	//dsDescBehindFrontFace.StencilReadMask = 0xFF;
-	//dsDescBehindFrontFace.StencilWriteMask = 0xFF;
-	//dsDescBehindFrontFace.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-	//dsDescBehindFrontFace.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_ZERO;
-	//dsDescBehindFrontFace.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
-	//dsDescBehindFrontFace.FrontFace.StencilPassOp = D3D11_STENCIL_OP_ZERO;
-	//dsDescBehindFrontFace.BackFace = dsDescInfrontBackFace.FrontFace;
-	//hr = gdi.GetDevice()->CreateDepthStencilState( &dsDescBehindFrontFace, &pDSStateLightingBehindFrontFaceOfLight );
-	//if ( FAILED( hr ) )
-	//{
-	//	throw std::exception();
-	//}
-
-	//// Setup rasterizer state inside
-	//D3D11_RASTERIZER_DESC rasterizerDescInside;
-	//ZeroMemory( &rasterizerDescInside, sizeof( rasterizerDescInside ) );
-	//rasterizerDescInside.CullMode = D3D11_CULL_FRONT;
-	//rasterizerDescInside.FillMode = D3D11_FILL_SOLID;
-	//rasterizerDescInside.DepthClipEnable = false;
-
-	//gdi.GetDevice()->CreateRasterizerState( &rasterizerDescInside, &rasterizerInside );
-
-	//// Setup rasterizer state outside
-	//D3D11_RASTERIZER_DESC rasterizerDescOutside;
-	//ZeroMemory( &rasterizerDescOutside, sizeof( rasterizerDescOutside ) );
-	//rasterizerDescOutside.CullMode = D3D11_CULL_BACK;
-	//rasterizerDescOutside.FillMode = D3D11_FILL_SOLID;
-	//rasterizerDescOutside.DepthClipEnable = false;
-
-	//gdi.GetDevice()->CreateRasterizerState( &rasterizerDescOutside, &rasterizerOutside );
-	
-	m_SolidSphere = new SolidSphere( gdi, 0.75f );
-	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
+	Reset();
+	pCamera = std::make_shared<Camera>( gfx, "Light", cbData.pos, 0.0f, PI / 2.0f, true );
 }
 
-DirectX::XMMATRIX PointLight::GetTransformXM() const noexcept
+void PointLight::SpawnControlWindow() noexcept
 {
-	return DirectX::XMMatrixTranslation( m_StructuredBufferData.pos.x, m_StructuredBufferData.pos.y, m_StructuredBufferData.pos.z );
+	if ( ImGui::Begin( "Light" ) )
+	{
+		bool dirtyPos = false;
+		const auto d = [&dirtyPos]( bool dirty ) {dirtyPos = dirtyPos || dirty; };
+
+		ImGui::Text( "Position" );
+		d( ImGui::SliderFloat( "X", &cbData.pos.x, -60.0f, 60.0f, "%.1f" ) );
+		d( ImGui::SliderFloat( "Y", &cbData.pos.y, -60.0f, 60.0f, "%.1f" ) );
+		d( ImGui::SliderFloat( "Z", &cbData.pos.z, -60.0f, 60.0f, "%.1f" ) );
+
+		if ( dirtyPos )
+		{
+			pCamera->SetPos( cbData.pos );
+		}
+
+		ImGui::Text( "Intensity/Color" );
+		ImGui::SliderFloat( "Intensity", &cbData.diffuseIntensity, 0.01f, 2.0f, "%.2f", 2 );
+		ImGui::ColorEdit3( "Diffuse Color", &cbData.diffuseColor.x );
+		ImGui::ColorEdit3( "Ambient", &cbData.ambient.x );
+
+		ImGui::Text( "Falloff" );
+		ImGui::SliderFloat( "Constant", &cbData.attConst, 0.05f, 10.0f, "%.2f", 4 );
+		ImGui::SliderFloat( "Linear", &cbData.attLin, 0.0001f, 4.0f, "%.4f", 8 );
+		ImGui::SliderFloat( "Quadratic", &cbData.attQuad, 0.0000001f, 10.0f, "%.7f", 10 );
+
+		if ( ImGui::Button( "Reset" ) )
+		{
+			Reset();
+		}
+	}
+	ImGui::End();
 }
 
-void PointLight::Update()
+void PointLight::Reset() noexcept
 {
-	//m_SolidSphere->SetPos( m_StructuredBufferData.pos );
+	cbData = home;
 }
 
-void PointLight::Draw( GraphicsDeviceInterface& gdi )
+void PointLight::Submit( size_t channels ) const noxnd
 {
-	// bindables
-	//for ( auto& b : binds )
-	//{
-	//	b->Bind( gdi );
-	//}
-
-	//DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( gdi.GetViewMatrix() );
-	//DirectX::XMMATRIX cameraMatrix = DirectX::XMMatrixInverse( &determinant, gdi.GetViewMatrix() );
-
-	//DirectX::XMFLOAT3 camPos = {
-	//	 cameraMatrix.r[3].m128_f32[0],
-	//	 cameraMatrix.r[3].m128_f32[1],
-	//	 cameraMatrix.r[3].m128_f32[2]
-	//};
-
-	//// figure out if camera is inside point light
-	//if ( CameraIsInside( camPos ) )
-	//{
-	//	gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
-	//	gdi.GetContext()->RSSetState( rasterizerInside );
-	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateInsideLighting, 1u );
-
-	//	// draw
-	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
-	//}
-	//else
-	//{
-	//	gdi.GetContext()->PSSetShader( nullptr, nullptr, 0u );
-	//	gdi.GetContext()->RSSetState( rasterizerInside );
-	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateInfrontBackFaceOfLight, 0x10 );
-
-	//	// draw
-	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
-
-	//	gdi.GetContext()->PSSetShader( pPixelShader, nullptr, 0u );
-	//	gdi.GetContext()->RSSetState( rasterizerOutside );
-	//	gdi.GetContext()->OMSetDepthStencilState( pDSStateLightingBehindFrontFaceOfLight, 0x10 );
-
-	//	// draw
-	//	gdi.DrawIndexed( pIndexBuffer->GetCount() );
-	//}
+	mesh.SetPos( cbData.pos );
+	mesh.Submit( channels );
 }
 
-void PointLight::Submit() const noexcept
+void PointLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
 {
-	//m_SolidSphere->Submit();
+	auto dataCopy = cbData;
+	const auto pos = DirectX::XMLoadFloat3( &cbData.pos );
+	DirectX::XMStoreFloat3( &dataCopy.pos, DirectX::XMVector3Transform( pos, view ) );
+	cbuf.Update( gfx, dataCopy );
+	cbuf.Bind( gfx );
 }
 
 void PointLight::LinkTechniques( Rgph::RenderGraph& rg )
 {
-	//m_SolidSphere->LinkTechniques( rg );
+	mesh.LinkTechniques( rg );
 }
 
-void PointLight::DrawControlPanel()
+std::shared_ptr<Camera> PointLight::ShareCamera() const noexcept
 {
-	ImGui::Text( "Point Light" );
-	ImGui::ColorEdit3( "Color", &m_StructuredBufferData.color.x );
-	ImGui::SliderFloat( "X", &m_StructuredBufferData.pos.x, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Y", &m_StructuredBufferData.pos.y, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Z", &m_StructuredBufferData.pos.z, -80.0f, 80.0f );
-}
-
-void PointLight::Translate( DirectX::XMFLOAT3 vec )
-{
-	m_StructuredBufferData.pos.x += vec.x;
-	m_StructuredBufferData.pos.y += vec.y;
-	m_StructuredBufferData.pos.z += vec.z;
-	m_SolidSphere->SetPos( m_StructuredBufferData.pos );
-}
-
-bool PointLight::CameraIsInside( DirectX::XMFLOAT3 camPos )
-{
-	float distFromCenterX = m_StructuredBufferData.pos.x - camPos.x;
-	float distFromCenterY = m_StructuredBufferData.pos.y - camPos.y;
-	float distFromCenterZ = m_StructuredBufferData.pos.z - camPos.z;
-	float xSq = distFromCenterX * distFromCenterX;
-	float ySq = distFromCenterY * distFromCenterY;
-	float zSq = distFromCenterZ * distFromCenterZ;
-	float distSq = xSq + ySq + zSq;
-
-	float radiusSq = ( m_StructuredBufferData.radius + 0.5f ) * ( m_StructuredBufferData.radius + 0.5f );
-
-
-	return distSq <= radiusSq;
+	return pCamera;
 }

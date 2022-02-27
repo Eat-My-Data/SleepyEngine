@@ -1,16 +1,14 @@
 #include "SpotLight.h"
-#include "Cube.h"
 #include "../Bindable/BindableCommon.h"
 #include "../Bindable/Bindables/Sampler.h"
 #include "../Bindable/Bindables/Blender.h"
-#include "../ResourceManager/Geometry/Cone.h"
+#include "../Geometry/Cone.h"
 #include <algorithm>
 #include <d3dcompiler.h>
 #include <math.h>
-#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
-#include "../Libraries/imgui/backends/imgui_impl_win32.h"
+#include "../Libraries/imgui/imgui.h"
 
-SpotLight::SpotLight( GraphicsDeviceInterface& gdi, f32 scale )
+SpotLight::SpotLight( Graphics& gdi, f32 scale )
 {
 	//using namespace Bind;
 	//namespace dx = DirectX;
@@ -125,7 +123,7 @@ DirectX::XMMATRIX SpotLight::GetTransformXM() const noexcept
 		//DirectX::XMMatrixTranslation( m_StructuredBufferData.pos.x, m_StructuredBufferData.pos.y, m_StructuredBufferData.pos.z );
 }
 
-void SpotLight::Update( GraphicsDeviceInterface& gdi )
+void SpotLight::Update( Graphics& gdi )
 {
 	//m_pSolidCone->SetPos( m_StructuredBufferData.pos );
 
@@ -149,7 +147,7 @@ void SpotLight::DrawControlPanel()
 	ImGui::SliderAngle( "Yaw", &m_fYaw, 0.995f * -180.0f, 0.995f * 180.0f );
 }
 
-void SpotLight::Draw( GraphicsDeviceInterface& gdi )
+void SpotLight::Draw( Graphics& gdi )
 {
 	// bindables
 	//for ( auto& b : binds )

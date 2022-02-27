@@ -1,18 +1,19 @@
 #pragma once
-#include "./Bindables/GraphicsResource.h"
-#include <string>
+#include "../Graphics/GraphicsResource.h"
 #include <memory>
+#include <string>
+#include "../Macros/ConditionalNoexcept.h"
 
 class Drawable;
 class TechniqueProbe;
-class GraphicsDeviceInterface;
+class Graphics;
 
 namespace Bind
 {
 	class Bindable : public GraphicsResource
 	{
 	public:
-		virtual void Bind( GraphicsDeviceInterface& gdi ) noexcept = 0;
+		virtual void Bind( Graphics& gfx ) noxnd = 0;
 		virtual void InitializeParentReference( const Drawable& ) noexcept
 		{}
 		virtual void Accept( TechniqueProbe& )
@@ -24,6 +25,7 @@ namespace Bind
 		}
 		virtual ~Bindable() = default;
 	};
+
 	class CloningBindable : public Bindable
 	{
 	public:

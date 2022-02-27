@@ -1,19 +1,19 @@
 #include "Drawable.h"
 #include "../Bindable/BindableCommon.h"
-#include "../ResourceManager/Material.h"
+#include "../Renderer/Model/Material.h"
 #include <cassert>
 
 using namespace Bind;
 
-void Drawable::Submit() const noexcept
+void Drawable::Submit( size_t channelFilter ) const noexcept
 {
 	for ( const auto& tech : techniques )
 	{
-		tech.Submit( *this );
+		tech.Submit( *this, channelFilter );
 	}
 }
 
-Drawable::Drawable( GraphicsDeviceInterface& gfx, const Material& mat, const aiMesh& mesh, float scale ) noexcept
+Drawable::Drawable( Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale ) noexcept
 {
 	pVertices = mat.MakeVertexBindable( gfx, mesh, scale );
 	pIndices = mat.MakeIndexBindable( gfx, mesh );
@@ -31,7 +31,7 @@ void Drawable::AddTechnique( Technique tech_in ) noexcept
 	techniques.push_back( std::move( tech_in ) );
 }
 
-void Drawable::Bind( GraphicsDeviceInterface& gfx ) const noexcept
+void Drawable::Bind( Graphics& gfx ) const noexcept
 {
 	pTopology->Bind( gfx );
 	pIndices->Bind( gfx );

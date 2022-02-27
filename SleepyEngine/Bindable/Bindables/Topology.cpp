@@ -1,19 +1,22 @@
 #include "Topology.h"
 #include "../BindableCodex.h"
+#include "../../Macros/GraphicsThrowMacros.h"
 
 namespace Bind
 {
-	Topology::Topology( GraphicsDeviceInterface& gdi, D3D11_PRIMITIVE_TOPOLOGY type )
+	Topology::Topology( Graphics& gfx, D3D11_PRIMITIVE_TOPOLOGY type )
 		:
-		m_TopologyType( type )
+		type( type )
 	{}
-	void Topology::Bind( GraphicsDeviceInterface& gdi ) noexcept
+
+	void Topology::Bind( Graphics& gfx ) noxnd
 	{
-		gdi.GetContext()->IASetPrimitiveTopology( m_TopologyType );
+		INFOMAN_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( GetContext( gfx )->IASetPrimitiveTopology( type ) );
 	}
-	std::shared_ptr<Topology> Topology::Resolve( GraphicsDeviceInterface& gdi, D3D11_PRIMITIVE_TOPOLOGY type )
+	std::shared_ptr<Topology> Topology::Resolve( Graphics& gfx, D3D11_PRIMITIVE_TOPOLOGY type )
 	{
-		return Codex::Resolve<Topology>( gdi, type );
+		return Codex::Resolve<Topology>( gfx, type );
 	}
 	std::string Topology::GenerateUID( D3D11_PRIMITIVE_TOPOLOGY type )
 	{
@@ -22,6 +25,6 @@ namespace Bind
 	}
 	std::string Topology::GetUID() const noexcept
 	{
-		return GenerateUID( m_TopologyType );
+		return GenerateUID( type );
 	}
 }

@@ -11,9 +11,12 @@ namespace Bind
 		{
 			Off,
 			Write,
-			Mask
+			Mask,
+			DepthOff,
+			DepthReversed,
+			DepthFirst, // for skybox render
 		};
-		Stencil( GraphicsDeviceInterface& gfx, Mode mode )
+		Stencil( Graphics& gfx, Mode mode )
 			:
 			mode( mode )
 		{
@@ -37,14 +40,28 @@ namespace Bind
 				dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;
 				dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 			}
+			else if ( mode == Mode::DepthOff )
+			{
+				dsDesc.DepthEnable = FALSE;
+				dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+			}
+			else if ( mode == Mode::DepthReversed )
+			{
+				dsDesc.DepthFunc = D3D11_COMPARISON_GREATER;
+			}
+			else if ( mode == Mode::DepthFirst )
+			{
+				dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+				dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+			}
 
 			GetDevice( gfx )->CreateDepthStencilState( &dsDesc, &pStencil );
 		}
-		void Bind( GraphicsDeviceInterface& gfx ) noexcept override
+		void Bind( Graphics& gfx ) noexcept override
 		{
 			GetContext( gfx )->OMSetDepthStencilState( pStencil, 0xFF );
 		}
-		static std::shared_ptr<Stencil> Resolve( GraphicsDeviceInterface& gfx, Mode mode )
+		static std::shared_ptr<Stencil> Resolve( Graphics& gfx, Mode mode )
 		{
 			return Codex::Resolve<Stencil>( gfx, mode );
 		}
@@ -59,6 +76,12 @@ namespace Bind
 					return "write"s;
 				case Mode::Mask:
 					return "mask"s;
+				case Mode::DepthOff:
+					return "depth-off"s;
+				case Mode::DepthReversed:
+					return "depth-reversed"s;
+				case Mode::DepthFirst:
+					return "depth-first"s;
 				}
 				return "ERROR"s;
 			};

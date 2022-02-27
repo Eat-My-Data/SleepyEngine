@@ -1,23 +1,25 @@
 #include "TransformCbuf.h"
+#include "../../Macros/GraphicsThrowMacros.h"
 
 namespace Bind
 {
-	TransformCbuf::TransformCbuf( GraphicsDeviceInterface& gdi, UINT slot )
+	TransformCbuf::TransformCbuf( Graphics& gfx, UINT slot )
 	{
-		if ( !m_pVcbuf )
+		if ( !pVcbuf )
 		{
-			m_pVcbuf = std::make_unique<VertexConstantBuffer<Transforms>>( gdi, slot );
+			pVcbuf = std::make_unique<VertexConstantBuffer<Transforms>>( gfx, slot );
 		}
 	}
 
-	void TransformCbuf::Bind( GraphicsDeviceInterface& gdi ) noexcept
+	void TransformCbuf::Bind( Graphics& gfx ) noxnd
 	{
-		UpdateBindImpl( gdi, GetTransforms( gdi ) );
+		INFOMAN_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( UpdateBindImpl( gfx, GetTransforms( gfx ) ) );
 	}
 
 	void TransformCbuf::InitializeParentReference( const Drawable& parent ) noexcept
 	{
-		m_DrawableParent = &parent;
+		pParent = &parent;
 	}
 
 	std::unique_ptr<CloningBindable> TransformCbuf::Clone() const noexcept
@@ -25,28 +27,27 @@ namespace Bind
 		return std::make_unique<TransformCbuf>( *this );
 	}
 
-	void TransformCbuf::UpdateBindImpl( GraphicsDeviceInterface& gdi, const Transforms& tf ) noexcept
+	void TransformCbuf::UpdateBindImpl( Graphics& gfx, const Transforms& tf ) noxnd
 	{
-		assert( m_DrawableParent != nullptr );
-		m_pVcbuf->Update( gdi, tf );
-		m_pVcbuf->Bind( gdi );
+		assert( pParent != nullptr );
+		pVcbuf->Update( gfx, tf );
+		pVcbuf->Bind( gfx );
 	}
 
-	TransformCbuf::Transforms TransformCbuf::GetTransforms( GraphicsDeviceInterface& gdi ) noexcept
+	TransformCbuf::Transforms TransformCbuf::GetTransforms( Graphics& gfx ) noxnd
 	{
-		assert( m_DrawableParent != nullptr );
-
-		const auto modelView = m_DrawableParent->GetTransformXM() * gdi.GetViewMatrix();
-
+		assert( pParent != nullptr );
+		const auto model = pParent->GetTransformXM();
+		const auto modelView = model * gfx.GetCamera();
 		return {
-			DirectX::XMMatrixTranspose( m_DrawableParent->GetTransformXM() ),
+			DirectX::XMMatrixTranspose( model ),
 			DirectX::XMMatrixTranspose( modelView ),
 			DirectX::XMMatrixTranspose(
 				modelView *
-				gdi.GetProjMatrix()
+				gfx.GetProjection()
 			)
 		};
 	}
 
-	std::unique_ptr<VertexConstantBuffer<TransformCbuf::Transforms>> TransformCbuf::m_pVcbuf;
+	std::unique_ptr<VertexConstantBuffer<TransformCbuf::Transforms>> TransformCbuf::pVcbuf;
 }

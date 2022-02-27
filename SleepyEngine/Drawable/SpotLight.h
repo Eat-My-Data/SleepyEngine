@@ -2,17 +2,17 @@
 #include "Drawable.h"
 #include "../Bindable/Bindables/ConstantBuffers.h"
 #include "../SceneManager/RenderTechnique.h"
-#include "../SceneManager/Camera.h"
+#include "../Camera/Camera.h"
 #include "../Drawable/SolidCone.h"
 
 class SpotLight : public Drawable
 {
 public:
-	SpotLight( GraphicsDeviceInterface& gdi, f32 scale );
+	SpotLight( Graphics& gdi, f32 scale );
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	void Update( GraphicsDeviceInterface& gdi );
+	void Update( Graphics& gdi );
 	void DrawControlPanel();
-	void Draw( GraphicsDeviceInterface& gdi );
+	void Draw( Graphics& gdi );
 	void Submit();
 public:
 	void Translate( DirectX::XMFLOAT3 translation );
