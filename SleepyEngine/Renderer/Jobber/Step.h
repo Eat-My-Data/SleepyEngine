@@ -27,6 +27,7 @@ public:
 	void InitializeParentReferences( const Drawable& parent ) noexcept;
 	void Accept( TechniqueProbe& probe );
 	void Link( Rgph::RenderGraph& rg );
+	void ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique );
 private:
 	size_t targetPass;
 	std::vector<std::shared_ptr<Bind::Bindable>> bindables;

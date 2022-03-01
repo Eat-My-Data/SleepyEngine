@@ -25,6 +25,11 @@ void Mesh::Submit( size_t channels, dx::FXMMATRIX accumulatedTranform ) const no
 	Drawable::Submit( channels );
 }
 
+void Mesh::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
+{
+	Drawable::ToggleRenderTechnique( gfx, renderTechnique );
+}
+
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 {
 	return DirectX::XMLoadFloat4x4( &transform );

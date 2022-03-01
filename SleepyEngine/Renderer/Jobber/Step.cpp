@@ -3,6 +3,8 @@
 #include "RenderGraph.h"
 #include "TechniqueProbe.h"
 #include "./Passlib/RenderQueuePass.h"
+#include "../../Bindable/Bindables/VertexShader.h"
+#include "../../Bindable/Bindables/PixelShader.h"
 
 void Step::Submit( const Drawable& drawable ) const
 {
@@ -66,4 +68,25 @@ void Step::Link( Rgph::RenderGraph& rg )
 {
 	assert( pTargetPass == nullptr );
 	pTargetPass = &rg.GetRenderQueue( targetPassName );
+}
+
+void Step::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
+{
+	for ( auto bindable : bindables )
+	{
+		if ( auto p = dynamic_cast<Bind::VertexShader*>( bindable.get() ) )
+		{
+			std::string path = p->GetPath();
+			const std::string shaderName = path.substr( 0, path.find( "./Shaders/Bin/" ) );
+			delete p;
+			p = new Bind::VertexShader( gfx, "./Shaders/Bin/" + renderTechnique + shaderName );
+		}
+		else if ( auto p = dynamic_cast<Bind::PixelShader*>( bindable.get() ) )
+		{
+			std::string path = p->GetPath();
+			const std::string shaderName = path.substr( 0, path.find( "./Shaders/Bin/" ) );
+			delete p;
+			p = new Bind::PixelShader( gfx, "./Shaders/Bin/" + renderTechnique + shaderName );
+		}
+	}
 }

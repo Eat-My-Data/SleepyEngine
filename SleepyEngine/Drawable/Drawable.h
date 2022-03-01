@@ -36,6 +36,7 @@ public:
 	void Accept( TechniqueProbe& probe );
 	UINT GetIndexCount() const noexcept;
 	void LinkTechniques( Rgph::RenderGraph& );
+	void ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique );
 	virtual ~Drawable();
 protected:
 	std::shared_ptr<Bind::IndexBuffer> pIndices;

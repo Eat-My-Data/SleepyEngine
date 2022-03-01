@@ -70,3 +70,11 @@ void Technique::Link( Rgph::RenderGraph& rg )
 		step.Link( rg );
 	}
 }
+
+void Technique::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
+{
+	for ( auto step : steps )
+	{
+		step.ToggleRenderTechnique( gfx, renderTechnique );
+	}
+}

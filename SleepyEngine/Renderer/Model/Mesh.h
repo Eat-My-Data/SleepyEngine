@@ -12,6 +12,7 @@ public:
 	Mesh( Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale = 1.0f ) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void Submit( size_t channels, DirectX::FXMMATRIX accumulatedTranform ) const noexcept;
+	void ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique );
 private:
 	mutable DirectX::XMFLOAT4X4 transform;
 };

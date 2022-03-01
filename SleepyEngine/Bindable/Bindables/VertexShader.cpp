@@ -38,5 +38,9 @@ namespace Bind
 	{
 		return GenerateUID( m_sPath );
 	}
+	const std::string VertexShader::GetPath() const noexcept
+	{
+		return m_sPath;
+	}
 }
 

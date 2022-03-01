@@ -11,6 +11,7 @@ namespace Bind
 		static std::shared_ptr<PixelShader> Resolve( Graphics& gdi, const std::string& path );
 		static std::string GenerateUID( const std::string& path );
 		std::string GetUID() const noexcept override;
+		const std::string GetPath() const noexcept;
 	protected:
 		std::string m_sPath;
 		ID3D11PixelShader* m_pPixelShader;

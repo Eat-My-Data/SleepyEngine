@@ -59,5 +59,13 @@ void Drawable::LinkTechniques( Rgph::RenderGraph& rg )
 	}
 }
 
+void Drawable::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
+{
+	for ( auto technique : techniques )
+	{
+		technique.ToggleRenderTechnique( gfx, renderTechnique );
+	}
+}
+
 Drawable::~Drawable()
 {}

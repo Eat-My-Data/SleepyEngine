@@ -12,6 +12,7 @@ namespace Bind
 		static std::shared_ptr<VertexShader> Resolve( Graphics& gdi, const std::string& path );
 		static std::string GenerateUID( const std::string& path );
 		std::string GetUID() const noexcept override;
+		const std::string GetPath() const noexcept;
 	protected:
 		std::string m_sPath;
 		ID3DBlob* m_pBytecodeBlob;

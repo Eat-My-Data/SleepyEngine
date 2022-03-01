@@ -22,7 +22,8 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 	{
 		Technique phong{ "Phong",Chan::main };
 		Step step( "lambertian" );
-		std::string shaderCode = "./Shaders/Bin/Phong";
+		std::string prefix = "./Shaders/Bin/";
+		std::string shaderCode = prefix + "Phong";
 		aiString texFileName;
 
 		// common (pre)

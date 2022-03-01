@@ -1,7 +1,7 @@
 #include "DeferredRenderGraph.h"
 
 #include "./Passlib/BufferClearPass.h"
-#include "./Passlib/LambertianPass.h"
+#include "./Passlib/GBufferWritePass.h"
 #include "./Passlib/OutlineDrawingPass.h"
 #include "./Passlib/OutlineMaskGenerationPass.h"
 #include "./Passlib/HorizontalBlurPass.h"
@@ -50,7 +50,22 @@ namespace Rgph
 		//}
 		{
 			// GBuffer Pass
+			auto pass = std::make_unique<GBufferWritePass>( gfx, "lambertian" );
+			// don't neeed these because we are only making new sources
+			//pass->SetSinkLinkage( "shadowMap", "shadowMap.map" ); 
+			//pass->SetSinkLinkage( "renderTarget", "clearRT.buffer" );
+			//pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
+			AppendPass( std::move( pass ) );
+		}
 
+		{
+			// Deferred Light Geometry Pass
+			// // GBuffer Pass
+			//auto pass = std::make_unique<DeferredLighting>( gfx, "lambertian" );
+			//pass->SetSinkLinkage( "shadowMap", "shadowMap.map" ); 
+			//pass->SetSinkLinkage( "renderTarget", "clearRT.buffer" );
+			//pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
+			//AppendPass( std::move( pass ) );
 		}
 
 
@@ -228,7 +243,7 @@ namespace Rgph
 	}
 	void Rgph::DeferredRenderGraph::BindMainCamera( Camera& cam )
 	{
-		dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindMainCamera( cam );
+		dynamic_cast<GBufferWritePass&>( FindPassByName( "lambertian" ) ).BindMainCamera( cam );
 		dynamic_cast<SkyboxPass&>( FindPassByName( "skybox" ) ).BindMainCamera( cam );
 	}
 	void Rgph::DeferredRenderGraph::DumpShadowMap( Graphics& gfx, const std::string& path )
@@ -238,6 +253,6 @@ namespace Rgph
 	void Rgph::DeferredRenderGraph::BindShadowCamera( Camera& cam )
 	{
 		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
-		dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindShadowCamera( cam );
+		dynamic_cast<GBufferWritePass&>( FindPassByName( "lambertian" ) ).BindShadowCamera( cam );
 	}
 }

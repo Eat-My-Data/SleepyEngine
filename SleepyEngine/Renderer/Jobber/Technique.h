@@ -23,6 +23,7 @@ public:
 	void Accept( TechniqueProbe& probe );
 	const std::string& GetName() const noexcept;
 	void Link( Rgph::RenderGraph& );
+	void ToggleRenderTechnique( Graphics& gfx, const std::string& technique );
 private:
 	bool active = true;
 	std::vector<Step> steps;

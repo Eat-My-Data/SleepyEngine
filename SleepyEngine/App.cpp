@@ -14,7 +14,7 @@ App::App( const std::string& commandLine )
 	commandLine( commandLine ),
 	wnd( 1280*3/2, 720*3/2, "Sleepy Engine" ),
 	scriptCommander( TokenizeQuoted( commandLine ) ),
-	light( wnd.Gfx(), { 10.0f,5.0f,0.0f } ) 
+	light( wnd.Gfx(), { 10.0f,5.0f,0.0f } )
 {
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "A", dx::XMFLOAT3{ -13.5f,6.0f,3.5f }, 0.0f, PI / 2.0f ) );
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "B", dx::XMFLOAT3{ -13.5f,28.8f,-6.4f }, PI / 180.0f * 13.0f, PI / 180.0f * 61.0f ) );
@@ -37,8 +37,8 @@ App::App( const std::string& commandLine )
 	sponza.LinkTechniques( rg );
 	gobber.LinkTechniques( rg );
 	nano.LinkTechniques( rg );
-	cameras.LinkTechniques( rg );
 
+	cameras.LinkTechniques( rg );
 	rg.BindShadowCamera( *light.ShareCamera() );
 }
 
@@ -70,6 +70,9 @@ void App::HandleInput( float dt )
 			break;
 		case VK_RETURN:
 			savingDepth = true;
+			break;
+		case VK_F2:
+			ToggleRenderTechnique();
 			break;
 		}
 	}
@@ -111,6 +114,28 @@ void App::HandleInput( float dt )
 	}
 }
 
+void App::ToggleRenderTechnique()
+{
+	if ( isDeferred )
+	{
+		sponza.ToggleRenderTechnique( wnd.Gfx(), "" );
+		gobber.ToggleRenderTechnique( wnd.Gfx(), "" );
+		nano.ToggleRenderTechnique( wnd.Gfx(), "" );
+		//light.ToggleRenderTechnique( wnd.Gfx(), "" );
+		//cube.ToggleRenderTechnique( wnd.Gfx(), "" );
+		//cube2.ToggleRenderTechnique( wnd.Gfx(), "" );
+	}
+	else
+	{
+		sponza.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
+		gobber.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
+		nano.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
+		//light.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
+		//cube.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
+		//cube2.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
+	}
+}
+
 void App::ExecuteFrame( float dt )
 {
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );	
@@ -123,14 +148,8 @@ void App::ExecuteFrame( float dt )
 	cube2.Submit( Chan::main );
 	gobber.Submit( Chan::main );
 	nano.Submit( Chan::main );
-	cameras.Submit( Chan::main );
 
-	//sponza.Submit( Chan::shadow );
-	cube.Submit( Chan::shadow );
-	sponza.Submit( Chan::shadow );
-	cube2.Submit( Chan::shadow );
-	gobber.Submit( Chan::shadow );
-	nano.Submit( Chan::shadow );
+	cameras.Submit( Chan::main );
 
 	rg.Execute( wnd.Gfx() );
 

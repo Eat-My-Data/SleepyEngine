@@ -67,6 +67,14 @@ void Model::LinkTechniques( Rgph::RenderGraph& rg )
 	}
 }
 
+void Model::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
+{
+	for ( auto& pMesh : meshPtrs )
+	{
+		pMesh->ToggleRenderTechnique( gfx, renderTechnique );
+	}
+}
+
 Model::~Model() noexcept
 {}
 
