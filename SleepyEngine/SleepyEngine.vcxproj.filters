@@ -303,9 +303,6 @@
     <ClCompile Include="Renderer\Jobber\Passlib\BindingPass.cpp">
       <Filter>Source Files\Renderer\Jobber\Passlib</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer\Jobber\Passlib\BufferClearPass.cpp">
-      <Filter>Source Files\Renderer\Jobber\Passlib</Filter>
-    </ClCompile>
     <ClCompile Include="Renderer\Jobber\Passlib\FullscreenPass.cpp">
       <Filter>Source Files\Renderer\Jobber\Passlib</Filter>
     </ClCompile>
@@ -383,6 +380,12 @@
     </ClCompile>
     <ClCompile Include="Libraries\cnpy\cnpy.cpp">
       <Filter>Source Files\Libraries\cnpy</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Jobber\DeferredRenderGraph.cpp">
+      <Filter>Source Files\Renderer\Jobber</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Jobber\Passlib\BufferClearPass.cpp">
+      <Filter>Source Files\Renderer\Jobber\Passlib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -751,6 +754,12 @@
     </ClInclude>
     <ClInclude Include="Libraries\cnpy\cnpy.h">
       <Filter>Header Files\Libraries\cnpy</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Jobber\DeferredRenderGraph.h">
+      <Filter>Header Files\Renderer\Jobber</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Jobber\Passlib\GBufferWritePass.h">
+      <Filter>Header Files\Renderer\Jobber\Passlib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

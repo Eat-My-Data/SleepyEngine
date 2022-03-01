@@ -219,6 +219,7 @@
     <ClCompile Include="Libraries\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="Libraries\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Renderer\Jobber\BlurOutlineRenderGraph.cpp" />
+    <ClCompile Include="Renderer\Jobber\DeferredRenderGraph.cpp" />
     <ClCompile Include="Renderer\Jobber\Job.cpp" />
     <ClCompile Include="Renderer\Jobber\Pass.cpp" />
     <ClCompile Include="Renderer\Jobber\Passlib\BindingPass.cpp" />
@@ -326,6 +327,7 @@
     <ClInclude Include="Macros\WindowsThrowMacros.h" />
     <ClInclude Include="Renderer\Channels.h" />
     <ClInclude Include="Renderer\Jobber\BlurOutlineRenderGraph.h" />
+    <ClInclude Include="Renderer\Jobber\DeferredRenderGraph.h" />
     <ClInclude Include="Renderer\Jobber\Job.h" />
     <ClInclude Include="Renderer\Jobber\ModelProbe.h" />
     <ClInclude Include="Renderer\Jobber\Pass.h" />
@@ -333,6 +335,7 @@
     <ClInclude Include="Renderer\Jobber\Passlib\BlurOutlineDrawingPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\BufferClearPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\FullscreenPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\GBufferWritePass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\HorizontalBlurPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\LambertianPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\OutlineDrawingPass.h" />
