@@ -406,4 +406,16 @@ namespace Bind
 	{
 		GetContext( gfx )->PSSetShaderResources( slot, 3, &m_pShaderResources[0] );
 	}
+
+	void GBufferRenderTargets::Clear( Graphics& gfx, const std::array<float, 4>& color ) noexcept
+	{
+		GetContext( gfx )->ClearRenderTargetView( m_pGBuffers[0], color.data() );
+		GetContext( gfx )->ClearRenderTargetView( m_pGBuffers[1], color.data() );
+		GetContext( gfx )->ClearRenderTargetView( m_pGBuffers[2], color.data() );
+	}
+
+	void GBufferRenderTargets::Clear( Graphics& gfx ) noexcept
+	{
+		Clear( gfx, { 0.0f,0.0f,0.0f,0.0f } );
+	}
 }

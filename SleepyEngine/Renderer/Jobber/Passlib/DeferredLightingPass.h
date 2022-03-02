@@ -52,8 +52,10 @@ namespace Rgph
 		void Execute( Graphics& gfx ) const noexcept override
 		{
 			assert( pMainCamera );
+			renderTarget->BindAsBuffer( gfx );
 			pShadowCBuf->Update( gfx );
 			pMainCamera->BindToGraphics( gfx );
+			//gbuffer->Bind( gfx );
 			RenderQueuePass::Execute( gfx );
 		}
 	private:

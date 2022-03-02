@@ -206,10 +206,10 @@ void App::ExecuteFrame( float dt )
 	//cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 	//cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 
-	if ( isDeferred )
+	/*if ( isDeferred )
 		deferred_rg.RenderWindows( wnd.Gfx() );
 	else
-		forward_rg.RenderWindows( wnd.Gfx() );
+		forward_rg.RenderWindows( wnd.Gfx() );*/
 
 	// present
 	wnd.Gfx().EndFrame();

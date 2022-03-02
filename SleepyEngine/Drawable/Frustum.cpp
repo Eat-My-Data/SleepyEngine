@@ -67,7 +67,7 @@ Frustum::Frustum( Graphics& gfx, float width, float height, float nearZ, float f
 
 			line.AddStep( std::move( unoccluded ) );
 		}
-		{
+		/*{
 			Step occluded( "wireframe" );
 
 			auto pvs = VertexShader::Resolve( gfx, "./Shaders/Bin/Solid_VS.cso" );
@@ -88,7 +88,7 @@ Frustum::Frustum( Graphics& gfx, float width, float height, float nearZ, float f
 			occluded.AddBindable( Rasterizer::Resolve( gfx, false ) );
 
 			line.AddStep( std::move( occluded ) );
-		}
+		}*/
 		AddTechnique( std::move( line ) );
 	}
 }

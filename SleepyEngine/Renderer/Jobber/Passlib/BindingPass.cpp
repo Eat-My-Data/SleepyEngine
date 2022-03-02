@@ -22,7 +22,10 @@ namespace Rgph
 		BindBufferResources( gfx );
 		for ( auto& bind : binds )
 		{
-			bind->Bind( gfx );
+			if ( !dynamic_cast<Bind::GBufferRenderTargets*>( bind.get() ) )
+			{
+				bind->Bind( gfx );
+			}
 		}
 	}
 
@@ -37,13 +40,25 @@ namespace Rgph
 
 	void BindingPass::BindBufferResources( Graphics& gfx ) const noexcept
 	{
-		if ( renderTarget )
+		bool flag = false;
+		for ( auto bind : binds )
 		{
-			renderTarget->BindAsBuffer( gfx, depthStencil.get() );
+			if ( auto p = dynamic_cast<Bind::GBufferRenderTargets*>( bind.get() ) )
+			{
+				p->BindAsBuffer( gfx, nullptr );
+				flag = true;
+			}
 		}
-		else
+		if ( !flag )
 		{
-			depthStencil->BindAsBuffer( gfx );
+			if ( renderTarget )
+			{
+				renderTarget->BindAsBuffer( gfx, depthStencil.get() );
+			}
+			else
+			{
+				depthStencil->BindAsBuffer( gfx );
+			}
 		}
 	}
 }

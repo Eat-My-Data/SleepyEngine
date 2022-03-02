@@ -59,70 +59,70 @@ namespace Rgph
 		}
 
 
-		{
-			auto pass = std::make_unique<SkyboxPass>( gfx, "skybox" );
-			pass->SetSinkLinkage( "renderTarget", "deferredLighting.renderTarget" );
-			pass->SetSinkLinkage( "depthStencil", "deferredLighting.depthStencil" );
-			AppendPass( std::move( pass ) );
-		}
+		//{
+		//	auto pass = std::make_unique<SkyboxPass>( gfx, "skybox" );
+		//	pass->SetSinkLinkage( "renderTarget", "deferredLighting.renderTarget" );
+		//	pass->SetSinkLinkage( "depthStencil", "deferredLighting.depthStencil" );
+		//	AppendPass( std::move( pass ) );
+		//}
 
-		{
-			auto pass = std::make_unique<OutlineMaskGenerationPass>( gfx, "outlineMask" );
-			pass->SetSinkLinkage( "depthStencil", "skybox.depthStencil" );
-			AppendPass( std::move( pass ) );
-		}
+		//{
+		//	auto pass = std::make_unique<OutlineMaskGenerationPass>( gfx, "outlineMask" );
+		//	pass->SetSinkLinkage( "depthStencil", "skybox.depthStencil" );
+		//	AppendPass( std::move( pass ) );
+		//}
 
-		// setup blur constant buffers
-		{
-			{
-				Dcb::RawLayout l;
-				l.Add<Dcb::Integer>( "nTaps" );
-				l.Add<Dcb::Array>( "coefficients" );
-				l["coefficients"].Set<Dcb::Float>( maxRadius * 2 + 1 );
-				Dcb::Buffer buf{ std::move( l ) };
-				blurKernel = std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 0 );
-				SetKernelGauss( radius, sigma );
-				AddGlobalSource( DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make( "blurKernel", blurKernel ) );
-			}
-			{
-				Dcb::RawLayout l;
-				l.Add<Dcb::Bool>( "isHorizontal" );
-				Dcb::Buffer buf{ std::move( l ) };
-				blurDirection = std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 1 );
-				AddGlobalSource( DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make( "blurDirection", blurDirection ) );
-			}
-		}
+		//// setup blur constant buffers
+		//{
+		//	{
+		//		Dcb::RawLayout l;
+		//		l.Add<Dcb::Integer>( "nTaps" );
+		//		l.Add<Dcb::Array>( "coefficients" );
+		//		l["coefficients"].Set<Dcb::Float>( maxRadius * 2 + 1 );
+		//		Dcb::Buffer buf{ std::move( l ) };
+		//		blurKernel = std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 0 );
+		//		SetKernelGauss( radius, sigma );
+		//		AddGlobalSource( DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make( "blurKernel", blurKernel ) );
+		//	}
+		//	{
+		//		Dcb::RawLayout l;
+		//		l.Add<Dcb::Bool>( "isHorizontal" );
+		//		Dcb::Buffer buf{ std::move( l ) };
+		//		blurDirection = std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 1 );
+		//		AddGlobalSource( DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make( "blurDirection", blurDirection ) );
+		//	}
+		//}
 
-		{
-			auto pass = std::make_unique<BlurOutlineDrawingPass>( gfx, "outlineDraw", gfx.GetWidth(), gfx.GetHeight() );
-			AppendPass( std::move( pass ) );
-		}
+		//{
+		//	auto pass = std::make_unique<BlurOutlineDrawingPass>( gfx, "outlineDraw", gfx.GetWidth(), gfx.GetHeight() );
+		//	AppendPass( std::move( pass ) );
+		//}
 
-		{
-			auto pass = std::make_unique<HorizontalBlurPass>( "horizontal", gfx, gfx.GetWidth(), gfx.GetHeight() );
-			pass->SetSinkLinkage( "scratchIn", "outlineDraw.scratchOut" );
-			pass->SetSinkLinkage( "kernel", "$.blurKernel" );
-			pass->SetSinkLinkage( "direction", "$.blurDirection" );
-			AppendPass( std::move( pass ) );
-		}
+		//{
+		//	auto pass = std::make_unique<HorizontalBlurPass>( "horizontal", gfx, gfx.GetWidth(), gfx.GetHeight() );
+		//	pass->SetSinkLinkage( "scratchIn", "outlineDraw.scratchOut" );
+		//	pass->SetSinkLinkage( "kernel", "$.blurKernel" );
+		//	pass->SetSinkLinkage( "direction", "$.blurDirection" );
+		//	AppendPass( std::move( pass ) );
+		//}
 
-		{
-			auto pass = std::make_unique<VerticalBlurPass>( "vertical", gfx );
-			pass->SetSinkLinkage( "renderTarget", "skybox.renderTarget" );
-			pass->SetSinkLinkage( "depthStencil", "outlineMask.depthStencil" );
-			pass->SetSinkLinkage( "scratchIn", "horizontal.scratchOut" );
-			pass->SetSinkLinkage( "kernel", "$.blurKernel" );
-			pass->SetSinkLinkage( "direction", "$.blurDirection" );
-			AppendPass( std::move( pass ) );
-		}
+		//{
+		//	auto pass = std::make_unique<VerticalBlurPass>( "vertical", gfx );
+		//	pass->SetSinkLinkage( "renderTarget", "skybox.renderTarget" );
+		//	pass->SetSinkLinkage( "depthStencil", "outlineMask.depthStencil" );
+		//	pass->SetSinkLinkage( "scratchIn", "horizontal.scratchOut" );
+		//	pass->SetSinkLinkage( "kernel", "$.blurKernel" );
+		//	pass->SetSinkLinkage( "direction", "$.blurDirection" );
+		//	AppendPass( std::move( pass ) );
+		//}
 
-		{
-			auto pass = std::make_unique<WireframePass>( gfx, "wireframe" );
-			pass->SetSinkLinkage( "renderTarget", "vertical.renderTarget" );
-			pass->SetSinkLinkage( "depthStencil", "vertical.depthStencil" );
-			AppendPass( std::move( pass ) );
-		}
-		SetSinkTarget( "backbuffer", "wireframe.renderTarget" );
+		//{
+		//	auto pass = std::make_unique<WireframePass>( gfx, "wireframe" );
+		//	pass->SetSinkLinkage( "renderTarget", "vertical.renderTarget" );
+		//	pass->SetSinkLinkage( "depthStencil", "vertical.depthStencil" );
+		//	AppendPass( std::move( pass ) );
+		//}
+		SetSinkTarget( "backbuffer", "deferredLighting.renderTarget" );
 
 		Finalize();
 	}
@@ -237,7 +237,7 @@ namespace Rgph
 	{
 		dynamic_cast<GBufferWritePass&>( FindPassByName( "lambertian" ) ).BindMainCamera( cam );
 		dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindMainCamera( cam );
-		dynamic_cast<SkyboxPass&>( FindPassByName( "skybox" ) ).BindMainCamera( cam );
+		//dynamic_cast<SkyboxPass&>( FindPassByName( "skybox" ) ).BindMainCamera( cam );
 	}
 	void Rgph::DeferredRenderGraph::DumpShadowMap( Graphics& gfx, const std::string& path )
 	{
@@ -247,6 +247,5 @@ namespace Rgph
 	{
 		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
 		dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindShadowCamera( cam );
-
 	}
 }
