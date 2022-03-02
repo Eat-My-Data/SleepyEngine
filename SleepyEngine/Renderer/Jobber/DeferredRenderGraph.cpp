@@ -236,6 +236,7 @@ namespace Rgph
 	void Rgph::DeferredRenderGraph::BindMainCamera( Camera& cam )
 	{
 		dynamic_cast<GBufferWritePass&>( FindPassByName( "lambertian" ) ).BindMainCamera( cam );
+		dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindMainCamera( cam );
 		dynamic_cast<SkyboxPass&>( FindPassByName( "skybox" ) ).BindMainCamera( cam );
 	}
 	void Rgph::DeferredRenderGraph::DumpShadowMap( Graphics& gfx, const std::string& path )
@@ -245,5 +246,7 @@ namespace Rgph
 	void Rgph::DeferredRenderGraph::BindShadowCamera( Camera& cam )
 	{
 		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
+		dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindShadowCamera( cam );
+
 	}
 }

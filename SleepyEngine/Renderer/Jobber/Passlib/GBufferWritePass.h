@@ -46,7 +46,7 @@ namespace Rgph
 			assert( pMainCamera );
 			pMainCamera->BindToGraphics( gfx );
 			gbuffer->BindAsBuffer( gfx, nullptr );
-			depthStencil->Bind( gfx );
+			//depthStencil->Bind( gfx );
 			RenderQueuePass::Execute( gfx );
 		}
 	private:
