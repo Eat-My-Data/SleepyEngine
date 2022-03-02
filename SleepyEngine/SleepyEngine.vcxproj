@@ -225,6 +225,7 @@
     <ClCompile Include="Renderer\Jobber\Passlib\BindingPass.cpp" />
     <ClCompile Include="Renderer\Jobber\Passlib\BufferClearPass.cpp" />
     <ClCompile Include="Renderer\Jobber\Passlib\FullscreenPass.cpp" />
+    <ClCompile Include="Renderer\Jobber\Passlib\GBufferClearPass.cpp" />
     <ClCompile Include="Renderer\Jobber\Passlib\HorizontalBlurPass.cpp" />
     <ClCompile Include="Renderer\Jobber\Passlib\RenderQueuePass.cpp" />
     <ClCompile Include="Renderer\Jobber\Passlib\VerticalBlurPass.cpp" />
@@ -335,6 +336,7 @@
     <ClInclude Include="Renderer\Jobber\Passlib\BlurOutlineDrawingPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\BufferClearPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\FullscreenPass.h" />
+    <ClInclude Include="Renderer\Jobber\Passlib\GBufferClearPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\GBufferWritePass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\HorizontalBlurPass.h" />
     <ClInclude Include="Renderer\Jobber\Passlib\LambertianPass.h" />

@@ -387,6 +387,9 @@
     <ClCompile Include="Renderer\Jobber\Passlib\BufferClearPass.cpp">
       <Filter>Source Files\Renderer\Jobber\Passlib</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\Jobber\Passlib\GBufferClearPass.cpp">
+      <Filter>Source Files\Renderer\Jobber\Passlib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bindable\Bindable.h">
@@ -759,6 +762,9 @@
       <Filter>Header Files\Renderer\Jobber</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Jobber\Passlib\GBufferWritePass.h">
+      <Filter>Header Files\Renderer\Jobber\Passlib</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Jobber\Passlib\GBufferClearPass.h">
       <Filter>Header Files\Renderer\Jobber\Passlib</Filter>
     </ClInclude>
   </ItemGroup>

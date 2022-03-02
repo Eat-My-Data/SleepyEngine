@@ -290,4 +290,120 @@ namespace Bind
 		:
 		RenderTarget( gfx, pTexture, face )
 	{}
+
+	GBufferRenderTargets::GBufferRenderTargets( Graphics& gfx, UINT width, UINT height, UINT slot )
+		:
+		RenderTarget( gfx, width, height ),
+		slot( slot )
+	{
+		int bufferCount = 3;
+		//// create texture resource
+		//D3D11_TEXTURE2D_DESC textureDesc = {};
+		//textureDesc.Width = width;
+		//textureDesc.Height = height;
+		//textureDesc.MipLevels = 1;
+		//textureDesc.ArraySize = 1;
+		//textureDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		//textureDesc.SampleDesc.Count = 1;
+		//textureDesc.SampleDesc.Quality = 0;
+		//textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		//textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE; // never do we not want to bind offscreen RTs as inputs
+		//textureDesc.CPUAccessFlags = 0;
+		//textureDesc.MiscFlags = 0;
+		//ID3D11Texture2D* pTexture;
+		//GetDevice( gfx )->CreateTexture2D(
+		//	&textureDesc, nullptr, &pTexture
+		//);
+
+		//// create the target view on the texture
+		//D3D11_RENDER_TARGET_VIEW_DESC rtvDesc = {};
+		//rtvDesc.Format = textureDesc.Format;
+		//rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		//rtvDesc.Texture2D = D3D11_TEX2D_RTV{ 0 };
+		//GetDevice( gfx )->CreateRenderTargetView(
+		//	pTexture, &rtvDesc, &pTargetView
+		//);
+
+		//ID3D11Resource* pRes;
+		//pTargetView->GetResource( &pRes );
+
+		//// create the resource view on the texture
+		//D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		//srvDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		//srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		//srvDesc.Texture2D.MostDetailedMip = 0;
+		//srvDesc.Texture2D.MipLevels = 1;
+		//GetDevice( gfx )->CreateShaderResourceView(
+		//	pRes, &srvDesc, &pShaderResourceView
+		//);
+		D3D11_TEXTURE2D_DESC textureDesc = {};
+		textureDesc.Width = width;
+		textureDesc.Height = height;
+		textureDesc.MipLevels = 1;
+		textureDesc.ArraySize = 1;
+		textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+		textureDesc.CPUAccessFlags = 0;
+		textureDesc.MiscFlags = 0;
+
+		for ( int i = 0; i < bufferCount; i++ )
+		{
+			HRESULT result = GetDevice( gfx )->CreateTexture2D( &textureDesc, NULL, &m_pTextures[i] );
+			if ( FAILED( result ) )
+			{
+				throw std::exception();
+			}
+		}
+
+		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = {};
+		renderTargetViewDesc.Format = textureDesc.Format;
+		renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		renderTargetViewDesc.Texture2D.MipSlice = 0;
+
+		for ( int i = 0; i < bufferCount; i++ )
+		{
+			HRESULT result = GetDevice( gfx )->CreateRenderTargetView( m_pTextures[i], &renderTargetViewDesc, &m_pGBuffers[i] );
+			if ( FAILED( result ) )
+			{
+				throw std::exception();
+			}
+		}
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC shaderResourceViewDesc = {};
+		shaderResourceViewDesc.Format = textureDesc.Format;
+		shaderResourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		shaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+		shaderResourceViewDesc.Texture2D.MipLevels = 1;
+
+		for ( int i = 0; i < bufferCount; i++ )
+		{
+			HRESULT result = GetDevice( gfx )->CreateShaderResourceView( m_pTextures[i], &shaderResourceViewDesc, &m_pShaderResources[i] );
+			if ( FAILED( result ) )
+			{
+				throw std::exception();
+			}
+		}
+	}
+
+	void GBufferRenderTargets::BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept
+	{
+		GetContext( gfx )->OMSetRenderTargets( 3, &m_pGBuffers[0], pDepthStencilView );
+
+		// configure viewport
+		D3D11_VIEWPORT vp;
+		vp.Width = (float)width;
+		vp.Height = (float)height;
+		vp.MinDepth = 0.0f;
+		vp.MaxDepth = 1.0f;
+		vp.TopLeftX = 0.0f;
+		vp.TopLeftY = 0.0f;
+		GetContext( gfx )->RSSetViewports( 1u, &vp );
+	}
+
+	void GBufferRenderTargets::Bind( Graphics& gfx ) noexcept
+	{
+		GetContext( gfx )->PSSetShaderResources( slot, 3, &m_pShaderResources[0] );
+	}
 }

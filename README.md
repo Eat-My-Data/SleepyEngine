@@ -5,12 +5,12 @@
 Personal game engine written in C++ using DirectX11. 
 
 ## Notable Features
- - Render Technique Runtime Switching
-	- Forward Render
-	- Deferred Render
- - Graphics Features:
-	- Shadow Mapping
- - Add Lights at Runtime
+I have extended chili's hw3d engine in the following ways:
+		- Spot Light w/ Shadows
+		- Directional Light w/ Shadows
+		- Deferred Rendering Rendergraph
+		- Dynamic Vertex/Pixel Shader reloading
+
 	
 Forward Render
 ![Screenshot](Images/ForwardRender.jpg)

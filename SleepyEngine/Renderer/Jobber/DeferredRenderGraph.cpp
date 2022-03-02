@@ -10,6 +10,8 @@
 #include "./Passlib/WireframePass.h"
 #include "./Passlib/ShadowMappingPass.h"
 #include "./Passlib/SkyboxPass.h"
+#include "./Passlib/GBufferClearPass.h"
+
 
 #include "Source.h"
 
@@ -37,32 +39,33 @@ namespace Rgph
 		}
 
 		{
+			auto pass = std::make_unique<GBufferClearPass>( gfx, "gbuffer" );
+			AppendPass( std::move( pass ) );
+		}
+
+		{
 			auto pass = std::make_unique<ShadowMappingPass>( gfx, "shadowMap" );
 			AppendPass( std::move( pass ) );
 		}
 
-		//{
-		//	auto pass = std::make_unique<LambertianPass>( gfx, "lambertian" );
-		//	pass->SetSinkLinkage( "shadowMap", "shadowMap.map" );
-		//	pass->SetSinkLinkage( "renderTarget", "clearRT.buffer" );
-		//	pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
-		//	AppendPass( std::move( pass ) );
-		//}
 		{
-			// GBuffer Pass
 			auto pass = std::make_unique<GBufferWritePass>( gfx, "lambertian" );
-			// don't neeed these because we are only making new sources
-			//pass->SetSinkLinkage( "shadowMap", "shadowMap.map" ); 
-			//pass->SetSinkLinkage( "renderTarget", "clearRT.buffer" );
-			//pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
+			pass->SetSinkLinkage( "colorMap", "gbuffer.colorMap" ); 
+			pass->SetSinkLinkage( "normalMap", "gbuffer.normalMap" );
+			pass->SetSinkLinkage( "specularMap", "gbuffer.specularMap" );
+			pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
 			AppendPass( std::move( pass ) );
 		}
 
 		{
 			// Deferred Light Geometry Pass
-			// // GBuffer Pass
-			//auto pass = std::make_unique<DeferredLighting>( gfx, "lambertian" );
+			//auto pass = std::make_unique<DeferredLightingPass>( gfx, "deferredLighting" );
+			//pass->SetSinkLinkage( "colorMap", "lambertian.colorMap" ); 
+			//pass->SetSinkLinkage( "normalMap", "lambertian.normalMap" ); 
+			//pass->SetSinkLinkage( "specularMap", "lambertian.specularMap" ); 
+			
 			//pass->SetSinkLinkage( "shadowMap", "shadowMap.map" ); 
+
 			//pass->SetSinkLinkage( "renderTarget", "clearRT.buffer" );
 			//pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
 			//AppendPass( std::move( pass ) );
@@ -245,14 +248,5 @@ namespace Rgph
 	{
 		dynamic_cast<GBufferWritePass&>( FindPassByName( "lambertian" ) ).BindMainCamera( cam );
 		dynamic_cast<SkyboxPass&>( FindPassByName( "skybox" ) ).BindMainCamera( cam );
-	}
-	void Rgph::DeferredRenderGraph::DumpShadowMap( Graphics& gfx, const std::string& path )
-	{
-		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).DumpShadowMap( gfx, path );
-	}
-	void Rgph::DeferredRenderGraph::BindShadowCamera( Camera& cam )
-	{
-		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
-		dynamic_cast<GBufferWritePass&>( FindPassByName( "lambertian" ) ).BindShadowCamera( cam );
 	}
 }

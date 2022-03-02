@@ -50,4 +50,18 @@ namespace Bind
 		void Bind( Graphics& gfx ) noexcept override;
 		OutputOnlyRenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT> face = {} );
 	};
+
+	class GBufferRenderTargets : public RenderTarget
+	{
+	public:
+		GBufferRenderTargets( Graphics& gfx, UINT width, UINT height, UINT slot );
+		void Bind( Graphics& gfx ) noexcept override;
+		void BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept;
+	private:
+		UINT slot;
+		static const int bufferCount = 3;
+		ID3D11RenderTargetView* m_pGBuffers[bufferCount];
+		ID3D11Texture2D* m_pTextures[bufferCount];
+		ID3D11ShaderResourceView* m_pShaderResources[bufferCount];
+	};
 }
