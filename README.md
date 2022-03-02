@@ -10,6 +10,7 @@ I have extended chili's hw3d engine in the following ways:
 		- Directional Light w/ Shadows
 		- Deferred Rendering Rendergraph
 		- Dynamic Vertex/Pixel Shader reloading
+		- Render Technique Management
 
 	
 Forward Render

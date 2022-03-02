@@ -136,6 +136,7 @@ void App::ToggleRenderTechnique()
 		cameras.LinkTechniques( forward_rg );
 		forward_rg.BindShadowCamera( *light.ShareCamera() );
 
+		isDeferred = false;
 		//cube.ToggleRenderTechnique( wnd.Gfx(), "" );
 		//cube2.ToggleRenderTechnique( wnd.Gfx(), "" );
 	}
@@ -158,6 +159,7 @@ void App::ToggleRenderTechnique()
 
 		//cube.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		//cube2.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
+		isDeferred = true;
 	}
 }
 
@@ -165,7 +167,11 @@ void App::ExecuteFrame( float dt )
 {
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );	
 	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
-	forward_rg.BindMainCamera( cameras.GetActiveCamera() );
+
+	if ( isDeferred )
+		deferred_rg.BindMainCamera( cameras.GetActiveCamera() );
+	else
+		forward_rg.BindMainCamera( cameras.GetActiveCamera() );
 
 	light.Submit( Chan::main );
 	//cube.Submit( Chan::main );
@@ -176,7 +182,10 @@ void App::ExecuteFrame( float dt )
 
 	cameras.Submit( Chan::main );
 
-	forward_rg.Execute( wnd.Gfx() );
+	if ( isDeferred )
+		deferred_rg.Execute( wnd.Gfx() );
+	else
+		forward_rg.Execute( wnd.Gfx() );
 
 	if ( savingDepth )
 	{
@@ -196,7 +205,10 @@ void App::ExecuteFrame( float dt )
 	//cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 	//cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 
-	forward_rg.RenderWindows( wnd.Gfx() );
+	if ( isDeferred )
+		deferred_rg.RenderWindows( wnd.Gfx() );
+	else
+		forward_rg.RenderWindows( wnd.Gfx() );
 
 	// present
 	wnd.Gfx().EndFrame();

@@ -30,7 +30,7 @@ namespace Rgph
 			AddBind( std::make_shared<Bind::Sampler>( gfx, Bind::Sampler::Type::Anisotropic, false, 2 ) );
 
 			// gbuffer resources
-			gbuffer = std::make_shared<Bind::GBufferRenderTargets>( gfx, 1280, 720, 4);
+			gbuffer = std::make_shared<Bind::GBufferRenderTargets>( gfx, 1280 * 3/2, 720 * 3/2, 4);
 			RegisterSource( DirectBindableSource<GBufferRenderTargets>::Make( "gbuffer", gbuffer ) );
 			RegisterSource( DirectBufferSource<DepthStencil>::Make( "depthStencil", depthStencil ) );
 
@@ -46,6 +46,7 @@ namespace Rgph
 			assert( pMainCamera );
 			pMainCamera->BindToGraphics( gfx );
 			gbuffer->BindAsBuffer( gfx, nullptr );
+			depthStencil->Bind( gfx );
 			RenderQueuePass::Execute( gfx );
 		}
 	private:

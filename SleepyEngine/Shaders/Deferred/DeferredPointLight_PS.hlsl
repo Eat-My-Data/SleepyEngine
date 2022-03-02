@@ -2,9 +2,9 @@
 #include "../Common/LightVectorData.hlsli"
 #include "../Common/PointLight.hlsli"
 
-Texture2D colorTexture : register(t0);
-Texture2D normalTexture : register(t1);
-Texture2D specularTexture : register(t2);
+Texture2D colorTexture : register(t4);
+Texture2D normalTexture : register(t5);
+Texture2D specularTexture : register(t6);
 Texture2D depthTexture : register(t3);
 
 SamplerState SampleTypePoint : register(s0);
