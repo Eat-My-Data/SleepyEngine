@@ -127,6 +127,9 @@
     <Filter Include="Source Files\Libraries\cnpy">
       <UniqueIdentifier>{807b41b4-820b-4134-b4de-babe2545ef29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Deferred">
+      <UniqueIdentifier>{e6eb0db0-7032-41e7-950f-849fd00b794b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -385,9 +388,6 @@
       <Filter>Source Files\Renderer\Jobber</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Jobber\Passlib\BufferClearPass.cpp">
-      <Filter>Source Files\Renderer\Jobber\Passlib</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Jobber\Passlib\GBufferClearPass.cpp">
       <Filter>Source Files\Renderer\Jobber\Passlib</Filter>
     </ClCompile>
   </ItemGroup>
@@ -764,7 +764,7 @@
     <ClInclude Include="Renderer\Jobber\Passlib\GBufferWritePass.h">
       <Filter>Header Files\Renderer\Jobber\Passlib</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer\Jobber\Passlib\GBufferClearPass.h">
+    <ClInclude Include="Renderer\Jobber\Passlib\DeferredLightingPass.h">
       <Filter>Header Files\Renderer\Jobber\Passlib</Filter>
     </ClInclude>
   </ItemGroup>
@@ -855,6 +855,48 @@
     </FxCompile>
     <FxCompile Include="Shaders\Common\Shadow_PS.hlsl">
       <Filter>Shaders\Common</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhong_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhong_VS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDif_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDif_VS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDifMskSpc_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDifMskSpc_VS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDifMskSpcNrm_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDifMskSpcNrm_VS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDifNrm_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDifNrm_VS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDifSpc_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDifSpc_VS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDifSpcNrm_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPhongDifSpcNrm_VS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
