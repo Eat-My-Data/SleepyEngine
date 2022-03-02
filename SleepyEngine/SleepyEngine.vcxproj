@@ -623,6 +623,7 @@
     <None Include="Shaders\Common\VShadow.hlsli" />
     <None Include="Shaders\Common\_PShadow_Dynamic_.hlsli" />
     <None Include="Shaders\Common\_PShadow_Static.hlsli" />
+    <None Include="Shaders\Deferred\DeferredPSOut.hlsli" />
     <None Include="Utilities\hw3d.args.json.json" />
     <None Include="Utilities\process.json" />
   </ItemGroup>

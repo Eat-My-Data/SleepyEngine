@@ -928,5 +928,8 @@
     <None Include="Utilities\hw3d.args.json.json">
       <Filter>Header Files\Utilities</Filter>
     </None>
+    <None Include="Shaders\Deferred\DeferredPSOut.hlsli">
+      <Filter>Shaders\Deferred</Filter>
+    </None>
   </ItemGroup>
 </Project>

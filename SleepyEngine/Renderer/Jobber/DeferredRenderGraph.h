@@ -43,4 +43,7 @@ namespace Rgph
 		std::shared_ptr<Bind::CachingPixelConstantBufferEx> blurKernel;
 		std::shared_ptr<Bind::CachingPixelConstantBufferEx> blurDirection;
 	};
+	// TODO:
+	//	- Figure out if I can use constant buffer data from forward shaders in my deferred shaders
+	//	- Maybe can modify values I store depending on what's in the shader but keep calculations to a minumum?
 }
