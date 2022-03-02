@@ -9,7 +9,8 @@ void Drawable::Submit( size_t channelFilter ) const noexcept
 {
 	for ( const auto& tech : techniques )
 	{
-		tech.Submit( *this, channelFilter );
+		if ( tech.IsActive() )
+			tech.Submit( *this, channelFilter );
 	}
 }
 
@@ -63,7 +64,18 @@ void Drawable::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTe
 {
 	for ( auto technique : techniques )
 	{
-		technique.ToggleRenderTechnique( gfx, renderTechnique );
+		if ( renderTechnique == "deferred" && technique.GetName() == "deferredLighting" )
+		{
+			technique.SetActiveState( true );
+		}
+		else if ( renderTechnique != "deferred" && technique.GetName() == "deferredLighting" )
+		{
+			technique.SetActiveState( false );
+		}
+		else
+		{
+			technique.ToggleRenderTechnique( gfx, renderTechnique );
+		}
 	}
 }
 

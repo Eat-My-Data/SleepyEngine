@@ -9,6 +9,7 @@
 #include "./Renderer/Model/Model.h"
 #include "./Utilities/ScriptCommander.h"
 #include "./Renderer/Jobber/BlurOutlineRenderGraph.h"
+#include "./Renderer/Jobber/DeferredRenderGraph.h"
 #include "./Utilities/ChiliMath.h"
 
 class App
@@ -28,7 +29,8 @@ private:
 	ImguiManager imgui;
 	Window wnd;
 	ScriptCommander scriptCommander;
-	Rgph::BlurOutlineRenderGraph rg{ wnd.Gfx() };
+	Rgph::BlurOutlineRenderGraph forward_rg{ wnd.Gfx() };
+	Rgph::DeferredRenderGraph deferred_rg{ wnd.Gfx() };
 	FrameTimer timer;
 	float speed_factor = 1.0f;
 	CameraContainer cameras;
@@ -43,5 +45,5 @@ private:
 	bool isDeferred = false;
 
 	// TODO: 
-	//	- Create a way to change Vertex/Pixel Shaders at run time so we don't have to manage extra resources
+	//	- Runtime rendergraph switching with a pointer to rendergraph?
 };

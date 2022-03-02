@@ -65,9 +65,12 @@ const std::string& Technique::GetName() const noexcept
 
 void Technique::Link( Rgph::RenderGraph& rg )
 {
-	for ( auto& step : steps )
+	if ( IsActive() )
 	{
-		step.Link( rg );
+		for ( auto& step : steps )
+		{
+			step.Link( rg );
+		}
 	}
 }
 

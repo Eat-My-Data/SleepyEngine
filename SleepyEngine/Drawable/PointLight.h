@@ -1,6 +1,7 @@
 #pragma once
 #include "../Graphics/Graphics.h"
 #include "../Drawable/SolidSphere.h"
+#include "../Drawable/DeferredPointLightGeometry.h"
 #include "../Bindable/Bindables/ConstantBuffers.h"
 #include "../Macros/ConditionalNoexcept.h"
 
@@ -36,6 +37,7 @@ private:
 	PointLightCBuf home;
 	PointLightCBuf cbData;
 	mutable SolidSphere mesh;
+	mutable DeferredPointLightGeometry dplg;
 	mutable Bind::PixelConstantBuffer<PointLightCBuf> cbuf;
 	std::shared_ptr<Camera> pCamera;
 };

@@ -20,8 +20,8 @@ App::App( const std::string& commandLine )
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "B", dx::XMFLOAT3{ -13.5f,28.8f,-6.4f }, PI / 180.0f * 13.0f, PI / 180.0f * 61.0f ) );
 	cameras.AddCamera( light.ShareCamera() );
 
-	cube.SetPos( { 10.0f,5.0f,6.0f } );
-	cube2.SetPos( { 10.0f,5.0f,14.0f } );
+	//cube.SetPos( { 10.0f,5.0f,6.0f } );
+	//cube2.SetPos( { 10.0f,5.0f,14.0f } );
 	nano.SetRootTransform(
 		dx::XMMatrixRotationY( PI / 2.f ) *
 		dx::XMMatrixTranslation( 27.f, -0.56f, 1.7f )
@@ -31,15 +31,18 @@ App::App( const std::string& commandLine )
 		dx::XMMatrixTranslation( -8.f, 10.f, 0.f )
 	);
 
-	cube.LinkTechniques( rg );
-	cube2.LinkTechniques( rg );
-	light.LinkTechniques( rg );
-	sponza.LinkTechniques( rg );
-	gobber.LinkTechniques( rg );
-	nano.LinkTechniques( rg );
 
-	cameras.LinkTechniques( rg );
-	rg.BindShadowCamera( *light.ShareCamera() );
+	//cube.LinkTechniques( rg );
+	//cube2.LinkTechniques( rg );
+	light.LinkTechniques( forward_rg );
+	sponza.LinkTechniques( forward_rg );
+	gobber.LinkTechniques( forward_rg );
+	nano.LinkTechniques( forward_rg );
+
+	cameras.LinkTechniques( forward_rg );
+	forward_rg.BindShadowCamera( *light.ShareCamera() );
+
+	//ToggleRenderTechnique();
 }
 
 void App::HandleInput( float dt )
@@ -118,19 +121,41 @@ void App::ToggleRenderTechnique()
 {
 	if ( isDeferred ) // Toggle Forward Shaders
 	{
+		//cube.LinkTechniques( rg );
+		//cube2.LinkTechniques( rg );
+
 		sponza.ToggleRenderTechnique( wnd.Gfx(), "" );
 		gobber.ToggleRenderTechnique( wnd.Gfx(), "" );
 		nano.ToggleRenderTechnique( wnd.Gfx(), "" );
-		//light.ToggleRenderTechnique( wnd.Gfx(), "" );
+
+		light.LinkTechniques( forward_rg );
+		sponza.LinkTechniques( forward_rg );
+		gobber.LinkTechniques( forward_rg );
+		nano.LinkTechniques( forward_rg );
+
+		cameras.LinkTechniques( forward_rg );
+		forward_rg.BindShadowCamera( *light.ShareCamera() );
+
 		//cube.ToggleRenderTechnique( wnd.Gfx(), "" );
 		//cube2.ToggleRenderTechnique( wnd.Gfx(), "" );
 	}
 	else // Toggle Deferred Shaders
 	{
+		//cube.LinkTechniques( rg );
+		//cube2.LinkTechniques( rg );
+
 		sponza.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		gobber.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		nano.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
-		//light.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
+
+		light.LinkTechniques( deferred_rg );
+		sponza.LinkTechniques( deferred_rg );
+		gobber.LinkTechniques( deferred_rg );
+		nano.LinkTechniques( deferred_rg );
+
+		cameras.LinkTechniques( deferred_rg );
+		deferred_rg.BindShadowCamera( *light.ShareCamera() );
+
 		//cube.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		//cube2.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 	}
@@ -140,22 +165,22 @@ void App::ExecuteFrame( float dt )
 {
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );	
 	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
-	rg.BindMainCamera( cameras.GetActiveCamera() );
+	forward_rg.BindMainCamera( cameras.GetActiveCamera() );
 
 	light.Submit( Chan::main );
-	cube.Submit( Chan::main );
+	//cube.Submit( Chan::main );
 	sponza.Submit( Chan::main );
-	cube2.Submit( Chan::main );
+	//cube2.Submit( Chan::main );
 	gobber.Submit( Chan::main );
 	nano.Submit( Chan::main );
 
 	cameras.Submit( Chan::main );
 
-	rg.Execute( wnd.Gfx() );
+	forward_rg.Execute( wnd.Gfx() );
 
 	if ( savingDepth )
 	{
-		rg.DumpShadowMap( wnd.Gfx(), "shadow.png" );
+		forward_rg.DumpShadowMap( wnd.Gfx(), "shadow.png" );
 		savingDepth = false;
 	}
 
@@ -168,14 +193,14 @@ void App::ExecuteFrame( float dt )
 	nanoProbe.SpawnWindow( nano );
 	cameras.SpawnWindow( wnd.Gfx() );
 	light.SpawnControlWindow();
-	cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
-	cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
+	//cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
+	//cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 
-	rg.RenderWindows( wnd.Gfx() );
+	forward_rg.RenderWindows( wnd.Gfx() );
 
 	// present
 	wnd.Gfx().EndFrame();
-	rg.Reset();
+	forward_rg.Reset();
 }
 
 App::~App()

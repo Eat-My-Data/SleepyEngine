@@ -6,6 +6,7 @@
 PointLight::PointLight( Graphics& gfx, DirectX::XMFLOAT3 pos, float radius )
 	:
 	mesh( gfx, radius ),
+	dplg( gfx, radius*10.0f ),
 	cbuf( gfx )
 {
 	home = {
@@ -69,6 +70,8 @@ void PointLight::Submit( size_t channels ) const noxnd
 {
 	mesh.SetPos( cbData.pos );
 	mesh.Submit( channels );
+	dplg.SetPos( cbData.pos );
+	dplg.Submit( channels );
 }
 
 void PointLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept

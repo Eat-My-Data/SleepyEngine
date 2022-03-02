@@ -66,7 +66,7 @@ void Step::Accept( TechniqueProbe& probe )
 
 void Step::Link( Rgph::RenderGraph& rg )
 {
-	assert( pTargetPass == nullptr );
+	//assert( pTargetPass == nullptr );
 	pTargetPass = &rg.GetRenderQueue( targetPassName );
 }
 
@@ -77,15 +77,13 @@ void Step::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechni
 		if ( auto p = dynamic_cast<Bind::VertexShader*>( bindable.get() ) )
 		{
 			std::string path = p->GetPath();
-			const std::string shaderName = path.substr( 0, path.find( "./Shaders/Bin/" ) );
-			delete p;
+			const std::string shaderName = path.substr( std::string("./Shaders/Bin/").size(), path.size() );
 			p = new Bind::VertexShader( gfx, "./Shaders/Bin/" + renderTechnique + shaderName );
 		}
 		else if ( auto p = dynamic_cast<Bind::PixelShader*>( bindable.get() ) )
 		{
 			std::string path = p->GetPath();
-			const std::string shaderName = path.substr( 0, path.find( "./Shaders/Bin/" ) );
-			delete p;
+			const std::string shaderName = path.substr( std::string( "./Shaders/Bin/" ).size(), path.size() );
 			p = new Bind::PixelShader( gfx, "./Shaders/Bin/" + renderTechnique + shaderName );
 		}
 	}

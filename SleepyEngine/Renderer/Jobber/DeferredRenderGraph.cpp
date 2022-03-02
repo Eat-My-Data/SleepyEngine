@@ -54,15 +54,15 @@ namespace Rgph
 			pass->SetSinkLinkage( "gbuffer", "lambertian.gbuffer" ); 
 			pass->SetSinkLinkage( "shadowMap", "shadowMap.map" ); 
 			pass->SetSinkLinkage( "renderTarget", "clearRT.buffer" );
-			pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
+			pass->SetSinkLinkage( "depthStencil", "lambertian.depthStencil" );
 			AppendPass( std::move( pass ) );
 		}
 
 
 		{
 			auto pass = std::make_unique<SkyboxPass>( gfx, "skybox" );
-			pass->SetSinkLinkage( "renderTarget", "lambertian.renderTarget" );
-			pass->SetSinkLinkage( "depthStencil", "lambertian.depthStencil" );
+			pass->SetSinkLinkage( "renderTarget", "deferredLighting.renderTarget" );
+			pass->SetSinkLinkage( "depthStencil", "deferredLighting.depthStencil" );
 			AppendPass( std::move( pass ) );
 		}
 

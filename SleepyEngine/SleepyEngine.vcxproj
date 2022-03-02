@@ -198,6 +198,7 @@
     <ClCompile Include="Camera\CameraContainer.cpp" />
     <ClCompile Include="Camera\Projection.cpp" />
     <ClCompile Include="Drawable\CameraIndicator.cpp" />
+    <ClCompile Include="Drawable\DeferredPointLightGeometry.cpp" />
     <ClCompile Include="Drawable\Frustum.cpp" />
     <ClCompile Include="Drawable\SolidCone.cpp" />
     <ClCompile Include="Drawable\DirectionalLight.cpp" />
@@ -296,6 +297,7 @@
     <ClInclude Include="Camera\CameraContainer.h" />
     <ClInclude Include="Camera\Projection.h" />
     <ClInclude Include="Drawable\CameraIndicator.h" />
+    <ClInclude Include="Drawable\DeferredPointLightGeometry.h" />
     <ClInclude Include="Drawable\Frustum.h" />
     <ClInclude Include="Drawable\SolidCone.h" />
     <ClInclude Include="Drawable\DirectionalLight.h" />
@@ -550,7 +552,7 @@
     <FxCompile Include="Shaders\Deferred\DeferredPointLight_PS.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.1</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shaders\Deferred\DeferredPointLight_VS.hlsl">
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)\Shaders\Bin\%(Filename).cso</ObjectFileOutput>
