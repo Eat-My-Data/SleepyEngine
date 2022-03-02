@@ -116,7 +116,7 @@ void App::HandleInput( float dt )
 
 void App::ToggleRenderTechnique()
 {
-	if ( isDeferred )
+	if ( isDeferred ) // Toggle Forward Shaders
 	{
 		sponza.ToggleRenderTechnique( wnd.Gfx(), "" );
 		gobber.ToggleRenderTechnique( wnd.Gfx(), "" );
@@ -125,7 +125,7 @@ void App::ToggleRenderTechnique()
 		//cube.ToggleRenderTechnique( wnd.Gfx(), "" );
 		//cube2.ToggleRenderTechnique( wnd.Gfx(), "" );
 	}
-	else
+	else // Toggle Deferred Shaders
 	{
 		sponza.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		gobber.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );

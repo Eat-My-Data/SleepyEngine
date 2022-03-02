@@ -13,7 +13,7 @@ cbuffer ObjectCBuf : register(b1)
 };
 
 
-DeferredPSOut main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 spos : ShadowPosition) : SV_Target
+DeferredPSOut main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 spos : ShadowPosition)
 {
     DeferredPSOut psOut;
     psOut.color = float4(materialColor, 1.0f);

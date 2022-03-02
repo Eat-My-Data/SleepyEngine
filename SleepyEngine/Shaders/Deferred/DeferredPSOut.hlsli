@@ -1,6 +1,6 @@
 struct DeferredPSOut
 {
-    float4 color;
-    float4 normal;
-    float4 specular;
+    float4 color : SV_Target0;
+    float4 normal : SV_Target1;
+    float4 specular : SV_Target2;
 };

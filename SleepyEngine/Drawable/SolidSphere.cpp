@@ -62,7 +62,7 @@ SolidSphere::SolidSphere( Graphics& gdi, float radius )
 		only.AddBindable( InputLayout::Resolve( gdi, model.m_VBVertices.GetLayout(), *pvs ) );
 		only.AddBindable( std::move( pvs ) );
 
-		only.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/DeferredPointLight.cso" ) );
+		only.AddBindable( PixelShader::Resolve( gdi, "./Shaders/Bin/DeferredPointLight_PS.cso" ) );
 		// might need to add constant buffer?
 		only.AddBindable( std::make_shared<TransformCbuf>( gdi ) );
 

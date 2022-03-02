@@ -898,6 +898,12 @@
     <FxCompile Include="Shaders\Deferred\DeferredPhongDifSpcNrm_VS.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPointLight_VS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredPointLight_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

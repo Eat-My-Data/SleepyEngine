@@ -16,7 +16,7 @@ Texture2D tex : register(t0);
 SamplerState splr : register(s0);
 
 
-DeferredPSOut main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord, float4 spos : ShadowPosition) : SV_Target
+DeferredPSOut main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord, float4 spos : ShadowPosition)
 {
     DeferredPSOut psOut;
     psOut.color = tex.Sample(splr, tc);
