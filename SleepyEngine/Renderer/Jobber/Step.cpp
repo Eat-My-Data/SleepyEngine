@@ -72,19 +72,21 @@ void Step::Link( Rgph::RenderGraph& rg )
 
 void Step::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
 {
-	for ( auto bindable : bindables )
+	for ( auto& bindable : bindables )
 	{
 		if ( auto p = dynamic_cast<Bind::VertexShader*>( bindable.get() ) )
 		{
 			std::string path = p->GetPath();
 			const std::string shaderName = path.substr( std::string("./Shaders/Bin/").size(), path.size() );
-			p = new Bind::VertexShader( gfx, "./Shaders/Bin/" + renderTechnique + shaderName );
+			auto p2 = std::shared_ptr<Bind::Bindable>( new Bind::VertexShader( gfx, "./Shaders/Bin/" + renderTechnique + shaderName ) );
+			bindable.swap( p2 );
 		}
 		else if ( auto p = dynamic_cast<Bind::PixelShader*>( bindable.get() ) )
 		{
 			std::string path = p->GetPath();
 			const std::string shaderName = path.substr( std::string( "./Shaders/Bin/" ).size(), path.size() );
-			p = new Bind::PixelShader( gfx, "./Shaders/Bin/" + renderTechnique + shaderName );
+			auto p2 = std::shared_ptr<Bind::Bindable>(new Bind::PixelShader( gfx, "./Shaders/Bin/" + renderTechnique + shaderName ));
+			bindable.swap(  p2 );
 		}
 	}
 }

@@ -22,6 +22,7 @@ public:
 	void Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept;
 	void LinkTechniques( Rgph::RenderGraph& );
 	std::shared_ptr<Camera> ShareCamera() const noexcept;
+	void ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique );
 private:
 	struct PointLightCBuf
 	{

@@ -62,13 +62,13 @@ void Drawable::LinkTechniques( Rgph::RenderGraph& rg )
 
 void Drawable::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
 {
-	for ( auto technique : techniques )
+	for ( auto& technique : techniques )
 	{
-		if ( renderTechnique == "deferred" && technique.GetName() == "deferredLighting" )
+		if ( renderTechnique == "Deferred" && technique.GetName() == "deferredLighting" )
 		{
 			technique.SetActiveState( true );
 		}
-		else if ( renderTechnique != "deferred" && technique.GetName() == "deferredLighting" )
+		else if ( renderTechnique != "Deferred" && technique.GetName() == "deferredLighting" )
 		{
 			technique.SetActiveState( false );
 		}

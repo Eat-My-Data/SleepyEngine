@@ -125,6 +125,7 @@ void App::ToggleRenderTechnique()
 		//cube.LinkTechniques( rg );
 		//cube2.LinkTechniques( rg );
 
+		light.ToggleRenderTechnique( wnd.Gfx(), "" );
 		sponza.ToggleRenderTechnique( wnd.Gfx(), "" );
 		gobber.ToggleRenderTechnique( wnd.Gfx(), "" );
 		nano.ToggleRenderTechnique( wnd.Gfx(), "" );
@@ -146,6 +147,7 @@ void App::ToggleRenderTechnique()
 		//cube.LinkTechniques( rg );
 		//cube2.LinkTechniques( rg );
 
+		light.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		sponza.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		gobber.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		nano.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
@@ -169,6 +171,11 @@ void App::ExecuteFrame( float dt )
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );	
 	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
 
+	if ( isDeferred )
+		deferred_rg.BindMainCamera( cameras.GetActiveCamera() );
+	else
+		forward_rg.BindMainCamera( cameras.GetActiveCamera() );
+
 	light.Submit( Chan::main );
 	//cube.Submit( Chan::main );
 	sponza.Submit( Chan::main );
@@ -177,11 +184,6 @@ void App::ExecuteFrame( float dt )
 	nano.Submit( Chan::main );
 
 	cameras.Submit( Chan::main );
-
-	if ( isDeferred )
-		deferred_rg.BindMainCamera( cameras.GetActiveCamera() );
-	else
-		forward_rg.BindMainCamera( cameras.GetActiveCamera() );
 
 	if ( isDeferred )
 		deferred_rg.Execute( wnd.Gfx() );
@@ -213,7 +215,12 @@ void App::ExecuteFrame( float dt )
 
 	// present
 	wnd.Gfx().EndFrame();
-	forward_rg.Reset();
+
+
+	if ( isDeferred )
+		deferred_rg.Reset();
+	else
+		forward_rg.Reset();
 }
 
 App::~App()

@@ -30,7 +30,7 @@ namespace Rgph
 			RegisterSink( DirectBufferSink<DepthStencil>::Make( "depthStencil", depthStencil ) );
 			
 			// not sure if this will work, may have to store it locally so we can clear it?
-			AddBindSink<Bind::GBufferRenderTargets>( "gbuffer" );
+			RegisterSink( DirectBufferSink<GBufferRenderTargets>::Make( "gbuffer", gbuffer ) );
 			AddBindSink<Bind::Bindable>( "shadowMap" );
 
 			AddBind( std::make_shared<Bind::ShadowSampler>( gfx ) );
@@ -55,7 +55,7 @@ namespace Rgph
 			renderTarget->BindAsBuffer( gfx );
 			pShadowCBuf->Update( gfx );
 			pMainCamera->BindToGraphics( gfx );
-			//gbuffer->Bind( gfx );
+			gbuffer->Bind( gfx );
 			RenderQueuePass::Execute( gfx );
 		}
 	private:

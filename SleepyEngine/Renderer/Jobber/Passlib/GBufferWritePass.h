@@ -32,12 +32,12 @@ namespace Rgph
 			// gbuffer resources
 			gbuffer = std::make_shared<Bind::GBufferRenderTargets>( gfx, 1280 * 3/2, 720 * 3/2, 4);
 			AddBind( gbuffer );
-			RegisterSource( DirectBindableSource<GBufferRenderTargets>::Make( "gbuffer", gbuffer ) );
+			RegisterSource( DirectBufferSource<GBufferRenderTargets>::Make( "gbuffer", gbuffer ) );
 			RegisterSource( DirectBufferSource<DepthStencil>::Make( "depthStencil", depthStencil ) );
 			
 
 			// turn off stenciling
-			AddBind( Stencil::Resolve( gfx, Stencil::Mode::Off ) );
+			AddBind( Stencil::Resolve( gfx, Stencil::Mode::DepthFirst ));
 		}
 		void BindMainCamera( const Camera& cam ) noexcept
 		{
@@ -48,7 +48,6 @@ namespace Rgph
 			assert( pMainCamera );
 			gbuffer->Clear( gfx );
 			pMainCamera->BindToGraphics( gfx );
-			depthStencil->BindAsBuffer( gfx, gbuffer.get() );
 			RenderQueuePass::Execute( gfx );
 		}
 	private:

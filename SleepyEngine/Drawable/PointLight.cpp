@@ -86,9 +86,15 @@ void PointLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
 void PointLight::LinkTechniques( Rgph::RenderGraph& rg )
 {
 	mesh.LinkTechniques( rg );
+	dplg.LinkTechniques( rg );
 }
 
 std::shared_ptr<Camera> PointLight::ShareCamera() const noexcept
 {
 	return pCamera;
+}
+
+void PointLight::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
+{
+	dplg.ToggleRenderTechnique( gfx, renderTechnique );
 }
