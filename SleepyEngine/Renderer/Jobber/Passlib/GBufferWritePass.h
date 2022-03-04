@@ -36,7 +36,7 @@ namespace Rgph
 			RegisterSource( DirectBufferSource<DepthStencil>::Make( "depthStencil", depthStencil ) );
 			
 			// turn off stenciling
-			AddBind( Stencil::Resolve( gfx, Stencil::Mode::DepthFirst ));
+			AddBind( Stencil::Resolve( gfx, Stencil::Mode::Off ));
 		}
 		void BindMainCamera( const Camera& cam ) noexcept
 		{
@@ -50,6 +50,10 @@ namespace Rgph
 			RenderQueuePass::Execute( gfx );
 		}
 	private:
+		void SetDepthBuffer( std::shared_ptr<Bind::DepthStencil> ds ) const
+		{
+			const_cast<GBufferWritePass*>( this )->depthStencil = std::move( ds );
+		}
 		std::shared_ptr<Bind::GBufferRenderTargets> gbuffer;
 		const Camera* pMainCamera = nullptr;
 	};

@@ -350,7 +350,31 @@ namespace Bind
 
 	void GBufferRenderTargets::BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept
 	{
-		GetContext( gfx )->OMSetRenderTargets( 3, &m_pGBuffers[0], pDepthStencilView );
+		wrl::ComPtr<ID3D11Texture2D> pDepthStencil;
+		D3D11_TEXTURE2D_DESC descDepth = {};
+		descDepth.Width = width;
+		descDepth.Height = height;
+		descDepth.MipLevels = 1u;
+		descDepth.ArraySize = 1u;
+		descDepth.Format = DXGI_FORMAT::DXGI_FORMAT_R24G8_TYPELESS;
+		descDepth.SampleDesc.Count = 1u;
+		descDepth.SampleDesc.Quality = 0u;
+		descDepth.Usage = D3D11_USAGE_DEFAULT;
+		descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+		GetDevice( gfx )->CreateTexture2D( &descDepth, nullptr, &pDepthStencil );
+
+		// create target view of depth stensil texture
+		ID3D11DepthStencilView* depthStencilView = {};
+		D3D11_DEPTH_STENCIL_VIEW_DESC descView = {};
+		descView.Format = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
+		descView.Flags = 0;
+		descView.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		descView.Texture2D.MipSlice = 0;
+		GetDevice( gfx )->CreateDepthStencilView(
+			pDepthStencil.Get(), &descView, &depthStencilView
+		);
+
+		GetContext( gfx )->OMSetRenderTargets( 3, &m_pGBuffers[0], depthStencilView );
 
 		// configure viewport
 		D3D11_VIEWPORT vp;
