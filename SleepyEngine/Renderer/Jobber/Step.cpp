@@ -77,14 +77,22 @@ void Step::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechni
 		if ( auto p = dynamic_cast<Bind::VertexShader*>( bindable.get() ) )
 		{
 			std::string path = p->GetPath();
-			const std::string shaderName = path.substr( std::string("./Shaders/Bin/").size(), path.size() );
+			std::string shaderName = path.substr( std::string("./Shaders/Bin/").size(), path.size() );
+			if ( shaderName.substr( 0, 8 ) == "Deferred" )
+			{
+				shaderName = shaderName.substr( 8, shaderName.size() );
+			}
 			auto p2 = std::shared_ptr<Bind::Bindable>( new Bind::VertexShader( gfx, "./Shaders/Bin/" + renderTechnique + shaderName ) );
 			bindable.swap( p2 );
 		}
 		else if ( auto p = dynamic_cast<Bind::PixelShader*>( bindable.get() ) )
 		{
 			std::string path = p->GetPath();
-			const std::string shaderName = path.substr( std::string( "./Shaders/Bin/" ).size(), path.size() );
+			std::string shaderName = path.substr( std::string( "./Shaders/Bin/" ).size(), path.size() );
+			if ( shaderName.substr(0, 8) == "Deferred" )
+			{
+				shaderName = shaderName.substr( 8, shaderName.size() );
+			}
 			auto p2 = std::shared_ptr<Bind::Bindable>(new Bind::PixelShader( gfx, "./Shaders/Bin/" + renderTechnique + shaderName ));
 			bindable.swap(  p2 );
 		}
