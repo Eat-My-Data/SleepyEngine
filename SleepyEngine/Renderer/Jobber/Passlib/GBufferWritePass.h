@@ -35,7 +35,6 @@ namespace Rgph
 			RegisterSource( DirectBufferSource<GBufferRenderTargets>::Make( "gbuffer", gbuffer ) );
 			RegisterSource( DirectBufferSource<DepthStencil>::Make( "depthStencil", depthStencil ) );
 			
-
 			// turn off stenciling
 			AddBind( Stencil::Resolve( gfx, Stencil::Mode::DepthFirst ));
 		}
