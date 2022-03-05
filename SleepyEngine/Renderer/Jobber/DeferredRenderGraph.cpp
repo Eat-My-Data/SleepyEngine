@@ -49,7 +49,6 @@ namespace Rgph
 		}
 
 		{
-			// Deferred Light Geometry Pass
 			auto pass = std::make_unique<DeferredLightingPass>( gfx, "deferredLighting" );
 			pass->SetSinkLinkage( "gbuffer", "lambertian.gbuffer" ); 
 			pass->SetSinkLinkage( "shadowMap", "shadowMap.map" ); 

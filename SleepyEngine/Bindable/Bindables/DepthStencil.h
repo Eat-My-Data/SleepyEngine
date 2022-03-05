@@ -8,6 +8,7 @@ class Graphics;
 namespace Bind
 {
 	class RenderTarget;
+	class GBufferRenderTargets;
 
 	class DepthStencil : public Bindable, public BufferResource
 	{
@@ -22,6 +23,7 @@ namespace Bind
 		void BindAsBuffer( Graphics& gfx ) noxnd  override;
 		void BindAsBuffer( Graphics& gfx, BufferResource* renderTarget ) noxnd  override;
 		void BindAsBuffer( Graphics& gfx, RenderTarget* rt ) noxnd;
+		void BindAsBuffer( Graphics& gfx, GBufferRenderTargets* rt ) noxnd;
 		void Clear( Graphics& gfx ) noxnd  override;
 		Surface ToSurface( Graphics& gfx, bool linearlize = true ) const;
 		void Dumpy( Graphics& gfx, const std::string& path ) const;

@@ -45,7 +45,7 @@ namespace Rgph
 		{
 			if ( auto p = dynamic_cast<Bind::GBufferRenderTargets*>( bind.get() ) )
 			{
-				p->BindAsBuffer( gfx, nullptr );
+				depthStencil->BindAsBuffer( gfx, p );
 				flag = true;
 			}
 		}

@@ -12,7 +12,7 @@
 App::App( const std::string& commandLine )
 	:
 	commandLine( commandLine ),
-	wnd( 1280*3/2, 720*3/2, "Sleepy Engine" ),
+	wnd( 1280, 720, "Sleepy Engine" ),
 	scriptCommander( TokenizeQuoted( commandLine ) ),
 	light( wnd.Gfx(), { 10.0f,5.0f,0.0f } )
 {
@@ -41,7 +41,6 @@ App::App( const std::string& commandLine )
 
 	cameras.LinkTechniques( forward_rg );
 	forward_rg.BindShadowCamera( *light.ShareCamera() );
-	//deferred_rg.BindShadowCamera( *light.ShareCamera() );
 
 	//ToggleRenderTechnique();
 }

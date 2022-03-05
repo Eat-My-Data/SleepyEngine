@@ -47,7 +47,7 @@ namespace Rgph
 		void Execute( Graphics& gfx ) const noexcept override
 		{
 			assert( pMainCamera );
-			renderTarget->BindAsBuffer( gfx );
+			depthStencil->BindAsBuffer( gfx, renderTarget.get() );
 			pShadowCBuf->Update( gfx );
 			pMainCamera->BindToGraphics( gfx );
 			gbuffer->Bind( gfx );

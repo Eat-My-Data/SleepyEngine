@@ -17,6 +17,7 @@ namespace Bind
 		void BindAsBuffer( Graphics& gfx ) noexcept override;
 		void BindAsBuffer( Graphics& gfx, BufferResource* depthStencil ) noexcept override;
 		void BindAsBuffer( Graphics& gfx, DepthStencil* depthStencil ) noexcept;
+		void BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept;
 		void Clear( Graphics& gfx ) noexcept override;
 		void Clear( Graphics& gfx, const std::array<float, 4>& color ) noexcept;
 		UINT GetWidth() const noexcept;
@@ -25,7 +26,7 @@ namespace Bind
 		void Dumpy( Graphics& gfx, const std::string& path ) const;
 	private:
 		std::pair<Microsoft::WRL::ComPtr<ID3D11Texture2D>, D3D11_TEXTURE2D_DESC> MakeStaging( Graphics& gfx ) const;
-		void BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept;
+		//void BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept;
 	protected:
 		RenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT> face );
 		RenderTarget( Graphics& gfx, UINT width, UINT height );

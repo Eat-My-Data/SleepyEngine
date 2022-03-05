@@ -114,7 +114,12 @@ namespace Bind
 
 	void DepthStencil::BindAsBuffer( Graphics& gfx, RenderTarget* rt ) noxnd
 	{
-		rt->BindAsBuffer( gfx, this );
+		rt->BindAsBuffer( gfx, pDepthStencilView.Get() );
+	}
+
+	void DepthStencil::BindAsBuffer( Graphics& gfx, GBufferRenderTargets* rt ) noexcept( !IS_DEBUG )
+	{
+		rt->BindAsBuffer( gfx, pDepthStencilView.Get() );
 	}
 
 	void DepthStencil::Clear( Graphics& gfx ) noxnd

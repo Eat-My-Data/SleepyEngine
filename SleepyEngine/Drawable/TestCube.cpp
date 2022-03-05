@@ -31,11 +31,11 @@ TestCube::TestCube( Graphics& gfx,float size )
 			only.AddBindable( Texture::Resolve( gfx,"Models\\brick_wall\\brick_wall_diffuse.jpg" ) );
 			only.AddBindable( Sampler::Resolve( gfx ) );
 
-			auto pvs = VertexShader::Resolve( gfx,"./Shaders/Bin/ShadowTest_VS.cso" );
-			only.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*pvs ) );
-			only.AddBindable( std::move( pvs ) );
+			//auto pvs = VertexShader::Resolve( gfx,"./Shaders/Bin/ShadowTest_VS.cso" );
+			//only.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*pvs ) );
+			//only.AddBindable( std::move( pvs ) );
 
-			only.AddBindable( PixelShader::Resolve( gfx,"./Shaders/Bin/ShadowTest_VS.cso" ) );
+			//only.AddBindable( PixelShader::Resolve( gfx,"./Shaders/Bin/ShadowTest_VS.cso" ) );
 			
 			Dcb::RawLayout lay;
 			lay.Add<Dcb::Float3>( "specularColor" );
