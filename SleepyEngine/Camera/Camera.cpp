@@ -13,7 +13,8 @@ Camera::Camera( Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos, floa
 	homeYaw( homeYaw ),
 	proj( gfx, 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ),
 	indicator( gfx ),
-	tethered( tethered )
+	tethered( tethered ),
+	worldPositionCBuf( std::make_shared<Bind::PixelConstantBuffer<WorldPosition>>( gfx, cbufData, 3 ) )
 {
 	if ( tethered )
 	{
@@ -28,6 +29,14 @@ void Camera::BindToGraphics( Graphics& gfx ) const
 {
 	gfx.SetCamera( GetMatrix() );
 	gfx.SetProjection( proj.GetMatrix() );
+
+	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( proj.GetMatrix() );
+	cbufData.projInvMatrix = DirectX::XMMatrixInverse( &determinant, proj.GetMatrix() );
+	determinant = DirectX::XMMatrixDeterminant( GetMatrix() );
+	cbufData.viewInvMatrix = DirectX::XMMatrixInverse( &determinant, GetMatrix() );
+	cbufData.camPos = GetPos();
+	worldPositionCBuf->Update( gfx, cbufData );
+	worldPositionCBuf->Bind( gfx );
 }
 
 DirectX::XMMATRIX Camera::GetMatrix() const noexcept

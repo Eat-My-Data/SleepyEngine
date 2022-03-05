@@ -1,6 +1,7 @@
 #include "../Common/ShaderOps.hlsli"
 #include "../Common/LightVectorData.hlsli"
 #include "../Common/PointLight.hlsli"
+#include "../Common/Camera.hlsli"
 
 Texture2D colorTexture : register(t4);
 Texture2D normalTexture : register(t5);
@@ -31,27 +32,26 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     normals = (normals * 2.0) - 1.0;
 
     //// world position
-    //float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
+    float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
     
-    //// vector from camera to fragment
-    //float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
+    // vector from camera to fragment
+    float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
 
-    //// shadow
-    //float shadow = CalculatePointLightShadow(worldSpacePos.xyz, pointLightData[0].pos, SampleTypePoint, 0);
+    // shadow
+    float shadow = 1.0f; //CalculatePointLightShadow(worldSpacePos.xyz, pointLightData[0].pos, SampleTypePoint, 0);
     
-    //// attenuation
-    //const float3 pointToFrag = pointLightData[index].pos - worldSpacePos.xyz;
-    //float att = saturate((1 - (length(pointToFrag) / pointLightData[index].radius)));
-    //att *= att;
+    // attenuation
+    const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;
+    float att = saturate((1 - (length(pointToFrag) / 10)));
+    att *= att;
 
-    //// lighting calculations
-    //float3 diffuseColor = Diffuse(pointLightData[index].color, defaultLightIntensity, att, normalize(pointToFrag), normalize(normals.xyz)) * shadow;
-    //float3 specularResult = Speculate(specular.xyz, defaultLightIntensity, normalize(normals.xyz), normalize(pointToFrag), camToFrag, att, defaultSpecularPower) * shadow;
+    // lighting calculations
+    float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, normalize(pointToFrag), normalize(normals.xyz)) * shadow;
+    float3 specularReflected = Speculate(specular.xyz, diffuseIntensity, normalize(normals.xyz), normalize(pointToFrag), camToFrag, att, 128.0f) * shadow;
     
-    //// combined color
-    //float3 combinedColor = ((diffuseColor + specularResult));
+    // combined color
+    float3 combinedColor = ((diffuse + specularReflected));
 
     //// final color
-    //return float4((combinedColor * colors.rgb), 1.0f);
-    return colors;
+    return float4((combinedColor * colors.rgb), 1.0f);
 }

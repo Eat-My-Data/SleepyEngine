@@ -3,12 +3,21 @@
 #include <string>
 #include "Projection.h"
 #include "../Drawable/CameraIndicator.h"
+#include "../Bindable/Bindables/ConstantBuffers.h"
 
 class Graphics;
 namespace Rgph
 {
 	class RenderGraph;
 }
+
+struct WorldPosition
+{
+	DirectX::XMMATRIX projInvMatrix;
+	DirectX::XMMATRIX viewInvMatrix;
+	DirectX::XMFLOAT3 camPos;
+	float padding;
+};
 
 class Camera
 {
@@ -41,4 +50,7 @@ private:
 	bool enableFrustumIndicator = false;
 	Projection proj;
 	CameraIndicator indicator;
+	mutable WorldPosition cbufData;
+	std::shared_ptr<Bind::PixelConstantBuffer<WorldPosition>> worldPositionCBuf;
+
 };

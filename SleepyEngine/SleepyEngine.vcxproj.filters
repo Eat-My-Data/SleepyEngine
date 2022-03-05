@@ -943,5 +943,8 @@
     <None Include="Shaders\Deferred\DeferredPSOut.hlsli">
       <Filter>Shaders\Deferred</Filter>
     </None>
+    <None Include="Shaders\Common\Camera.hlsli">
+      <Filter>Shaders\Common</Filter>
+    </None>
   </ItemGroup>
 </Project>

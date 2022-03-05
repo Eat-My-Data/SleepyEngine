@@ -687,6 +687,7 @@
     <None Include="Graphics\DXGetErrorDescription.inl" />
     <None Include="Graphics\DXGetErrorString.inl" />
     <None Include="Graphics\DXTrace.inl" />
+    <None Include="Shaders\Common\Camera.hlsli" />
     <None Include="Shaders\Common\PShadow.hlsli" />
     <None Include="Shaders\Common\VShadow.hlsli" />
     <None Include="Shaders\Common\_PShadow_Dynamic_.hlsli" />
