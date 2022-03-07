@@ -130,6 +130,7 @@ void Graphics::BeginFrame( float red,float green,float blue ) noexcept
 	pContext->PSSetShaderResources( 4, 1, &pNullTex ); // deferred color texture
 	pContext->PSSetShaderResources( 5, 1, &pNullTex ); // deferred normal texture
 	pContext->PSSetShaderResources( 6, 1, &pNullTex ); // deferred specular texture
+	pContext->PSSetShaderResources( 7, 1, &pNullTex ); // deferred depth texture
 }
 
 void Graphics::DrawIndexed( UINT count ) noxnd

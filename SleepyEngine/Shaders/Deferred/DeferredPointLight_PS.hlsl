@@ -2,26 +2,29 @@
 #include "../Common/LightVectorData.hlsli"
 #include "../Common/PointLight.hlsli"
 #include "../Common/Camera.hlsli"
+#include "../Common/PShadow.hlsli"
 
 Texture2D colorTexture : register(t4);
 Texture2D normalTexture : register(t5);
 Texture2D specularTexture : register(t6);
-Texture2D depthTexture : register(t3);
+Texture2D depthTexture : register(t7);
+
+TextureCube shadowMap : register(t3); // shadow map
 
 SamplerState SampleTypePoint : register(s0);
 
 float4 main(float4 position : SV_POSITION) : SV_TARGET
-{
+{   
+    // sample textures
+    float4 color = colorTexture.Load(int3(position.xy, 0));
+    float4 normal = normalTexture.Load(int3(position.xy, 0));
+    float4 specular = specularTexture.Load(int3(position.xy, 0));
+    float depthSample = depthTexture.Load(int3(position.xy, 0)).r;
+    
     // screen position
     float2 screenPos;
     screenPos.x = position.x / 1280.0f;
     screenPos.y = position.y / 720.0f;
-    
-    // sample textures
-    float4 colors = colorTexture.Load(int3(position.xy, 0));
-    float4 normals = normalTexture.Load(int3(position.xy, 0));
-    float4 specular = specularTexture.Load(int3(position.xy, 0));
-    float depthSample = depthTexture.Load(int3(position.xy, 0)).r;
     
     // clip space, negate y because directx
     float clipX = (screenPos.x * 2.0) - 1.0;
@@ -29,12 +32,12 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     clipY = -clipY;
    
     // normal to clip space
-    normals = (normals * 2.0) - 1.0;
+    normal = (normal * 2.0) - 1.0;
 
     //// world position
     float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
     
-    // vector from camera to fragment
+    //// vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
 
     // shadow
@@ -44,14 +47,15 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;
     float att = saturate((1 - (length(pointToFrag) / 10)));
     att *= att;
+    att = 1.0f;
 
     // lighting calculations
-    float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, normalize(pointToFrag), normalize(normals.xyz)) * shadow;
-    float3 specularReflected = Speculate(specular.xyz, diffuseIntensity, normalize(normals.xyz), normalize(pointToFrag), camToFrag, att, 128.0f) * shadow;
+    float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, normalize(pointToFrag), normalize(normal.xyz)) * shadow;
+    float3 specularReflected = Speculate(specular.xyz, diffuseIntensity, normalize(normal.xyz), normalize(pointToFrag), camToFrag, att, 128.0f) * shadow;
     
     // combined color
     float3 combinedColor = ((diffuse + specularReflected));
 
     //// final color
-    return float4((combinedColor * colors.rgb), 1.0f);
+    return float4((combinedColor * color.rgb), 1.0f);
 }

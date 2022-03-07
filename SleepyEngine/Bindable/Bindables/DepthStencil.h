@@ -45,6 +45,7 @@ namespace Bind
 		ShaderInputDepthStencil( Graphics& gfx, UINT slot, Usage usage = Usage::DepthStencil );
 		ShaderInputDepthStencil( Graphics& gfx, UINT width, UINT height, UINT slot, Usage usage = Usage::DepthStencil );
 		void Bind( Graphics& gfx ) noxnd  override;
+		void Bind( Graphics& gfx, UINT slot ) noxnd;
 	private:
 		UINT slot;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResourceView;

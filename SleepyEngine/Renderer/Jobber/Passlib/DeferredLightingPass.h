@@ -35,13 +35,16 @@ namespace Rgph
 
 			AddBind( pShadowCBuf );
 			RegisterSink( DirectBufferSink<RenderTarget>::Make( "renderTarget", renderTarget ) );
+			RegisterSink( DirectBufferSink<ShaderInputDepthStencil>::Make( "depthMap", depthMap ) );
 			RegisterSink( DirectBufferSink<DepthStencil>::Make( "depthStencil", depthStencil ) );
+
 			RegisterSink( DirectBufferSink<GBufferRenderTargets>::Make( "gbuffer", gbuffer ) );
 			AddBindSink<Bind::Bindable>( "shadowMap" );
 			AddBind( std::make_shared<Bind::ShadowSampler>( gfx ) );
 			AddBind( std::make_shared<Bind::Sampler>( gfx, Bind::Sampler::Type::Anisotropic, false, 2 ) );
 			RegisterSource( DirectBufferSource<RenderTarget>::Make( "renderTarget", renderTarget ) );
 			RegisterSource( DirectBufferSource<DepthStencil>::Make( "depthStencil", depthStencil ) );
+
 			AddBind( Stencil::Resolve( gfx, Stencil::Mode::Off ) );
 		}
 		void BindMainCamera( const Camera& cam ) noexcept
@@ -55,7 +58,11 @@ namespace Rgph
 		void Execute( Graphics& gfx ) const noexcept override
 		{
 			assert( pMainCamera );
+			// need a way to bind old depth stencil as texture
+			//renderTarget->BindAsBuffer( gfx );
 			depthStencil->BindAsBuffer( gfx, renderTarget.get() );
+			depthMap->Bind( gfx );
+
 			pShadowCBuf->Update( gfx );
 			pMainCamera->BindToGraphics( gfx );
 			gbuffer->Bind( gfx );
@@ -64,6 +71,7 @@ namespace Rgph
 	private:
 		std::shared_ptr<Bind::GBufferRenderTargets> gbuffer;
 		std::shared_ptr<Bind::ShadowCameraCBuf> pShadowCBuf;
+		std::shared_ptr<Bind::ShaderInputDepthStencil> depthMap;
 		const Camera* pMainCamera = nullptr;
 	};
 }

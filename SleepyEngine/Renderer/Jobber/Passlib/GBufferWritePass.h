@@ -23,9 +23,6 @@ namespace Rgph
 		{
 			using namespace Bind;
 
-			// get resources from clear pass
-			RegisterSink( DirectBufferSink<DepthStencil>::Make( "depthStencil", depthStencil ) );
-
 			// sampler is needed to access resorces
 			AddBind( std::make_shared<Bind::Sampler>( gfx, Bind::Sampler::Type::Anisotropic, false, 2 ) );
 
@@ -33,10 +30,13 @@ namespace Rgph
 			gbuffer = std::make_shared<Bind::GBufferRenderTargets>( gfx, 1280, 720, 4);
 			AddBind( gbuffer );
 			RegisterSource( DirectBufferSource<GBufferRenderTargets>::Make( "gbuffer", gbuffer ) );
-			RegisterSource( DirectBufferSource<DepthStencil>::Make( "depthStencil", depthStencil ) );
-			
+
+			depthMap = std::make_shared<ShaderInputDepthStencil>( gfx, 7, DepthStencil::Usage::ShadowDepth );
+			RegisterSource( DirectBufferSource<ShaderInputDepthStencil>::Make( "depthMap", depthMap ) );
+			SetDepthBuffer( depthMap );
+
 			// turn off stenciling
-			AddBind( Stencil::Resolve( gfx, Stencil::Mode::Off ));
+			//AddBind( Stencil::Resolve( gfx, Stencil::Mode::Off ));
 		}
 		void BindMainCamera( const Camera& cam ) noexcept
 		{
@@ -45,6 +45,7 @@ namespace Rgph
 		void Execute( Graphics& gfx ) const noexcept override
 		{
 			assert( pMainCamera );
+			depthMap->Clear( gfx );
 			gbuffer->Clear( gfx );
 			pMainCamera->BindToGraphics( gfx );
 			RenderQueuePass::Execute( gfx );
@@ -55,6 +56,7 @@ namespace Rgph
 			const_cast<GBufferWritePass*>( this )->depthStencil = std::move( ds );
 		}
 		std::shared_ptr<Bind::GBufferRenderTargets> gbuffer;
+		std::shared_ptr<Bind::ShaderInputDepthStencil> depthMap;
 		const Camera* pMainCamera = nullptr;
 	};
 }

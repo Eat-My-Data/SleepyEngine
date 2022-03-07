@@ -44,16 +44,17 @@ namespace Rgph
 
 		{
 			auto pass = std::make_unique<GBufferWritePass>( gfx, "lambertian" );
-			pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
+			//pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
 			AppendPass( std::move( pass ) );
 		}
 
 		{
 			auto pass = std::make_unique<DeferredLightingPass>( gfx, "deferredLighting" );
-			pass->SetSinkLinkage( "gbuffer", "lambertian.gbuffer" ); 
-			pass->SetSinkLinkage( "shadowMap", "shadowMap.map" ); 
 			pass->SetSinkLinkage( "renderTarget", "clearRT.buffer" );
-			pass->SetSinkLinkage( "depthStencil", "lambertian.depthStencil" );
+			pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
+			pass->SetSinkLinkage( "shadowMap", "shadowMap.map" );
+			pass->SetSinkLinkage( "depthMap", "lambertian.depthMap" );
+			pass->SetSinkLinkage( "gbuffer", "lambertian.gbuffer" );
 			AppendPass( std::move( pass ) );
 		}
 

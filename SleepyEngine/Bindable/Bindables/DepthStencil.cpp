@@ -306,6 +306,13 @@ namespace Bind
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSSetShaderResources( slot, 1u, pShaderResourceView.GetAddressOf() ) );
 	}
 
+	void ShaderInputDepthStencil::Bind( Graphics& gfx, UINT slot ) noexcept( !IS_DEBUG )
+	{
+
+		INFOMAN_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSSetShaderResources( slot, 1u, pShaderResourceView.GetAddressOf() ) );
+	}
+
 	OutputOnlyDepthStencil::OutputOnlyDepthStencil( Graphics& gfx, wrl::ComPtr<ID3D11Texture2D> pTexture, UINT face )
 		:
 		DepthStencil( gfx, std::move( pTexture ), face )

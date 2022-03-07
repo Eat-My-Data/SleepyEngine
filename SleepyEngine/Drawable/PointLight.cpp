@@ -21,9 +21,6 @@ PointLight::PointLight( Graphics& gfx, DirectX::XMFLOAT3 pos, float radius )
 
 	Reset();
 	pCamera = std::make_shared<Camera>( gfx, "Light", cbData.pos, 0.0f, PI / 2.0f, true );
-
-	// TODO:
-	//	- Make Light Geometry ( another solid sphere )
 }
 
 void PointLight::SpawnControlWindow() noexcept
