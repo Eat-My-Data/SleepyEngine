@@ -13,7 +13,19 @@ TextureCube shadowMap : register(t3); // shadow map
 
 SamplerState SampleTypePoint : register(s0);
 
-float4 main(float4 position : SV_POSITION) : SV_TARGET
+cbuffer ShadowTransformCBuf : register(b4)
+{
+    matrix shadowPos;
+};
+
+float4 ToShadowHomoSpace(const in float3 pos, uniform matrix modelTransform)
+{
+    const float4 world = mul(float4(pos, 1.0f), modelTransform);
+    return mul(world, shadowPos);
+}
+
+
+float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TARGET
 {   
     // sample textures
     float4 color = colorTexture.Load(int3(position.xy, 0));
@@ -35,16 +47,18 @@ float4 main(float4 position : SV_POSITION) : SV_TARGET
     normal = (normal * 2.0) - 1.0;
 
     //// world position
-    float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
+    //float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
     
     //// vector from camera to fragment
-    float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
+    float3 camToFrag = spos.xyz - camPos.xyz;
 
     // shadow
-    float shadow = 1.0f; //CalculatePointLightShadow(worldSpacePos.xyz, pointLightData[0].pos, SampleTypePoint, 0);
+    const float shadow = Shadow(spos);
+
+    //float shadow = CalculatePointLightShadow(worldSpacePos.xyz, viewLightPos, SampleTypePoint, 0);
     
     // attenuation
-    const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;
+    const float3 pointToFrag = viewLightPos - spos.xyz;
     float att = saturate((1 - (length(pointToFrag) / 10)));
     att *= att;
     att = 1.0f;
