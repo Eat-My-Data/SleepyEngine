@@ -1,5 +1,3 @@
-
-
 cbuffer CameraData : register(b3)
 {
     float4 camPos;

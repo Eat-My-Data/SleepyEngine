@@ -25,13 +25,6 @@ namespace Rgph
 
 		{
 			using namespace Bind;
-	/*		WorldPositionCBuf cbufData =
-			{
-				pMainCamera->GetMatrix(), pMainCamera->GetProjection(), pMainCamera->GetPos(), 1.0f
-			};
-			
-			AddBind( std::make_shared<Bind::PixelConstantBuffer<WorldPositionCBuf>>( gfx, cbufData, 9 ) );*/
-
 
 			AddBind( pShadowCBuf );
 			RegisterSink( DirectBufferSink<RenderTarget>::Make( "renderTarget", renderTarget ) );
