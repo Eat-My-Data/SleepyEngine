@@ -14,7 +14,7 @@ Camera::Camera( Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos, floa
 	proj( gfx, 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ),
 	indicator( gfx ),
 	tethered( tethered ),
-	worldPositionCBuf( std::make_shared<Bind::PixelConstantBuffer<WorldPosition>>( gfx, cbufData, 3 ) )
+	worldPositionCBuf( std::make_shared<Bind::PixelConstantBuffer<WorldPosition>>( gfx, cbufData, 10 ) )
 {
 	if ( tethered )
 	{

@@ -1,4 +1,4 @@
-cbuffer CameraData : register(b3)
+cbuffer CameraData : register(b10)
 {
     float4 camPos;
     row_major float4x4 viewInvMatrix;

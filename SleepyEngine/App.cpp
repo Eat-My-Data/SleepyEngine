@@ -182,6 +182,12 @@ void App::ExecuteFrame( float dt )
 	gobber.Submit( Chan::main );
 	nano.Submit( Chan::main );
 
+	//cube.Submit( Chan::shadow );
+	sponza.Submit( Chan::shadow );
+	//cube2.Submit( Chan::shadow );
+	gobber.Submit( Chan::shadow );
+	nano.Submit( Chan::shadow );
+
 	cameras.Submit( Chan::main );
 
 	if ( isDeferred )

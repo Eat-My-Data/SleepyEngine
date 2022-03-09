@@ -27,7 +27,7 @@ float3 Diffuse(
     const in float3 viewDirFragToL,
     const in float3 viewNormal)
 {
-    return diffuseColor * diffuseIntensity * att * max(0.0f, abs(dot(viewDirFragToL, viewNormal)));
+    return diffuseColor * diffuseIntensity * att * max(0.0f, dot(viewDirFragToL, viewNormal));
 }
 
 float3 Speculate(
