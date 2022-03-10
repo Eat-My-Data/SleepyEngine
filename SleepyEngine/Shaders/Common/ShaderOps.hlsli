@@ -17,7 +17,11 @@ float3 MapNormal(
 
 float Attenuate(uniform float attConst, uniform float attLin, uniform float attQuad, const in float distFragToL)
 {
-    return 1.0f / (attConst + attLin * distFragToL + attQuad * (distFragToL * distFragToL));
+    // TODO: Add radius to constant buffer
+    float att = saturate((1 - (distFragToL / 50)));
+    att *= att;
+    return att;
+    //return 1.0f / (attConst + attLin * distFragToL + attQuad * (distFragToL * distFragToL));
 }
 
 float3 Diffuse(

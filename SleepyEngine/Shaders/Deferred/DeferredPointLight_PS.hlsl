@@ -13,18 +13,6 @@ TextureCube shadowMap : register(t3); // shadow map
 
 SamplerState SampleTypePoint : register(s0);
 
-cbuffer ShadowTransformCBuf : register(b4)
-{
-    matrix shadowPos;
-};
-
-float4 ToShadowHomoSpace(const in float3 pos, uniform matrix modelTransform)
-{
-    const float4 world = mul(float4(pos, 1.0f), modelTransform);
-    return mul(world, shadowPos);
-}
-
-
 float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TARGET
 {   
     // sample textures
@@ -33,6 +21,7 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     float4 specular = specularTexture.Load(int3(position.xy, 0));
     float depthSample = depthTexture.Load(int3(position.xy, 0)).r;
     
+    return color;
     // screen position
     float2 screenPos;
     screenPos.x = position.x / 1280.0f;

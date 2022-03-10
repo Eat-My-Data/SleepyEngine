@@ -54,7 +54,7 @@ namespace Rgph
 			// need a way to bind old depth stencil as texture
 			//renderTarget->BindAsBuffer( gfx );
 			depthStencil->BindAsBuffer( gfx, renderTarget.get() );
-			depthMap->Bind( gfx );
+			//depthMap->Bind( gfx );
 
 			pShadowCBuf->Update( gfx );
 			pMainCamera->BindToGraphics( gfx );

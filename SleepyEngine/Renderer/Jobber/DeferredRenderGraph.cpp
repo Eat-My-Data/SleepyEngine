@@ -166,7 +166,7 @@ namespace Rgph
 	{
 		RenderShadowWindow( gfx );
 		RenderKernelWindow( gfx );
-		dynamic_cast<SkyboxPass&>( FindPassByName( "skybox" ) ).RenderWindow();
+//		dynamic_cast<SkyboxPass&>( FindPassByName( "skybox" ) ).RenderWindow();
 	}
 
 	void DeferredRenderGraph::RenderKernelWindow( Graphics& gfx )

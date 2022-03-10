@@ -56,6 +56,7 @@ namespace Bind
 	public:
 		GBufferRenderTargets( Graphics& gfx, UINT width, UINT height, UINT slot );
 		void Bind( Graphics& gfx ) noexcept override;
+		void BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept;
 		void Clear( Graphics& gfx, const std::array<float, 4>& color ) noexcept;
 		void Clear( Graphics& gfx ) noexcept;
 	private:
