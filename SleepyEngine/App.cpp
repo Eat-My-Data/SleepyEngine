@@ -168,7 +168,7 @@ void App::ToggleRenderTechnique()
 void App::ExecuteFrame( float dt )
 {
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );	
-	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
+	light.Bind( wnd.Gfx(), cameras->GetMatrix() * cameras->GetProjection() );
 
 	if ( isDeferred )
 		deferred_rg.BindMainCamera( cameras.GetActiveCamera() );

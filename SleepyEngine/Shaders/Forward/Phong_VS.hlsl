@@ -12,8 +12,8 @@ struct VSOut
 VSOut main(float3 pos : Position, float3 n : Normal)
 {
     VSOut vso;
-    vso.viewPos = (float3) mul(float4(pos, 1.0f), modelView);
-    vso.viewNormal = mul(n, (float3x3) model);
+    vso.viewPos = (float3) mul(float4(pos, 1.0f), modelViewProj);
+    vso.viewNormal = mul(n, (float3x3) modelViewProj);
     vso.pos = mul(float4(pos, 1.0f), modelViewProj);
     vso.shadowHomoPos = ToShadowHomoSpace(pos, model);
     return vso;
