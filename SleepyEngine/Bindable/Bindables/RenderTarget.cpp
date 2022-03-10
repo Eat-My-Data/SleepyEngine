@@ -348,21 +348,6 @@ namespace Bind
 		}
 	}
 
-	void GBufferRenderTargets::BindAsBuffer( Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView ) noexcept
-	{
-		GetContext( gfx )->OMSetRenderTargets( 3, &m_pGBuffers[0], pDepthStencilView );
-
-		// configure viewport
-		D3D11_VIEWPORT vp;
-		vp.Width = (float)width;
-		vp.Height = (float)height;
-		vp.MinDepth = 0.0f;
-		vp.MaxDepth = 1.0f;
-		vp.TopLeftX = 0.0f;
-		vp.TopLeftY = 0.0f;
-		GetContext( gfx )->RSSetViewports( 1u, &vp );
-	}
-
 	void GBufferRenderTargets::Bind( Graphics& gfx ) noexcept
 	{
 		GetContext( gfx )->PSSetShaderResources( slot, 3, &m_pShaderResources[0] );

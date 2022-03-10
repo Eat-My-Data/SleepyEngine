@@ -81,6 +81,3 @@ void Technique::ToggleRenderTechnique( Graphics& gfx, const std::string& renderT
 		step.ToggleRenderTechnique( gfx, renderTechnique );
 	}
 }
-
-// TODO:
-//	- Figure out why camera moves the lighting values.
