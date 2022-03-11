@@ -34,7 +34,7 @@ void Camera::BindToGraphics( Graphics& gfx ) const
 	cbufData.projInvMatrix = DirectX::XMMatrixInverse( &determinant, proj.GetMatrix() );
 	determinant = DirectX::XMMatrixDeterminant( GetMatrix() );
 	cbufData.viewInvMatrix = DirectX::XMMatrixInverse( &determinant, GetMatrix() );
-	//cbufData.camPos = GetPos();
+	cbufData.camPos = GetPos();
 	worldPositionCBuf->Update( gfx, cbufData );
 	worldPositionCBuf->Bind( gfx );
 }

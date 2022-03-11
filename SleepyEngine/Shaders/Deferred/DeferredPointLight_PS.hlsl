@@ -29,25 +29,23 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     // clip space, negate y because directx
     float clipX = (screenPos.x * 2.0) - 1.0;
     float clipY = (screenPos.y * 2.0) - 1.0;
-    clipY = -clipY;
+    //clipY = -clipY;
    
     // normal to clip space
     normal = (normal * 2.0) - 1.0;
 
     //// world position
     float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
-    
-    //// vector from camera to fragment
+
+    // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
 
     // shadow
     const float shadow = Shadow(spos);
-
-    //float shadow = CalculatePointLightShadow(worldSpacePos.xyz, viewLightPos, SampleTypePoint, 0);
     
     // attenuation
     const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;
-    float att = saturate((1 - (length(pointToFrag) / 100)));
+    float att = saturate((1 - (length(pointToFrag) / 35.0)));
     att *= att;
 
     // lighting calculations
@@ -57,6 +55,6 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     // combined color
     float3 combinedColor = ((ambient + diffuse + specularReflected));
 
-    //// final color
+    // final color
     return float4((combinedColor * color.rgb), 1.0f);
 }
