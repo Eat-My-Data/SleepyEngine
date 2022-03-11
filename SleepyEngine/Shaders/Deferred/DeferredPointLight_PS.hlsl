@@ -21,7 +21,6 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     float4 specular = specularTexture.Load(int3(position.xy, 0));
     float depthSample = depthTexture.Load(int3(position.xy, 0)).r;
     
-    return color;
     // screen position
     float2 screenPos;
     screenPos.x = position.x / 1280.0f;
@@ -36,10 +35,10 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     normal = (normal * 2.0) - 1.0;
 
     //// world position
-    //float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
+    float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
     
     //// vector from camera to fragment
-    float3 camToFrag = spos.xyz - camPos.xyz;
+    float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
 
     // shadow
     const float shadow = Shadow(spos);
@@ -47,17 +46,16 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     //float shadow = CalculatePointLightShadow(worldSpacePos.xyz, viewLightPos, SampleTypePoint, 0);
     
     // attenuation
-    const float3 pointToFrag = viewLightPos - spos.xyz;
-    float att = saturate((1 - (length(pointToFrag) / 10)));
+    const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;
+    float att = saturate((1 - (length(pointToFrag) / 100)));
     att *= att;
-    att = 1.0f;
 
     // lighting calculations
     float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, normalize(pointToFrag), normalize(normal.xyz)) * shadow;
     float3 specularReflected = Speculate(specular.xyz, diffuseIntensity, normalize(normal.xyz), normalize(pointToFrag), camToFrag, att, 128.0f) * shadow;
     
     // combined color
-    float3 combinedColor = ((diffuse + specularReflected));
+    float3 combinedColor = ((ambient + diffuse + specularReflected));
 
     //// final color
     return float4((combinedColor * color.rgb), 1.0f);
