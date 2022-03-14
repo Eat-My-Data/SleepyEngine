@@ -29,7 +29,7 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     // clip space, negate y because directx
     float clipX = (screenPos.x * 2.0) - 1.0;
     float clipY = (screenPos.y * 2.0) - 1.0;
-    //clipY = -clipY;
+    clipY = -clipY;
    
     // normal to clip space
     normal = (normal * 2.0) - 1.0;
@@ -45,7 +45,7 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     
     // attenuation
     const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;
-    float att = saturate((1 - (length(pointToFrag) / 35.0)));
+    float att = saturate((1 - (length(pointToFrag) / radius)));
     att *= att;
 
     // lighting calculations

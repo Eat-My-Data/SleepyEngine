@@ -5,6 +5,7 @@
 #include "./GUI/ImguiManager.h"
 #include "./Camera/CameraContainer.h"
 #include "./Drawable/PointLight.h"
+#include "./Drawable/SpotLight.h"
 #include "./Drawable/TestCube.h"
 #include "./Renderer/Model/Model.h"
 #include "./Utilities/ScriptCommander.h"
@@ -34,7 +35,8 @@ private:
 	FrameTimer timer;
 	float speed_factor = 1.0f;
 	CameraContainer cameras;
-	PointLight light;
+	PointLight pointLight;
+	SpotLight spotLight;
 	TestCube cube{ wnd.Gfx(),4.0f };
 	TestCube cube2{ wnd.Gfx(),4.0f };
 	Model sponza{ wnd.Gfx(),"Models\\sponza\\sponza.obj", 1.0f / 20.0f};

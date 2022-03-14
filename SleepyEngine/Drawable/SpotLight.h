@@ -5,26 +5,28 @@
 #include "../Camera/Camera.h"
 #include "../Drawable/SolidCone.h"
 
-class SpotLight : public Drawable
+class SpotLight
 {
 public:
-	SpotLight( Graphics& gdi, f32 scale );
-	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	void Update( Graphics& gdi );
-	void DrawControlPanel();
-	void Draw( Graphics& gdi );
-	void Submit();
-public:
-	void Translate( DirectX::XMFLOAT3 translation );
-	void Rotate( const f32 dx, const f32 dy );
-	DirectX::XMMATRIX GetViewMatrix() noexcept;
-	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
-	bool CameraIsInside( DirectX::XMFLOAT3 camPos );
+	SpotLight( Graphics& gdi, DirectX::XMFLOAT3 pospos = { 20.0f,15.0f,5.0f }, f32 scale = 1.0f );
+	void SpawnControlWindow();
+	void Reset() noexcept;
+	void Submit( size_t channels );
+	void Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept;
+	void LinkTechniques( Rgph::RenderGraph& );
+	std::shared_ptr<Camera> ShareCamera() const noexcept;
+	void ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique );
+//public:
+//	void Translate( DirectX::XMFLOAT3 translation );
+//	void Rotate( const f32 dx, const f32 dy );
+//	DirectX::XMMATRIX GetViewMatrix() noexcept;
+//	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
+//	bool CameraIsInside( DirectX::XMFLOAT3 camPos );
 public:
 	f32 m_fPitch;
 	f32 m_fYaw;
 public:
-	struct SpotLightData
+	struct SpotLightCBuf
 	{
 		DirectX::XMFLOAT3 color = { 1.0f, 1.0f, 1.0f };
 		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
@@ -32,11 +34,16 @@ public:
 		DirectX::XMFLOAT3 pos = { 0.0f, 10.0f, 0.0f };
 		float outerRadius = 0.885f;
 		float innerRadius = 0.955f;
+		float pitch = 0.0f;
+		float yaw = 0.0;
+		float padding[2];
 		DirectX::XMMATRIX spotViewProjectionMatrix;
 	};
-	SpotLightData m_StructuredBufferData;
+	SpotLightCBuf home;
+	SpotLightCBuf cbData;
 public:
-	SolidCone* m_pSolidCone;
+	mutable SolidCone mesh;
+	// mutable DeferredSpotLightGeometry dslg;
 private:
 	struct ForwardMatrices
 	{
