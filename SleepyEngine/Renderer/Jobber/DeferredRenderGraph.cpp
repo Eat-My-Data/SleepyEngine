@@ -259,3 +259,5 @@ namespace Rgph
 		//dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindShadowCamera( cam );
 	}
 }
+
+// TODO: Implement pass level binding

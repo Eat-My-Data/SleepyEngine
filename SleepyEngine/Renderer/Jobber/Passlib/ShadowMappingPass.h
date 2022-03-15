@@ -14,6 +14,7 @@
 #include "../../../Bindable/Bindables/NullPixelShader.h"
 #include "../../../Bindable/Bindables/ShadowRasterizer.h"
 #include "../../../Bindable/Bindables/CubeTexture.h"
+#include "../../../Bindable/Bindables/Texture.h"
 #include "../../../Bindable/Bindables/Viewport.h"
 #include "../../../Utilities/ChiliMath.h"
 
@@ -24,9 +25,17 @@ namespace Rgph
 	class ShadowMappingPass : public RenderQueuePass
 	{
 	public:
-		void BindShadowCamera( const Camera& cam ) noexcept
+		void BindPLShadowCamera( const Camera& cam ) noexcept
 		{
-			pShadowCamera = &cam;
+			pPLShadowCamera = &cam;
+		}
+		void BindSLShadowCamera( const Camera& cam ) noexcept
+		{
+			pSLShadowCamera = &cam;
+		}
+		void BindPLShadowCamera( const Camera& cam ) noexcept
+		{
+			pDLShadowCamera = &cam;
 		}
 		ShadowMappingPass( Graphics& gfx, std::string name )
 			:
@@ -34,13 +43,16 @@ namespace Rgph
 		{
 			using namespace Bind; 
 			pDepthCube = std::make_shared<DepthCubeTexture>( gfx, size, 3 );
+			pDepthTexture = std::make_shared<DepthTexture>( gfx, size, 4 ); // TODO: Cleanup resources
+
 			AddBind( VertexShader::Resolve( gfx, "./Shaders/Bin/Shadow_VS.cso" ) );
 			AddBind( NullPixelShader::Resolve( gfx ) );
 			AddBind( Stencil::Resolve( gfx, Stencil::Mode::Off ) );
 			AddBind( Blender::Resolve( gfx, false ) );
 			AddBind( std::make_shared<Viewport>( gfx, (float)size, (float)size ) );
 			AddBind( std::make_shared<Bind::ShadowRasterizer>( gfx, 50, 2.0f, 0.1f ) );
-			RegisterSource( DirectBindableSource<Bind::DepthCubeTexture>::Make( "map", pDepthCube ) );;
+			RegisterSource( DirectBindableSource<Bind::DepthCubeTexture>::Make( "plMap", pDepthCube ) );;
+			RegisterSource( DirectBindableSource<Bind::DepthTexture>::Make( "slMap", pDepthTexture ) );;
 
 			DirectX::XMStoreFloat4x4(
 				&projection,
@@ -72,7 +84,8 @@ namespace Rgph
 		{
 			using namespace DirectX;
 
-			XMFLOAT3 tempPos{ pShadowCamera->GetPos() };
+			// point light
+			XMFLOAT3 tempPos{ pPLShadowCamera->GetPos() };
 			const auto pos = XMLoadFloat3( &tempPos );
 
 			gfx.SetProjection( XMLoadFloat4x4( &projection ) );
@@ -85,6 +98,20 @@ namespace Rgph
 				gfx.SetCamera( XMMatrixLookAtLH( pos, lookAt, XMLoadFloat3( &cameraUps[i] ) ) );
 				RenderQueuePass::Execute( gfx );
 			}
+
+			// spot light
+			XMFLOAT3 tempPos{ pPLShadowCamera->GetPos() };
+			const auto pos = XMLoadFloat3( &tempPos );
+
+			gfx.SetProjection( pSLShadowCamera->GetProjection() );
+
+			auto d = pDepthTexture->GetDepthBuffer();
+			d->Clear( gfx );
+			SetDepthBuffer( std::move( d ) );
+			const auto lookAt = pos + XMLoadFloat3( &cameraDirections[i] );
+			gfx.SetCamera( XMMatrixLookAtLH( pos, lookAt, XMLoadFloat3( &cameraUps[i] ) ) );
+			RenderQueuePass::Execute( gfx );
+			
 		}
 		void DumpShadowMap( Graphics& gfx, const std::string& path ) const
 		{
@@ -100,8 +127,12 @@ namespace Rgph
 			const_cast<ShadowMappingPass*>( this )->depthStencil = std::move( ds );
 		}
 		static constexpr UINT size = 1000;
-		const Camera* pShadowCamera = nullptr;
+		const Camera* pPLShadowCamera = nullptr;
+		const Camera* pSLShadowCamera = nullptr;
+		const Camera* pDLShadowCamera = nullptr;
+
 		std::shared_ptr<Bind::DepthCubeTexture> pDepthCube;
+		std::shared_ptr<Bind::DepthTexture> pDepthTexture;
 		DirectX::XMFLOAT4X4 projection;
 		std::vector<DirectX::XMFLOAT3> cameraDirections{ 6 };
 		std::vector<DirectX::XMFLOAT3> cameraUps{ 6 };

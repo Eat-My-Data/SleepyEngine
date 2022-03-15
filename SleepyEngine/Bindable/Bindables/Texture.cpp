@@ -1,5 +1,6 @@
 #include "Texture.h"
 #include "../../Renderer/Surface.h"
+#include "../../Macros/GraphicsThrowMacros.h"
 #include "../BindableCodex.h"
 
 namespace Bind
@@ -72,6 +73,80 @@ namespace Bind
 	}
 #undef max
 	UINT Texture::CalculateNumberOfMipLevels( UINT width, UINT height ) noexcept
+	{
+		const float xSteps = std::ceil( log2( (float)width ) );
+		const float ySteps = std::ceil( log2( (float)height ) );
+		return (UINT)std::max( xSteps, ySteps );
+	}
+
+	DepthTexture::DepthTexture( Graphics& gfx, UINT size, UINT slot )
+		:
+		slot( slot )
+	{
+		INFOMAN( gfx );
+
+		// texture descriptor
+		D3D11_TEXTURE2D_DESC textureDesc = {};
+		textureDesc.Width = size;
+		textureDesc.Height = size;
+		textureDesc.MipLevels = 1;
+		textureDesc.ArraySize = 6;
+		textureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS;
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.SampleDesc.Quality = 0;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
+		textureDesc.CPUAccessFlags = 0;
+		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+		// create the texture resource
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture;
+		GFX_THROW_INFO( GetDevice( gfx )->CreateTexture2D(
+			&textureDesc, nullptr, &pTexture
+		) );
+
+
+		// create the resource view on the texture
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Format = textureDesc.Format;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+		srvDesc.Texture2D.MipLevels = 1;
+		GetDevice( gfx )->CreateShaderResourceView(
+			pTexture.Get(), &srvDesc, &pTextureView
+		);
+
+		depthBuffer = std::make_shared<OutputOnlyDepthStencil>( gfx, pTexture );
+	}
+	void DepthTexture::Bind( Graphics& gfx ) noexcept
+	{
+
+		INFOMAN_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSSetShaderResources( slot, 1u, &pTextureView ) );
+		//GetContext( gdi )->PSSetShaderResources( slot, 1u, &pTextureView );
+	}
+	std::shared_ptr<DepthTexture> DepthTexture::Resolve( Graphics& gdi, const std::string& path, UINT slot )
+	{
+		return Codex::Resolve<DepthTexture>( gdi, path, slot );
+	}
+	std::string DepthTexture::GenerateUID( UINT slot )
+	{
+		using namespace std::string_literals;
+		return typeid( DepthTexture ).name() + "#"s + std::to_string( slot );
+	}
+	std::string DepthTexture::GetUID() const noexcept
+	{
+		return GenerateUID( slot );
+	}
+	bool DepthTexture::HasAlpha() const noexcept
+	{
+		return hasAlpha;
+	}
+	std::shared_ptr<OutputOnlyDepthStencil> DepthTexture::GetDepthBuffer( size_t index ) const
+	{
+		return depthBuffer;
+	}
+#undef max
+	UINT DepthTexture::CalculateNumberOfMipLevels( UINT width, UINT height ) noexcept
 	{
 		const float xSteps = std::ceil( log2( (float)width ) );
 		const float ySteps = std::ceil( log2( (float)height ) );
