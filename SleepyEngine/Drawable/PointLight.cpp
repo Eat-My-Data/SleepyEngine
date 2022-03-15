@@ -6,7 +6,7 @@
 PointLight::PointLight( Graphics& gfx, DirectX::XMFLOAT3 pos, float radius )
 	:
 	mesh( gfx, radius ),
-	dplg( gfx, radius*20.0f ),
+	dMesh( gfx, radius*20.0f ),
 	cbuf( gfx )
 {
 	home = {
@@ -68,8 +68,8 @@ void PointLight::Submit( size_t channels ) const noxnd
 {
 	mesh.SetPos( cbData.pos );
 	mesh.Submit( channels );
-	dplg.SetPos( cbData.pos );
-	dplg.Submit( channels );
+	dMesh.SetPos( cbData.pos );
+	dMesh.Submit( channels );
 }
 
 void PointLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
@@ -84,7 +84,7 @@ void PointLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
 void PointLight::LinkTechniques( Rgph::RenderGraph& rg )
 {
 	mesh.LinkTechniques( rg );
-	dplg.LinkTechniques( rg );
+	dMesh.LinkTechniques( rg );
 }
 
 std::shared_ptr<Camera> PointLight::ShareCamera() const noexcept
@@ -94,5 +94,5 @@ std::shared_ptr<Camera> PointLight::ShareCamera() const noexcept
 
 void PointLight::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
 {
-	dplg.ToggleRenderTechnique( gfx, renderTechnique );
+	dMesh.ToggleRenderTechnique( gfx, renderTechnique );
 }

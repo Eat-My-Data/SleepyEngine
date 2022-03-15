@@ -141,7 +141,7 @@ void App::ToggleRenderTechnique()
 
 		cameras.LinkTechniques( forward_rg );
 		forward_rg.BindShadowCamera( *pointLight.ShareCamera() );
-		forward_rg.BindShadowCamera( *spotLight.ShareCamera() );
+		//forward_rg.BindShadowCamera( *spotLight.ShareCamera() );
 
 		isDeferred = false;
 		//cube.ToggleRenderTechnique( wnd.Gfx(), "" );
@@ -166,7 +166,7 @@ void App::ToggleRenderTechnique()
 
 		cameras.LinkTechniques( deferred_rg );
 		deferred_rg.BindShadowCamera( *pointLight.ShareCamera() );
-		deferred_rg.BindMainCamera( *spotLight.ShareCamera() );
+		//deferred_rg.BindMainCamera( *spotLight.ShareCamera() );
 
 		//cube.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		//cube2.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );

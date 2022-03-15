@@ -22,9 +22,6 @@
     <Filter Include="Source Files\Win32">
       <UniqueIdentifier>{72f63415-6267-4efb-a745-47d8f98eb16a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\SceneManager">
-      <UniqueIdentifier>{e09104e2-c4ea-40aa-b26c-948cf642d804}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Bindable">
       <UniqueIdentifier>{8cf1a705-8980-4b11-b836-ebb0e0e7d6b5}</UniqueIdentifier>
     </Filter>
@@ -42,9 +39,6 @@
     </Filter>
     <Filter Include="Source Files\Bindable\Bindables">
       <UniqueIdentifier>{76be1ffb-0f10-4fd2-a596-3aaab9011167}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\SceneManager">
-      <UniqueIdentifier>{119c3f0e-1421-4ea3-9c42-c3b64d926c1f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{83dd5fbc-0e04-44d6-8b31-9a85a0c0cc8e}</UniqueIdentifier>
@@ -138,9 +132,6 @@
     <ClCompile Include="Drawable\Drawable.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager\SceneManager.cpp">
-      <Filter>Source Files\SceneManager</Filter>
-    </ClCompile>
     <ClCompile Include="Bindable\Bindables\VertexShader.cpp">
       <Filter>Source Files\Bindable\Bindables</Filter>
     </ClCompile>
@@ -197,9 +188,6 @@
     </ClCompile>
     <ClCompile Include="Drawable\PointLight.cpp">
       <Filter>Source Files\Drawable</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager\LightManager.cpp">
-      <Filter>Source Files\SceneManager</Filter>
     </ClCompile>
     <ClCompile Include="Drawable\SolidSphere.cpp">
       <Filter>Source Files\Drawable</Filter>
@@ -390,7 +378,13 @@
     <ClCompile Include="Renderer\Jobber\Passlib\BufferClearPass.cpp">
       <Filter>Source Files\Renderer\Jobber\Passlib</Filter>
     </ClCompile>
-    <ClCompile Include="Drawable\DeferredPointLightGeometry.cpp">
+    <ClCompile Include="Drawable\DeferredSolidSphere.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable\DeferredSolidCone.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable\DeferredFullScreen.cpp">
       <Filter>Source Files\Drawable</Filter>
     </ClCompile>
   </ItemGroup>
@@ -479,20 +473,11 @@
     <ClInclude Include="Drawable\PointLight.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager\RenderTechnique.h">
-      <Filter>Header Files\SceneManager</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager\SceneManager.h">
-      <Filter>Header Files\SceneManager</Filter>
-    </ClInclude>
     <ClInclude Include="Bindable\Bindables\ConstantBuffersEx.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
     </ClInclude>
     <ClInclude Include="Bindable\Bindables\StructuredBuffers.h">
       <Filter>Header Files\Bindable\Bindables</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager\LightManager.h">
-      <Filter>Header Files\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="Drawable\SolidSphere.h">
       <Filter>Header Files\Drawable</Filter>
@@ -770,7 +755,16 @@
     <ClInclude Include="Renderer\Jobber\Passlib\DeferredLightingPass.h">
       <Filter>Header Files\Renderer\Jobber\Passlib</Filter>
     </ClInclude>
-    <ClInclude Include="Drawable\DeferredPointLightGeometry.h">
+    <ClInclude Include="Drawable\DeferredSolidSphere.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable\DeferredSolidCone.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry\FullScreen2T.h">
+      <Filter>Header Files\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable\DeferredFullScreen.h">
       <Filter>Header Files\Drawable</Filter>
     </ClInclude>
   </ItemGroup>
@@ -908,6 +902,12 @@
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
     <FxCompile Include="Shaders\Deferred\DeferredPointLight_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredSpotLight_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredSpotLight_VS.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
   </ItemGroup>

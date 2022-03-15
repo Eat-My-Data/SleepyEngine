@@ -8,8 +8,94 @@
 #include <math.h>
 #include "../Libraries/imgui/imgui.h"
 
-SpotLight::SpotLight( Graphics& gdi, DirectX::XMFLOAT3 pos, f32 scale )
+SpotLight::SpotLight( Graphics& gfx, DirectX::XMFLOAT3 pos, f32 scale )
+	:
+	mesh( gfx ),
+	dMesh( gfx, 10 ),
+	cbuf( gfx, 11 )
 {
+	pCamera = std::make_shared<Camera>( gfx, "Spot Light", cbData.pos, 0.0f, PI / 2.0f, true );
+
+	home = {
+		pos,
+		{ 0.05f,0.05f,0.05f },
+		{ 0.0f, -1.0f, 0.0f },
+		50.0f,
+		0.885f,
+		0.955f,
+		0.0f,
+		0.0f,
+		{ 0.0, 0.0 },
+		pCamera->GetMatrix() * pCamera->GetProjection()
+	};
+
+	Reset();
+}
+
+void SpotLight::SpawnControlWindow()
+{
+	ImGui::Text( "Spot Light" );
+	ImGui::ColorEdit3( "Color", &cbData.color.x );
+	ImGui::SliderFloat( "X", &cbData.pos.x, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Y", &cbData.pos.y, -80.0f, 80.0f );
+	ImGui::SliderFloat( "Z", &cbData.pos.z, -80.0f, 80.0f );
+	ImGui::SliderAngle( "Pitch", &cbData.pitch, 0.995f * -180.0f, 0.995f * 180.0f );
+	ImGui::SliderAngle( "Yaw", &cbData.yaw, 0.995f * -180.0f, 0.995f * 180.0f );
+}
+
+void SpotLight::Reset() noexcept
+{
+	cbData = home;
+}
+
+void SpotLight::Submit( size_t channels )
+{
+	mesh.SetPos( cbData.pos );
+	mesh.Submit( channels );
+	dMesh.SetPos( cbData.pos );
+	dMesh.Submit( channels );
+}
+void SpotLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
+{
+	auto dataCopy = cbData;
+	const auto pos = DirectX::XMLoadFloat3( &cbData.pos );
+	DirectX::XMStoreFloat3( &dataCopy.pos, DirectX::XMVector3Transform( pos, view ) );
+	cbuf.Update( gfx, dataCopy );
+	cbuf.Bind( gfx );
+}
+void SpotLight::LinkTechniques( Rgph::RenderGraph& rg )
+{
+	mesh.LinkTechniques( rg );
+	dMesh.LinkTechniques( rg );
+}
+
+std::shared_ptr<Camera> SpotLight::ShareCamera() const noexcept
+{
+	return pCamera;
+}
+
+void SpotLight::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
+{
+	dMesh.ToggleRenderTechnique( gfx, renderTechnique );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//SpotLight::SpotLight( Graphics& gfx, DirectX::XMFLOAT3 pos, f32 scale )
+	//:
+	//mesh( gfx ),
+	//dMesh( gfx, 10 )
+//{
 	//using namespace Bind;
 	//namespace dx = DirectX;
 
@@ -43,9 +129,8 @@ SpotLight::SpotLight( Graphics& gdi, DirectX::XMFLOAT3 pos, f32 scale )
 	//m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 2u );
 	//AddBind( m_pForwardLightMatrices );	
 
-	m_pSolidCone = new SolidCone( gdi );
-	m_pSolidCone->SetPos( m_StructuredBufferData.pos );
-	m_pSolidCone->Rotate( m_fPitch + ( PI / 2.0f ), m_fYaw - ( PI / 2.0f ) );
+	//mesh.SetPos( cbData.pos );
+	//mesh.Rotate( m_fPitch + ( PI / 2.0f ), m_fYaw - ( PI / 2.0f ) );
 	//DirectX::XMMATRIX tView = DirectX::XMMatrixTranspose( GetViewMatrix() );
 	//m_StructuredBufferData.lightDirection.x = tView.r[2].m128_f32[0];
 	//m_StructuredBufferData.lightDirection.y = tView.r[2].m128_f32[1];
@@ -115,7 +200,7 @@ SpotLight::SpotLight( Graphics& gdi, DirectX::XMFLOAT3 pos, f32 scale )
 	//rasterizerDescOutside.DepthClipEnable = false;
 
 	//gdi.GetDevice()->CreateRasterizerState( &rasterizerDescOutside, &rasterizerOutside );
-}
+//}
 
 //void SpotLight::Update( Graphics& gdi )
 //{
@@ -129,17 +214,6 @@ SpotLight::SpotLight( Graphics& gdi, DirectX::XMFLOAT3 pos, f32 scale )
 //	//m_pForwardLightMatrices->Update( gdi, matrixcbuf );
 //	//m_pForwardLightMatrices->Bind( gdi );
 //}
-
-void SpotLight::SpawnControlWindow()
-{
-	ImGui::Text( "Spot Light" );
-	ImGui::ColorEdit3( "Color", &m_StructuredBufferData.color.x );
-	ImGui::SliderFloat( "X", &m_StructuredBufferData.pos.x, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Y", &m_StructuredBufferData.pos.y, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Z", &m_StructuredBufferData.pos.z, -80.0f, 80.0f );
-	ImGui::SliderAngle( "Pitch", &m_fPitch, 0.995f * -180.0f, 0.995f * 180.0f );
-	ImGui::SliderAngle( "Yaw", &m_fYaw, 0.995f * -180.0f, 0.995f * 180.0f );
-}
 //
 //void SpotLight::Draw( Graphics& gdi )
 //{
@@ -187,22 +261,6 @@ void SpotLight::SpawnControlWindow()
 //	//}
 //}
 
-void SpotLight::Submit( size_t channels )
-{
-	m_pSolidCone->Submit( channels );
-}
-void SpotLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
-{
-	auto dataCopy = cbData;
-	const auto pos = DirectX::XMLoadFloat3( &cbData.pos );
-	DirectX::XMStoreFloat3( &dataCopy.pos, DirectX::XMVector3Transform( pos, view ) );
-	cbuf.Update( gfx, dataCopy );
-	cbuf.Bind( gfx );
-}
-void SpotLight::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
-{
-	//dslg.ToggleRenderTechnique( gfx, renderTechnique );
-}
 //
 //void SpotLight::Translate( DirectX::XMFLOAT3 translation )
 //{

@@ -1,29 +1,106 @@
-//#include "DirectionalLight.h"
-//#include "../Bindable/BindableCommon.h"
-//#include "../Bindable/Bindables/Sampler.h"
-//#include "../Bindable/Bindables/Blender.h"
-//#include <algorithm>
-//#include "../Libraries/imgui/backends/imgui_impl_dx11.h"
-//#include "../Libraries/imgui/backends/imgui_impl_win32.h"
-//
-//DirectionalLight::DirectionalLight( Graphics& gdi )
-//{
-//	/*using namespace Bind;
-//	namespace dx = DirectX;
-//
-//	auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/LightVS.cso" );
-//	auto pvsbc = pvs->GetBytecode();
-//	AddBind( std::move( pvs ) );
-//	AddBind( PixelShader::Resolve( gdi, "./Shaders/Bin/LightPS.cso" ) );
-//	AddBind( Sampler::Resolve( gdi ) );
-//	AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
-//	AddBind( Rasterizer::Resolve( gdi, true ) );
-//
-//	m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 1u );
-//	AddBind( m_pForwardLightMatrices );	*/
-//}
-//
-//
+#include "DirectionalLight.h"
+#include "../Bindable/BindableCommon.h"
+#include "../Bindable/Bindables/Sampler.h"
+#include "../Bindable/Bindables/Blender.h"
+#include <algorithm>
+#include "../Libraries/imgui/imgui.h"
+
+DirectionalLight::DirectionalLight( Graphics& gfx )
+	:
+	mesh( gfx ),
+	cbuf( gfx, 12 )
+{
+	//using namespace Bind;
+	//namespace dx = DirectX;
+
+	//auto pvs = VertexShader::Resolve( gdi, "./Shaders/Bin/LightVS.cso" );
+	//auto pvsbc = pvs->GetBytecode();
+	//AddBind( std::move( pvs ) );
+	//AddBind( PixelShader::Resolve( gdi, "./Shaders/Bin/LightPS.cso" ) );
+	//AddBind( Sampler::Resolve( gdi ) );
+	//AddBind( Topology::Resolve( gdi, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+	//AddBind( Rasterizer::Resolve( gdi, true ) );
+
+	//m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 1u );
+	//AddBind( m_pForwardLightMatrices );	
+	pCamera = std::make_shared<Camera>( gfx, "Light", DirectX::XMFLOAT3{ 0.0f, 200.0f, 0.0f }, PI / 2.0f, -PI, true );
+
+	home = {
+		{ 0.0f, -1.0f, 0.0f },
+		{ 1.0f, 1.0f, 1.0f },
+		{ 0.7f,0.7f,0.7f },
+		{ 0.0f, 0.0f, 0.0f }, // padding
+		{ pCamera->GetMatrix() * pCamera->GetProjection() }
+	};
+
+	Reset();
+}
+
+void DirectionalLight::SpawnControlWindow() noexcept
+{
+	if ( ImGui::Begin( "Light" ) )
+	{
+		bool dirtyPos = false;
+		const auto d = [&dirtyPos]( bool dirty ) {dirtyPos = dirtyPos || dirty; };
+
+		// Rotate Light/Pass time controls?
+		ImGui::Text( "Light Direction" );
+		d( ImGui::SliderFloat( "X", &cbData.lightDirection.x, -1.0f, 1.0f, "%.1f" ) );
+		d( ImGui::SliderFloat( "Y", &cbData.lightDirection.y, -1.0f, 1.0f, "%.1f" ) );
+		d( ImGui::SliderFloat( "Z", &cbData.lightDirection.z, -1.0f, 1.0f, "%.1f" ) );
+
+		ImGui::Text( "Color/Ambience" );
+		ImGui::ColorEdit3( "Diffuse Color", &cbData.color.x );
+		ImGui::ColorEdit3( "Ambience", &cbData.ambient.x );
+
+		if ( ImGui::Button( "Reset" ) )
+		{
+			Reset();
+		}
+	}
+	ImGui::End();
+}
+
+void DirectionalLight::Reset() noexcept
+{
+	cbData = home;
+}
+
+void DirectionalLight::Submit( size_t channels ) const noexcept( !IS_DEBUG )
+{
+	// submit drawable pass?
+}
+
+void DirectionalLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
+{
+}
+
+void DirectionalLight::LinkTechniques( Rgph::RenderGraph& )
+{
+}
+
+std::shared_ptr<Camera> DirectionalLight::ShareCamera() const noexcept
+{
+	return std::shared_ptr<Camera>();
+}
+
+void DirectionalLight::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
+{
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //DirectX::XMMATRIX DirectionalLight::GetTransformXM() const noexcept
 //{
 //	return DirectX::XMMatrixTranslation( 1.0f, 1.0f, 1.0f );

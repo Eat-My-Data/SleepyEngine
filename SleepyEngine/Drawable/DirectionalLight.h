@@ -1,36 +1,35 @@
-//#pragma once
-//#include "Drawable.h"
-//#include "../Bindable/Bindables/ConstantBuffers.h"
-//#include "../SceneManager/RenderTechnique.h"
-//#include "../SceneManager/Camera.h"
-//
-//class DirectionalLight : public Drawable
-//{
-//public:
-//	DirectionalLight( Graphics& gdi );
-//	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-//	void Update( Graphics& gdi );
-//	void DrawControlPanel();
-//	void Draw( Graphics& gdi ) const noexcept;
-//public:
-//	void Translate( DirectX::XMFLOAT3 translation );
-//	void Rotate( const f32 dx, const f32 dy );
-//	DirectX::XMMATRIX GetViewMatrix() noexcept;
-//	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
-//public:
-//	f32 m_fPitch = PI / 2.0f;
-//	f32 m_fYaw = -PI;
-//public:
-//	struct DirectionalLightData
-//	{
-//		DirectX::XMFLOAT3 lightDirection = { 0.0f, -1.0f, 0.0f };
-//		DirectX::XMFLOAT3 color = { 1.0f, 1.0f, 1.0f };
-//		float att = 0.7f;
-//		float padding;
-//		DirectX::XMMATRIX lightViewProjectionMatrix;
-//	};
-//	DirectionalLightData m_StructuredBufferData;
-//	DirectX::XMFLOAT3 homePos = { 0.0f, 200.0f, 10.0f };
+#pragma once
+#include "Drawable.h"
+#include "../Bindable/Bindables/ConstantBuffers.h"
+#include "../Camera/Camera.h"
+#include "../Utilities/ChiliMath.h"
+#include "../Drawable/DeferredFullScreen.h"
+
+class DirectionalLight
+{
+public:
+	DirectionalLight( Graphics& gfx );
+	void SpawnControlWindow() noexcept;
+	void Reset() noexcept;
+	void Submit( size_t channels ) const noxnd;
+	void Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept;
+	void LinkTechniques( Rgph::RenderGraph& );
+	std::shared_ptr<Camera> ShareCamera() const noexcept;
+	void ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique );
+private:
+	struct DirectionalLightCBuf
+	{
+		DirectX::XMFLOAT3 lightDirection;
+		DirectX::XMFLOAT3 color;
+		DirectX::XMFLOAT3 ambient;
+		float padding[3];
+		DirectX::XMMATRIX lightViewProjectionMatrix;
+	};
+	DirectionalLightCBuf home;
+	DirectionalLightCBuf cbData;
+	mutable DeferredFullScreen mesh;
+	mutable Bind::PixelConstantBuffer<DirectionalLightCBuf> cbuf;
+	std::shared_ptr<Camera> pCamera;
 //private:
 //	struct ForwardMatrices
 //	{
@@ -38,4 +37,4 @@
 //		DirectX::XMMATRIX lightProjMatrix;
 //	} matrixcbuf;
 //	std::shared_ptr<Bind::VertexConstantBuffer<ForwardMatrices>> m_pForwardLightMatrices;
-//};
+};
