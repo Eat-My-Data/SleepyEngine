@@ -910,6 +910,12 @@
     <FxCompile Include="Shaders\Deferred\DeferredSpotLight_VS.hlsl">
       <Filter>Shaders\Deferred</Filter>
     </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredDirectionalLight_VS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
+    <FxCompile Include="Shaders\Deferred\DeferredDirectionalLight_PS.hlsl">
+      <Filter>Shaders\Deferred</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -944,6 +950,9 @@
       <Filter>Shaders\Deferred</Filter>
     </None>
     <None Include="Shaders\Common\Camera.hlsli">
+      <Filter>Shaders\Common</Filter>
+    </None>
+    <None Include="Shaders\Common\DirectionalLight.hlsli">
       <Filter>Shaders\Common</Filter>
     </None>
   </ItemGroup>

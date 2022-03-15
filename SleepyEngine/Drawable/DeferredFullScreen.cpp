@@ -42,12 +42,7 @@ DeferredFullScreen::DeferredFullScreen( Graphics& gfx )
 	}
 }
 
-void DeferredFullScreen::SetPos( DirectX::XMFLOAT3 pos ) noexcept
-{
-	this->pos = pos;
-}
-
 DirectX::XMMATRIX DeferredFullScreen::GetTransformXM() const noexcept
 {
-	return DirectX::XMMatrixTranslation( pos.x, pos.y, pos.z );
+	return DirectX::XMMatrixIdentity();
 }
