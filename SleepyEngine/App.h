@@ -6,6 +6,7 @@
 #include "./Camera/CameraContainer.h"
 #include "./Drawable/PointLight.h"
 #include "./Drawable/SpotLight.h"
+#include "./Drawable/DirectionalLight.h"
 #include "./Drawable/TestCube.h"
 #include "./Renderer/Model/Model.h"
 #include "./Utilities/ScriptCommander.h"
@@ -37,6 +38,7 @@ private:
 	CameraContainer cameras;
 	PointLight pointLight;
 	SpotLight spotLight;
+	DirectionalLight directionalLight;
 	TestCube cube{ wnd.Gfx(),4.0f };
 	TestCube cube2{ wnd.Gfx(),4.0f };
 	Model sponza{ wnd.Gfx(),"Models\\sponza\\sponza.obj", 1.0f / 20.0f};

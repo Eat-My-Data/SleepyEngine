@@ -23,7 +23,10 @@ namespace Rgph
 		void RenderWindows( Graphics& gfx );
 		void DumpShadowMap( Graphics& gfx, const std::string& path );
 		void BindMainCamera( Camera& cam );
-		void BindShadowCamera( Camera& cam );
+		void BindPLShadowCamera( Camera& cam );
+		void BindSLShadowCamera( Camera& cam );
+		void BindDLShadowCamera( Camera& cam );
+
 		void StoreDepth( Graphics& gfx, const std::string& path );
 	private:
 		void RenderKernelWindow( Graphics& gfx );

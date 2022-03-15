@@ -14,7 +14,7 @@ SpotLight::SpotLight( Graphics& gfx, DirectX::XMFLOAT3 pos, f32 scale )
 	dMesh( gfx, 10 ),
 	cbuf( gfx, 11 )
 {
-	pCamera = std::make_shared<Camera>( gfx, "Spot Light", cbData.pos, 0.0f, PI / 2.0f, true );
+	pCamera = std::make_shared<Camera>( gfx, "Spot Light", pos, 0.0f, PI / 2.0f, true );
 
 	home = {
 		pos,

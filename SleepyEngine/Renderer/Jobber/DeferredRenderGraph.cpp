@@ -243,9 +243,19 @@ namespace Rgph
 	{
 		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).DumpShadowMap( gfx, path );
 	}
-	void Rgph::DeferredRenderGraph::BindShadowCamera( Camera& cam )
+	void Rgph::DeferredRenderGraph::BindPLShadowCamera( Camera& cam )
 	{
 		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
 		dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindShadowCamera( cam );
+	}
+	void Rgph::DeferredRenderGraph::BindSLShadowCamera( Camera& cam )
+	{
+		//dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
+		//dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindShadowCamera( cam );
+	}
+	void Rgph::DeferredRenderGraph::BindDLShadowCamera( Camera& cam )
+	{
+		//dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
+		//dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindShadowCamera( cam );
 	}
 }

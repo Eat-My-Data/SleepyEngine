@@ -68,24 +68,28 @@ void DirectionalLight::Reset() noexcept
 
 void DirectionalLight::Submit( size_t channels ) const noexcept( !IS_DEBUG )
 {
-	// submit drawable pass?
+	mesh.Submit( channels );
 }
 
 void DirectionalLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
 {
+	cbuf.Update( gfx, cbData );
+	cbuf.Bind( gfx );
 }
 
-void DirectionalLight::LinkTechniques( Rgph::RenderGraph& )
+void DirectionalLight::LinkTechniques( Rgph::RenderGraph& rg )
 {
+	mesh.LinkTechniques( rg );
 }
 
 std::shared_ptr<Camera> DirectionalLight::ShareCamera() const noexcept
 {
-	return std::shared_ptr<Camera>();
+	return pCamera;
 }
 
 void DirectionalLight::ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique )
 {
+	mesh.ToggleRenderTechnique( gfx, renderTechnique );
 }
 
 

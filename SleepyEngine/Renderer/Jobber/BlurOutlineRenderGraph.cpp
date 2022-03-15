@@ -230,9 +230,19 @@ namespace Rgph
 	{
 		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).DumpShadowMap( gfx, path );
 	}
-	void Rgph::BlurOutlineRenderGraph::BindShadowCamera( Camera& cam )
+	void Rgph::BlurOutlineRenderGraph::BindPLShadowCamera( Camera& cam )
 	{
 		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
 		dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindShadowCamera( cam );
+	}
+	void Rgph::BlurOutlineRenderGraph::BindSLShadowCamera( Camera& cam )
+	{
+		//dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
+		//dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindShadowCamera( cam );
+	}
+	void Rgph::BlurOutlineRenderGraph::BindDLShadowCamera( Camera& cam )
+	{
+		//dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
+		//dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindShadowCamera( cam );
 	}
 }

@@ -15,12 +15,14 @@ App::App( const std::string& commandLine )
 	wnd( 1280, 720, "Sleepy Engine" ),
 	scriptCommander( TokenizeQuoted( commandLine ) ),
 	pointLight( wnd.Gfx(), { 10.0f,5.0f,0.0f } ),
-	spotLight( wnd.Gfx() )
+	spotLight( wnd.Gfx() ),
+	directionalLight( wnd.Gfx() )
 {
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "A", dx::XMFLOAT3{ -13.5f,6.0f,3.5f }, 0.0f, PI / 2.0f ) );
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "B", dx::XMFLOAT3{ -13.5f,28.8f,-6.4f }, PI / 180.0f * 13.0f, PI / 180.0f * 61.0f ) );
 	cameras.AddCamera( pointLight.ShareCamera() );
 	cameras.AddCamera( spotLight.ShareCamera() );
+	cameras.AddCamera( directionalLight.ShareCamera() );
 
 	//cube.SetPos( { 10.0f,5.0f,6.0f } );
 	//cube2.SetPos( { 10.0f,5.0f,14.0f } );
@@ -38,13 +40,15 @@ App::App( const std::string& commandLine )
 	//cube2.LinkTechniques( rg );
 	pointLight.LinkTechniques( forward_rg );
 	spotLight.LinkTechniques( forward_rg );
+	directionalLight.LinkTechniques( forward_rg );
 	sponza.LinkTechniques( forward_rg );
 	gobber.LinkTechniques( forward_rg );
 	nano.LinkTechniques( forward_rg );
 
 	cameras.LinkTechniques( forward_rg );
-	forward_rg.BindShadowCamera( *pointLight.ShareCamera() );
-	forward_rg.BindShadowCamera( *spotLight.ShareCamera() );
+	forward_rg.BindPLShadowCamera( *pointLight.ShareCamera() );
+	forward_rg.BindSLShadowCamera( *spotLight.ShareCamera() );
+	forward_rg.BindDLShadowCamera( *directionalLight.ShareCamera() );
 	//ToggleRenderTechnique();
 }
 
@@ -129,19 +133,22 @@ void App::ToggleRenderTechnique()
 
 		pointLight.ToggleRenderTechnique( wnd.Gfx(), "" );
 		spotLight.ToggleRenderTechnique( wnd.Gfx(), "" );
+		directionalLight.ToggleRenderTechnique( wnd.Gfx(), "" );
 		sponza.ToggleRenderTechnique( wnd.Gfx(), "" );
 		gobber.ToggleRenderTechnique( wnd.Gfx(), "" );
 		nano.ToggleRenderTechnique( wnd.Gfx(), "" );
 
 		pointLight.LinkTechniques( forward_rg );
 		spotLight.LinkTechniques( forward_rg );
+		directionalLight.LinkTechniques( forward_rg );
 		sponza.LinkTechniques( forward_rg );
 		gobber.LinkTechniques( forward_rg );
 		nano.LinkTechniques( forward_rg );
 
 		cameras.LinkTechniques( forward_rg );
-		forward_rg.BindShadowCamera( *pointLight.ShareCamera() );
-		//forward_rg.BindShadowCamera( *spotLight.ShareCamera() );
+		forward_rg.BindPLShadowCamera( *pointLight.ShareCamera() );
+		forward_rg.BindSLShadowCamera( *spotLight.ShareCamera() );
+		forward_rg.BindDLShadowCamera( *directionalLight.ShareCamera() );
 
 		isDeferred = false;
 		//cube.ToggleRenderTechnique( wnd.Gfx(), "" );
@@ -154,19 +161,22 @@ void App::ToggleRenderTechnique()
 
 		pointLight.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		spotLight.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
+		directionalLight.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		sponza.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		gobber.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		nano.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 
 		pointLight.LinkTechniques( deferred_rg );
 		spotLight.LinkTechniques( deferred_rg );
+		directionalLight.LinkTechniques( deferred_rg );
 		sponza.LinkTechniques( deferred_rg );
 		gobber.LinkTechniques( deferred_rg );
 		nano.LinkTechniques( deferred_rg );
 
 		cameras.LinkTechniques( deferred_rg );
-		deferred_rg.BindShadowCamera( *pointLight.ShareCamera() );
-		//deferred_rg.BindMainCamera( *spotLight.ShareCamera() );
+		deferred_rg.BindPLShadowCamera( *pointLight.ShareCamera() );
+		deferred_rg.BindSLShadowCamera( *spotLight.ShareCamera() );
+		deferred_rg.BindDLShadowCamera( *directionalLight.ShareCamera() );
 
 		//cube.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		//cube2.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
@@ -179,6 +189,7 @@ void App::ExecuteFrame( float dt )
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );	
 	pointLight.Bind( wnd.Gfx(), cameras->GetMatrix() );
 	spotLight.Bind( wnd.Gfx(), cameras->GetMatrix() );
+	directionalLight.Bind( wnd.Gfx(), cameras->GetMatrix() );
 
 	if ( isDeferred )
 		deferred_rg.BindMainCamera( cameras.GetActiveCamera() );
@@ -187,6 +198,7 @@ void App::ExecuteFrame( float dt )
 
 	pointLight.Submit( Chan::main );
 	spotLight.Submit( Chan::main );
+	directionalLight.Submit( Chan::main );
 	//cube.Submit( Chan::main );
 	sponza.Submit( Chan::main );
 	//cube2.Submit( Chan::main );
@@ -221,6 +233,8 @@ void App::ExecuteFrame( float dt )
 	cameras.SpawnWindow( wnd.Gfx() );
 	pointLight.SpawnControlWindow();
 	spotLight.SpawnControlWindow();
+	directionalLight.SpawnControlWindow();
+
 	//cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 	//cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 

@@ -13,7 +13,7 @@ public:
 	void Reset() noexcept;
 	void Submit( size_t channels ) const noxnd;
 	void Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept;
-	void LinkTechniques( Rgph::RenderGraph& );
+	void LinkTechniques( Rgph::RenderGraph& rg );
 	std::shared_ptr<Camera> ShareCamera() const noexcept;
 	void ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique );
 private:
