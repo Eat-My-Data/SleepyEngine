@@ -29,10 +29,7 @@ namespace Bind
 	{
 	public:
 		DepthTexture( Graphics& gdi, UINT size, UINT slot = 0 );
-		void Bind( Graphics& gdi ) override;
-		static std::shared_ptr<DepthTexture> Resolve( Graphics& gdi, const std::string& path, UINT slot = 0 );
-		static std::string GenerateUID( const std::string& path, UINT slot = 0 );
-		std::string GetUID() const noexcept override;
+		void Bind( Graphics& gdi ) noxnd override;
 		bool HasAlpha() const noexcept;
 		std::shared_ptr<OutputOnlyDepthStencil> GetDepthBuffer() const;
 	private:
@@ -43,5 +40,6 @@ namespace Bind
 		bool hasAlpha = false;
 		ID3D11ShaderResourceView* pTextureView;
 		std::shared_ptr<OutputOnlyDepthStencil> depthBuffer;
+		UINT size;
 	};
 }

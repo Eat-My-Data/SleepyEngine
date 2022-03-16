@@ -32,6 +32,7 @@ namespace Bind
 	private:
 		std::pair<Microsoft::WRL::ComPtr<ID3D11Texture2D>, D3D11_TEXTURE2D_DESC> MakeStaging( Graphics& gfx ) const;
 	protected:
+		DepthStencil( Graphics& gfx, Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture );
 		DepthStencil( Graphics& gfx, Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture, UINT face );
 		DepthStencil( Graphics& gfx, UINT width, UINT height, bool canBindShaderInput, Usage usage );
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDepthStencilView;
@@ -55,6 +56,7 @@ namespace Bind
 	{
 	public:
 		OutputOnlyDepthStencil( Graphics& gfx, Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture, UINT face );
+		OutputOnlyDepthStencil( Graphics& gfx, Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture );
 		OutputOnlyDepthStencil( Graphics& gfx );
 		OutputOnlyDepthStencil( Graphics& gfx, UINT width, UINT height );
 		void Bind( Graphics& gfx ) noxnd  override;
