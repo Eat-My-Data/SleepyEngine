@@ -245,18 +245,18 @@ namespace Rgph
 	}
 	void Rgph::DeferredRenderGraph::BindPLShadowCamera( Camera& cam )
 	{
-		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
-		dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindShadowCamera( cam );
+		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindPLShadowCamera( cam );
+		dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindPLShadowCamera( cam );
 	}
 	void Rgph::DeferredRenderGraph::BindSLShadowCamera( Camera& cam )
 	{
-		//dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
-		//dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindShadowCamera( cam );
+		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindSLShadowCamera( cam );
+		dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindSLShadowCamera( cam );
 	}
 	void Rgph::DeferredRenderGraph::BindDLShadowCamera( Camera& cam )
 	{
-		//dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
-		//dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindShadowCamera( cam );
+		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindDLShadowCamera( cam );
+		dynamic_cast<DeferredLightingPass&>( FindPassByName( "deferredLighting" ) ).BindDLShadowCamera( cam );
 	}
 }
 

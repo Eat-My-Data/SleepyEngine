@@ -177,3 +177,16 @@ void Camera::Submit( size_t channel ) const
 		proj.Submit( channel );
 	}
 }
+
+DirectX::XMVECTOR Camera::GetLookAt() const noexcept
+{
+	DirectX::XMMATRIX m = GetMatrix();
+	return { m.r[0].m128_f32[2], m.r[1].m128_f32[2], m.r[2].m128_f32[2] };
+	//return { m.r[2].m128_f32[0], m.r[2].m128_f32[1], m.r[2].m128_f32[2] };
+}
+
+DirectX::XMVECTOR Camera::GetUpVec() const noexcept
+{
+	// posibly return constant value but maybe perpendicular to the lookat vector
+	return DirectX::XMVECTOR();
+}

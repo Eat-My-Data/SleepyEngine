@@ -89,15 +89,15 @@ namespace Bind
 		D3D11_TEXTURE2D_DESC textureDesc = {};
 		textureDesc.Width = size;
 		textureDesc.Height = size;
-		textureDesc.MipLevels = 1;
-		textureDesc.ArraySize = 6;
+		textureDesc.MipLevels = 0;
+		textureDesc.ArraySize = 1;
 		textureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS;
 		textureDesc.SampleDesc.Count = 1;
 		textureDesc.SampleDesc.Quality = 0;
 		textureDesc.Usage = D3D11_USAGE_DEFAULT;
 		textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
 		textureDesc.CPUAccessFlags = 0;
-		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 		// create the texture resource
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture;
 		GFX_THROW_INFO( GetDevice( gfx )->CreateTexture2D(
@@ -117,7 +117,7 @@ namespace Bind
 
 		depthBuffer = std::make_shared<OutputOnlyDepthStencil>( gfx, pTexture );
 	}
-	void DepthTexture::Bind( Graphics& gfx ) noexcept
+	void DepthTexture::Bind( Graphics& gfx )
 	{
 
 		INFOMAN_NOHR( gfx );
@@ -128,20 +128,20 @@ namespace Bind
 	{
 		return Codex::Resolve<DepthTexture>( gdi, path, slot );
 	}
-	std::string DepthTexture::GenerateUID( UINT slot )
+	std::string DepthTexture::GenerateUID( const std::string& path, UINT slot )
 	{
 		using namespace std::string_literals;
-		return typeid( DepthTexture ).name() + "#"s + std::to_string( slot );
+		return typeid( DepthTexture ).name() + "#"s + path + "#" + std::to_string( slot );
 	}
 	std::string DepthTexture::GetUID() const noexcept
 	{
-		return GenerateUID( slot );
+		return GenerateUID( "depthTexture", slot);
 	}
 	bool DepthTexture::HasAlpha() const noexcept
 	{
 		return hasAlpha;
 	}
-	std::shared_ptr<OutputOnlyDepthStencil> DepthTexture::GetDepthBuffer( size_t index ) const
+	std::shared_ptr<OutputOnlyDepthStencil> DepthTexture::GetDepthBuffer() const
 	{
 		return depthBuffer;
 	}

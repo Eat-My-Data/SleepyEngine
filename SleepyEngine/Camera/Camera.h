@@ -35,6 +35,8 @@ public:
 	const std::string& GetName() const noexcept;
 	void LinkTechniques( Rgph::RenderGraph& rg );
 	void Submit( size_t channel ) const;
+	DirectX::XMVECTOR GetLookAt() const noexcept;
+	DirectX::XMVECTOR GetUpVec() const noexcept;
 private:
 	bool tethered;
 	std::string name;

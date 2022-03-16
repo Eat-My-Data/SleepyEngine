@@ -43,7 +43,9 @@ namespace Rgph
 
 		{
 			auto pass = std::make_unique<LambertianPass>( gfx, "lambertian" );
-			pass->SetSinkLinkage( "shadowMap", "shadowMap.map" );
+			pass->SetSinkLinkage( "plShadowMap", "shadowMap.plMap" );
+			pass->SetSinkLinkage( "slShadowMap", "shadowMap.slMap" );
+			pass->SetSinkLinkage( "dlShadowMap", "shadowMap.dlMap" );
 			pass->SetSinkLinkage( "renderTarget", "clearRT.buffer" );
 			pass->SetSinkLinkage( "depthStencil", "clearDS.buffer" );
 			AppendPass( std::move( pass ) );
@@ -232,17 +234,17 @@ namespace Rgph
 	}
 	void Rgph::BlurOutlineRenderGraph::BindPLShadowCamera( Camera& cam )
 	{
-		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
-		dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindShadowCamera( cam );
+		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindPLShadowCamera( cam );
+		dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindPLShadowCamera( cam );
 	}
 	void Rgph::BlurOutlineRenderGraph::BindSLShadowCamera( Camera& cam )
 	{
-		//dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
-		//dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindShadowCamera( cam );
+		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindSLShadowCamera( cam );
+		dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindSLShadowCamera( cam );
 	}
 	void Rgph::BlurOutlineRenderGraph::BindDLShadowCamera( Camera& cam )
 	{
-		//dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
-		//dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindShadowCamera( cam );
+		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindDLShadowCamera( cam );
+		dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindDLShadowCamera( cam );
 	}
 }

@@ -18,11 +18,22 @@ namespace Rgph
 	class DeferredLightingPass : public RenderQueuePass
 	{
 	public: 
+		void BindPLShadowCamera( const Camera& cam ) noexcept
+		{
+			pPLShadowCamera = &cam;
+		}
+		void BindSLShadowCamera( const Camera& cam ) noexcept
+		{
+			pSLShadowCamera = &cam;
+		}
+		void BindDLShadowCamera( const Camera& cam ) noexcept
+		{
+			pDLShadowCamera = &cam;
+		}
 		DeferredLightingPass( Graphics& gfx, std::string name )
 			:
 			RenderQueuePass( std::move( name ) ),
 			pShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) }
-
 		{
 			using namespace Bind;
 
@@ -62,6 +73,9 @@ namespace Rgph
 			RenderQueuePass::Execute( gfx );
 		}
 	private:
+		const Camera* pPLShadowCamera = nullptr;
+		const Camera* pSLShadowCamera = nullptr;
+		const Camera* pDLShadowCamera = nullptr;
 		std::shared_ptr<Bind::GBufferRenderTargets> gbuffer;
 		std::shared_ptr<Bind::ShadowCameraCBuf> pShadowCBuf;
 		std::shared_ptr<Bind::ShaderInputDepthStencil> depthMap;

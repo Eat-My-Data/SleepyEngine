@@ -21,14 +21,20 @@ namespace Rgph
 		LambertianPass( Graphics& gfx, std::string name )
 			:
 			RenderQueuePass( std::move( name ) ), 
-			pShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) }
-
+			pPLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) },
+			pSLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) }, // probably need to change what slot this is on
+			pDLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) }  // this too
 		{
 			using namespace Bind; 
-			AddBind( pShadowCBuf );
+			AddBind( pPLShadowCBuf );
+			AddBind( pSLShadowCBuf );
+			AddBind( pDLShadowCBuf );
+
 			RegisterSink( DirectBufferSink<RenderTarget>::Make( "renderTarget", renderTarget ) );
 			RegisterSink( DirectBufferSink<DepthStencil>::Make( "depthStencil", depthStencil ) );
-			AddBindSink<Bind::Bindable>( "shadowMap" );
+			AddBindSink<Bind::Bindable>( "plShadowMap" );
+			AddBindSink<Bind::Bindable>( "slShadowMap" );
+			AddBindSink<Bind::Bindable>( "dlShadowMap" );
 			AddBind( std::make_shared<Bind::ShadowSampler>( gfx ) );
 			AddBind( std::make_shared<Bind::Sampler>( gfx, Bind::Sampler::Type::Anisotropic, false, 2 ) );
 			RegisterSource( DirectBufferSource<RenderTarget>::Make( "renderTarget", renderTarget ) );
@@ -39,19 +45,31 @@ namespace Rgph
 		{
 			pMainCamera = &cam;
 		}
-		void BindShadowCamera( const Camera& cam ) noexcept
+		void BindPLShadowCamera( const Camera& cam ) noexcept
 		{
-			pShadowCBuf->SetCamera( &cam );
+			pPLShadowCBuf->SetCamera( &cam );
+		}
+		void BindSLShadowCamera( const Camera& cam ) noexcept
+		{
+			pSLShadowCBuf->SetCamera( &cam );
+		}
+		void BindDLShadowCamera( const Camera& cam ) noexcept
+		{
+			pDLShadowCBuf->SetCamera( &cam );
 		}
 		void Execute( Graphics& gfx ) const noexcept override
 		{
 			assert( pMainCamera );
-			pShadowCBuf->Update( gfx );
+			pPLShadowCBuf->Update( gfx );
+			pSLShadowCBuf->Update( gfx );
+			pDLShadowCBuf->Update( gfx );
 			pMainCamera->BindToGraphics( gfx );
 			RenderQueuePass::Execute( gfx );
 		}
 	private:
-		std::shared_ptr<Bind::ShadowCameraCBuf> pShadowCBuf;
+		std::shared_ptr<Bind::ShadowCameraCBuf> pPLShadowCBuf;
+		std::shared_ptr<Bind::ShadowCameraCBuf> pSLShadowCBuf;
+		std::shared_ptr<Bind::ShadowCameraCBuf> pDLShadowCBuf;
 		const Camera* pMainCamera = nullptr;
 	};
 }
