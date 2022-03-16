@@ -29,7 +29,6 @@ namespace Rgph
 			AddBind( pPLShadowCBuf );
 			AddBind( pSLShadowCBuf );
 			AddBind( pDLShadowCBuf );
-
 			RegisterSink( DirectBufferSink<RenderTarget>::Make( "renderTarget", renderTarget ) );
 			RegisterSink( DirectBufferSink<DepthStencil>::Make( "depthStencil", depthStencil ) );
 			AddBindSink<Bind::Bindable>( "plShadowMap" );

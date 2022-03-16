@@ -21,29 +21,36 @@ namespace Rgph
 		void BindPLShadowCamera( const Camera& cam ) noexcept
 		{
 			pPLShadowCamera = &cam;
+			pPLShadowCBuf->SetCamera( &cam );
 		}
 		void BindSLShadowCamera( const Camera& cam ) noexcept
 		{
 			pSLShadowCamera = &cam;
+			pPLShadowCBuf->SetCamera( &cam );
 		}
 		void BindDLShadowCamera( const Camera& cam ) noexcept
 		{
 			pDLShadowCamera = &cam;
+			pDLShadowCBuf->SetCamera( &cam );
 		}
 		DeferredLightingPass( Graphics& gfx, std::string name )
 			:
 			RenderQueuePass( std::move( name ) ),
-			pShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) }
+			pPLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) },
+			pSLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) }, // probably need to change what slot this is on
+			pDLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) }  // this too
 		{
 			using namespace Bind;
-
-			AddBind( pShadowCBuf );
+			AddBind( pPLShadowCBuf );
+			AddBind( pSLShadowCBuf );
+			AddBind( pDLShadowCBuf );			
 			RegisterSink( DirectBufferSink<RenderTarget>::Make( "renderTarget", renderTarget ) );
 			RegisterSink( DirectBufferSink<ShaderInputDepthStencil>::Make( "depthMap", depthMap ) );
 			RegisterSink( DirectBufferSink<DepthStencil>::Make( "depthStencil", depthStencil ) );
-
 			RegisterSink( DirectBufferSink<GBufferRenderTargets>::Make( "gbuffer", gbuffer ) );
-			AddBindSink<Bind::Bindable>( "shadowMap" );
+			AddBindSink<Bind::Bindable>( "plShadowMap" );
+			AddBindSink<Bind::Bindable>( "slShadowMap" );
+			AddBindSink<Bind::Bindable>( "dlShadowMap" );			
 			AddBind( std::make_shared<Bind::ShadowSampler>( gfx ) );
 			AddBind( std::make_shared<Bind::Sampler>( gfx, Bind::Sampler::Type::Anisotropic, false, 2 ) );
 			RegisterSource( DirectBufferSource<RenderTarget>::Make( "renderTarget", renderTarget ) );
@@ -55,19 +62,14 @@ namespace Rgph
 		{
 			pMainCamera = &cam;
 		}
-		void BindShadowCamera( const Camera& cam ) noexcept
-		{
-			pShadowCBuf->SetCamera( &cam );
-		}
 		void Execute( Graphics& gfx ) const noexcept override
 		{
 			assert( pMainCamera );
-			// need a way to bind old depth stencil as texture
-			//renderTarget->BindAsBuffer( gfx );
 			depthStencil->BindAsBuffer( gfx, renderTarget.get() );
 			depthMap->Bind( gfx );
-
-			pShadowCBuf->Update( gfx );
+			pPLShadowCBuf->Update( gfx );
+			pSLShadowCBuf->Update( gfx );
+			pDLShadowCBuf->Update( gfx );
 			pMainCamera->BindToGraphics( gfx );
 			gbuffer->Bind( gfx );
 			RenderQueuePass::Execute( gfx );
@@ -77,7 +79,9 @@ namespace Rgph
 		const Camera* pSLShadowCamera = nullptr;
 		const Camera* pDLShadowCamera = nullptr;
 		std::shared_ptr<Bind::GBufferRenderTargets> gbuffer;
-		std::shared_ptr<Bind::ShadowCameraCBuf> pShadowCBuf;
+		std::shared_ptr<Bind::ShadowCameraCBuf> pPLShadowCBuf;
+		std::shared_ptr<Bind::ShadowCameraCBuf> pSLShadowCBuf;
+		std::shared_ptr<Bind::ShadowCameraCBuf> pDLShadowCBuf;
 		std::shared_ptr<Bind::ShaderInputDepthStencil> depthMap;
 		const Camera* pMainCamera = nullptr;
 	};

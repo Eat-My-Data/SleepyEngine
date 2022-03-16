@@ -23,7 +23,7 @@ DirectionalLight::DirectionalLight( Graphics& gfx )
 
 	//m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 1u );
 	//AddBind( m_pForwardLightMatrices );	
-	pCamera = std::make_shared<Camera>( gfx, "Light", DirectX::XMFLOAT3{ 0.0f, 200.0f, 0.0f }, PI / 2.0f, -PI, true );
+	pCamera = std::make_shared<Camera>( gfx, "Directinal Light", DirectX::XMFLOAT3{ 0.0f, 200.0f, 0.0f }, PI / 2.0f, -PI, true );
 
 	home = {
 		{ 0.0f, -1.0f, 0.0f },
@@ -38,7 +38,7 @@ DirectionalLight::DirectionalLight( Graphics& gfx )
 
 void DirectionalLight::SpawnControlWindow() noexcept
 {
-	if ( ImGui::Begin( "Light" ) )
+	if ( ImGui::Begin( "Directional Light" ) )
 	{
 		bool dirtyPos = false;
 		const auto d = [&dirtyPos]( bool dirty ) {dirtyPos = dirtyPos || dirty; };

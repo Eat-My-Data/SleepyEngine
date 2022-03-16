@@ -96,7 +96,7 @@ namespace Bind
 		textureDesc.Usage = D3D11_USAGE_DEFAULT;
 		textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
 		textureDesc.CPUAccessFlags = 0;
-		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
+		//textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 		// create the texture resource
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture;
 		GetDevice( gfx )->CreateTexture2D(
@@ -106,7 +106,7 @@ namespace Bind
 
 		// create the resource view on the texture
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-		srvDesc.Format = textureDesc.Format;
+		srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
 		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MostDetailedMip = 0;
 		srvDesc.Texture2D.MipLevels = 1;
@@ -114,7 +114,7 @@ namespace Bind
 			pTexture.Get(), &srvDesc, &pTextureView
 		);
 
-		depthBuffer = std::make_shared<OutputOnlyDepthStencil>( gfx, pTexture );
+		depthBuffer = std::make_shared<OutputOnlyDepthStencil>( gfx, pTexture.Get() );
 	}
 	void DepthTexture::Bind( Graphics& gfx ) noxnd
 	{

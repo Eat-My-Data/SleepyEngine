@@ -188,5 +188,5 @@ DirectX::XMVECTOR Camera::GetLookAt() const noexcept
 DirectX::XMVECTOR Camera::GetUpVec() const noexcept
 {
 	// posibly return constant value but maybe perpendicular to the lookat vector
-	return DirectX::XMVECTOR();
+	return DirectX::XMVECTOR{ 0.0f, 1.0f, 0.0f, 0.0f };
 }
