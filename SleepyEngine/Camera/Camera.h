@@ -37,6 +37,9 @@ public:
 	void Submit( size_t channel ) const;
 	DirectX::XMVECTOR GetLookAt() const noexcept;
 	DirectX::XMVECTOR GetUpVec() const noexcept;
+public:
+	float pitch;
+	float yaw;
 private:
 	bool tethered;
 	std::string name;
@@ -44,8 +47,8 @@ private:
 	float homePitch;
 	float homeYaw;
 	DirectX::XMFLOAT3 pos;
-	float pitch;
-	float yaw;
+	//float pitch;
+	//float yaw;
 	static constexpr float travelSpeed = 12.0f;
 	static constexpr float rotationSpeed = 0.004f;
 	bool enableCameraIndicator = false;
