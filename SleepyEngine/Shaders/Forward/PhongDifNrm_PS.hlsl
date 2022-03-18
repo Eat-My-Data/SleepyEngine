@@ -74,10 +74,10 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
 	// attenuation
     const float att_directional = 0.4f; //Attenuate(attConst, attLin, attQuad, lv_directional.distToL);
 	// diffuse light
-    float3 diffuse_directional = Diffuse(diffuseColor, dirLightIntensity, att_directional, -dirLightDirection, viewNormal);
+    float3 diffuse_directional = Diffuse(dirLightColor, dirLightIntensity, att_directional, -dirLightDirection, viewNormal);
     // specular reflected
     float3 specularReflected_directional = Speculate(
-        diffuseColor * dirLightIntensity * specularColor, specularWeight, viewNormal,
+        dirLightColor * dirLightIntensity * specularColor, specularWeight, viewNormal,
         -dirLightDirection, viewFragPos, att_directional, specularGloss
     );
     // scale by shadow level

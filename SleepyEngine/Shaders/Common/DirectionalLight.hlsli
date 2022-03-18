@@ -4,7 +4,7 @@ cbuffer DirectionalLightCBuf : register(b5)
     float3 dirLightColor;
     float3 dirLightAmbient;
     float dirLightIntensity;
-    float2 dirLightPadding;
+    float3 dirLightPadding;
     row_major float4x4 dirLightViewProjectionMatrix;
 };
 

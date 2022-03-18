@@ -99,15 +99,14 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     // ========================================================= DIRECTIONAL LIGHT ==================================================
     // shadow map test
     const float shadowLevel_directional = 1; //Shadow(spos);
-    const LightVectorData lv_directional = CalculateLightVectorData(spotLightPos, viewFragPos);
 	// attenuation
     const float att_directional = 0.4f; //Attenuate(attConst, attLin, attQuad, lv_directional.distToL);
 	// diffuse light
-    float3 diffuse_directional = Diffuse(diffuseColor, dirLightIntensity, att_directional, lv_directional.dirToL, viewNormal);
+    float3 diffuse_directional = Diffuse(dirLightColor, dirLightIntensity, att_directional, -dirLightDirection, viewNormal);
     // specular reflected
     float3 specularReflected_directional = Speculate(
-        diffuseColor * dirLightIntensity * specularColor, specularWeight, viewNormal,
-        lv_directional.vToL, viewFragPos, att_directional, specularGloss
+        dirLightColor * dirLightIntensity * specularColor, specularWeight, viewNormal,
+        -dirLightDirection, viewFragPos, att_directional, specularGloss
     );
     // scale by shadow level
     diffuse_directional *= shadowLevel_directional;

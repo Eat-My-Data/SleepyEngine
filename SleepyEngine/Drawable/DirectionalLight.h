@@ -19,11 +19,11 @@ public:
 private:
 	struct DirectionalLightCBuf
 	{
-		DirectX::XMFLOAT3 lightDirection;
-		DirectX::XMFLOAT3 color;
-		DirectX::XMFLOAT3 ambient;
+		alignas( 16 ) DirectX::XMFLOAT3 lightDirection;
+		alignas( 16 ) DirectX::XMFLOAT3 color;
+		alignas( 16 ) DirectX::XMFLOAT3 ambient;
 		float intensity;
-		float padding[2];
+		float padding[3];
 		DirectX::XMMATRIX lightViewProjectionMatrix;
 	};
 	DirectionalLightCBuf home;
