@@ -21,7 +21,6 @@ float Attenuate(uniform float attConst, uniform float attLin, uniform float attQ
     float att = saturate((1 - (distFragToL / 50)));
     att *= att;
     return att;
-    //return 1.0f / (attConst + attLin * distFragToL + attQuad * (distFragToL * distFragToL));
 }
 
 float3 Diffuse(

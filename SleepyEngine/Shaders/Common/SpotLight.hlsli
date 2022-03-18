@@ -13,3 +13,11 @@ cbuffer SpotLightCBuf : register(b4)
 };
 
 TextureCube spotLightShadowMap : register(t4);
+
+float AttenuateSpot(const in float3 spotToFrag, const in float distFragToL)
+{
+    float att = saturate((1 - (distFragToL / spotLightRange)));
+    att *= att;
+    float angularAttFactor = max(0.0f, dot(normalize(-spotLightDirection), normalize(spotToFrag)));
+    return saturate((angularAttFactor - spotLightOuterRadius) / spotLightInnerRadius - spotLightOuterRadius);
+}
