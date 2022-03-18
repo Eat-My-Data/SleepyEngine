@@ -18,14 +18,15 @@ public:
 	void ToggleRenderTechnique( Graphics& gfx, const std::string& renderTechnique );
 	struct SpotLightCBuf
 	{
-		DirectX::XMFLOAT3 pos;
-		DirectX::XMFLOAT3 color;
-		DirectX::XMFLOAT3 lightDirection;
+		alignas( 16 ) DirectX::XMFLOAT3 pos;
+		alignas( 16 ) DirectX::XMFLOAT3 color;
+		alignas( 16 ) DirectX::XMFLOAT3 lightDirection;
 		float range;
 		float outerRadius;
 		float innerRadius;
 		float pitch;
 		float yaw;
+		float intensity;
 		float padding[2];
 		DirectX::XMMATRIX spotViewProjectionMatrix;
 	};

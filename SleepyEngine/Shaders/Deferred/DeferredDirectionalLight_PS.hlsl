@@ -35,7 +35,7 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
 
     // frag position in light view and shadow map check
-    float4 fragPositionInLightView = mul(worldSpacePos, lightViewProjectionMatrix);
+    float4 fragPositionInLightView = mul(worldSpacePos, dirLightViewProjectionMatrix);
     float shadow = 1.0;//CalculateDirectionalLightShadow(fragPositionInLightView, SampleTypePoint);
 
     // vector from camera to fragment
@@ -43,11 +43,11 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
     
     // attenuation    
     // lighting calculations
-    float3 diffuseIntensity = Diffuse(color, 1.0f, 1.0f, normalize(-lightDirection), normalize(normals.xyz));
-    float3 specularResult = Speculate(specular.xyz, 1.0f, normalize(normals.xyz), normalize(-lightDirection), camToFrag, 1.0f, 128);
+    float3 diffuseIntensity = Diffuse(dirLightColor, 1.0f, 1.0f, normalize(-dirLightDirection), normalize(normals.xyz));
+    float3 specularResult = Speculate(specular.xyz, 1.0f, normalize(normals.xyz), normalize(-dirLightDirection), camToFrag, 1.0f, 128);
 
     // combined light
-    float3 combinedColor = ((diffuseIntensity + specularResult) * shadow) + dirAmbient;
+    float3 combinedColor = ((diffuseIntensity + specularResult) * shadow) + dirLightAmbient;
 
    	// final color
     return float4((combinedColor * colors.rgb), 1.0f);

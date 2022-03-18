@@ -2,6 +2,7 @@
 #include "../Common/LightVectorData.hlsli"
 #include "../Common/PointLight.hlsli"
 #include "../Common/SpotLight.hlsli"
+#include "../Common/DirectionalLight.hlsli"
 #include "../Common/PShadow.hlsli"
 
 cbuffer ObjectCBuf : register(b1)
@@ -60,16 +61,17 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     specularReflected *= shadowLevel;
     // ========================================================= POINT LIGHT ========================================================
     // ========================================================= SPOT LIGHT =========================================================
+    float3 spotToFrag = spotLightPos - viewFragPos.xyz;
     // shadow map test
     const float shadowLevel_spot = 1; //Shadow(spos);
     const LightVectorData lv_spot = CalculateLightVectorData(spotLightPos, viewFragPos);
 	// attenuation
-    const float att_spot = Attenuate(attConst, attLin, attQuad, lv_spot.distToL);
+    const float att_spot = AttenuateSpot(spotToFrag, lv_spot.distToL);
 	// diffuse light
-    float3 diffuse_spot = Diffuse(diffuseColor, diffuseIntensity, att_spot, lv_spot.dirToL, viewNormal);
+    float3 diffuse_spot = Diffuse(spotLightColor, spotLightIntensity, att_spot, lv_spot.dirToL, viewNormal);
     // specular reflected
     float3 specularReflected_spot = Speculate(
-        diffuseColor * diffuseIntensity * specularReflectionColor, specularWeight, viewNormal,
+        spotLightColor * spotLightIntensity * specularReflectionColor, specularWeight, viewNormal,
         lv_spot.vToL, viewFragPos, att_spot, specularPowerLoaded
     );
     // scale by shadow level
@@ -79,15 +81,14 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     // ========================================================= DIRECTIONAL LIGHT ==================================================
     // shadow map test
     const float shadowLevel_directional = 1; //Shadow(spos);
-    const LightVectorData lv_directional = CalculateLightVectorData(spotLightPos, viewFragPos);
 	// attenuation
     const float att_directional = 0.4f; //Attenuate(attConst, attLin, attQuad, lv_directional.distToL);
 	// diffuse light
-    float3 diffuse_directional = Diffuse(diffuseColor, diffuseIntensity, att_directional, lv_directional.dirToL, viewNormal);
+    float3 diffuse_directional = Diffuse(diffuseColor, dirLightIntensity, att_directional, -dirLightDirection, viewNormal);
     // specular reflected
     float3 specularReflected_directional = Speculate(
-        diffuseColor * diffuseIntensity * specularColor, specularWeight, viewNormal,
-        lv_directional.vToL, viewFragPos, att_directional, specularPowerLoaded
+        diffuseColor * dirLightIntensity * specularColor, specularWeight, viewNormal,
+        -dirLightDirection, viewFragPos, att_directional, specularPowerLoaded
     );
     // scale by shadow level
     diffuse_directional *= shadowLevel_directional;

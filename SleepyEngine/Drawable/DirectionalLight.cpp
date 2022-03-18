@@ -29,7 +29,8 @@ DirectionalLight::DirectionalLight( Graphics& gfx )
 		{ 0.0f, -1.0f, 0.0f },
 		{ 1.0f, 1.0f, 1.0f },
 		{ 0.7f,0.7f,0.7f },
-		{ 0.0f, 0.0f, 0.0f }, // padding
+		1.0f,
+		{ 0.0f, 0.0f }, // padding
 		{ pCamera->GetMatrix() * pCamera->GetProjection() }
 	};
 
@@ -48,6 +49,8 @@ void DirectionalLight::SpawnControlWindow() noexcept
 		d( ImGui::SliderFloat( "X", &cbData.lightDirection.x, -1.0f, 1.0f, "%.1f" ) );
 		d( ImGui::SliderFloat( "Y", &cbData.lightDirection.y, -1.0f, 1.0f, "%.1f" ) );
 		d( ImGui::SliderFloat( "Z", &cbData.lightDirection.z, -1.0f, 1.0f, "%.1f" ) );
+
+		ImGui::SliderFloat( "Intensity", &cbData.intensity, 0.0f, 1.0f );
 
 		ImGui::Text( "Color/Ambience" );
 		ImGui::ColorEdit3( "Diffuse Color", &cbData.color.x );

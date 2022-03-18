@@ -1,10 +1,11 @@
 cbuffer DirectionalLightCBuf : register(b5)
 {
-    float3 lightDirection;
-    float3 color;
-    float3 dirAmbient;
-    float3 padding2;
-    row_major float4x4 lightViewProjectionMatrix;
+    float3 dirLightDirection;
+    float3 dirLightColor;
+    float3 dirLightAmbient;
+    float dirLightIntensity;
+    float2 dirLightPadding;
+    row_major float4x4 dirLightViewProjectionMatrix;
 };
 
 Texture2D depthTextureFromLight : register(t5);

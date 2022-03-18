@@ -22,7 +22,8 @@ private:
 		DirectX::XMFLOAT3 lightDirection;
 		DirectX::XMFLOAT3 color;
 		DirectX::XMFLOAT3 ambient;
-		float padding[3];
+		float intensity;
+		float padding[2];
 		DirectX::XMMATRIX lightViewProjectionMatrix;
 	};
 	DirectionalLightCBuf home;
