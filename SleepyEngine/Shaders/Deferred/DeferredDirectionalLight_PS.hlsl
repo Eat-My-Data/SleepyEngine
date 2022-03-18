@@ -36,7 +36,7 @@ float4 main(float4 position : SV_POSITION, float2 tex : TEXCOORD) : SV_TARGET
 
     // frag position in light view and shadow map check
     float4 fragPositionInLightView = mul(worldSpacePos, lightViewProjectionMatrix);
-    float shadow = CalculateDirectionalLightShadow(fragPositionInLightView, SampleTypePoint);
+    float shadow = 1.0;//CalculateDirectionalLightShadow(fragPositionInLightView, SampleTypePoint);
 
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - camPos.xyz;

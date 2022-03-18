@@ -742,6 +742,7 @@
     <None Include="Shaders\Common\Camera.hlsli" />
     <None Include="Shaders\Common\DirectionalLight.hlsli" />
     <None Include="Shaders\Common\PShadow.hlsli" />
+    <None Include="Shaders\Common\SpotLight.hlsli" />
     <None Include="Shaders\Common\VShadow.hlsli" />
     <None Include="Shaders\Common\_PShadow_Dynamic_.hlsli" />
     <None Include="Shaders\Common\_PShadow_Static.hlsli" />

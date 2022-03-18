@@ -12,7 +12,7 @@ SpotLight::SpotLight( Graphics& gfx, DirectX::XMFLOAT3 pos, f32 scale )
 	:
 	mesh( gfx ),
 	dMesh( gfx, 10 ),
-	cbuf( gfx, 11 )
+	cbuf( gfx, 4 )
 {
 	pCamera = std::make_shared<Camera>( gfx, "Spot Light", pos, 0.0f, PI / 2.0f, true );
 
@@ -34,13 +34,17 @@ SpotLight::SpotLight( Graphics& gfx, DirectX::XMFLOAT3 pos, f32 scale )
 
 void SpotLight::SpawnControlWindow()
 {
-	ImGui::Text( "Spot Light" );
-	ImGui::ColorEdit3( "Color", &cbData.color.x );
-	ImGui::SliderFloat( "X", &cbData.pos.x, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Y", &cbData.pos.y, -80.0f, 80.0f );
-	ImGui::SliderFloat( "Z", &cbData.pos.z, -80.0f, 80.0f );
-	ImGui::SliderAngle( "Pitch", &cbData.pitch, 0.995f * -180.0f, 0.995f * 180.0f );
-	ImGui::SliderAngle( "Yaw", &cbData.yaw, 0.995f * -180.0f, 0.995f * 180.0f );
+	if ( ImGui::Begin( "Spot Light" ) )
+	{
+		ImGui::Text( "Spot Light" );
+		ImGui::ColorEdit3( "Color", &cbData.color.x );
+		ImGui::SliderFloat( "X", &cbData.pos.x, -80.0f, 80.0f );
+		ImGui::SliderFloat( "Y", &cbData.pos.y, -80.0f, 80.0f );
+		ImGui::SliderFloat( "Z", &cbData.pos.z, -80.0f, 80.0f );
+		ImGui::SliderAngle( "Pitch", &cbData.pitch, 0.995f * -180.0f, 0.995f * 180.0f );
+		ImGui::SliderAngle( "Yaw", &cbData.yaw, 0.995f * -180.0f, 0.995f * 180.0f );
+	}
+	ImGui::End();
 }
 
 void SpotLight::Reset() noexcept

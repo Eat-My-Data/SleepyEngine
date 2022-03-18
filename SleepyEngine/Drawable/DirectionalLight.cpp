@@ -8,7 +8,7 @@
 DirectionalLight::DirectionalLight( Graphics& gfx )
 	:
 	mesh( gfx ),
-	cbuf( gfx, 12 )
+	cbuf( gfx, 5 )
 {
 	//using namespace Bind;
 	//namespace dx = DirectX;

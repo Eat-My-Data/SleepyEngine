@@ -7,7 +7,7 @@ PointLight::PointLight( Graphics& gfx, DirectX::XMFLOAT3 pos, float radius )
 	:
 	mesh( gfx, radius ),
 	dMesh( gfx, radius*20.0f ),
-	cbuf( gfx )
+	cbuf( gfx, 3 )
 {
 	home = {
 		pos,

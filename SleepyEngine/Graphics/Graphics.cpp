@@ -126,11 +126,13 @@ void Graphics::BeginFrame( float red,float green,float blue ) noexcept
 	// clearing shader inputs to prevent simultaneous in/out bind carried over from prev frame
 	ID3D11ShaderResourceView* const pNullTex = nullptr;
 	pContext->PSSetShaderResources( 0, 1, &pNullTex ); // fullscreen input texture
-	pContext->PSSetShaderResources( 3, 1, &pNullTex ); // shadow map texture
-	pContext->PSSetShaderResources( 4, 1, &pNullTex ); // deferred color texture
-	pContext->PSSetShaderResources( 5, 1, &pNullTex ); // deferred normal texture
-	pContext->PSSetShaderResources( 6, 1, &pNullTex ); // deferred specular texture
-	pContext->PSSetShaderResources( 7, 1, &pNullTex ); // deferred depth texture
+	pContext->PSSetShaderResources( 3, 1, &pNullTex ); // point light shadow map texture
+	pContext->PSSetShaderResources( 4, 1, &pNullTex ); // spot light shadow map texture
+	pContext->PSSetShaderResources( 5, 1, &pNullTex ); // directional light shadow map texture
+	pContext->PSSetShaderResources( 6, 1, &pNullTex ); // deferred color texture
+	pContext->PSSetShaderResources( 7, 1, &pNullTex ); // deferred normal texture
+	pContext->PSSetShaderResources( 8, 1, &pNullTex ); // deferred specular texture
+	pContext->PSSetShaderResources( 9, 1, &pNullTex ); // deferred depth texture
 }
 
 void Graphics::DrawIndexed( UINT count ) noxnd

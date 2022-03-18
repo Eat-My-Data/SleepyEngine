@@ -45,7 +45,7 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     
     // attenuation
     const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;
-    float att = saturate((1 - (length(pointToFrag) / radius)));
+    float att = saturate((1 - (length(pointToFrag) / radius.r)));
     att *= att;
 
     // lighting calculations
