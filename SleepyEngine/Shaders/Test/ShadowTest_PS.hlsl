@@ -20,7 +20,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     float3 specular;
 
     // shadow map test
-    const float shadowLevel = Shadow(spos);
+    const float shadowLevel = ShadowPL(spos);
     if (shadowLevel != 0.0f)
     {
         // renormalize interpolated normal

@@ -4,10 +4,10 @@
 #include "../Common/Camera.hlsli"
 #include "../Common/PShadow.hlsli"
 
-Texture2D colorTexture : register(t4);
-Texture2D normalTexture : register(t5);
-Texture2D specularTexture : register(t6);
-Texture2D depthTexture : register(t7);
+Texture2D colorTexture : register(t6);
+Texture2D normalTexture : register(t7);
+Texture2D specularTexture : register(t8);
+Texture2D depthTexture : register(t9);
 
 TextureCube shadowMap : register(t3); // shadow map
 
@@ -41,7 +41,7 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
 
     // shadow
-    const float shadow = Shadow(spos);
+    const float shadow = ShadowSL(spos);
     
     // attenuation
     const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;

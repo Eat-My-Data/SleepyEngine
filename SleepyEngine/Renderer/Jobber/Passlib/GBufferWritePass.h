@@ -27,7 +27,7 @@ namespace Rgph
 			AddBind( std::make_shared<Bind::Sampler>( gfx, Bind::Sampler::Type::Anisotropic, false, 2 ) );
 
 			// gbuffer resources
-			gbuffer = std::make_shared<Bind::GBufferRenderTargets>( gfx, 1280, 720, 4);
+			gbuffer = std::make_shared<Bind::GBufferRenderTargets>( gfx, 1280, 720, 6);
 			AddBind( gbuffer );
 			RegisterSource( DirectBufferSource<GBufferRenderTargets>::Make( "gbuffer", gbuffer ) );
 

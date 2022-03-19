@@ -26,7 +26,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     float3 specular;
     
     // shadow map test
-    const float shadowLevel = Shadow(sposPL);
+    const float shadowLevel = ShadowPL(sposPL);
     // normalize the mesh normal
     viewNormal = normalize(viewNormal);
     // replace normal with mapped if normal mapping enabled
@@ -53,7 +53,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     // shadow map test
     float3 spotToFrag = spotLightPos - viewFragPos.xyz;
 
-    const float shadowLevel_spot = Shadow(sposSL);
+    const float shadowLevel_spot = ShadowSL(sposSL);
     const LightVectorData lv_spot = CalculateLightVectorData(spotLightPos, viewFragPos);
 	// attenuation
     const float att_spot = AttenuateSpot( spotToFrag, lv_spot.distToL);
@@ -70,7 +70,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     // ========================================================= SPOT LIGHT =========================================================
     // ========================================================= DIRECTIONAL LIGHT ==================================================
     // shadow map test
-    const float shadowLevel_directional = Shadow(sposDL);
+    const float shadowLevel_directional = ShadowDL(sposDL);
 	// attenuation
     const float att_directional = 0.4f; //Attenuate(attConst, attLin, attQuad, lv_directional.distToL);
 	// diffuse light
