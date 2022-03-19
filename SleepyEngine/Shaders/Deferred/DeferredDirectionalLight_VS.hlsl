@@ -9,8 +9,6 @@ struct VSOut
 VSOut main(float3 pos : Position)
 {
     VSOut output;
-    
     output.position = mul(float4(pos, 1.0f), modelViewProj);
-
     return output;
 }

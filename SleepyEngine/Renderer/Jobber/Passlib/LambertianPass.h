@@ -21,9 +21,9 @@ namespace Rgph
 		LambertianPass( Graphics& gfx, std::string name )
 			:
 			RenderQueuePass( std::move( name ) ), 
-			pPLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) },
-			pSLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) }, // probably need to change what slot this is on
-			pDLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx ) }  // this too
+			pPLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx, 1 ) },
+			pSLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx, 2 ) }, // probably need to change what slot this is on
+			pDLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx, 3 ) }  // this too
 		{
 			using namespace Bind; 
 			AddBind( pPLShadowCBuf );

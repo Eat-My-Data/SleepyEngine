@@ -25,7 +25,7 @@ SpotLight::SpotLight( Graphics& gfx, DirectX::XMFLOAT3 pos, f32 scale )
 		0.955f,
 		0.0f,
 		0.0f,
-		1.0f, 
+		0.0f, 
 		{ 0.0f, 0.0f },
 		pCamera->GetMatrix() * pCamera->GetProjection()
 	};

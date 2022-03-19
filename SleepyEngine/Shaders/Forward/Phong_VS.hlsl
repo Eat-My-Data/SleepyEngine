@@ -5,7 +5,9 @@ struct VSOut
 {
     float3 viewPos : Position;
     float3 viewNormal : Normal;
-    float4 shadowHomoPos : ShadowPosition;
+    float4 shadowHomoPosPL : ShadowPosition;
+    float4 shadowHomoPosSL : ShadowPosition2;
+    float4 shadowHomoPosDL : ShadowPosition3;
     float4 pos : SV_Position;
 };
 
@@ -15,6 +17,8 @@ VSOut main(float3 pos : Position, float3 n : Normal)
     vso.viewPos = (float3) mul(float4(pos, 1.0f), modelViewProj);
     vso.viewNormal = mul(n, (float3x3) modelViewProj);
     vso.pos = mul(float4(pos, 1.0f), modelViewProj);
-    vso.shadowHomoPos = ToShadowHomoSpace(pos, model);
+    vso.shadowHomoPosPL = ToShadowHomoSpace(pos, model, shadowPosPL);
+    vso.shadowHomoPosSL = ToShadowHomoSpace(pos, model, shadowPosSL);
+    vso.shadowHomoPosDL = ToShadowHomoSpace(pos, model, shadowPosDL);
     return vso;
 }

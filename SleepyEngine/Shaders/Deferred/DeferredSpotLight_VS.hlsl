@@ -4,7 +4,7 @@
 struct VSOut
 {
     float4 position : SV_POSITION;
-    float4 shadowHomoPos : ShadowPosition;
+    float4 shadowHomoPosSL : ShadowPosition;
 };
 
 VSOut main(float3 pos : Position)
@@ -12,7 +12,7 @@ VSOut main(float3 pos : Position)
     VSOut output;
     
     output.position = mul(float4(pos, 1.0f), modelViewProj);
-    output.shadowHomoPos = ToShadowHomoSpace(pos, model);
+    output.shadowHomoPosSL = ToShadowHomoSpace(pos, model, shadowPosSL);
 
     return output;
 }

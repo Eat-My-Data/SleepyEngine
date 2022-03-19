@@ -14,13 +14,13 @@ cbuffer ObjectCBuf : register(b1)
 };
 
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 spos : ShadowPosition) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 sposPL : ShadowPosition, float4 sposSL : ShadowPosition2, float4 sposDL : ShadowPosition3) : SV_Target
 {
     float3 diffuse;
     float3 specular;
 
     // shadow map test
-    const float shadowLevel = Shadow(spos);
+    const float shadowLevel = Shadow(sposPL);
     // normalize the mesh normal
     viewNormal = normalize(viewNormal);
 	// fragment to light vector data
@@ -40,7 +40,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 sp
     // ========================================================= SPOT LIGHT =========================================================
     float3 spotToFrag = spotLightPos - viewFragPos.xyz;
     // shadow map test
-    const float shadowLevel_spot = 1; //Shadow(spos);
+    const float shadowLevel_spot = Shadow(sposSL);
     const LightVectorData lv_spot = CalculateLightVectorData(spotLightPos, viewFragPos);
 	// attenuation
     const float att_spot = AttenuateSpot(spotToFrag, lv_spot.distToL);
@@ -57,7 +57,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float4 sp
     // ========================================================= SPOT LIGHT =========================================================
     // ========================================================= DIRECTIONAL LIGHT ==================================================
     // shadow map test
-    const float shadowLevel_directional = 1; //Shadow(spos);
+    const float shadowLevel_directional = Shadow(sposDL);
 	// attenuation
     const float att_directional = 0.4f; //Attenuate(attConst, attLin, attQuad, lv_directional.distToL);
 	// diffuse light
