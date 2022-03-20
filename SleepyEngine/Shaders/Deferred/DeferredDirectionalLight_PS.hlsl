@@ -5,10 +5,10 @@
 #include "../Common/PShadow.hlsli"
 #include "../Common/DirectionalLight.hlsli"
 
-Texture2D colorTexture : register(t4);
-Texture2D normalTexture : register(t5);
-Texture2D specularTexture : register(t6);
-Texture2D depthTexture : register(t7);
+Texture2D colorTexture : register(t6);
+Texture2D normalTexture : register(t7);
+Texture2D specularTexture : register(t8);
+Texture2D depthTexture : register(t9);
 
 TextureCube shadowMap : register(t3); // shadow map
 

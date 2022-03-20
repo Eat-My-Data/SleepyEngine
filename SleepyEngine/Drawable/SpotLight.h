@@ -36,6 +36,8 @@ public:
 	mutable DeferredSolidCone dMesh;
 	mutable Bind::PixelConstantBuffer<SpotLightCBuf> cbuf;
 	std::shared_ptr<Camera> pCamera;
+	// TODO: Fix where the spot light lookAt is, maybe draw lookAt?
+
 	// TODO: Allow multiple shadow cameras for BindCamera
 
 //public:

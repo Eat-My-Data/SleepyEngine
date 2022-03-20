@@ -59,10 +59,12 @@ void SpotLight::SpawnControlWindow()
 void SpotLight::Reset() noexcept
 {
 	cbData = home;
+
 }
 
 void SpotLight::Submit( size_t channels )
 {
+	pCamera->SetPos( cbData.pos );
 	mesh.Rotate( pCamera->pitch - ( PI / 2.0f ), pCamera->yaw - ( PI / 2.0f ) );
 	mesh.SetPos( cbData.pos );
 	mesh.Submit( channels );

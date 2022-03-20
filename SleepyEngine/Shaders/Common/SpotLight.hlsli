@@ -13,7 +13,7 @@ cbuffer SpotLightCBuf : register(b4)
     row_major float4x4 spotViewProjectionMatrix;
 };
 
-TextureCube spotLightShadowMap : register(t4);
+//TextureCube spotLightShadowMap : register(t4);
 
 float AttenuateSpot(const in float3 spotToFrag, const in float distFragToL)
 {

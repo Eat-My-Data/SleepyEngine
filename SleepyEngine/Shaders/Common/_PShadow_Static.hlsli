@@ -1,6 +1,6 @@
 TextureCube smapPL : register(t3);
-TextureCube smapSL : register(t4);
-TextureCube smapDL : register(t5);
+Texture2D smapSL : register(t4);
+Texture2D smapDL : register(t5);
 
 SamplerComparisonState ssam : register(s1);
 
@@ -20,19 +20,18 @@ float CalculateShadowDepth(const in float4 shadowPos)
     return (c1 * major + c0) / major;
 }
 
-
 float ShadowPL(const in float4 shadowPos)
 {
     return smapPL.SampleCmpLevelZero(ssam, shadowPos.xyz, CalculateShadowDepth(shadowPos));
 }
 
-
+// TODO: Not sure if these work
 float ShadowSL(const in float4 shadowPos)
 {
-    return smapSL.SampleCmpLevelZero(ssam, shadowPos.xyz, CalculateShadowDepth(shadowPos));
+    return smapSL.SampleCmpLevelZero(ssam, shadowPos.xy, CalculateShadowDepth(shadowPos));
 }
 
 float ShadowDL(const in float4 shadowPos)
 {
-    return smapDL.SampleCmpLevelZero(ssam, shadowPos.xyz, CalculateShadowDepth(shadowPos));
+    return smapDL.SampleCmpLevelZero(ssam, shadowPos.xy, CalculateShadowDepth(shadowPos));
 }
