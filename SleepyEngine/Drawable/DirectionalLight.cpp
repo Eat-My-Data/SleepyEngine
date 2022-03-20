@@ -23,13 +23,13 @@ DirectionalLight::DirectionalLight( Graphics& gfx )
 
 	//m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 1u );
 	//AddBind( m_pForwardLightMatrices );	
-	pCamera = std::make_shared<Camera>( gfx, "Directinal Light", DirectX::XMFLOAT3{ 0.0f, 200.0f, 0.0f }, PI / 2.0f, -PI, true );
+	pCamera = std::make_shared<Camera>( gfx, "Directional Light", DirectX::XMFLOAT3{ 0.0f, 200.0f, 0.0f }, PI / 2.0f, -PI, true );
 
 	home = {
 		{ 0.0f, -1.0f, 0.0f },
 		{ 1.0f, 1.0f, 1.0f },
 		{ 0.7f,0.7f,0.7f },
-		0.0f,
+		1.0f,
 		{ 0.0f, 0.0f }, // padding
 		{ pCamera->GetMatrix() * pCamera->GetProjection() }
 	};
@@ -50,7 +50,7 @@ void DirectionalLight::SpawnControlWindow() noexcept
 		d( ImGui::SliderFloat( "Y", &cbData.lightDirection.y, -1.0f, 1.0f, "%.1f" ) );
 		d( ImGui::SliderFloat( "Z", &cbData.lightDirection.z, -1.0f, 1.0f, "%.1f" ) );
 
-		ImGui::SliderFloat( "Intensity", &cbData.intensity, 0.0f, 1.0f );
+		ImGui::SliderFloat( "Intensity", &cbData.intensity, 0.0f, 2.0f );
 
 		ImGui::Text( "Color/Ambience" );
 		ImGui::ColorEdit3( "Diffuse Color", &cbData.color.x );

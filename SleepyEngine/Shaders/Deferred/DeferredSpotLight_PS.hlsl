@@ -41,7 +41,7 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
 
     // shadow
-    const float shadow = ShadowSL(spos);
+    const float shadow = ShadowSL(spos, SampleTypePoint);
     
     // attenuation
     const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;

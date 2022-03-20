@@ -59,7 +59,6 @@ void SpotLight::SpawnControlWindow()
 void SpotLight::Reset() noexcept
 {
 	cbData = home;
-
 }
 
 void SpotLight::Submit( size_t channels )

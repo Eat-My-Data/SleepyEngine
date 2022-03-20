@@ -81,7 +81,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     // ========================================================= SPOT LIGHT =========================================================
     float3 spotToFrag = spotLightPos - viewFragPos.xyz;
     // shadow map test
-    const float shadowLevel_spot = ShadowSL(sposSL);
+    const float shadowLevel_spot = ShadowSL(sposSL, splr);
     const LightVectorData lv_spot = CalculateLightVectorData(spotLightPos, viewFragPos);
 	// attenuation
     const float att_spot = AttenuateSpot(spotToFrag, lv_spot.distToL);
@@ -98,7 +98,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     // ========================================================= SPOT LIGHT =========================================================
     // ========================================================= DIRECTIONAL LIGHT ==================================================
     // shadow map test
-    const float shadowLevel_directional = ShadowDL(sposDL);
+    const float shadowLevel_directional = ShadowDL(sposDL, splr);
 	// attenuation
     const float att_directional = 0.4f; //Attenuate(attConst, attLin, attQuad, lv_directional.distToL);
 	// diffuse light

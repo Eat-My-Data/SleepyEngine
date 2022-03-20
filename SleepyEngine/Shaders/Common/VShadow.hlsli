@@ -5,15 +5,15 @@ cbuffer PLShadowTransformCBuf : register(b1)
 
 cbuffer SLShadowTransformCBuf : register(b2)
 {
-    matrix shadowPosSL;
+    row_major matrix shadowPosSL;
 };
 
 cbuffer DLShadowTransformCBuf : register(b3)
 {
-    matrix shadowPosDL;
+    row_major matrix shadowPosDL;
 };
 
-float4 ToShadowHomoSpace(const in float3 pos, uniform matrix modelTransform, uniform matrix shadowPos)
+float4 ToShadowHomoSpace(const in float3 pos, uniform matrix modelTransform, matrix shadowPos)
 {
     const float4 world = mul(float4(pos, 1.0f), modelTransform);
     return mul(world, shadowPos);

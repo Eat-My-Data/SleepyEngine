@@ -31,6 +31,7 @@ private:
 	mutable DeferredFullScreen mesh;
 	mutable Bind::PixelConstantBuffer<DirectionalLightCBuf> cbuf;
 	std::shared_ptr<Camera> pCamera;
+	// TODO: Make camera orthographic to represent the sun 
 //private:
 //	struct ForwardMatrices
 //	{
