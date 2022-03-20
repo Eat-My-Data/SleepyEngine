@@ -23,7 +23,7 @@ DirectionalLight::DirectionalLight( Graphics& gfx )
 
 	//m_pForwardLightMatrices = VertexConstantBuffer<ForwardMatrices>::Resolve( gdi, matrixcbuf, 1u );
 	//AddBind( m_pForwardLightMatrices );	
-	pCamera = std::make_shared<Camera>( gfx, "Directional Light", DirectX::XMFLOAT3{ 0.0f, 200.0f, 0.0f }, PI / 2.0f, -PI, true );
+	pCamera = std::make_shared<Camera>( gfx, "Directional Light", homePos, homePitch, homeYaw, true );
 
 	home = {
 		{ 0.0f, -1.0f, 0.0f },
@@ -45,10 +45,13 @@ void DirectionalLight::SpawnControlWindow() noexcept
 		const auto d = [&dirtyPos]( bool dirty ) {dirtyPos = dirtyPos || dirty; };
 
 		// Rotate Light/Pass time controls?
-		ImGui::Text( "Light Direction" );
-		d( ImGui::SliderFloat( "X", &cbData.lightDirection.x, -1.0f, 1.0f, "%.1f" ) );
-		d( ImGui::SliderFloat( "Y", &cbData.lightDirection.y, -1.0f, 1.0f, "%.1f" ) );
-		d( ImGui::SliderFloat( "Z", &cbData.lightDirection.z, -1.0f, 1.0f, "%.1f" ) );
+		//ImGui::Text( "Light Direction" );
+		//d( ImGui::SliderFloat( "X", &cbData.lightDirection.x, -1.0f, 1.0f, "%.1f" ) );
+		//d( ImGui::SliderFloat( "Y", &cbData.lightDirection.y, -1.0f, 1.0f, "%.1f" ) );
+		//d( ImGui::SliderFloat( "Z", &cbData.lightDirection.z, -1.0f, 1.0f, "%.1f" ) );
+
+		ImGui::SliderAngle( "Pitch", &pCamera->pitch, 0.995f * -180.0f, 0.995f * 180.0f );
+		ImGui::SliderAngle( "Yaw", &pCamera->yaw, 0.995f * -180.0f, 0.995f * 180.0f );
 
 		ImGui::SliderFloat( "Intensity", &cbData.intensity, 0.0f, 2.0f );
 
@@ -67,6 +70,9 @@ void DirectionalLight::SpawnControlWindow() noexcept
 void DirectionalLight::Reset() noexcept
 {
 	cbData = home;
+	pCamera->SetPos( homePos );
+	pCamera->pitch = homePitch;
+	pCamera->yaw = homeYaw;
 }
 
 void DirectionalLight::Submit( size_t channels ) const noexcept( !IS_DEBUG )
@@ -76,7 +82,9 @@ void DirectionalLight::Submit( size_t channels ) const noexcept( !IS_DEBUG )
 
 void DirectionalLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
 {
-	cbuf.Update( gfx, cbData );
+	auto dataCopy = cbData;
+	dataCopy.lightDirection = { pCamera->GetLookAt().m128_f32[0], -pCamera->GetLookAt().m128_f32[1], pCamera->GetLookAt().m128_f32[2] };
+	cbuf.Update( gfx, dataCopy );
 	cbuf.Bind( gfx );
 }
 

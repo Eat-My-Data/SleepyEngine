@@ -59,6 +59,9 @@ void SpotLight::SpawnControlWindow()
 void SpotLight::Reset() noexcept
 {
 	cbData = home;
+	pCamera->SetPos( cbData.pos );
+	pCamera->pitch = cbData.pitch;
+	pCamera->yaw = cbData.yaw;
 }
 
 void SpotLight::Submit( size_t channels )

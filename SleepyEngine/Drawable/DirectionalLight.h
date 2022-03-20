@@ -26,6 +26,9 @@ private:
 		float padding[3];
 		DirectX::XMMATRIX lightViewProjectionMatrix;
 	};
+	DirectX::XMFLOAT3 homePos{ 0.0f, 200.0f, 0.0f };
+	float homePitch = PI / 2.0f;
+	float homeYaw = -PI;
 	DirectionalLightCBuf home;
 	DirectionalLightCBuf cbData;
 	mutable DeferredFullScreen mesh;
