@@ -41,9 +41,7 @@ namespace Bind
 	{
 		const auto pos = pCamera->GetPos();
 		const Transform t{
-			dx::XMMatrixTranspose(
-				dx::XMMatrixTranslation( -pos.x,-pos.y,-pos.z )
-			) * pCamera->GetMatrix() * pCamera->GetProjection()
+			pCamera->GetMatrix() * pCamera->GetProjection()
 		};
 		pVcbuf->Update( gfx, t );
 	}
