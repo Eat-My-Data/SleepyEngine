@@ -22,8 +22,8 @@ namespace Rgph
 			:
 			RenderQueuePass( std::move( name ) ), 
 			pPLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx, 1 ) },
-			pSLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx, 2 ) }, // probably need to change what slot this is on
-			pDLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBuf>( gfx, 3 ) }  // this too
+			pSLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBufEX>( gfx, 2 ) },
+			pDLShadowCBuf{ std::make_shared<Bind::ShadowCameraCBufEX>( gfx, 3 ) }
 		{
 			using namespace Bind; 
 			AddBind( pPLShadowCBuf );
@@ -67,8 +67,8 @@ namespace Rgph
 		}
 	private:
 		std::shared_ptr<Bind::ShadowCameraCBuf> pPLShadowCBuf;
-		std::shared_ptr<Bind::ShadowCameraCBuf> pSLShadowCBuf;
-		std::shared_ptr<Bind::ShadowCameraCBuf> pDLShadowCBuf;
+		std::shared_ptr<Bind::ShadowCameraCBufEX> pSLShadowCBuf;
+		std::shared_ptr<Bind::ShadowCameraCBufEX> pDLShadowCBuf;
 		const Camera* pMainCamera = nullptr;
 	};
 }

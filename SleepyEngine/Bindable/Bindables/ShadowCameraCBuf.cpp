@@ -27,4 +27,28 @@ namespace Bind
 	{
 		pCamera = p;
 	}
+
+
+	ShadowCameraCBufEX::ShadowCameraCBufEX( Graphics& gfx, UINT slot )
+		:
+		pVcbuf{ std::make_unique<VertexConstantBuffer<Transform>>( gfx,slot ) }
+	{}
+	void ShadowCameraCBufEX::Bind( Graphics& gfx ) noxnd
+	{
+		pVcbuf->Bind( gfx );
+	}
+	void ShadowCameraCBufEX::Update( Graphics& gfx )
+	{
+		const auto pos = pCamera->GetPos();
+		const Transform t{
+			dx::XMMatrixTranspose(
+				dx::XMMatrixTranslation( -pos.x,-pos.y,-pos.z )
+			) * pCamera->GetMatrix() * pCamera->GetProjection()
+		};
+		pVcbuf->Update( gfx, t );
+	}
+	void ShadowCameraCBufEX::SetCamera( const Camera* p ) noexcept
+	{
+		pCamera = p;
+	}
 }
