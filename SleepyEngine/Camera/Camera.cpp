@@ -58,6 +58,8 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 
 DirectX::XMMATRIX Camera::GetProjection() const noexcept
 {
+	if ( name == "Directional Light" )
+		return DirectX::XMMatrixOrthographicLH( 400.0f, 400.0f, 1.0f, 1200.0f );
 	return proj.GetMatrix();
 }
 
@@ -180,9 +182,10 @@ void Camera::Submit( size_t channel ) const
 
 DirectX::XMVECTOR Camera::GetLookAt() const noexcept
 {
-	DirectX::XMMATRIX m = GetMatrix();
-	//return { m.r[0].m128_f32[2], m.r[1].m128_f32[2], m.r[2].m128_f32[2] };
-	return { m.r[2].m128_f32[0], m.r[2].m128_f32[1], m.r[2].m128_f32[2] };
+	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( GetMatrix() );
+	DirectX::XMMATRIX viewInv = DirectX::XMMatrixInverse( &determinant, GetMatrix() );
+	//return { viewInv.r[0].m128_f32[2], viewInv.r[1].m128_f32[2], viewInv.r[2].m128_f32[2] };
+	return { viewInv.r[2].m128_f32[0], viewInv.r[2].m128_f32[1], viewInv.r[2].m128_f32[2] };
 }
 
 DirectX::XMVECTOR Camera::GetUpVec() const noexcept

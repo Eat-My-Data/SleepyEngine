@@ -83,7 +83,7 @@ void DirectionalLight::Submit( size_t channels ) const noexcept( !IS_DEBUG )
 void DirectionalLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
 {
 	auto dataCopy = cbData;
-	dataCopy.lightDirection = { pCamera->GetLookAt().m128_f32[0], -pCamera->GetLookAt().m128_f32[1], pCamera->GetLookAt().m128_f32[2] };
+	dataCopy.lightDirection = { pCamera->GetLookAt().m128_f32[0], pCamera->GetLookAt().m128_f32[1], pCamera->GetLookAt().m128_f32[2] };
 	cbuf.Update( gfx, dataCopy );
 	cbuf.Bind( gfx );
 }

@@ -14,17 +14,17 @@ SpotLight::SpotLight( Graphics& gfx, DirectX::XMFLOAT3 pos, f32 scale )
 	dMesh( gfx, 10 ),
 	cbuf( gfx, 4 )
 {
-	pCamera = std::make_shared<Camera>( gfx, "Spot Light", pos, 0.0f, PI / 2.0f, true );
+	pCamera = std::make_shared<Camera>( gfx, "Spot Light", pos, PI / 2.0f, -PI, true );
 
 	home = {
 		pos,
 		{ 1.0f,1.0f,1.0f },
-		{ pCamera->GetLookAt().m128_f32[0], -pCamera->GetLookAt().m128_f32[1], pCamera->GetLookAt().m128_f32[2] },
+		{ pCamera->GetLookAt().m128_f32[0], pCamera->GetLookAt().m128_f32[1], pCamera->GetLookAt().m128_f32[2] },
 		50.0f,
 		0.885f,
 		0.955f,
-		0.0f,
-		0.0f,
+		PI / 2.0f,
+		-PI,
 		0.0f, 
 		{ 0.0f, 0.0f },
 		pCamera->GetMatrix() * pCamera->GetProjection()
@@ -45,7 +45,7 @@ void SpotLight::SpawnControlWindow()
 		ImGui::SliderFloat( "outerRadius", &cbData.outerRadius, 0.0f, 1.0f );
 		ImGui::SliderFloat( "innerRadius", &cbData.innerRadius, 0.0f, 1.0f );
 		ImGui::SliderFloat( "Intensity", &cbData.intensity, 0.0f, 2.0f );
-		ImGui::SliderAngle( "Pitch", &pCamera->pitch, 0.995f * -180.0f, 0.995f * 180.0f );
+		ImGui::SliderAngle( "Pitch", &pCamera->pitch, 0.995f * -90.0f, 0.995f * 90.0f );
 		ImGui::SliderAngle( "Yaw", &pCamera->yaw, 0.995f * -180.0f, 0.995f * 180.0f );
 
 		if ( ImGui::Button( "Reset" ) )
@@ -67,17 +67,19 @@ void SpotLight::Reset() noexcept
 void SpotLight::Submit( size_t channels )
 {
 	pCamera->SetPos( cbData.pos );
-	mesh.Rotate( pCamera->pitch - ( PI / 2.0f ), pCamera->yaw - ( PI / 2.0f ) );
+	mesh.Rotate( pCamera->pitch - ( PI / 2 ), pCamera->yaw  );
 	mesh.SetPos( cbData.pos );
 	mesh.Submit( channels );
-	dMesh.Rotate( pCamera->pitch - ( PI / 2.0f ), pCamera->yaw - ( PI / 2.0f ) );
+	dMesh.Rotate( pCamera->pitch - ( PI / 2 ), pCamera->yaw  );
 	dMesh.SetPos( cbData.pos );
 	dMesh.Submit( channels );
 }
 void SpotLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
 {
 	auto dataCopy = cbData;
-	dataCopy.lightDirection = { pCamera->GetLookAt().m128_f32[0], -pCamera->GetLookAt().m128_f32[1], pCamera->GetLookAt().m128_f32[2] };
+	dataCopy.pitch = pCamera->pitch;
+	dataCopy.yaw = pCamera->yaw;
+	dataCopy.lightDirection = { pCamera->GetLookAt().m128_f32[0], pCamera->GetLookAt().m128_f32[1], pCamera->GetLookAt().m128_f32[2] };
 	const auto pos = DirectX::XMLoadFloat3( &cbData.pos );
 	DirectX::XMStoreFloat3( &dataCopy.pos, DirectX::XMVector3Transform( pos, view ) );
 	dataCopy.spotViewProjectionMatrix = pCamera->GetMatrix() * pCamera->GetProjection();
