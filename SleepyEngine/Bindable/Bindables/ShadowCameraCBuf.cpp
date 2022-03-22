@@ -39,7 +39,6 @@ namespace Bind
 	}
 	void ShadowCameraCBufEX::Update( Graphics& gfx )
 	{
-		const auto pos = pCamera->GetPos();
 		const Transform t{
 			pCamera->GetMatrix() * pCamera->GetProjection()
 		};

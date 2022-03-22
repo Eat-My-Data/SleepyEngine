@@ -25,15 +25,15 @@ float ShadowPL(const in float4 shadowPos)
     return smapPL.SampleCmpLevelZero(ssam, shadowPos.xyz, CalculateShadowDepth(shadowPos));
 }
 
-// TODO: These are failing
+// Need to fix this one
 float ShadowSL(const in float4 shadowPos, SamplerState samp)
 {
-    //float fragDepth = shadowPos.z / shadowPos.w;
-    //float sampleDepth = smapSL.Sample(samp, ((float2(shadowPos.x, 1.0 - shadowPos.y) / shadowPos.w) / 2.0f) + 0.5f).r;
-    //float bias = 0.0005;
-    //return sampleDepth + bias > fragDepth;
-    //return smapSL.Sample(samp, shadowPos.xy).r;
-    return smapSL.SampleCmpLevelZero(ssam, shadowPos.xy, CalculateShadowDepth(shadowPos));
+    float fragDepth = shadowPos.z / shadowPos.w;
+    float sampleDepth = smapSL.Sample(samp, ((float2(shadowPos.x, 1.0 - shadowPos.y) / shadowPos.w) / 2.0f) + 0.5f).r;
+    float bias = 0.0005;
+    return sampleDepth + bias > fragDepth;
+    return smapSL.Sample(samp, shadowPos.xy).r;
+    //return smapSL.SampleCmpLevelZero(ssam, shadowPos.xy, CalculateShadowDepth(shadowPos));
 }
 
 float ShadowDL(const in float4 shadowPos, SamplerState samp)
