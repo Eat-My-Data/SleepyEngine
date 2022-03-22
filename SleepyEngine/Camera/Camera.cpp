@@ -59,7 +59,7 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 DirectX::XMMATRIX Camera::GetProjection() const noexcept
 {
 	if ( name == "Directional Light" )
-		return DirectX::XMMatrixOrthographicLH( 400.0f, 400.0f, 1.0f, 1200.0f );
+		return DirectX::XMMatrixOrthographicLH( 400.0f, 400.0f, 0.5f, 400.0f );
 	return proj.GetMatrix();
 }
 
