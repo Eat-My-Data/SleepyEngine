@@ -50,7 +50,7 @@ void DirectionalLight::SpawnControlWindow() noexcept
 		//d( ImGui::SliderFloat( "Y", &cbData.lightDirection.y, -1.0f, 1.0f, "%.1f" ) );
 		//d( ImGui::SliderFloat( "Z", &cbData.lightDirection.z, -1.0f, 1.0f, "%.1f" ) );
 
-		ImGui::SliderAngle( "Pitch", &pCamera->pitch, 0.995f * -90.0f, 0.995f * 90.0f );;
+		ImGui::SliderAngle( "Pitch", &pCamera->pitch, 0.0f, 0.995f * 90.0f * 2.0f );;
 		ImGui::SliderAngle( "Yaw", &pCamera->yaw, 0.995f * -180.0f, 0.995f * 180.0f );
 
 		ImGui::SliderFloat( "Intensity", &cbData.intensity, 0.0f, 2.0f );

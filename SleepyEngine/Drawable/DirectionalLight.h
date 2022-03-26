@@ -26,6 +26,7 @@ private:
 		float padding[3];
 		DirectX::XMMATRIX lightViewProjectionMatrix;
 	};
+	// TODO: Day/Night Cycles
 	DirectX::XMFLOAT3 homePos{ 0.0f, 200.0f, 0.0f };
 	float homePitch = PI / 2.0f;
 	float homeYaw = -PI;
@@ -34,12 +35,4 @@ private:
 	mutable DeferredFullScreen mesh;
 	mutable Bind::PixelConstantBuffer<DirectionalLightCBuf> cbuf;
 	std::shared_ptr<Camera> pCamera;
-	// TODO: Make camera orthographic to represent the sun 
-//private:
-//	struct ForwardMatrices
-//	{
-//		DirectX::XMMATRIX lightViewMatrix;
-//		DirectX::XMMATRIX lightProjMatrix;
-//	} matrixcbuf;
-//	std::shared_ptr<Bind::VertexConstantBuffer<ForwardMatrices>> m_pForwardLightMatrices;
 };
