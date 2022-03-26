@@ -37,29 +37,4 @@ public:
 	mutable Bind::PixelConstantBuffer<SpotLightCBuf> cbuf;
 	std::shared_ptr<Camera> pCamera;
 	// TODO: Fix where the spot light lookAt is, maybe draw lookAt?
-
-	// TODO: Allow multiple shadow cameras for BindCamera
-
-//public:
-//	void Translate( DirectX::XMFLOAT3 translation );
-//	void Rotate( const f32 dx, const f32 dy );
-//	DirectX::XMMATRIX GetViewMatrix() noexcept;
-//	DirectX::XMMATRIX GetProjectionMatrix() noexcept;
-//	bool CameraIsInside( DirectX::XMFLOAT3 camPos );
-//private:
-//	struct ForwardMatrices
-//	{
-//		DirectX::XMMATRIX lightViewMatrix;
-//		DirectX::XMMATRIX lightProjMatrix;
-//	} matrixcbuf;
-//	std::shared_ptr<Bind::VertexConstantBuffer<ForwardMatrices>> m_pForwardLightMatrices;
-//private:
-//	ID3D11PixelShader* pPixelShader;
-//	ID3D11RasterizerState* rasterizerInside;
-//	ID3D11RasterizerState* rasterizerOutside;
-//	ID3D11DepthStencilState* pDSStateInfrontBackFaceOfLight;
-//	ID3D11DepthStencilState* pDSStateLightingBehindFrontFaceOfLight;
-//	ID3D11DepthStencilState* pDSStateInsideLighting;
-	// TODO:
-	// - draw look at vector for debugging
 };

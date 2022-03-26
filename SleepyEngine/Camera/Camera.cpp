@@ -28,7 +28,7 @@ Camera::Camera( Graphics& gfx, std::string name, DirectX::XMFLOAT3 homePos, floa
 void Camera::BindToGraphics( Graphics& gfx ) const
 {
 	gfx.SetCamera( GetMatrix() );
-	gfx.SetProjection( proj.GetMatrix() );
+	gfx.SetProjection( GetProjection() );
 
 	//DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( proj.GetMatrix() );
 	//cbufData.projInvMatrix = DirectX::XMMatrixInverse( &determinant, proj.GetMatrix() );
@@ -59,7 +59,9 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 DirectX::XMMATRIX Camera::GetProjection() const noexcept
 {
 	if ( name == "Directional Light" )
-		return DirectX::XMMatrixOrthographicLH( 400.0f, 400.0f, 0.5f, 400.0f );
+		return DirectX::XMMatrixOrthographicLH( 400.0f, 400.0f, 0.5f, 1200.0f );
+	if ( name == "Spot Light" )
+		return DirectX::XMMatrixPerspectiveFovLH( PI / 2, 1.0f, 0.005f, 50.0f );
 	return proj.GetMatrix();
 }
 
