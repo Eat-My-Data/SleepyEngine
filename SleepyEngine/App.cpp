@@ -24,8 +24,8 @@ App::App( const std::string& commandLine )
 	cameras.AddCamera( spotLight.ShareCamera() );
 	cameras.AddCamera( directionalLight.ShareCamera() );
 
-	//cube.SetPos( { 10.0f,5.0f,6.0f } );
-	//cube2.SetPos( { 10.0f,5.0f,14.0f } );
+	cube.SetPos( { 10.0f,5.0f,6.0f } );
+	cube2.SetPos( { 10.0f,5.0f,14.0f } );
 	nano.SetRootTransform(
 		dx::XMMatrixRotationY( PI / 2.f ) *
 		dx::XMMatrixTranslation( 27.f, -0.56f, 1.7f )
@@ -36,8 +36,8 @@ App::App( const std::string& commandLine )
 	);
 
 
-	//cube.LinkTechniques( rg );
-	//cube2.LinkTechniques( rg );
+	cube.LinkTechniques( forward_rg );
+	cube2.LinkTechniques( forward_rg );
 	pointLight.LinkTechniques( forward_rg );
 	spotLight.LinkTechniques( forward_rg );
 	directionalLight.LinkTechniques( forward_rg );
@@ -49,7 +49,6 @@ App::App( const std::string& commandLine )
 	forward_rg.BindPLShadowCamera( *pointLight.ShareCamera() );
 	forward_rg.BindSLShadowCamera( *spotLight.ShareCamera() );
 	forward_rg.BindDLShadowCamera( *directionalLight.ShareCamera() );
-	//ToggleRenderTechnique();
 }
 
 void App::HandleInput( float dt )
@@ -128,9 +127,8 @@ void App::ToggleRenderTechnique()
 {
 	if ( isDeferred ) // Toggle Forward Shaders
 	{
-		//cube.LinkTechniques( rg );
-		//cube2.LinkTechniques( rg );
-
+		cube.ToggleRenderTechnique( wnd.Gfx(), "" );
+		cube2.ToggleRenderTechnique( wnd.Gfx(), "" );
 		pointLight.ToggleRenderTechnique( wnd.Gfx(), "" );
 		spotLight.ToggleRenderTechnique( wnd.Gfx(), "" );
 		directionalLight.ToggleRenderTechnique( wnd.Gfx(), "" );
@@ -138,6 +136,8 @@ void App::ToggleRenderTechnique()
 		gobber.ToggleRenderTechnique( wnd.Gfx(), "" );
 		nano.ToggleRenderTechnique( wnd.Gfx(), "" );
 
+		cube.LinkTechniques( forward_rg );
+		cube2.LinkTechniques( forward_rg );
 		pointLight.LinkTechniques( forward_rg );
 		spotLight.LinkTechniques( forward_rg );
 		directionalLight.LinkTechniques( forward_rg );
@@ -151,14 +151,12 @@ void App::ToggleRenderTechnique()
 		forward_rg.BindDLShadowCamera( *directionalLight.ShareCamera() );
 
 		isDeferred = false;
-		//cube.ToggleRenderTechnique( wnd.Gfx(), "" );
-		//cube2.ToggleRenderTechnique( wnd.Gfx(), "" );
 	}
 	else // Toggle Deferred Shaders
 	{
-		//cube.LinkTechniques( rg );
-		//cube2.LinkTechniques( rg );
 
+		cube.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
+		cube2.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		pointLight.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		spotLight.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		directionalLight.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
@@ -166,6 +164,8 @@ void App::ToggleRenderTechnique()
 		gobber.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		nano.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 
+		cube.LinkTechniques( deferred_rg );
+		cube2.LinkTechniques( deferred_rg );
 		pointLight.LinkTechniques( deferred_rg );
 		spotLight.LinkTechniques( deferred_rg );
 		directionalLight.LinkTechniques( deferred_rg );
@@ -178,8 +178,6 @@ void App::ToggleRenderTechnique()
 		deferred_rg.BindSLShadowCamera( *spotLight.ShareCamera() );
 		deferred_rg.BindDLShadowCamera( *directionalLight.ShareCamera() );
 
-		//cube.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
-		//cube2.ToggleRenderTechnique( wnd.Gfx(), "Deferred" );
 		isDeferred = true;
 	}
 }
@@ -199,16 +197,16 @@ void App::ExecuteFrame( float dt )
 	pointLight.Submit( Chan::main );
 	spotLight.Submit( Chan::main );
 	directionalLight.Submit( Chan::main );
-	//cube.Submit( Chan::main );
+	cube.Submit( Chan::main );
 	sponza.Submit( Chan::main );
-	//cube2.Submit( Chan::main );
+	cube2.Submit( Chan::main );
 	gobber.Submit( Chan::main );
 	nano.Submit( Chan::main );
 	cameras.Submit( Chan::main );
 
-	//cube.Submit( Chan::shadow );
+	cube.Submit( Chan::shadow );
 	sponza.Submit( Chan::shadow );
-	//cube2.Submit( Chan::shadow );
+	cube2.Submit( Chan::shadow );
 	gobber.Submit( Chan::shadow );
 	nano.Submit( Chan::shadow );
 
@@ -235,8 +233,8 @@ void App::ExecuteFrame( float dt )
 	spotLight.SpawnControlWindow();
 	directionalLight.SpawnControlWindow();
 
-	//cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
-	//cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
+	cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
+	cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 
 	if ( isDeferred )
 		deferred_rg.RenderWindows( wnd.Gfx() );

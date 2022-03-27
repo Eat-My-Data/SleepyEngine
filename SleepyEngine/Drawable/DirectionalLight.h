@@ -27,7 +27,7 @@ private:
 		DirectX::XMMATRIX lightViewProjectionMatrix;
 	};
 	// TODO: Day/Night Cycles
-	DirectX::XMFLOAT3 homePos{ 0.0f, 200.0f, 0.0f };
+	DirectX::XMFLOAT3 homePos{ 0.0f, 200.0f, 10.0f };
 	float homePitch = PI / 2.0f;
 	float homeYaw = -PI;
 	DirectionalLightCBuf home;
