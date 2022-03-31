@@ -30,13 +30,13 @@ void Camera::BindToGraphics( Graphics& gfx ) const
 	gfx.SetCamera( GetMatrix() );
 	gfx.SetProjection( GetProjection() );
 
-	//DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( proj.GetMatrix() );
-	//cbufData.projInvMatrix = DirectX::XMMatrixInverse( &determinant, proj.GetMatrix() );
-	//determinant = DirectX::XMMatrixDeterminant( GetMatrix() );
-	//cbufData.viewInvMatrix = DirectX::XMMatrixInverse( &determinant, GetMatrix() );
-	//cbufData.camPos = GetPos();
-	//worldPositionCBuf->Update( gfx, cbufData );
-	//worldPositionCBuf->Bind( gfx );
+	DirectX::XMVECTOR determinant = DirectX::XMMatrixDeterminant( GetProjection() );
+	cbufData.projInvMatrix = DirectX::XMMatrixInverse( &determinant, GetProjection() );
+	determinant = DirectX::XMMatrixDeterminant( GetMatrix() );
+	cbufData.viewInvMatrix = DirectX::XMMatrixInverse( &determinant, GetMatrix() );
+	cbufData.camPos = GetPos();
+	worldPositionCBuf->Update( gfx, cbufData );
+	worldPositionCBuf->Bind( gfx );
 }
 
 DirectX::XMMATRIX Camera::GetMatrix() const noexcept

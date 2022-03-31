@@ -32,16 +32,16 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     clipY = -clipY;
    
     // normal to clip space
-    normal = (normal * 2.0) - 1.0;
+    //normal = (normal * 2.0) - 1.0;
 
-    //// world position
+    // world position
     float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
 
     // vector from camera to fragment
     float3 camToFrag = worldSpacePos.xyz - camPos.xyz;
 
     // shadow
-    const float shadow = ShadowPL(spos);
+    const float shadow = CalculatePointLightShadow(worldSpacePos.xyz, viewLightPos, SampleTypePoint);
     
     // attenuation
     const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;

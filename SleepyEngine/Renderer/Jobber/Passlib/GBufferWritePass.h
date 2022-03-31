@@ -31,7 +31,7 @@ namespace Rgph
 			AddBind( gbuffer );
 			RegisterSource( DirectBufferSource<GBufferRenderTargets>::Make( "gbuffer", gbuffer ) );
 
-			depthMap = std::make_shared<ShaderInputDepthStencil>( gfx, 7, DepthStencil::Usage::ShadowDepth );
+			depthMap = std::make_shared<ShaderInputDepthStencil>( gfx, 9, DepthStencil::Usage::ShadowDepth );
 			RegisterSource( DirectBufferSource<ShaderInputDepthStencil>::Make( "depthMap", depthMap ) );
 			SetDepthBuffer( depthMap );
 

@@ -1,8 +1,8 @@
 cbuffer CameraData : register(b10)
 {
+     float4x4 viewInvMatrix;
+     float4x4 projInvMatrix;
     float4 camPos;
-    row_major float4x4 viewInvMatrix;
-    row_major float4x4 projInvMatrix;
 };
 
 float4 CalculateWorldPosition(float4 worldDepth)

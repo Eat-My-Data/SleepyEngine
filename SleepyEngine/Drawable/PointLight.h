@@ -35,6 +35,7 @@ private:
 		float attLin;
 		float attQuad;
 	};
+	// TODO: Remove attenuation values and use distance from light?
 private:
 	PointLightCBuf home;
 	PointLightCBuf cbData;

@@ -13,7 +13,7 @@ PointLight::PointLight( Graphics& gfx, DirectX::XMFLOAT3 pos, float radius )
 		pos,
 		{ 0.05f,0.05f,0.05f },
 		{ 1.0f,1.0f,1.0f },
-		{ radius * 20.f, 0.0f, 0.0f },
+		{ radius * 200.f, 0.0f, 0.0f },
 		1.0f,
 		1.0f,		
 		0.025f,
@@ -76,7 +76,8 @@ void PointLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
 {
 	auto dataCopy = cbData;
 	const auto pos = DirectX::XMLoadFloat3( &cbData.pos );
-	DirectX::XMStoreFloat3( &dataCopy.pos, DirectX::XMVector3Transform( pos, view ) );
+	// TODO: Store view position and not view position?
+	//DirectX::XMStoreFloat3( &dataCopy.pos, DirectX::XMVector3Transform( pos, view ) );
 	cbuf.Update( gfx, dataCopy );
 	cbuf.Bind( gfx );
 }

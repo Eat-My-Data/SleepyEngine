@@ -49,6 +49,8 @@ App::App( const std::string& commandLine )
 	forward_rg.BindPLShadowCamera( *pointLight.ShareCamera() );
 	forward_rg.BindSLShadowCamera( *spotLight.ShareCamera() );
 	forward_rg.BindDLShadowCamera( *directionalLight.ShareCamera() );
+
+	ToggleRenderTechnique();
 }
 
 void App::HandleInput( float dt )

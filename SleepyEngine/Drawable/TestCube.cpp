@@ -24,18 +24,18 @@ TestCube::TestCube( Graphics& gfx,float size )
 	auto tcb = std::make_shared<TransformCbuf>( gfx );
 
 	{
-		Technique shade("Shade", Chan::main );
+		Technique shade("Phong", Chan::main );
 		{
 			Step only( "lambertian" );
 
 			only.AddBindable( Texture::Resolve( gfx,"Models\\brick_wall\\brick_wall_diffuse.jpg" ) );
 			only.AddBindable( Sampler::Resolve( gfx ) );
 
-			//auto pvs = VertexShader::Resolve( gfx,"./Shaders/Bin/ShadowTest_VS.cso" );
-			//only.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*pvs ) );
-			//only.AddBindable( std::move( pvs ) );
+			auto pvs = VertexShader::Resolve( gfx,"./Shaders/Bin/ShadowTest_VS.cso" );
+			only.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*pvs ) );
+			only.AddBindable( std::move( pvs ) );
 
-			//only.AddBindable( PixelShader::Resolve( gfx,"./Shaders/Bin/ShadowTest_VS.cso" ) );
+			only.AddBindable( PixelShader::Resolve( gfx,"./Shaders/Bin/ShadowTest_PS.cso" ) );
 			
 			Dcb::RawLayout lay;
 			lay.Add<Dcb::Float3>( "specularColor" );
@@ -56,40 +56,40 @@ TestCube::TestCube( Graphics& gfx,float size )
 		}
 		AddTechnique( std::move( shade ) );
 	}
-	{
-		Technique outline("Outline", Chan::main );
-		{
-			Step mask( "outlineMask" );
+	//{
+	//	Technique outline("Outline", Chan::main );
+	//	{
+	//		Step mask( "outlineMask" );
 
-			// TODO: better sub-layout generation tech for future consideration maybe
-			mask.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*VertexShader::Resolve( gfx,"./Shaders/Bin/Solid_VS.cso" ) ) );
+	//		// TODO: better sub-layout generation tech for future consideration maybe
+	//		mask.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*VertexShader::Resolve( gfx,"./Shaders/Bin/Solid_VS.cso" ) ) );
 
-			mask.AddBindable( std::move( tcb ) );
+	//		mask.AddBindable( std::move( tcb ) );
 
-			// TODO: might need to specify rasterizer when doubled-sided models start being used
+	//		// TODO: might need to specify rasterizer when doubled-sided models start being used
 
-			outline.AddStep( std::move( mask ) );
-		}
-		{
-			Step draw( "outlineDraw" );
+	//		outline.AddStep( std::move( mask ) );
+	//	}
+	//	{
+	//		Step draw( "outlineDraw" );
 
-			Dcb::RawLayout lay;
-			lay.Add<Dcb::Float4>( "color" );
-			auto buf = Dcb::Buffer( std::move( lay ) );
-			buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
-			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx,buf,1u ) );
+	//		Dcb::RawLayout lay;
+	//		lay.Add<Dcb::Float4>( "color" );
+	//		auto buf = Dcb::Buffer( std::move( lay ) );
+	//		buf["color"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+	//		draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx,buf,1u ) );
 
-			// TODO: better sub-layout generation tech for future consideration maybe
-			draw.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*VertexShader::Resolve( gfx,"./Shaders/Bin/Solid_VS.cso" ) ) );
-			
-			draw.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
+	//		// TODO: better sub-layout generation tech for future consideration maybe
+	//		draw.AddBindable( InputLayout::Resolve( gfx,model.m_VBVertices.GetLayout(),*VertexShader::Resolve( gfx,"./Shaders/Bin/Solid_VS.cso" ) ) );
+	//		
+	//		draw.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
 
-			// TODO: might need to specify rasterizer when doubled-sided models start being used
+	//		// TODO: might need to specify rasterizer when doubled-sided models start being used
 
-			outline.AddStep( std::move( draw ) );
-		}
-		AddTechnique( std::move( outline ) );
-	}
+	//		outline.AddStep( std::move( draw ) );
+	//	}
+	//	AddTechnique( std::move( outline ) );
+	//}
 	// shadow map technique
 	{
 		Technique map{ "ShadowMap",Chan::shadow,true };

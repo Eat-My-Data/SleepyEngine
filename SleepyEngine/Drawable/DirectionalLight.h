@@ -28,8 +28,8 @@ private:
 	};
 	// TODO: Day/Night Cycles
 	DirectX::XMFLOAT3 homePos{ 0.0f, 200.0f, 10.0f };
-	float homePitch = PI / 2.0f;
-	float homeYaw = -PI;
+	float homePitch = PI / 2.0 +  0.01f;
+	float homeYaw = 0.0f;
 	DirectionalLightCBuf home;
 	DirectionalLightCBuf cbData;
 	mutable DeferredFullScreen mesh;

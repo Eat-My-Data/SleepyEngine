@@ -26,7 +26,7 @@ namespace Rgph
 		void BindSLShadowCamera( const Camera& cam ) noexcept
 		{
 			pSLShadowCamera = &cam;
-			pPLShadowCBuf->SetCamera( &cam );
+			pSLShadowCBuf->SetCamera( &cam );
 		}
 		void BindDLShadowCamera( const Camera& cam ) noexcept
 		{
