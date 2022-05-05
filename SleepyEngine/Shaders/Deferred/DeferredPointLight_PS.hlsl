@@ -32,7 +32,7 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
     clipY = -clipY;
    
     // normal to clip space
-    //normal = (normal * 2.0) - 1.0;
+    normal = (normal * 2.0) - 1.0;
 
     // world position
     float4 worldSpacePos = CalculateWorldPosition(float4(clipX, clipY, depthSample, 1.0));
@@ -42,11 +42,11 @@ float4 main(float4 position : SV_POSITION, float4 spos : ShadowPosition) : SV_TA
 
     // shadow
     const float shadow = CalculatePointLightShadow(worldSpacePos.xyz, viewLightPos, SampleTypePoint);
-    
+    //const float shadow = ShadowPL(spos);
+
     // attenuation
     const float3 pointToFrag = viewLightPos - worldSpacePos.xyz;
-    float att = saturate((1 - (length(pointToFrag) / radius.r)));
-    att *= att;
+    float att = Attenuate(0.0f, 0.0f, 0.0f, length(pointToFrag)); //saturate((1 - (length(pointToFrag) / radius.r)));
 
     // lighting calculations
     float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, normalize(pointToFrag), normalize(normal.xyz)) * shadow;
